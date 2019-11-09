@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="卷积操作的线性性质卷积我们假设有一幅大小为4 ×4 的图像 _x_，卷积核大小为 3×3 _A_ 卷积核滑动步长为 1 ，没有 padding；那么经过卷积以后图像大小即为 2×2 如何将其写为矩阵相乘形式？ 我们将卷积核拓展为 一个 4 × 16 的矩阵 =&amp;gt; _T_，将图像_x_ 压缩(flatten)为 16 × 1 =&amp;gt; _X_ 卷积操作即可表示为:  T*x = C其中，结果">
+<meta name="description" content="卷积操作的线性性质卷积我们假设有一幅大小为4 ×4 的图像 x，卷积核大小为 3×3 A 卷积核滑动步长为 1 ，没有 padding；那么经过卷积以后图像大小即为 2×2 如何将其写为矩阵相乘形式？ 我们将卷积核拓展为 一个 4 × 16 的矩阵 =&amp;gt; T，将图像x 压缩(flatten)为 16 × 1 =&amp;gt; X 卷积操作即可表示为: T*x = C  其中，结果 C 为4×1的矩">
 <meta name="keywords" content="CNN NET">
 <meta property="og:type" content="article">
 <meta property="og:title" content="卷积操作的线性性质">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;08&#x2F;%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8&#x2F;index.html">
 <meta property="og:site_name" content="张永剑的博客">
-<meta property="og:description" content="卷积操作的线性性质卷积我们假设有一幅大小为4 ×4 的图像 _x_，卷积核大小为 3×3 _A_ 卷积核滑动步长为 1 ，没有 padding；那么经过卷积以后图像大小即为 2×2 如何将其写为矩阵相乘形式？ 我们将卷积核拓展为 一个 4 × 16 的矩阵 =&amp;gt; _T_，将图像_x_ 压缩(flatten)为 16 × 1 =&amp;gt; _X_ 卷积操作即可表示为:  T*x = C其中，结果">
+<meta property="og:description" content="卷积操作的线性性质卷积我们假设有一幅大小为4 ×4 的图像 x，卷积核大小为 3×3 A 卷积核滑动步长为 1 ，没有 padding；那么经过卷积以后图像大小即为 2×2 如何将其写为矩阵相乘形式？ 我们将卷积核拓展为 一个 4 × 16 的矩阵 =&amp;gt; T，将图像x 压缩(flatten)为 16 × 1 =&amp;gt; X 卷积操作即可表示为: T*x = C  其中，结果 C 为4×1的矩">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-08T03:03:34.880Z">
+<meta property="og:updated_time" content="2019-11-09T09:12:11.361Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -308,21 +308,24 @@
       
 
       
-        <h2 id="卷积操作的线性性质"><a href="#卷积操作的线性性质" class="headerlink" title="卷积操作的线性性质"></a>卷积操作的线性性质</h2><h3 id="卷积"><a href="#卷积" class="headerlink" title="卷积"></a>卷积</h3><p>我们假设有一幅大小为<strong>4 ×4</strong> 的图像 <strong>_x_</strong>，卷积核大小为 <strong>3×3</strong> <strong>_A_</strong></p>
+        <h2 id="卷积操作的线性性质"><a href="#卷积操作的线性性质" class="headerlink" title="卷积操作的线性性质"></a>卷积操作的线性性质</h2><h3 id="卷积"><a href="#卷积" class="headerlink" title="卷积"></a>卷积</h3><p>我们假设有一幅大小为<strong>4 ×4</strong> 的图像 <strong><em>x</em></strong>，卷积核大小为 <strong>3×3</strong> <strong><em>A</em></strong></p>
 <p>卷积核滑动步长为 1 ，没有 padding；那么经过卷积以后图像大小即为 <strong>2×2</strong></p>
 <p>如何将其写为矩阵相乘形式？</p>
-<p>我们将卷积核拓展为 一个 <strong>4 × 16</strong> 的矩阵 <strong>=&gt;</strong> <strong>_T_</strong>，将图像<strong>_x_</strong> 压缩(flatten)为 <strong>16 × 1</strong> <strong>=&gt;</strong> <strong>_X_</strong></p>
+<p>我们将卷积核拓展为 一个 <strong>4 × 16</strong> 的矩阵 <strong>=&gt;</strong> <strong><em>T</em></strong>，将图像<strong><em>x</em></strong> 压缩(flatten)为 <strong>16 × 1</strong> <strong>=&gt;</strong> <strong><em>X</em></strong></p>
 <p>卷积操作即可表示为:</p>
-<script type="math/tex; mode=display">
-T*x = C</script><p>其中，结果 <strong>_C_</strong> 为<strong>4×1</strong>的矩阵。很显然，上面的这个式子是<strong>线性</strong>的；</p>
-<p>这是矩阵和一个列向量相乘，可以理解为这个列向量经过矩阵变化之后，最终成了<strong>_C_</strong></p>
+<center>T*x = C</center>
+
+<p>其中，结果 <strong><em>C</em></strong> 为<strong>4×1</strong>的矩阵。很显然，上面的这个式子是<strong>线性</strong>的；</p>
+<p>这是矩阵和一个列向量相乘，可以理解为这个列向量经过矩阵变化之后，最终成了<strong><em>C</em></strong></p>
 <p>那么，这么矩阵就可以理解为列向量的一个<strong>函数</strong>。</p>
 <p>也就是说，图像经过了卷积核这个函数，变成了最后的结果。</p>
-<h3 id="转置卷积"><a href="#转置卷积" class="headerlink" title="转置卷积"></a>转置卷积</h3><p>现在我们有<strong>2 × 2</strong> 的图像 <strong>_x_</strong>，想让他变成 <strong>4 × 4</strong>的，我们该如何操作？</p>
-<p>我们仍然可以利用上文提到的那个卷积矩阵 <strong>_T_</strong>，</p>
+<h3 id="转置卷积"><a href="#转置卷积" class="headerlink" title="转置卷积"></a>转置卷积</h3><p>现在我们有<strong>2 × 2</strong> 的图像 <strong><em>x</em></strong>，想让他变成 <strong>4 × 4</strong>的，我们该如何操作？</p>
+<p>我们仍然可以利用上文提到的那个卷积矩阵 <strong><em>T</em></strong>，</p>
 <p>即：</p>
-<script type="math/tex; mode=display">
-T^T(16*4) * x(4*1) = R(16*1)</script><p>转置卷积通常用来做上采样(up sample)。</p>
+<center>T^T(16*4) * x(4*1) = R(16*1)</center>
+
+
+<p>转置卷积通常用来做上采样(up sample)。</p>
 
       
     </div>
@@ -362,6 +365,10 @@ T^T(16*4) * x(4*1) = R(16*1)</script><p>转置卷积通常用来做上采样(up 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/09/Hashap-LoadFactor/" rel="prev" title="HashMap LoadFactor">
+                HashMap LoadFactor <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -451,7 +458,7 @@ T^T(16*4) * x(4*1) = R(16*1)</script><p>转置卷积通常用来做上采样(up 
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
