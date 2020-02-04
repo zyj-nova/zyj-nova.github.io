@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    卷积操作的线性性质 |  张永剑的博客
+    JVM 垃圾回收器分类总结 |  张永剑的博客
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -29,7 +29,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-卷积操作的线性性质" class="article article-type-post" itemscope
+  <article id="post-JVM 垃圾回收器分类总结" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -37,7 +37,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  卷积操作的线性性质
+  JVM 垃圾回收器分类总结
 </h1>
   
 
@@ -46,12 +46,12 @@
 
     
     <div class="article-meta">
-      <a href="/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" class="article-date">
-  <time datetime="2019-11-08T02:47:10.000Z" itemprop="datePublished">2019-11-08</time>
+      <a href="/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" class="article-date">
+  <time datetime="2020-02-04T05:58:43.203Z" itemprop="datePublished">2020-02-04</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+    <a class="article-category-link" href="/categories/Java/">Java</a>
   </div>
 
       
@@ -61,7 +61,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">297字</span>
+            <span class="post-count">788字</span>
         </span>
     </span>
 
@@ -70,7 +70,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1分钟</span>
+            <span class="post-count">2分钟</span>
         </span>
     </span>
 </div>
@@ -96,35 +96,44 @@
       
 
       
-      <h2 id="卷积操作的线性性质"><a href="#卷积操作的线性性质" class="headerlink" title="卷积操作的线性性质"></a>卷积操作的线性性质</h2><h3 id="卷积"><a href="#卷积" class="headerlink" title="卷积"></a>卷积</h3><p>我们假设有一幅大小为<strong>4 ×4</strong> 的图像 <strong>_x_</strong>，卷积核大小为 <strong>3×3</strong> <strong>_A_</strong></p>
-<p>卷积核滑动步长为 1 ，没有 padding；那么经过卷积以后图像大小即为 <strong>2×2</strong></p>
-<p>如何将其写为矩阵相乘形式？</p>
-<p>我们将卷积核拓展为 一个 <strong>4 × 16</strong> 的矩阵 <strong>=&gt;</strong> <strong>_T_</strong>，将图像<strong>_x_</strong> 压缩(flatten)为 <strong>16 × 1</strong> <strong>=&gt;</strong> <strong>_X_</strong></p>
-<p>卷积操作即可表示为:</p>
-<center>T*x = C</center>
-
-<p>其中，结果 <strong>_C_</strong> 为<strong>4×1</strong>的矩阵。很显然，上面的这个式子是<strong>线性</strong>的；</p>
-<p>这是矩阵和一个列向量相乘，可以理解为这个列向量经过矩阵变化之后，最终成了<strong>_C_</strong></p>
-<p>那么，这么矩阵就可以理解为列向量的一个<strong>函数</strong>。</p>
-<p>也就是说，图像经过了卷积核这个函数，变成了最后的结果。</p>
-<h3 id="转置卷积"><a href="#转置卷积" class="headerlink" title="转置卷积"></a>转置卷积</h3><p>现在我们有<strong>2 × 2</strong> 的图像 <strong>_x_</strong>，想让他变成 <strong>4 × 4</strong>的，我们该如何操作？</p>
-<p>我们仍然可以利用上文提到的那个卷积矩阵 <strong>_T_</strong>，</p>
-<p>即：</p>
-<center>T^T(16*4) * x(4*1) = R(16*1)</center>
-
-<p>转置卷积通常用来做上采样(up sample)。</p>
+      <h2 id="JVM-垃圾回收器分类总结"><a href="#JVM-垃圾回收器分类总结" class="headerlink" title="JVM 垃圾回收器分类总结"></a>JVM 垃圾回收器分类总结</h2><p>概览：</p>
+<p>由于垃圾回收存在多种算法：标记-复制、标记-清除、标记-整理。组合多种垃圾回收器，形成分代收集算法。</p>
+<p><strong>新生代收集器</strong>：Serial、ParNew、Parallel Scavenge</p>
+<p><strong>老年代收集器</strong>：CMS、Serial Old、Parallel Old</p>
+<p><strong>整堆收集器</strong>： G1</p>
+<h3 id="1-Serial-垃圾回收器"><a href="#1-Serial-垃圾回收器" class="headerlink" title="1. Serial 垃圾回收器"></a>1. Serial 垃圾回收器</h3><p>​ 串行垃圾回收器，单线程，执行垃圾回收时其他线程停止等待。</p>
+<h3 id="2-Parallel-New-垃圾回收器"><a href="#2-Parallel-New-垃圾回收器" class="headerlink" title="2. Parallel New 垃圾回收器"></a>2. Parallel New 垃圾回收器</h3><p>​ 并行垃圾回收器。相较于 Serial，多线程并行进行垃圾回收。其他线程也必须停止等待。</p>
+<h3 id="3-Parallel-Scavenge-收集器"><a href="#3-Parallel-Scavenge-收集器" class="headerlink" title="3. Parallel Scavenge 收集器"></a>3. Parallel Scavenge 收集器</h3><p>​ 与<strong>吞吐量</strong>关系密切，故也称为吞吐量优先收集器。</p>
+<p>​ <strong>特点</strong>：属于新生代收集器也是采用复制算法的收集器，又是并行的多线程收集器（与 ParNew 收集器类似）。</p>
+<h3 id="4-Parallel-Old-收集器"><a href="#4-Parallel-Old-收集器" class="headerlink" title="4. Parallel Old 收集器"></a>4. Parallel Old 收集器</h3><p>​ 是 Parallel Scavenge 收集器的老年代版本。</p>
+<p>​ <strong>特点</strong>：多线程，采用标记-整理算法。</p>
+<p>​ <strong>应用场景</strong>：注重高吞吐量以及 CPU 资源敏感的场合，都可以优先考虑 Parallel Scavenge+Parallel Old 收集器。</p>
+<h3 id="5-Serial-Old-收集器"><a href="#5-Serial-Old-收集器" class="headerlink" title="5. Serial Old 收集器"></a>5. Serial Old 收集器</h3><p>​ Serial Old 是 Serial 收集器的老年代版本。</p>
+<p>​ <strong>特点</strong>：同样是单线程收集器，采用标记-整理算法。</p>
+<h3 id="6-CMS-垃圾回收器"><a href="#6-CMS-垃圾回收器" class="headerlink" title="6. CMS 垃圾回收器"></a>6. CMS 垃圾回收器</h3><p>​ 并发垃圾回收器，在进行垃圾回收时，其余线程不必停止等待。</p>
+<p>​ <strong>CMS 收集器的运行过程分为下列 4 步：</strong></p>
+<p>​ <strong>初始标记</strong>：标记 GC Roots 能直接到的对象。速度很快但是仍存在 Stop The World 问题。</p>
+<p>​ <strong>并发标记</strong>：进行 GC Roots Tracing 的过程，找出存活对象且用户线程可并发执行。</p>
+<p>​ <strong>重新标记</strong>：为了修正并发标记期间因用户程序继续运行而导致标记产生变动的那一部分对象的标记记录。仍然存在 Stop The World 问题。</p>
+<p>​ <strong>并发清除</strong>：对标记的对象进行清除回收。</p>
+<p>​ CMS 收集器的内存回收过程是与用户线程一起并发执行的。</p>
+<p>​</p>
+<h3 id="7-G1-垃圾回收器"><a href="#7-G1-垃圾回收器" class="headerlink" title="7. G1 垃圾回收器"></a>7. G1 垃圾回收器</h3><p>一款面向服务端应用的垃圾收集器。</p>
+<p><strong>特点如下：</strong></p>
+<p>并行与并发：G1 能充分利用多 CPU、多核环境下的硬件优势，使用多个 CPU 来缩短 Stop-The-World 停顿时间。部分收集器原本需要停顿 Java 线程来执行 GC 动作，G1 收集器仍然可以通过并发的方式让 Java 程序继续运行。</p>
+<p>分代收集：G1 能够独自管理整个 Java 堆，并且采用不同的方式去处理新创建的对象和已经存活了一段时间、熬过多次 GC 的旧对象以获取更好的收集效果。</p>
+<p>空间整合：G1 运作期间不会产生空间碎片，收集后能提供规整的可用内存。</p>
+<p>可预测的停顿：G1 除了追求低停顿外，还能建立可预测的停顿时间模型。能让使用者明确指定在一个长度为 M 毫秒的时间段内，消耗在垃圾收集上的时间不得超过 N 毫秒。</p>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" data-id="ck67h3a0y000cqwug53okegfd"
+      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ck67h3a0s0006qwugh1etecrh"
         class="article-share-link">分享</a>
         
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CNN-NET/" rel="tag">CNN NET</a></li></ul>
-
     </footer>
 
   </div>
@@ -133,19 +142,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2019/11/09/Hashap-LoadFactor/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            HashMap LoadFactor
-          
-        </div>
-      </a>
     
-    
-      <a href="/2019/11/07/canny/" class="article-nav-link">
+      <a href="/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Canny Edge Detection Step By Step</div>
+        <div class="article-nav-title">造成Java Out Of Memory原因总结</div>
       </a>
     
   </nav>

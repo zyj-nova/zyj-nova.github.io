@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    卷积操作的线性性质 |  张永剑的博客
+    造成Java Out Of Memory原因总结 |  张永剑的博客
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -29,7 +29,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-卷积操作的线性性质" class="article article-type-post" itemscope
+  <article id="post-造成Java Out Of Memory原因总结" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -37,7 +37,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  卷积操作的线性性质
+  造成Java Out Of Memory原因总结
 </h1>
   
 
@@ -46,12 +46,12 @@
 
     
     <div class="article-meta">
-      <a href="/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" class="article-date">
-  <time datetime="2019-11-08T02:47:10.000Z" itemprop="datePublished">2019-11-08</time>
+      <a href="/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" class="article-date">
+  <time datetime="2020-02-04T04:34:09.363Z" itemprop="datePublished">2020-02-04</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+    <a class="article-category-link" href="/categories/Java/">Java</a>
   </div>
 
       
@@ -61,7 +61,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">297字</span>
+            <span class="post-count">639字</span>
         </span>
     </span>
 
@@ -70,7 +70,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1分钟</span>
+            <span class="post-count">2分钟</span>
         </span>
     </span>
 </div>
@@ -96,35 +96,30 @@
       
 
       
-      <h2 id="卷积操作的线性性质"><a href="#卷积操作的线性性质" class="headerlink" title="卷积操作的线性性质"></a>卷积操作的线性性质</h2><h3 id="卷积"><a href="#卷积" class="headerlink" title="卷积"></a>卷积</h3><p>我们假设有一幅大小为<strong>4 ×4</strong> 的图像 <strong>_x_</strong>，卷积核大小为 <strong>3×3</strong> <strong>_A_</strong></p>
-<p>卷积核滑动步长为 1 ，没有 padding；那么经过卷积以后图像大小即为 <strong>2×2</strong></p>
-<p>如何将其写为矩阵相乘形式？</p>
-<p>我们将卷积核拓展为 一个 <strong>4 × 16</strong> 的矩阵 <strong>=&gt;</strong> <strong>_T_</strong>，将图像<strong>_x_</strong> 压缩(flatten)为 <strong>16 × 1</strong> <strong>=&gt;</strong> <strong>_X_</strong></p>
-<p>卷积操作即可表示为:</p>
-<center>T*x = C</center>
-
-<p>其中，结果 <strong>_C_</strong> 为<strong>4×1</strong>的矩阵。很显然，上面的这个式子是<strong>线性</strong>的；</p>
-<p>这是矩阵和一个列向量相乘，可以理解为这个列向量经过矩阵变化之后，最终成了<strong>_C_</strong></p>
-<p>那么，这么矩阵就可以理解为列向量的一个<strong>函数</strong>。</p>
-<p>也就是说，图像经过了卷积核这个函数，变成了最后的结果。</p>
-<h3 id="转置卷积"><a href="#转置卷积" class="headerlink" title="转置卷积"></a>转置卷积</h3><p>现在我们有<strong>2 × 2</strong> 的图像 <strong>_x_</strong>，想让他变成 <strong>4 × 4</strong>的，我们该如何操作？</p>
-<p>我们仍然可以利用上文提到的那个卷积矩阵 <strong>_T_</strong>，</p>
-<p>即：</p>
-<center>T^T(16*4) * x(4*1) = R(16*1)</center>
-
-<p>转置卷积通常用来做上采样(up sample)。</p>
+      <h2 id="造成-Java-Out-Of-Memory-原因总结"><a href="#造成-Java-Out-Of-Memory-原因总结" class="headerlink" title="造成 Java Out Of Memory 原因总结"></a>造成 Java Out Of Memory 原因总结</h2><p>总结起来有 6 点原因，以下分点阐述。</p>
+<h3 id="1-heap-space"><a href="#1-heap-space" class="headerlink" title="1 heap space"></a>1 heap space</h3><p>​ 当申请的空间大小超出了堆中剩余空间就会产生这个原因。比如：通过 <strong>_-Xmx10m_</strong> 设置虚拟机堆最大空间为 10 M，运行代码：<code>byte data[] = new data[1024 * 1024 * 20];</code> 就会产生错误。</p>
+<h3 id="2-GC-overhead-limit"><a href="#2-GC-overhead-limit" class="headerlink" title="2 GC overhead limit"></a>2 GC overhead limit</h3><p>​ 当 Java 虚拟机连续多次垃圾回收却只回收了不到$2\%$的内存，也就是说你的程序有$98\%$的时间都在进行垃圾回收，却回收了不到$2\%$的内存，就会产生这个错误。</p>
+<h3 id="3-Direct-buffer-memory"><a href="#3-Direct-buffer-memory" class="headerlink" title="3 Direct buffer memory"></a>3 Direct buffer memory</h3><p>​ 由于在 Java 8 以后，hotspot 虚拟机废止了永久代，转而采用<i>MetaSpace</i>实现方法区。Metaspace 并不依赖于 JVM 内存，而直接占用本地内存。因此，当在 NIO 过程中，经常使用 ByteBuffer 来读取和写入数据，这是一种基于 Channel、Buffer 的 I/O 方式。它可以使用 native 函数库直接分配 OS 本地内存，然后通过一个存储在堆里的 DirectByteBuffer 对象作为这块内存的引用进行操作。因为避免了 Java 堆和 Native 堆中来回复制数据（不需要内存拷贝），可以提高性能。Buffer 空间直接在本地分配内存，不属于 GC 管辖范围，JVM 不要执行 GC。当本地内存(Direct Memory)用完，而堆内存反而很少使用，就会产生这个错误。</p>
+<p>以下代码设置元空间占用本地最大内存为 5 m，却要直接申请 50 m 的内存，会报错。</p>
+<p><code>-XX:+PrintGCDetails -XX:MaxDirectMemorySize=5m</code></p>
+<p><code>ByteBuffer buffer = ByteBuffer.allocateDirect(50 * 1024 * 1024);</code></p>
+<h3 id="4-Metaspace"><a href="#4-Metaspace" class="headerlink" title="4 Metaspace"></a>4 Metaspace</h3><p>​ Java 8 后，采用元空间实现方法区。方法区主要存放加载的类信息、静态变量/方法、运行时常量池等信息。当加载的类过多以致超出了元空间的大小，就会产生这个错误。</p>
+<p><code>-XX:MetaspaceSize=8m -XX:MaxMetaspaceSize=8m</code> 设置初始和最大元空间大小。</p>
+<h3 id="5-unable-to-create-new-native-thread"><a href="#5-unable-to-create-new-native-thread" class="headerlink" title="5 unable to create new native thread"></a>5 unable to create new native thread</h3><p>高并发请求服务器时，经常出现：</p>
+<p><code>java.lang.OutOfMemoryError: unable to create new native thread</code></p>
+<p>不同操作系统允许进程创建的线程数量有限，当 Java 应用创建太多线程时，超过了系统承载极限。linux 默认徐云一个进程创建 1024 个线程。</p>
+<p><strong>tips</strong>:当一个线程 start 后，线程状态会发生改变，不允许再次 start。</p>
+<h3 id="6-Stack-Overflow"><a href="#6-Stack-Overflow" class="headerlink" title="6 Stack Overflow"></a>6 Stack Overflow</h3><p>​ 最经典的一个错误，无限递归导致虚拟机栈空间不足，就会报这个错误。</p>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" data-id="ck67h3a0y000cqwug53okegfd"
+      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="ck67h3a10000eqwugg6kjckam"
         class="article-share-link">分享</a>
         
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CNN-NET/" rel="tag">CNN NET</a></li></ul>
-
     </footer>
 
   </div>
@@ -133,19 +128,19 @@
   
   <nav class="article-nav">
     
-      <a href="/2019/11/09/Hashap-LoadFactor/" class="article-nav-link">
+      <a href="/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            HashMap LoadFactor
+            JVM 垃圾回收器分类总结
           
         </div>
       </a>
     
     
-      <a href="/2019/11/07/canny/" class="article-nav-link">
+      <a href="/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Canny Edge Detection Step By Step</div>
+        <div class="article-nav-title">Faster R-CNN中anchor的理解</div>
       </a>
     
   </nav>
