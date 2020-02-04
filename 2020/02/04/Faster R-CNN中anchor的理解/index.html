@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    HashMap LoadFactor |  张永剑的博客
+    Faster R-CNN中anchor的理解 |  张永剑的博客
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -29,7 +29,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-Hashap-LoadFactor" class="article article-type-post" itemscope
+  <article id="post-Faster R-CNN中anchor的理解" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -37,7 +37,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  HashMap LoadFactor
+  Faster R-CNN中anchor的理解
 </h1>
   
 
@@ -46,10 +46,14 @@
 
     
     <div class="article-meta">
-      <a href="/2019/11/09/Hashap-LoadFactor/" class="article-date">
-  <time datetime="2019-11-09T09:14:00.000Z" itemprop="datePublished">2019-11-09</time>
+      <a href="/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" class="article-date">
+  <time datetime="2020-02-04T02:37:19.958Z" itemprop="datePublished">2020-02-04</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
       
       
 <div class="word_count">
@@ -57,7 +61,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">142字</span>
+            <span class="post-count">351字</span>
         </span>
     </span>
 
@@ -77,6 +81,8 @@
 
     
     
+    <div class="tocbot"></div>
+
 
 
 
@@ -90,19 +96,24 @@
       
 
       
-      <p>The Load factor is a measure that decides when to increase the HashMap capacity to maintain the get() and put() operation complexity of O(1). The default load factor of HashMap is <strong>0.75f</strong> (75% of the map size).</p>
-<p>The initial capacity of the HashMap is the number of buckets in the hash table. It creates when we create the object of HashMap class. The initial capacity of the HashMap is 24, i.e.,16. The capacity of the HashMap is doubled each time it reaches the threshold. The capacity is increased to 25=32, 26=64, and so on.</p>
-<p>One way to calculate size:<br>When the load factor ratio (m/n) reaches 0.75 at that time, hashmap increases its capacity.<br>Where,<br>m is the number of entries in a hashmap.(size of HashMap)<br>n is the total size of hashmap.</p>
+      <h2 id="Faster-R-CNN-中-anchor-的理解"><a href="#Faster-R-CNN-中-anchor-的理解" class="headerlink" title="Faster R-CNN 中 anchor 的理解"></a>Faster R-CNN 中 anchor 的理解</h2><h3 id="1-什么是-anchor"><a href="#1-什么是-anchor" class="headerlink" title="1 什么是 anchor"></a>1 什么是 anchor</h3><p>​ 当图像经过 CNN 网络（如 VGG16）提取出特征即 <strong>feature map</strong> 之后，针对 <strong>feature map</strong> 进行 Region Proposal 操作。首先要明白的是 anchor 是相对于 feature map 在原图上的概念。提取出来的特征相对于原图像存在视野域这个概念，如果视野比例为 8，即 feature map 上一个点，对应在原图是一个 8 * 8 的正方形。那么，该正方形的中心就被称为 anchor。</p>
+<h3 id="2-anchor-boxes"><a href="#2-anchor-boxes" class="headerlink" title="2 anchor boxes"></a>2 anchor boxes</h3><p>​ 在确定 anchor 后，针对改 anchor 要选定 9 个框，首先有 anchor ratio 这个概念。即 <strong>1:1, 1:2, 2:1</strong> 。也就是说 9 个 anchor boxes 的边长比例满足 ratio，确切的说，anchor boxes 存在 3 组，每组 3 个，每个 boxes 的边长都是 1:1,1:2,2:1 。 还有 scales 这个概念， 即 <strong>8, 16, 32</strong> 。anchor boxes 中，1:1 这组的边长<strong>等于</strong>视野域比例*scale。</p>
+<p>如果视野域比例为<strong>16</strong>，那么边长分别为<strong>128,256,512</strong>。其余比例为 2 的边，按照 128/256/512 的 1.5 倍进行扩大。</p>
+<p>如 512*1.5 = 768，768 /2 = 384，256*1.5 = 384，384/2 = 192，128*1.5 = 192, 192 /2= 96</p>
+<p><img src="/images/faster-rcnn.jpg" alt="anchor示意图"></p>
+<h3 id="3-后续操作"><a href="#3-后续操作" class="headerlink" title="3 后续操作"></a>3 后续操作</h3><p>​ 假设 feature map 大小为 M*N，那么 anchor boxes 数量为 <strong>9MN*</strong> 。对于这些 boxes 在进行前景背景分类以及 ground truth 回归等操作，最终选定目标物体。</p>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/09/Hashap-LoadFactor/" data-id="ck67dwpuy0002mgug98lja1p0"
+      <a data-url="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" data-id="ck67dwpuq0000mgug92tg6u25"
         class="article-share-link">分享</a>
         
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CV/" rel="tag">CV</a></li></ul>
+
     </footer>
 
   </div>
@@ -111,19 +122,10 @@
   
   <nav class="article-nav">
     
+    
       <a href="/2019/11/10/PCA-StepByStep/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            How to Implements PCA and SVD
-          
-        </div>
-      </a>
-    
-    
-      <a href="/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">卷积操作的线性性质</div>
+        <div class="article-nav-title">How to Implements PCA and SVD</div>
       </a>
     
   </nav>
