@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-     张永剑的博客
+    HMM模型笔记 |  张永剑的博客
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -30,13 +30,63 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="page-" class="article article-type-page" itemscope
+  <article id="post-HMM模型笔记" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
     
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  HMM模型笔记
+</h1>
+  
+
+    </header>
+    
 
     
+    <div class="article-meta">
+      <a href="/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time datetime="2020-02-07T03:46:41.529Z" itemprop="datePublished">2020-02-07</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">3分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
 
     
 
@@ -47,26 +97,59 @@
       
 
       
-      <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>关于我</title>
-  <meta name="generator" content="hexo-theme-yilia-plus">
-  <link rel="alternate" href="/atom.xml" title="张永剑的博客" type="application/atom+xml">
-</head>
-  <body>
-    <h3>2016-2020就读于东北林业大学软件工程专业</h3>
-    <h3>保研至北京交通大学计算机学院</h3>
-    <h4>研究兴趣：机器学习、深度学习、后端研发</h4>
-  </body>
-</html>
+      <h2 id="隐马尔可夫模型"><a href="#隐马尔可夫模型" class="headerlink" title="隐马尔可夫模型"></a>隐马尔可夫模型</h2><p><strong>记住一下几个要点</strong></p>
+<ul>
+    <li>
+        <strong>3个基本组成元素</strong>
+    </li>
+    <li>
+        <strong>2个基本假设</strong>
+    </li>
+    <li>
+        <strong>3个基本问题</strong>
+    </li>
+</ul>
+
+<p><strong>tips</strong>：其实我在看好多算法时，涉及到许多数学公式，如果你刚开始接触这个模型算法，先不要直接就开始研究公式，先明白这个算法或模型时如何工作的，找个例子算一下，跑一下。数学公式是方便为了归纳总结而提出来的，如果你能很好的理解这个算法，那么他的公式也就不难理解了。这是我学习中的一点小经验。</p>
+<h3 id="1-3个基本组成元素"><a href="#1-3个基本组成元素" class="headerlink" title="1 3个基本组成元素"></a>1 3个基本组成元素</h3><p><strong>隐马尔科夫模型可以用三元组表示</strong></p>
+<p>同时，一般用 $I$ 表示<em>隐藏序列</em>，$O$ 表示<em>观测序列</em> ，用 $Q$ 表示可能的状态集合，用 $V$ 表示可能的观测集合</p>
+<script type="math/tex; mode=display">
+Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的状态数，$N$ 为可能的观测数。则可以确定状态转移概率矩阵大小为 $M$ 阶的方阵，观测概率矩阵大小为 $M * N$ 的矩阵。 </p>
+<p><strong>总结</strong>：一条隐藏的马尔可夫链随机生成了一个不可观测的状态序列，然后每个状态又对应生成了一个观测结果（状态—&gt;观测, 观测概率矩阵B），这些观测结果按照时序排列形成了观测序列。</p>
+<h4 id="1-1-初始状态概率序列（-pi-）"><a href="#1-1-初始状态概率序列（-pi-）" class="headerlink" title="1.1 初始状态概率序列（$\pi$）"></a>1.1 初始状态概率序列（$\pi$）</h4><h4 id="1-2-状态转移概率矩阵（-A-）"><a href="#1-2-状态转移概率矩阵（-A-）" class="headerlink" title="1.2 状态转移概率矩阵（$A$）"></a>1.2 状态转移概率矩阵（$A$）</h4><h4 id="1-3-观测概率矩阵（-B-）"><a href="#1-3-观测概率矩阵（-B-）" class="headerlink" title="1.3 观测概率矩阵（$B$）"></a>1.3 观测概率矩阵（$B$）</h4><p>不同状态生成不同观测结果的概率。</p>
+<h3 id="2-2个基本假设"><a href="#2-2个基本假设" class="headerlink" title="2 2个基本假设"></a>2 2个基本假设</h3><h4 id="2-1-齐次性，当前状态只和前一个状态相关"><a href="#2-1-齐次性，当前状态只和前一个状态相关" class="headerlink" title="2.1  齐次性，当前状态只和前一个状态相关"></a>2.1  齐次性，当前状态只和前一个状态相关</h4><p>​        任意时刻 $t$ 的状态只依赖前一时刻的状态。与其他时刻的观测与状态无关，也与 $t$ 时刻无关。 </p>
+<h4 id="2-2-观测独立性假设"><a href="#2-2-观测独立性假设" class="headerlink" title="2.2 观测独立性假设"></a>2.2 观测独立性假设</h4><p>​        假设任意时刻的观测只依赖于该时刻的马尔科夫链的状态，与其他观测及状态无关。</p>
+<h3 id="3-3个基本问题"><a href="#3-3个基本问题" class="headerlink" title="3 3个基本问题"></a>3 3个基本问题</h3><h4 id="3-1-概率计算"><a href="#3-1-概率计算" class="headerlink" title="3.1 概率计算"></a>3.1 概率计算</h4><p><strong>问题描述</strong>： </p>
+<p>​        在给定模型参数 $\lambda$ 的情况下，观测序列 $O$ 出现的概率是多少？即 $P(O|\lambda)$ 概率值为多少？</p>
+<p><strong>如何解决</strong></p>
+<p>​        1.暴力计算，算法实现的时间复杂度太高，理论可行，实际不采用！</p>
+<p>​        2.前向算法，利用动态规划，将时间复杂度降到O($n^2$)</p>
+<p>​        3.后向算法，基本同前向算法。</p>
+<h4 id="3-2-预测问题（解码问题）"><a href="#3-2-预测问题（解码问题）" class="headerlink" title="3.2 预测问题（解码问题）"></a>3.2 预测问题（解码问题）</h4><p><strong>问题描述</strong></p>
+<p>​        给定信息：</p>
+<p>​        <strong>模型</strong>：$\lambda = \{A,B,\pi\}$</p>
+<p>​        <strong>观测序列</strong>：$O = \{o_1,o_2,…,o_T\}$</p>
+<p>​        <strong>求解</strong>：求使得$P(O|S)$最大的状态序列$S$.</p>
+<p><strong>如何解决</strong></p>
+<p>​        <strong>维特比</strong>算法（动态规划—最大概率路径）。其实简单来说，要找到一条从起点到终点的最优路径，最大概率路径因为满足<strong>最优子结构</strong>和<strong>重叠子问题</strong>，因此可以从采用动态规划来解。</p>
+<p>$\sigma_t(i)$ 表示 <code>t</code>时刻状态为 <code>i</code>, 计算如下：</p>
+<script type="math/tex; mode=display">
+\sigma_{t+1}(i) = max\{\sigma_{t}a_{ji}\} * b_i(o_{t+1}), j = 1,2,...N. N为状态数</script><p>$a_{ji}$表示由第<code>j</code>个状态向第<code>i</code>个状态转移的概率，$b_i(o_{t+1})$表示由第<code>i</code>个状态生成<code>t+1</code>时序时的观测的概率。递推计算，<code>from t =1 to t = T</code>。然后输出状态序列。</p>
+<h4 id="3-3-学习问题（参数估计）"><a href="#3-3-学习问题（参数估计）" class="headerlink" title="3.3 学习问题（参数估计）"></a>3.3 学习问题（参数估计）</h4><p><strong>问题描述</strong></p>
+<p>​        给定信息：</p>
+<p>​        <strong>观测序列</strong>: $O = \{o_1,o_2,…,o_T\}$</p>
+<p>​        <strong>求解</strong>：模型$\lambda$ 参数，</p>
+<p><strong>如何求解</strong></p>
+<p>​        <strong>EM</strong>算法</p>
+<h3 id="4-有啥用"><a href="#4-有啥用" class="headerlink" title="4 有啥用?"></a>4 有啥用?</h3><h4 id="4-1-中文分词"><a href="#4-1-中文分词" class="headerlink" title="4.1 中文分词"></a>4.1 中文分词</h4><p>我们假设每个词都有Begin、Medium、End、S分别代表开头、中间、结尾、独立的词等隐状态，所给的文本为观测态，我们要做的就是训练（语料库）一个HMM模型，在给定文本的情况下，输出隐含态，也就是分词结果。</p>
+<h4 id="4-2-语音识别"><a href="#4-2-语音识别" class="headerlink" title="4.2 语音识别"></a>4.2 语音识别</h4><h4 id="参考书目"><a href="#参考书目" class="headerlink" title="参考书目"></a>参考书目</h4><p>统计学习方法（第2版），李航。</p>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/about/index.html" data-id="ck6bmr1t70009q8ugflam4rzb"
+      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ck6bmr1s10000q8ugc8cpg6lz"
         class="article-share-link">分享</a>
         
       
@@ -76,6 +159,16 @@
 
   
   
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">二叉树</div>
+      </a>
+    
+  </nav>
+
 
   
 
@@ -133,6 +226,8 @@
 
   
 
+  
+  
   
 
 </article>
@@ -263,6 +358,28 @@
 
 
 
+
+<script src="/js/tocbot.min.js"></script>
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer:'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
 
 
 <script>

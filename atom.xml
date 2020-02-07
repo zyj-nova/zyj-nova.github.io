@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>张永剑的博客</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2020-02-06T15:27:00.956Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>张永剑</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>HMM模型笔记</title>
+    <link href="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/"/>
+    <id>http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/</id>
+    <published>2020-02-07T03:46:41.529Z</published>
+    <updated>2020-02-06T15:27:00.956Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;隐马尔可夫模型&quot;&gt;&lt;a href=&quot;#隐马尔可夫模型&quot; class=&quot;headerlink&quot; title=&quot;隐马尔可夫模型&quot;&gt;&lt;/a&gt;隐马尔可夫模型&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;记住一下几个要点&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;
+     
+        
+      
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>二叉树</title>
+    <link href="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/"/>
+    <id>http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/</id>
+    <published>2020-02-06T07:54:46.771Z</published>
+    <updated>2020-02-06T07:54:17.976Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;二叉树&quot;&gt;&lt;a href=&quot;#二叉树&quot; class=&quot;headerlink&quot; title=&quot;二叉树&quot;&gt;&lt;/a&gt;二叉树&lt;/h2&gt;&lt;p&gt;首先给出二叉树的定义    &lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>二分查找</title>
+    <link href="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/"/>
+    <id>http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/</id>
+    <published>2020-02-05T10:33:14.945Z</published>
+    <updated>2020-02-05T10:37:41.356Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;二分查找&quot;&gt;&lt;a href=&quot;#二分查找&quot; class=&quot;headerlink&quot; title=&quot;二分查找&quot;&gt;&lt;/a&gt;二分查找&lt;/h2&gt;&lt;h3 id=&quot;1-写一个正确的二分查找程序&quot;&gt;&lt;a href=&quot;#1-写一个正确的二分查找程序&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>JVM 垃圾回收器分类总结</title>
+    <link href="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/"/>
+    <id>http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/</id>
+    <published>2020-02-04T05:58:43.203Z</published>
+    <updated>2020-02-04T05:59:51.265Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;JVM-垃圾回收器分类总结&quot;&gt;&lt;a href=&quot;#JVM-垃圾回收器分类总结&quot; class=&quot;headerlink&quot; title=&quot;JVM 垃圾回收器分类总结&quot;&gt;&lt;/a&gt;JVM
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>造成Java Out Of Memory原因总结</title>
+    <link href="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/"/>
+    <id>http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/</id>
+    <published>2020-02-04T04:34:09.363Z</published>
+    <updated>2020-02-04T05:59:59.106Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;造成-Java-Out-Of-Memory-原因总结&quot;&gt;&lt;a href=&quot;#造成-Java-Out-Of-Memory-原因总结&quot; class=&quot;headerlink&quot; title=&quot;造成 Java Out Of Memory 原因总结&quot;&gt;&lt;/a&gt;造成 Java
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Faster R-CNN中anchor的理解</title>
+    <link href="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/"/>
+    <id>http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/</id>
+    <published>2020-02-04T02:37:19.958Z</published>
+    <updated>2020-02-04T04:26:32.206Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Faster-R-CNN-中-anchor-的理解&quot;&gt;&lt;a href=&quot;#Faster-R-CNN-中-anchor-的理解&quot; class=&quot;headerlink&quot; title=&quot;Faster R-CNN 中 anchor 的理解&quot;&gt;&lt;/a&gt;Faster
+        
+      
+    
+    </summary>
+    
+    
+      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="CV" scheme="http://yoursite.com/tags/CV/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>How to Implements PCA and SVD</title>
+    <link href="http://yoursite.com/2019/11/10/PCA-StepByStep/"/>
+    <id>http://yoursite.com/2019/11/10/PCA-StepByStep/</id>
+    <published>2019-11-10T11:55:25.000Z</published>
+    <updated>2020-02-04T04:34:21.272Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;How-to-Implements-PCA&quot;&gt;&lt;a href=&quot;#How-to-Implements-PCA&quot; class=&quot;headerlink&quot; title=&quot;How to Implements PCA&quot;&gt;&lt;/a&gt;How to Implements
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>HashMap LoadFactor</title>
+    <link href="http://yoursite.com/2019/11/09/Hashap-LoadFactor/"/>
+    <id>http://yoursite.com/2019/11/09/Hashap-LoadFactor/</id>
+    <published>2019-11-09T09:14:00.000Z</published>
+    <updated>2019-11-09T09:18:00.105Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;The Load factor is a measure that decides when to increase the HashMap capacity to maintain the get() and put() operation complexity of
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>卷积操作的线性性质</title>
+    <link href="http://yoursite.com/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/"/>
+    <id>http://yoursite.com/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/</id>
+    <published>2019-11-08T02:47:10.000Z</published>
+    <updated>2020-02-04T04:28:23.290Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;卷积操作的线性性质&quot;&gt;&lt;a href=&quot;#卷积操作的线性性质&quot; class=&quot;headerlink&quot; title=&quot;卷积操作的线性性质&quot;&gt;&lt;/a&gt;卷积操作的线性性质&lt;/h2&gt;&lt;h3 id=&quot;卷积&quot;&gt;&lt;a href=&quot;#卷积&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="CNN NET" scheme="http://yoursite.com/tags/CNN-NET/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Canny Edge Detection Step By Step</title>
+    <link href="http://yoursite.com/2019/11/07/canny/"/>
+    <id>http://yoursite.com/2019/11/07/canny/</id>
+    <published>2019-11-07T12:16:20.000Z</published>
+    <updated>2019-11-07T12:21:19.392Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="algorithm" scheme="http://yoursite.com/tags/algorithm/"/>
+    
+  </entry>
+  
+</feed>
