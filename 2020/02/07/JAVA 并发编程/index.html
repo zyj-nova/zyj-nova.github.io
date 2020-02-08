@@ -62,7 +62,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">2.5k字</span>
+            <span class="post-count">3.7k字</span>
         </span>
     </span>
 
@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">9分钟</span>
+            <span class="post-count">14分钟</span>
         </span>
     </span>
 </div>
@@ -112,12 +112,25 @@
 <li><p><strong>自旋锁（spin lock）</strong></p>
 <p>​        如果锁被其他线程占有，这个请求锁的线程便会被加入等待队列，此时<code>CPU</code>会继续调度其他线程，由于频繁切换线程的开销比较大，而且争抢锁不是很频繁。自旋锁就是当没有获取到锁，<code>CPU</code>不会挂起该线程，而是一直轮询（仍然占有<code>cpu</code>），直到该线程争抢到锁。这样做减轻了频繁切换线程，但是轮询增加了<code>CPU</code>负担。</p>
 </li>
+<li><p><strong>读写锁</strong></p>
+<p>​        相对于独占锁，每个锁只能被一个线程占有，读写锁对于读请求，读锁可以由多个线程共享；写操作，写锁，只允许一个线程独占，以此来提高并发性。即读读可以并存，读写、写写不可以共存。 能保证<strong>读写</strong>、<strong>写读</strong>和<strong>写写</strong>的过程是互斥，<strong>读读</strong>的时候是共享的。 <code>java.util.concurrent</code>包中<code>ReentrantReadWriteLock</code>就是读写锁。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读的时候加锁，共享锁</span></span><br><span class="line">  lock.readLock().lock();</span><br><span class="line">...</span><br><span class="line">  lock.readLock().unlock();</span><br><span class="line">        </span><br><span class="line">  <span class="comment">//写的时候加锁，独占锁</span></span><br><span class="line">  lock.writeLock().lock();</span><br><span class="line">  ...</span><br><span class="line">  lock.writeLock().unlock();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyCache</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> Map&lt;String, Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ReentrantReadWriteLock lock = <span class="keyword">new</span> ReentrantReadWriteLock();</span><br><span class="line">    WriteLock writeLock = lock.writeLock();</span><br><span class="line">    ReadLock readLock = lock.readLock();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(String key, Object value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            writeLock.lock();</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">" 正在写入..."</span>);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            map.put(key, value);</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">" 写入完成，写入结果是 "</span> + value);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            writeLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">get</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            readLock.lock();</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">" 正在读..."</span>);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            Object res = map.get(key);</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">" 读取完成，读取结果是 "</span> + res);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            readLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadWriteLockDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        MyCache cache = <span class="keyword">new</span> MyCache();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> temp = i;</span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                cache.put(temp + <span class="string">""</span>, temp + <span class="string">""</span>);</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> temp = i;</span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                cache.get(temp + <span class="string">""</span>);</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
 <li><p><strong>死锁的四个必要条件</strong></p>
-<p>​        互斥：资源在某一时刻只允许被一个线程所访问</p>
-<p>​        不可抢占：进程所获得的资源在未使用完毕之前，不能被其他进程强行夺走，即只能由获得该资源的进程自己来释放（只能是主动释放)。 </p>
-<p>​        循环等待：</p>
-<p>​        占有且等待：进程已经保持了至少一个资源，但又提出了新的资源请求，而该资源已被其他进程占有，此时请求进程被阻塞，但对自己已获得的资源保持不放。 </p>
-<p>​        <strong>本质原因</strong>：系统资源有限、进程推进顺不当。</p>
+<ul>
+<li><p>互斥：资源在某一时刻只允许被一个线程所访问</p>
+</li>
+<li><p>不可抢占：进程所获得的资源在未使用完毕之前，不能被其他进程强行夺走，即只能由获得该资源的进程自己来释放（只能是主动释放)。 </p>
+</li>
+<li><p>循环等待：</p>
+</li>
+<li><p>占有且等待：进程已经保持了至少一个资源，但又提出了新的资源请求，而该资源已被其他进程占有，此时请求进程被阻塞，但对自己已获得的资源保持不放。 </p>
+<p><strong>本质原因</strong>：系统资源有限、进程推进顺不当。</p>
+</li>
+</ul>
 </li>
 </ul>
 <h4 id="1-2-synchronized-的原理"><a href="#1-2-synchronized-的原理" class="headerlink" title="1.2 synchronized 的原理"></a>1.2 synchronized 的原理</h4><p>普通方法：锁是当前实例对象</p>
@@ -133,7 +146,40 @@
 <p>​        <code>volatile</code>的作用就是，被其修饰的变量，一旦值发生改变，其他线程就会放弃自己栈内存中的值，重新向内存中取值，从而保证了数据的内存可见性。</p>
 <p><img src="/images/JMM.png" style="zoom:80%;" /></p>
 <p><strong>特性</strong>：禁止指令重排、不保证原子性、内存可见性</p>
+<h4 id="1-4-synchronized-和-Lock-有什么区别？"><a href="#1-4-synchronized-和-Lock-有什么区别？" class="headerlink" title="1.4 synchronized 和 Lock 有什么区别？"></a>1.4 synchronized 和 Lock 有什么区别？</h4><ul>
+<li>原始结构<ul>
+<li>synchronized 是关键字属于 JVM 层面，反应在字节码上是 <code>monitorenter</code> 和 <code>monitorexit</code>，其底层是通过 <code>monito</code>r 对象来完成，其实 wait/notify 等方法也是依赖 monitor 对象只有在同步快或方法中才能调用 <code>wait/notify</code> 等方法。</li>
+<li>Lock 是具体类（<code>java.util.concurrent.locks.Lock</code>）是 api 层面的锁。</li>
+</ul>
+</li>
+<li>使用方法<ul>
+<li><code>synchronized</code> 不需要用户手动去释放锁，当 <code>synchronized</code> 代码执行完后系统会自动让线程释放对锁的占用。</li>
+<li><code>ReentrantLock</code> 则需要用户手动的释放锁，若没有主动释放锁，可能导致出现死锁的现象，lock() 和 unlock() 方法需要配合 try/finally 语句来完成。</li>
+</ul>
+</li>
+<li>等待是否可中断<ul>
+<li><code>synchronized</code> 不可中断，除非抛出异常或者正常运行完成。</li>
+<li><code>ReentrantLock</code> 可中断，设置超时方法 <code>tryLock(long timeout, TimeUnit unit)，lockInterruptibly()</code> 放代码块中，调用 interrupt() 方法可中断。</li>
+</ul>
+</li>
+<li>加锁是否公平<ul>
+<li><code>synchronized</code> 非公平锁</li>
+<li><code>ReentrantLock</code> 默认非公平锁，构造方法中可以传入 boolean 值，true 为公平锁，false 为非公平锁。</li>
+</ul>
+</li>
+<li>锁可以绑定多个 Condition<ul>
+<li><code>synchronized</code> 没有 <code>Condition</code>。</li>
+<li><code>ReentrantLock</code>用来实现分组唤醒需要唤醒的线程们，可以精确唤醒，而不是像 <code>synchronized</code> 要么随机唤醒一个线程要么唤醒全部线程。</li>
+</ul>
+</li>
+</ul>
 <h3 id="2-线程池"><a href="#2-线程池" class="headerlink" title="2. 线程池"></a>2. 线程池</h3><p>​        为什么要用线程池？答：它预先创建好一部分线程，使用完后放回池中，避免了创建与销毁线程的昂贵开销，使得性能大大提升 。</p>
+<p>主要特点为：</p>
+<ul>
+<li>线程复用</li>
+<li>控制最大并发数量</li>
+<li>管理线程</li>
+</ul>
 <h4 id="2-1-线程的状态"><a href="#2-1-线程的状态" class="headerlink" title="2.1 线程的状态"></a>2.1 线程的状态</h4><p>​        在Java中，线程共有以下几种状态</p>
 <ul>
 <li><p><strong>创建</strong>。</p>
@@ -181,9 +227,42 @@
 </ul>
 <p><strong>tips</strong>：阿里开发规范中强调：【强制】线程池不允许使用 Executors 去创建，而是通过 <code>ThreadPoolExecutor</code> 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险。 </p>
 <p><img src="/images/ThreadPoolExecutor.png" alt=""></p>
-<center>ThreadPoolExecutor类图</center>
-
-<h4 id="2-3-阻塞队列"><a href="#2-3-阻塞队列" class="headerlink" title="2.3 阻塞队列"></a>2.3 阻塞队列</h4><p><code>ArrayBlockingQueue</code> ：一个由数组结构组成的有界阻塞队列。<br><code>LinkedBlockingQueue</code>：一个由链表结构组成的有界阻塞队列。<br><code>PriorityBlockingQueue</code> ：一个支持优先级排序的无界阻塞队列。<br><code>DelayQueue</code>： 一个使用优先级队列实现的无界阻塞队列。<br><code>SynchronousQueue</code>： 一个不存储元素的阻塞队列。<br><code>LinkedTransferQueue</code>： 一个由链表结构组成的无界阻塞队列。<br><code>LinkedBlockingDeque</code>： 一个由链表结构组成的双向阻塞队列。 </p>
+<p><center>ThreadPoolExecutor类图</center></p>
+<h4 id="2-3-阻塞队列"><a href="#2-3-阻塞队列" class="headerlink" title="2.3 阻塞队列"></a>2.3 阻塞队列</h4><p>当阻塞队列是空时，从队列中获取元素的操作将会被阻塞。</p>
+<p>当阻塞队列是满时，往队列里添加元素的操作将会被阻塞。</p>
+<p><code>ArrayBlockingQueue</code> ：一个由数组结构组成的有界阻塞队列。<br><code>LinkedBlockingQueue</code>：一个由链表结构组成的有界阻塞队列。<br><code>PriorityBlockingQueue</code> ：一个支持优先级排序的无界阻塞队列。<br><code>DelayQueue</code>： 一个使用优先级队列实现的无界阻塞队列。<br><code>SynchronousQueue</code>： 一个不存储元素的阻塞队列，每个插入操作必须等到另一个线程调用移除操作，否则插入操作一直处于阻塞状态 。<br><code>LinkedTransferQueue</code>： 一个由链表结构组成的无界阻塞队列。<br><code>LinkedBlockingDeque</code>： 一个由链表结构组成的双向阻塞队列。 </p>
+<ul>
+<li>核心方法API</li>
+</ul>
+<p><img src="/images/image-20200208113359243.png" alt="image-20200208113359243"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">抛出异常</td>
+<td>当阻塞队列满时,再往队列里面add插入元素会抛<code>IllegalStateException: Queue full</code><br/>当阻塞队列空时,再往队列Remove元素时候回抛出<code>NoSuchElementException</code></td>
+</tr>
+<tr>
+<td style="text-align:left">特殊值</td>
+<td>插入方法,成功返回<code>true</code> 失败返回<code>false</code><br/>移除方法,成功返回元素,队列里面没有就返回<code>null</code></td>
+</tr>
+<tr>
+<td style="text-align:left">一直阻塞</td>
+<td>当阻塞队列满时,生产者继续往队列里面<code>put</code>元素,队列会一直阻塞直到put数据or响应中断退出<br/>当阻塞队列空时,消费者试图从队列<code>take</code>元素,队列会一直阻塞消费者线程直到队列可用.</td>
+</tr>
+<tr>
+<td style="text-align:left">超时退出</td>
+<td>当阻塞队列满时,队列会阻塞生产者线程一定时间,超过后限时后生产者线程就会退出</td>
+</tr>
+</tbody>
+</table>
+</div>
 <h4 id="2-4-线程池的种类"><a href="#2-4-线程池的种类" class="headerlink" title="2.4 线程池的种类"></a>2.4 线程池的种类</h4><p><code>Executors</code>类在创建线程池时，底层还是采用<code>ThreadPoolExecutor</code>的构造方法。</p>
 <ul>
 <li><p><code>Executors.newFixedThreadPool</code> 定长线程池</p>
@@ -208,17 +287,31 @@
 </li>
 </ul>
 <p><strong>总结</strong>：实际开发用哪个？哪个都不用，上面的阿里规范提到，用<code>ThreadPoolExecutor</code>来初始化一个线程池，参数自己指定。</p>
-<h3 id="3-Compare-and-Swap"><a href="#3-Compare-and-Swap" class="headerlink" title="3. Compare and Swap"></a>3. Compare and Swap</h3><h4 id="3-1-原理"><a href="#3-1-原理" class="headerlink" title="3.1 原理"></a>3.1 原理</h4><p>​        compare and swap 简称<code>CAS</code>，本质上一条原子指令，即要么执行，要么不执行，利用<code>CPU</code>底层来实现并发过程中数据不一致问题。<code>java.util.concurrent.atmoic.AtomicInteger</code>等类底层实现就采用了<code>CAS</code>，来解决并发过程中<code>i++</code>导致的数据不一致问题。实际上<code>i++</code>在被虚拟机编译后，并非一条语句，而被划分为三条指令，因此在多线程环境下会造成数据不一致。</p>
+<h3 id="3-Compare-and-Swap"><a href="#3-Compare-and-Swap" class="headerlink" title="3. Compare and Swap"></a>3. Compare and Swap</h3><h4 id="3-1-原理"><a href="#3-1-原理" class="headerlink" title="3.1 原理"></a>3.1 原理</h4><p>​        <code>compare and swap</code> 简称<code>CAS</code>，本质上一条原子指令，即要么执行，要么不执行，利用<code>CPU</code>底层来实现并发过程中数据不一致问题。<code>java.util.concurrent.atmoic.AtomicInteger</code>等类底层实现就采用了<code>CAS</code>，来解决并发过程中<code>i++</code>导致的数据不一致问题。实际上<code>i++</code>在被虚拟机编译后，并非一条语句，而被划分为三条指令，因此在多线程环境下会造成数据不一致。</p>
 <h4 id="3-2-带来的问题"><a href="#3-2-带来的问题" class="headerlink" title="3.2 带来的问题"></a>3.2 带来的问题</h4><p>典型的<code>ABA</code>问题。即<code>CAS</code>关注了结果正确，而忽视了过程是否正确。</p>
 <p>解决方案：原子引用。类似于<code>MySQL</code>中的时间戳。</p>
-<p>其他的，后续补充…</p>
+<h3 id="4-线程不安全类"><a href="#4-线程不安全类" class="headerlink" title="4. 线程不安全类"></a>4. 线程不安全类</h3><h4 id="4-1-ArrayList"><a href="#4-1-ArrayList" class="headerlink" title="4.1  ArrayList"></a>4.1  ArrayList</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContainerDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                list.add(random.nextInt(<span class="number">10</span>));</span><br><span class="line">                System.out.println(list);</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>会报： <code>java.util.ConcurrentModificationException</code></p>
+<ul>
+<li>解决方案<ul>
+<li><code>new Vector();</code></li>
+<li><code>Collections.synchronizedList(new ArrayList&lt;&gt;());</code></li>
+<li><code>new CopyOnWriteArrayList&lt;&gt;();</code></li>
+</ul>
+</li>
+<li>优化建议<ul>
+<li>在读多写少的时候推荐使用 <code>CopeOnWriteArrayList</code> 这个类。底层采用了<code>ReentrantLock</code>，读不加锁，<code>set/add</code>加锁处理。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContainerDemo2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String []args)</span></span>&#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        CopyOnWriteArrayList&lt;Integer&gt; list2 = <span class="keyword">new</span> CopyOnWriteArrayList&lt;&gt;();</span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                list2.add(random.nextInt(<span class="number">10</span>));</span><br><span class="line">                System.out.println(list2);</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ck6c6xbr1000t48ug3m46bn1a"
+      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ck6d2u7es000vxcug7xxwd7je"
         class="article-share-link">分享</a>
         
       
