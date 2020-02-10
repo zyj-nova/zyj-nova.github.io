@@ -62,7 +62,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">788字</span>
+            <span class="post-count">853字</span>
         </span>
     </span>
 
@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2分钟</span>
+            <span class="post-count">3分钟</span>
         </span>
     </span>
 </div>
@@ -102,24 +102,23 @@
 <p><strong>新生代收集器</strong>：Serial、ParNew、Parallel Scavenge</p>
 <p><strong>老年代收集器</strong>：CMS、Serial Old、Parallel Old</p>
 <p><strong>整堆收集器</strong>： G1</p>
-<h3 id="1-Serial-垃圾回收器"><a href="#1-Serial-垃圾回收器" class="headerlink" title="1. Serial 垃圾回收器"></a>1. Serial 垃圾回收器</h3><p>​ 串行垃圾回收器，单线程，执行垃圾回收时其他线程停止等待。</p>
-<h3 id="2-Parallel-New-垃圾回收器"><a href="#2-Parallel-New-垃圾回收器" class="headerlink" title="2. Parallel New 垃圾回收器"></a>2. Parallel New 垃圾回收器</h3><p>​ 并行垃圾回收器。相较于 Serial，多线程并行进行垃圾回收。其他线程也必须停止等待。</p>
-<h3 id="3-Parallel-Scavenge-收集器"><a href="#3-Parallel-Scavenge-收集器" class="headerlink" title="3. Parallel Scavenge 收集器"></a>3. Parallel Scavenge 收集器</h3><p>​ 与<strong>吞吐量</strong>关系密切，故也称为吞吐量优先收集器。</p>
-<p>​ <strong>特点</strong>：属于新生代收集器也是采用复制算法的收集器，又是并行的多线程收集器（与 ParNew 收集器类似）。</p>
-<h3 id="4-Parallel-Old-收集器"><a href="#4-Parallel-Old-收集器" class="headerlink" title="4. Parallel Old 收集器"></a>4. Parallel Old 收集器</h3><p>​ 是 Parallel Scavenge 收集器的老年代版本。</p>
-<p>​ <strong>特点</strong>：多线程，采用标记-整理算法。</p>
-<p>​ <strong>应用场景</strong>：注重高吞吐量以及 CPU 资源敏感的场合，都可以优先考虑 Parallel Scavenge+Parallel Old 收集器。</p>
-<h3 id="5-Serial-Old-收集器"><a href="#5-Serial-Old-收集器" class="headerlink" title="5. Serial Old 收集器"></a>5. Serial Old 收集器</h3><p>​ Serial Old 是 Serial 收集器的老年代版本。</p>
-<p>​ <strong>特点</strong>：同样是单线程收集器，采用标记-整理算法。</p>
-<h3 id="6-CMS-垃圾回收器"><a href="#6-CMS-垃圾回收器" class="headerlink" title="6. CMS 垃圾回收器"></a>6. CMS 垃圾回收器</h3><p>​ 并发垃圾回收器，在进行垃圾回收时，其余线程不必停止等待。</p>
-<p>​ <strong>CMS 收集器的运行过程分为下列 4 步：</strong></p>
-<p>​ <strong>初始标记</strong>：标记 GC Roots 能直接到的对象。速度很快但是仍存在 Stop The World 问题。</p>
-<p>​ <strong>并发标记</strong>：进行 GC Roots Tracing 的过程，找出存活对象且用户线程可并发执行。</p>
-<p>​ <strong>重新标记</strong>：为了修正并发标记期间因用户程序继续运行而导致标记产生变动的那一部分对象的标记记录。仍然存在 Stop The World 问题。</p>
-<p>​ <strong>并发清除</strong>：对标记的对象进行清除回收。</p>
-<p>​ CMS 收集器的内存回收过程是与用户线程一起并发执行的。</p>
-<p>​</p>
-<h3 id="7-G1-垃圾回收器"><a href="#7-G1-垃圾回收器" class="headerlink" title="7. G1 垃圾回收器"></a>7. G1 垃圾回收器</h3><p>一款面向服务端应用的垃圾收集器。</p>
+<h3 id="1-Serial-垃圾回收器"><a href="#1-Serial-垃圾回收器" class="headerlink" title="1. Serial 垃圾回收器"></a>1. Serial 垃圾回收器</h3><p> 串行垃圾回收器，单线程，执行垃圾回收时其他线程停止等待。</p>
+<h3 id="2-Parallel-New-垃圾回收器"><a href="#2-Parallel-New-垃圾回收器" class="headerlink" title="2. Parallel New 垃圾回收器"></a>2. Parallel New 垃圾回收器</h3><p> 并行垃圾回收器。相较于 Serial，多线程并行进行垃圾回收。其他线程也必须停止等待。</p>
+<h3 id="3-Parallel-Scavenge-收集器"><a href="#3-Parallel-Scavenge-收集器" class="headerlink" title="3. Parallel Scavenge 收集器"></a>3. Parallel Scavenge 收集器</h3><p> 与<strong>吞吐量</strong>关系密切，故也称为吞吐量优先收集器。</p>
+<p> <strong>特点</strong>：属于新生代收集器也是采用复制算法的收集器，又是并行的多线程收集器（与 ParNew 收集器类似）。</p>
+<h3 id="4-Parallel-Old-收集器"><a href="#4-Parallel-Old-收集器" class="headerlink" title="4. Parallel Old 收集器"></a>4. Parallel Old 收集器</h3><p> 是 Parallel Scavenge 收集器的老年代版本。</p>
+<p> <strong>特点</strong>：多线程，采用标记-整理算法。</p>
+<p> <strong>应用场景</strong>：注重高吞吐量以及 CPU 资源敏感的场合，都可以优先考虑 Parallel Scavenge+Parallel Old 收集器。</p>
+<h3 id="5-Serial-Old-收集器"><a href="#5-Serial-Old-收集器" class="headerlink" title="5. Serial Old 收集器"></a>5. Serial Old 收集器</h3><p> Serial Old 是 Serial 收集器的老年代版本。</p>
+<p> <strong>特点</strong>：同样是单线程收集器，采用标记-整理算法。</p>
+<h3 id="6-CMS-垃圾回收器"><a href="#6-CMS-垃圾回收器" class="headerlink" title="6. CMS 垃圾回收器"></a>6. CMS 垃圾回收器</h3><p> 并发垃圾回收器，在进行垃圾回收时，其余线程不必停止等待。</p>
+<p> <strong>CMS 收集器的运行过程分为下列 4 步：</strong></p>
+<p> <strong>初始标记</strong>：标记 GC Roots 能直接到的对象。速度很快但是仍存在 Stop The World 问题。</p>
+<p> <strong>并发标记</strong>：进行 GC Roots Tracing 的过程，找出存活对象且用户线程可并发执行。</p>
+<p> <strong>重新标记</strong>：为了修正并发标记期间因用户程序继续运行而导致标记产生变动的那一部分对象的标记记录。仍然存在 Stop The World 问题。</p>
+<p> <strong>并发清除</strong>：对标记的对象进行清除回收。</p>
+<p> CMS 收集器的内存回收过程是与用户线程一起并发执行的。</p>
+<h3 id="7-G1-垃圾回收器"><a href="#7-G1-垃圾回收器" class="headerlink" title="7. G1 垃圾回收器"></a>7. G1 垃圾回收器</h3><p>一款面向服务端应用的垃圾收集器。它把内存划分为多个不同的子区域，G1只存在逻辑上的分区，子区域可能随G1的运行在不同代期间前后切换，每个子区域大小为1-32<code>M</code>不等，最多设置<code>2048</code>个区域。</p>
 <p><strong>特点如下：</strong></p>
 <p>并行与并发：G1 能充分利用多 CPU、多核环境下的硬件优势，使用多个 CPU 来缩短 Stop-The-World 停顿时间。部分收集器原本需要停顿 Java 线程来执行 GC 动作，G1 收集器仍然可以通过并发的方式让 Java 程序继续运行。</p>
 <p>分代收集：G1 能够独自管理整个 Java 堆，并且采用不同的方式去处理新创建的对象和已经存活了一段时间、熬过多次 GC 的旧对象以获取更好的收集效果。</p>
@@ -131,7 +130,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ck6d2u7e60007xcug8u5c7kod"
+      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ck6fw28ld000818ug1it4bpk6"
         class="article-share-link">分享</a>
         
       
