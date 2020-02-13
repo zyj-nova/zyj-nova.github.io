@@ -60,6 +60,95 @@
     
     
     
+    <article id="post-Java虚拟机内存结构" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/"
+    >Java虚拟机内存结构</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" class="article-date">
+  <time datetime="2020-02-13T10:08:12.676Z" itemprop="datePublished">2020-02-13</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="Java虚拟机栈内存结构"><a href="#Java虚拟机栈内存结构" class="headerlink" title="Java虚拟机栈内存结构"></a>Java虚拟机栈内存结构</h2><p>​        主要介绍虚拟机栈的内存结构。</p>
+<h3 id="1-构成"><a href="#1-构成" class="headerlink" title="1. 构成"></a>1. 构成</h3><p>​        Java虚拟机主要由<strong>堆区、方法区、虚拟机栈、本地方法栈、程序寄存器</strong>五部分组成。其中<strong>堆区、方法区是所有线程共享</strong>的，其余区域都是线程不共享的。</p>
+<h3 id="2-虚拟机栈"><a href="#2-虚拟机栈" class="headerlink" title="2. 虚拟机栈"></a>2. 虚拟机栈</h3><p>​         虚拟机为每个新创建的线程都分配一个栈。栈以<strong>帧</strong>为单位保存线程的状态。虚拟机对栈只进行两种操作：以帧为单位的压栈和出栈操作。  </p>
+<p>​        一个线程中的方法调用链可能会很长，很多方法都同时处理执行状态。对于执行引擎来讲，活动线程中，只有虚拟机栈顶的栈帧才是有效的，称为当前栈帧 (Current Stack Frame)，这个栈帧所关联的方法称为当前方法(Current Method)。执行引用所运行的所有字节码指令都只针对当前栈帧进行操作。</p>
+<p>​        虚拟机栈主要存储<strong>栈帧</strong>（Stack Frame）这种数据结构，在栈帧内部，存储了<strong>局部变量表、操作数栈、动态链接、方法返回地址、其他附加信息</strong>等。  线程每调用一个方法就对应着 Stack 中 Stack Frame 的入栈，方法执行完毕或者异常终止对应着出栈（销毁）。 </p>
+<ul>
+<li><p>局部变量表：</p>
+<p>​        定义为一个数字数组，主要用于存储方法参数和定义在方法体内的局部变量。局部变量表中的变量是<strong>重要的<code>GC Root</code>结点</strong>，只要被局部变量表中变量直接或间接引用的对象都不会被回收。 <strong>在编译程序代码的时候就可以确定栈帧中需要多大的局部变量表，具体大小可在编译后的 Class 文件中看到</strong>。局部变量表的容量以 Variable Slot（变量槽）为最小单位，每个变量槽都可以存储 32 位长度的内存空间。 </p>
+<pre><code>     在方法执行时，虚拟机是使用局部变量表完成参数变量列表的传递过程，如果是实例方法，那么局部变量表中的0位索引的Slot默认是用于传递方法所属对象实例的引用，在方法中可以通过关键字“this”来访问这个隐含的参数，其余参数则按照参数列表的顺序来排列，占用从1开始的局部变量Slot，参数表分配 完毕后，再根据方法体内部定义的变量顺序和作用域来分配其余的Slot。
+</code></pre><p>​        局部变量表中的Slot是可重用的，方法体中定义的变量，其作用域并不一定会覆盖整个方法，如果当前字节码PC计算器的值已经超出了某个变量的作用域，那么这个变量对应的Slot就可以交给其它变量使用。 </p>
+</li>
+<li><p>操作数栈</p>
+</li>
+<li><p>动态链接</p>
+<p>​        每个栈帧都包含一个指向运行时常量池中该栈帧所属性方法的引用，持有这个引用是为了支持方法调用过程中的动态连接。在Class文件的常量池中存有大量的符号引用，字节码中的方法调用指令就以常量池中指向方法的符号引用为参数。这些符号引用一部分会在类加载阶段或第一次使用的时候转化为直接引用，这种转化 称为静态解析。另外一部分将在每一次的运行期期间转化为直接引用，这部分称为动态连接。 </p>
+</li>
+<li><p>方法返回地址</p>
+<p>​        当一个方法被执行后，有两种方式退出这个方法。第一种方式是<strong>执行引擎</strong>遇到任意一个方法返回的字节码指令，这时候可能会有返回值传递给上层的方法调用者(调用当前方法的的方法称为调用者)，是否有返回值和返回值的类型将根据遇到何种方法返回指令来决定，这种退出方法方式称为正常完成出口(Normal Method Invocation Completion)。</p>
+<p>​        另外一种退出方式是，在方法执行过程中遇到了异常，并且这个异常没有在方法体内得到处理，无论是Java虚拟机内部产生的异常，还是代码中使用 <code>throw</code>字节码指令产生的异常，只要在本方法的异常表中没有搜索到匹配的异常处理器，就会导致方法退出，这种退出方式称为异常完成出口(Abrupt Method Invocation Completion)。一个方法使用异常完成出口的方式退出，是不会给它的调用都产生任何返回值的。</p>
+<p>​        无论采用何种方式退出，在方法退出之前，都需要返回到方法被调用的位置，程序才能继续执行，方法返回时可能需要在栈帧中保存一些信息，用来帮助恢复它的上层方法的执行状态。一般来说，方法正常退出时，调用者PC计数器的值就可以作为返回地址，栈帧中很可能会保存这个计数器值。而方法异常退出时，返回地址是要通过异常处理器来确定的，栈帧中一般不会保存这部分信息。</p>
+<p>​         <strong>方法退出的过程实际上等同于把当前栈帧出栈</strong>，因此退出时可能执行的操作有：恢复上层方法的局部变量表和操作数栈，把返回值(如果有的话)压入调用都栈帧的操作数栈中，调用PC计数器的值以指向方法调用指令后面的一条指令等。 </p>
+</li>
+</ul>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" data-id="ck6kl00480012lgugg0tj3hfu"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-Pytorch 学习笔记" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -102,7 +191,7 @@
       
 
       
-      <h2 id="Pytorch-学习笔记-CPU-only"><a href="#Pytorch-学习笔记-CPU-only" class="headerlink" title="Pytorch 学习笔记(CPU only)"></a>Pytorch 学习笔记(CPU only)</h2><p> 如果想进一步了解神经网络的内部结构，建议不要使用这些深度学习框架，如果有能力和时间，建议采用<code>numpy</code>类库从底层实现一个神经网络各种操作，比如：前向传播、反向传播、梯度下降等。</p>
+      <h2 id="Pytorch-学习笔记-CPU-only"><a href="#Pytorch-学习笔记-CPU-only" class="headerlink" title="Pytorch 学习笔记(CPU only)"></a>Pytorch 学习笔记(CPU only)</h2><p>如果想进一步了解神经网络的内部结构，建议不要使用这些深度学习框架，如果有能力和时间，建议采用<code>numpy</code>类库从底层实现一个神经网络各种操作，比如：前向传播、反向传播、梯度下降等。</p>
 <h3 id="1-开始"><a href="#1-开始" class="headerlink" title="1. 开始"></a>1. 开始</h3><h4 id="1-1-构成"><a href="#1-1-构成" class="headerlink" title="1.1 构成"></a>1.1 构成</h4><p>Pytorch 是由 Facebook 于 2016 年推出的一款深度学习框架。Pytorch 主要由以下包构成：</p>
 <div class="table-container">
 <table>
@@ -140,16 +229,16 @@
 </tbody>
 </table>
 </div>
-<h4 id="1-2-Tensor"><a href="#1-2-Tensor" class="headerlink" title="1.2 Tensor"></a>1.2 Tensor</h4><p> <code>tensor</code>（张量）是<code>Pytorch</code>中基本的数据结构。一维向量、二维矩阵、三维矩阵等都可以视为张量。</p>
+<h4 id="1-2-Tensor"><a href="#1-2-Tensor" class="headerlink" title="1.2 Tensor"></a>1.2 Tensor</h4><p><code>tensor</code>（张量）是<code>Pytorch</code>中基本的数据结构。一维向量、二维矩阵、三维矩阵等都可以视为张量。</p>
 <p><strong>tensor 就是一个高维矩阵</strong>。</p>
 <p>在<code>Pytorch</code>中封装了<code>torch.Tensor</code>这个类，创建的<code>tensor</code>都是这个类的实例。在<code>torch</code>中，有四种方式创建一个<code>tensor</code>。</p>
-<p> 1.<code>torch.Tensor(data)</code></p>
-<p> 2.<code>torch.tensor(data)</code>(<strong>推荐</strong>)</p>
-<p> 3.<code>torch.as_tensor(data)</code></p>
-<p> 4.<code>torch.from_numpy(data)</code></p>
+<p>1.<code>torch.Tensor(data)</code></p>
+<p>2.<code>torch.tensor(data)</code>(<strong>推荐</strong>)</p>
+<p>3.<code>torch.as_tensor(data)</code></p>
+<p>4.<code>torch.from_numpy(data)</code></p>
 <p>传入的<code>data</code>可以是<code>python</code>中的<code>array</code>、<code>list</code>，或者<code>numpy</code>中的<code>ndarray</code>。 可以用 python 的索引和切片来获取和修改一个张量 tensor 中的内容。</p>
 <p><strong>tensor 的属性</strong>：</p>
-<p> <code>dtype</code>：torch 中共有七种 CPU tensor 类型和八种 GPU tensor 类型。</p>
+<p><code>dtype</code>：torch 中共有七种 CPU tensor 类型和八种 GPU tensor 类型。</p>
 <div class="table-container">
 <table>
 <thead>
@@ -203,7 +292,7 @@
 </tbody>
 </table>
 </div>
-<p> <code>shape</code>：返回<code>tensor</code>的维度，注：<code>size()</code>方法结果相同。</p>
+<p><code>shape</code>：返回<code>tensor</code>的维度，注：<code>size()</code>方法结果相同。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">data = np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">&gt; type(data)</span><br><span class="line">numpy.ndarray</span><br><span class="line"></span><br><span class="line">&gt; o1 = torch.Tensor(data)</span><br><span class="line">&gt; o2 = torch.tensor(data)</span><br><span class="line">&gt; o3 = torch.as_tensor(data)</span><br><span class="line">&gt; o4 = torch.from_numpy(data)</span><br><span class="line"></span><br><span class="line">&gt; print(o1)</span><br><span class="line">&gt; print(o2)</span><br><span class="line">&gt; print(o3)</span><br><span class="line">&gt; print(o4)</span><br><span class="line">tensor([<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>])</span><br><span class="line">tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], dtype=torch.int32)</span><br><span class="line">tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], dtype=torch.int32)</span><br><span class="line">tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], dtype=torch.int32)</span><br><span class="line"></span><br><span class="line">&gt; data2 = np.random.randint(<span class="number">1</span>,<span class="number">10</span>,(<span class="number">3</span>,<span class="number">3</span>))<span class="comment">#创建一个大小为3*3,初始值为1-10之间的矩阵</span></span><br><span class="line">&gt; o5 = torch.tensor(data2)</span><br><span class="line">&gt; print(o5)</span><br><span class="line">tensor([[<span class="number">5</span>, <span class="number">1</span>, <span class="number">9</span>],</span><br><span class="line">        [<span class="number">7</span>, <span class="number">3</span>, <span class="number">2</span>],</span><br><span class="line">        [<span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>]], dtype=torch.int32)</span><br><span class="line">&gt; o5[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">tensor(<span class="number">5</span>, dtype=torch.int32)</span><br><span class="line">&gt; o5.shape</span><br><span class="line">torch.Size([<span class="number">3</span>, <span class="number">3</span>])</span><br><span class="line"><span class="comment"># 转为numpy数组</span></span><br><span class="line">&gt; o5.numpy()</span><br><span class="line">array([[<span class="number">5</span>, <span class="number">1</span>, <span class="number">9</span>],</span><br><span class="line">       [<span class="number">7</span>, <span class="number">3</span>, <span class="number">2</span>],</span><br><span class="line">       [<span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br></pre></td></tr></table></figure>
 <p>创建 tensor 的其他方式：</p>
 <ol>
@@ -256,16 +345,15 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; t1 = np.linspace(-10,10,100)</span><br><span class="line">&gt; t1_ = torch.tensor(t1)</span><br><span class="line">&gt; t1_.dtype</span><br><span class="line">torch.float64</span><br><span class="line"></span><br><span class="line">t1_ = t1_.type_as(torch.FloatTensor())</span><br><span class="line">&gt; t1_.dtype</span><br><span class="line">torch.float32</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h4 id="1-4-tensor-的广播以及-reduction-操作"><a href="#1-4-tensor-的广播以及-reduction-操作" class="headerlink" title="1.4 tensor 的广播以及 reduction 操作"></a>1.4 tensor 的广播以及 reduction 操作</h4><p> 和<code>numpy</code>类似，tensor 也可以进行每一列/行求均值(<code>mean</code>)、<code>max</code>、<code>argmax</code>、<code>sum</code>、<code>std</code>等操作。</p>
+<h4 id="1-4-tensor-的广播以及-reduction-操作"><a href="#1-4-tensor-的广播以及-reduction-操作" class="headerlink" title="1.4 tensor 的广播以及 reduction 操作"></a>1.4 tensor 的广播以及 reduction 操作</h4><p>和<code>numpy</code>类似，tensor 也可以进行每一列/行求均值(<code>mean</code>)、<code>max</code>、<code>argmax</code>、<code>sum</code>、<code>std</code>等操作。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&gt; t = torch.tensor([</span><br><span class="line">    [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],</span><br><span class="line">    [<span class="number">2</span>,<span class="number">0</span>,<span class="number">2</span>],</span><br><span class="line">    [<span class="number">0</span>,<span class="number">3</span>,<span class="number">0</span>]</span><br><span class="line">], dtype=torch.float32)</span><br><span class="line">&gt; t.sum()</span><br><span class="line">tensor(<span class="number">8.</span>)</span><br><span class="line">&gt; t.numel()</span><br><span class="line"><span class="number">9</span></span><br><span class="line"></span><br><span class="line">&gt; t.sum().numel()</span><br><span class="line"><span class="number">1</span></span><br><span class="line">&gt; t.prod()</span><br><span class="line">tensor(<span class="number">0.</span>)</span><br><span class="line">&gt; t.mean() <span class="comment">#求所有数值的均值</span></span><br><span class="line">tensor(<span class="number">.8889</span>)</span><br><span class="line"></span><br><span class="line">&gt; t.mean(axis=<span class="number">1</span>) <span class="comment">#求每一行的均值</span></span><br><span class="line">tensor([<span class="number">0.3333</span>, <span class="number">1.3333</span>, <span class="number">1.0000</span>])</span><br><span class="line"></span><br><span class="line">&gt; t.argmax(axis=<span class="number">0</span>) <span class="comment">#求每一列最大值的索引</span></span><br><span class="line">tensor([<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">&gt; t.mean().item() <span class="comment">#将得到的tensor最终转为数值，只包含一个元素的tensor才可以有这个操作</span></span><br><span class="line"><span class="number">8.0</span></span><br><span class="line"></span><br><span class="line">&gt; t.argmax(dim = <span class="number">0</span>).tolist()</span><br><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
-<h4 id="1-5-数据集的加载"><a href="#1-5-数据集的加载" class="headerlink" title="1.5 数据集的加载"></a>1.5 数据集的加载</h4><p> 通常数据要经过以下处理：</p>
+<h4 id="1-5-数据集的加载"><a href="#1-5-数据集的加载" class="headerlink" title="1.5 数据集的加载"></a>1.5 数据集的加载</h4><p>通常数据要经过以下处理：</p>
 <ul>
 <li>Extract data from a data source.</li>
 <li>Transform data into a desirable format.</li>
-<li><p>Load data into a suitable structure.</p>
-<p>数据集的加载通常用到<code>torchvision</code>这个包。下面以<code>FASHIONMNIST</code>数据集为例，介绍如何导入。<code>FASHIONMNIST</code>是 $Zalando$ 公司制作的类似<code>MINST</code>的数据集，该数据集包含了各类衣服共 10 个类别，每个类别的训练集有 6000 张图片，用于检测模型图像分类的性能。</p>
-</li>
+<li>Load data into a suitable structure.</li>
 </ul>
+<p>数据集的加载通常用到<code>torchvision</code>这个包。下面以<code>FASHIONMNIST</code>数据集为例，介绍如何导入。<code>FASHIONMNIST</code>是 $Zalando$ 公司制作的类似<code>MINST</code>的数据集，该数据集包含了各类衣服共 10 个类别，每个类别的训练集有 6000 张图片，用于检测模型图像分类的性能。</p>
 <h4 id="1-6-实现一个线性回归"><a href="#1-6-实现一个线性回归" class="headerlink" title="1.6 实现一个线性回归"></a>1.6 实现一个线性回归</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义模型</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinearRegression</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.linear = nn.Linear(in_features=<span class="number">1</span>,out_features=<span class="number">1</span>,bias=<span class="literal">True</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self,x)</span>:</span></span><br><span class="line">        x = x</span><br><span class="line">        out = self.linear(x)</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line">x = torch.unsqueeze(torch.linspace(<span class="number">-1</span>, <span class="number">1</span>, <span class="number">100</span>), dim=<span class="number">1</span>)</span><br><span class="line">y = <span class="number">3</span>*x + <span class="number">5</span> + torch.rand(x.size())</span><br><span class="line"></span><br><span class="line">model = LinearRegression()</span><br><span class="line"><span class="comment"># 选定loss函数</span></span><br><span class="line">loss = nn.MSELoss()</span><br><span class="line"><span class="comment"># 定义优化函数 ，梯度下降</span></span><br><span class="line">optimizer = torch.optim.SGD(model.parameters(), lr=<span class="number">1e-2</span>)</span><br><span class="line"><span class="comment"># 开始训练</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    out = model(x)</span><br><span class="line">    ls = loss(out,y)</span><br><span class="line">    optimizer.zero_grad()</span><br><span class="line">    ls.backward()</span><br><span class="line">    optimizer.step()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"loss:"</span> + str(ls.item()))</span><br><span class="line"><span class="comment">#检验模型</span></span><br><span class="line">preds = model(x)</span><br><span class="line">plt.plot(x.numpy(), y.numpy(), <span class="string">'ro'</span>, label=<span class="string">'Original Data'</span>)</span><br><span class="line">plt.plot(x.numpy(), preds.data.numpy(), label=<span class="string">'Fitting Line'</span>)</span><br><span class="line"></span><br><span class="line">print(model.linear.weight,model.linear.bias)</span><br><span class="line">输出如下:</span><br><span class="line">Parameter containing:</span><br><span class="line">tensor([[<span class="number">3.0281</span>]], requires_grad=<span class="literal">True</span>)</span><br><span class="line">Parameter containing:</span><br><span class="line">tensor([<span class="number">5.4789</span>], requires_grad=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
 <p><img src="/images/linearRegress.png" alt=""></p>
 <h2 id="2-构造一个卷积神经网络"><a href="#2-构造一个卷积神经网络" class="headerlink" title="2. 构造一个卷积神经网络"></a>2. 构造一个卷积神经网络</h2><h4 id="2-1-模型构建"><a href="#2-1-模型构建" class="headerlink" title="2.1 模型构建"></a>2.1 模型构建</h4><p>在<code>pytorch</code>中，我们构建的模型都继承自<code>torch.nn.Module</code>这个类，并且要重写其<code>forward</code>方法。</p>
@@ -315,47 +403,46 @@ M = \frac{N-f}{s} + 1</script><h4 id="2-2-训练你的模型"><a href="#2-2-训�
 
 <center>conv2后第6通道的feature</center>
 
-
-<h4 id="2-3-记点其他的知识"><a href="#2-3-记点其他的知识" class="headerlink" title="2.3 记点其他的知识"></a>2.3 记点其他的知识</h4><h5 id="2-3-1-Batch-Normalization"><a href="#2-3-1-Batch-Normalization" class="headerlink" title="2.3.1 Batch Normalization"></a>2.3.1 Batch Normalization</h5><p>​        在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。[ <a href="https://pytorch.org/docs/stable/nn.html#batchnorm2d" target="_blank" rel="noopener">https://pytorch.org/docs/stable/nn.html#batchnorm2d</a> ]</p>
-<p>​        <strong>提出原因</strong>：解决梯度消失问题， 加速训练收敛过程 。</p>
-<p>​        <strong>原理</strong>：将隐层的输入分布变为均值为 $0$ ，方差为 $1$ 的正态分布。</p>
-<p>​        设$X = \{x_1,x_2,…,x_m\}$表示$X$的维度。$m$ 代表 $batch-size$. </p>
+<h4 id="2-3-记点其他的知识"><a href="#2-3-记点其他的知识" class="headerlink" title="2.3 记点其他的知识"></a>2.3 记点其他的知识</h4><h5 id="2-3-1-Batch-Normalization"><a href="#2-3-1-Batch-Normalization" class="headerlink" title="2.3.1 Batch Normalization"></a>2.3.1 Batch Normalization</h5><p>​ 在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。[ <a href="https://pytorch.org/docs/stable/nn.html#batchnorm2d" target="_blank" rel="noopener">https://pytorch.org/docs/stable/nn.html#batchnorm2d</a> ]</p>
+<p>​ <strong>提出原因</strong>：解决梯度消失问题， 加速训练收敛过程 。</p>
+<p>​ <strong>原理</strong>：将隐层的输入分布变为均值为 $0$ ，方差为 $1$ 的正态分布。</p>
+<p>​ 设$X = \{x_1,x_2,…,x_m\}$表示$X$的维度。$m$ 代表 $batch-size$.</p>
 <script type="math/tex; mode=display">
-x = Wu + b</script><p>​        计算样本每个维度均值：</p>
+x = Wu + b</script><p>​ 计算样本每个维度均值：</p>
 <script type="math/tex; mode=display">
-\mu_B = \frac{1}{m} \sum_{i = 1}^{m} x_i</script><p>​        计算样本每个维度的方差：</p>
+\mu_B = \frac{1}{m} \sum_{i = 1}^{m} x_i</script><p>​ 计算样本每个维度的方差：</p>
 <script type="math/tex; mode=display">
 \sigma_B^2 = \frac{1}{m} \sum_{i = 1}^{m} (x_i - \mu_B)^2</script><script type="math/tex; mode=display">
 \hat x_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}</script><script type="math/tex; mode=display">
-y_i = \gamma\hat x_i + \beta = BN_{\gamma,\beta}(x_i)</script><p>​        其中，$\gamma$、$\beta$ 是通过学习得到的。</p>
-<p>​        <strong>如何操作</strong>：即将<code>input</code>与<code>weight matrix</code>相乘后，再作为激活函数的输入。在<code>CNN</code>中，是做完卷积操作后，激活函数之前。在训练时，均值、方差都是训练时<code>batch</code>的统计数据，可以记下然后做加权平均得到测试时使用的均值和方差，在测试时使用。</p>
+y_i = \gamma\hat x_i + \beta = BN_{\gamma,\beta}(x_i)</script><p>​ 其中，$\gamma$、$\beta$ 是通过学习得到的。</p>
+<p>​ <strong>如何操作</strong>：即将<code>input</code>与<code>weight matrix</code>相乘后，再作为激活函数的输入。在<code>CNN</code>中，是做完卷积操作后，激活函数之前。在训练时，均值、方差都是训练时<code>batch</code>的统计数据，可以记下然后做加权平均得到测试时使用的均值和方差，在测试时使用。</p>
 <p><img src="https://img-blog.csdn.net/20160522210927345" alt=""></p>
 <center>全连接层，bn层的位置</center>
 
 <p><img src="https://images2018.cnblogs.com/blog/1182370/201808/1182370-20180827170732674-1953691984.png" style="zoom:70%;" /></p>
 <center>一般卷积操作中，bn层的位置</center>
 
-<p>​        <strong>进一步的理解</strong>：</p>
-<p>​        在原论文<code>3.2</code>节，作者提到 $BN$ 通常加入到<strong>非线性单元（激活函数）之前</strong>，对 $Wu + b$ 进行<code>normalizing</code>，而不是 $u$，作者是这样解释的：$u$ 可能是上一个非线性单元的输出，非线性单元的输出分布形状会在训练过程中变化，归一化无法消除他的方差偏移。</p>
-<p>​        而对于 $Wu+b$ （线性变换，卷积操作也是线性变换）这种变换的输出一般是一个对称，非稀疏的一个分布，更加类似高斯分布，对他们进行归一化会产生更加稳定的分布。 </p>
-<p>​        看一下 $W u + b$ 经过$BN$后，参数 $b$ 的变化：</p>
+<p>​ <strong>进一步的理解</strong>：</p>
+<p>​ 在原论文<code>3.2</code>节，作者提到 $BN$ 通常加入到<strong>非线性单元（激活函数）之前</strong>，对 $Wu + b$ 进行<code>normalizing</code>，而不是 $u$，作者是这样解释的：$u$ 可能是上一个非线性单元的输出，非线性单元的输出分布形状会在训练过程中变化，归一化无法消除他的方差偏移。</p>
+<p>​ 而对于 $Wu+b$ （线性变换，卷积操作也是线性变换）这种变换的输出一般是一个对称，非稀疏的一个分布，更加类似高斯分布，对他们进行归一化会产生更加稳定的分布。</p>
+<p>​ 看一下 $W u + b$ 经过$BN$后，参数 $b$ 的变化：</p>
 <script type="math/tex; mode=display">
 \mu = \frac{1}{m} \sum_{i = 1}^{m} Wu_i + b = \frac{1}{m}\sum_{i=1}^{m}Wu_i + \frac{bm}{m}</script><script type="math/tex; mode=display">
-\hat x_i = \frac{Wu_i + b- \mu}{\sqrt{\sigma^2 + \epsilon}} = \frac{Wu_i - \frac{1}{m}\sum_{i=1}^{m}Wu_i}{\sqrt{\sigma^2 + \epsilon}}</script><p>​        可以看到参数$b$最后被消掉了，可有可无。因此可以表示为：</p>
+\hat x_i = \frac{Wu_i + b- \mu}{\sqrt{\sigma^2 + \epsilon}} = \frac{Wu_i - \frac{1}{m}\sum_{i=1}^{m}Wu_i}{\sqrt{\sigma^2 + \epsilon}}</script><p>​ 可以看到参数$b$最后被消掉了，可有可无。因此可以表示为：</p>
 <script type="math/tex; mode=display">
-z = g(BN(Wu + b)) \rightarrow z = g(BN(Wu))</script><p>​        <strong>We could have also normalized the layer inputs u, but since u is likely the output of another nonlinearity, the shape of its distribution is likely to change during training, and constraining<br>its first and second moments would not eliminate the co-variate shift.</strong></p>
-<p>​        <strong>In contrast, Wu + b is more likely to have a symmetric, non-sparse distribution, that is “more Gaussian”; normalizing it is likely to produce activations with a stable distribution.</strong></p>
-<p>​        <strong>经过卷积后怎么BN</strong></p>
-<p>​        通常经过卷积操作后，会产生多个<code>channel</code>。将每个<code>channel</code>视为一个维度，统计<code>channel</code>内所有样本的均值和方差，这样每个<code>channel</code>对应一对参数$\gamma,\beta$。比如：<code>[batch_size,channel,width,height]</code>，每个<code>channel</code>内，<code>batch_size * width * height</code>的均值和方差。</p>
-<h5 id="2-3-2-Dropout"><a href="#2-3-2-Dropout" class="headerlink" title="2.3.2 Dropout"></a>2.3.2 Dropout</h5><p>​        在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。</p>
-<p>​        <strong>提出原因</strong>：解决过拟合问题。</p>
+z = g(BN(Wu + b)) \rightarrow z = g(BN(Wu))</script><p>​ <strong>We could have also normalized the layer inputs u, but since u is likely the output of another nonlinearity, the shape of its distribution is likely to change during training, and constraining<br>its first and second moments would not eliminate the co-variate shift.</strong></p>
+<p>​ <strong>In contrast, Wu + b is more likely to have a symmetric, non-sparse distribution, that is “more Gaussian”; normalizing it is likely to produce activations with a stable distribution.</strong></p>
+<p>​ <strong>经过卷积后怎么 BN</strong></p>
+<p>​ 通常经过卷积操作后，会产生多个<code>channel</code>。将每个<code>channel</code>视为一个维度，统计<code>channel</code>内所有样本的均值和方差，这样每个<code>channel</code>对应一对参数$\gamma,\beta$。比如：<code>[batch_size,channel,width,height]</code>，每个<code>channel</code>内，<code>batch_size * width * height</code>的均值和方差。</p>
+<h5 id="2-3-2-Dropout"><a href="#2-3-2-Dropout" class="headerlink" title="2.3.2 Dropout"></a>2.3.2 Dropout</h5><p>​ 在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。</p>
+<p>​ <strong>提出原因</strong>：解决过拟合问题。</p>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck6jh02rb000wsgugai2o1w1i"
+      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck6kl003z000zlgug9ji21k5x"
         class="article-share-link">分享</a>
         
       
@@ -506,7 +593,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ck6jh02q4000jsgugc6iwezsp"
+      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ck6kl0033000klgughvk305mo"
         class="article-share-link">分享</a>
         
       
@@ -780,7 +867,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ck6jh02rs000zsgugd13n0ukw"
+      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ck6kl003w000ylgug6gccabth"
         class="article-share-link">分享</a>
         
       
@@ -892,7 +979,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ck6jh02p90002sgugeuxggrpb"
+      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ck6kkzzzv0000lgugejep9z1i"
         class="article-share-link">分享</a>
         
       
@@ -1003,7 +1090,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ck6jh02r9000vsguga6gp5ycw"
+      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ck6kl003p000wlgugdll28u48"
         class="article-share-link">分享</a>
         
       
@@ -1084,7 +1171,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ck6jh02q0000isgug7mjr1y0v"
+      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ck6kl001v0009lgug4d45fymt"
         class="article-share-link">分享</a>
         
       
@@ -1177,7 +1264,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ck6jh02pt000dsguggpgme6r3"
+      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ck6kl001d0005lgugarqc6w9k"
         class="article-share-link">分享</a>
         
       
@@ -1257,7 +1344,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="ck6jh02qq000tsgug7rkv0dua"
+      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="ck6kl002v000hlgughjwn9ib8"
         class="article-share-link">分享</a>
         
       
@@ -1329,82 +1416,12 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" data-id="ck6jh02ot0000sgug28cngh5c"
+      <a data-url="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" data-id="ck6kl002s000glgug91697gf6"
         class="article-share-link">分享</a>
         
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CV/" rel="tag">CV</a></li></ul>
 
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-PCA-StepByStep" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/11/10/PCA-StepByStep/"
-    >How to Implements PCA and SVD</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/11/10/PCA-StepByStep/" class="article-date">
-  <time datetime="2019-11-10T11:55:25.000Z" itemprop="datePublished">2019-11-10</time>
-</a>
-      
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h3 id="How-to-Implements-PCA"><a href="#How-to-Implements-PCA" class="headerlink" title="How to Implements PCA"></a>How to Implements PCA</h3><p>Step by Step​​<br>​​<img src="https://img-blog.csdnimg.cn/20191109182949751.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
-<p><img src="https://img-blog.csdnimg.cn/20191109191048929.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def my_pca(X, k):</span><br><span class="line">    #X 行：样本量，列：样本维度</span><br><span class="line">    #函数默认对每一列进行demean处理</span><br><span class="line">    cov = np.cov(X,rowvar=0)</span><br><span class="line">    mean = np.mean(X,axis = 0)</span><br><span class="line">    X_ = X - mean</span><br><span class="line">    #求协方差矩阵的特征向量</span><br><span class="line">    eigenvalue, eigenfuture = np.linalg.eig(cov)</span><br><span class="line">    #选取前k个特征向量 n * k</span><br><span class="line">    eigenselect = eigenfuture[:,:k]</span><br><span class="line">    return np.dot(X_, eigenselect), eigenfuture</span><br></pre></td></tr></table></figure>
-<h3 id="The-relationship-between-PCA-and-SVD"><a href="#The-relationship-between-PCA-and-SVD" class="headerlink" title="The relationship between PCA and SVD"></a>The relationship between PCA and SVD</h3><p>We can use <strong>SVD</strong> to perform <strong>PCA</strong>.</p>
-<ol>
-<li>sklearn 中的 PCA 在大规模运算时采用了 SVD 的方式进行降维处理</li>
-</ol>
-<p><img src="/images/svd.png" alt="img"></p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/10/PCA-StepByStep/" data-id="ck6jh02pi0008sgug4047hft4"
-        class="article-share-link">分享</a>
-        
-      
     </footer>
 
   </div>
