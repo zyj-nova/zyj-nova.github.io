@@ -131,7 +131,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" data-id="ck6kl00480012lgugg0tj3hfu"
+      <a data-url="http://yoursite.com/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" data-id="ck6kweqfl0006y8ug81218wra"
         class="article-share-link">分享</a>
         
       
@@ -356,7 +356,7 @@
 <p>数据集的加载通常用到<code>torchvision</code>这个包。下面以<code>FASHIONMNIST</code>数据集为例，介绍如何导入。<code>FASHIONMNIST</code>是 $Zalando$ 公司制作的类似<code>MINST</code>的数据集，该数据集包含了各类衣服共 10 个类别，每个类别的训练集有 6000 张图片，用于检测模型图像分类的性能。</p>
 <h4 id="1-6-实现一个线性回归"><a href="#1-6-实现一个线性回归" class="headerlink" title="1.6 实现一个线性回归"></a>1.6 实现一个线性回归</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义模型</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinearRegression</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.linear = nn.Linear(in_features=<span class="number">1</span>,out_features=<span class="number">1</span>,bias=<span class="literal">True</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self,x)</span>:</span></span><br><span class="line">        x = x</span><br><span class="line">        out = self.linear(x)</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line">x = torch.unsqueeze(torch.linspace(<span class="number">-1</span>, <span class="number">1</span>, <span class="number">100</span>), dim=<span class="number">1</span>)</span><br><span class="line">y = <span class="number">3</span>*x + <span class="number">5</span> + torch.rand(x.size())</span><br><span class="line"></span><br><span class="line">model = LinearRegression()</span><br><span class="line"><span class="comment"># 选定loss函数</span></span><br><span class="line">loss = nn.MSELoss()</span><br><span class="line"><span class="comment"># 定义优化函数 ，梯度下降</span></span><br><span class="line">optimizer = torch.optim.SGD(model.parameters(), lr=<span class="number">1e-2</span>)</span><br><span class="line"><span class="comment"># 开始训练</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    out = model(x)</span><br><span class="line">    ls = loss(out,y)</span><br><span class="line">    optimizer.zero_grad()</span><br><span class="line">    ls.backward()</span><br><span class="line">    optimizer.step()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"loss:"</span> + str(ls.item()))</span><br><span class="line"><span class="comment">#检验模型</span></span><br><span class="line">preds = model(x)</span><br><span class="line">plt.plot(x.numpy(), y.numpy(), <span class="string">'ro'</span>, label=<span class="string">'Original Data'</span>)</span><br><span class="line">plt.plot(x.numpy(), preds.data.numpy(), label=<span class="string">'Fitting Line'</span>)</span><br><span class="line"></span><br><span class="line">print(model.linear.weight,model.linear.bias)</span><br><span class="line">输出如下:</span><br><span class="line">Parameter containing:</span><br><span class="line">tensor([[<span class="number">3.0281</span>]], requires_grad=<span class="literal">True</span>)</span><br><span class="line">Parameter containing:</span><br><span class="line">tensor([<span class="number">5.4789</span>], requires_grad=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
 <p><img src="/images/linearRegress.png" alt=""></p>
-<h2 id="2-构造一个卷积神经网络"><a href="#2-构造一个卷积神经网络" class="headerlink" title="2. 构造一个卷积神经网络"></a>2. 构造一个卷积神经网络</h2><h4 id="2-1-模型构建"><a href="#2-1-模型构建" class="headerlink" title="2.1 模型构建"></a>2.1 模型构建</h4><p>在<code>pytorch</code>中，我们构建的模型都继承自<code>torch.nn.Module</code>这个类，并且要重写其<code>forward</code>方法。</p>
+<h3 id="2-构造一个卷积神经网络"><a href="#2-构造一个卷积神经网络" class="headerlink" title="2. 构造一个卷积神经网络"></a>2. 构造一个卷积神经网络</h3><h4 id="2-1-模型构建"><a href="#2-1-模型构建" class="headerlink" title="2.1 模型构建"></a>2.1 模型构建</h4><p>在<code>pytorch</code>中，我们构建的模型都继承自<code>torch.nn.Module</code>这个类，并且要重写其<code>forward</code>方法。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Network</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.conv1 = nn.Conv2d(in_channels=<span class="number">1</span>, out_channels=<span class="number">6</span>, kernel_size=<span class="number">5</span>)</span><br><span class="line">        self.conv2 = nn.Conv2d(in_channels=<span class="number">6</span>, out_channels=<span class="number">12</span>, kernel_size=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">        self.fc1 = nn.Linear(in_features=<span class="number">12</span> * <span class="number">4</span> * <span class="number">4</span>, out_features=<span class="number">120</span>)</span><br><span class="line">        self.fc2 = nn.Linear(in_features=<span class="number">120</span>, out_features=<span class="number">60</span>)</span><br><span class="line">        self.out = nn.Linear(in_features=<span class="number">60</span>, out_features=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, t)</span>:</span></span><br><span class="line">        <span class="comment"># implement the forward pass</span></span><br><span class="line">        <span class="comment"># (1) input layer</span></span><br><span class="line">		t = t</span><br><span class="line">        <span class="comment"># (2) hidden conv layer</span></span><br><span class="line">        t = self.conv1(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line">        t = F.max_pool2d(t, kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (3) hidden conv layer</span></span><br><span class="line">        t = self.conv2(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line">        t = F.max_pool2d(t, kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (4) hidden linear layer</span></span><br><span class="line">        t = t.reshape(<span class="number">-1</span>, <span class="number">12</span> * <span class="number">4</span> * <span class="number">4</span>)</span><br><span class="line">        t = self.fc1(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (5) hidden linear layer</span></span><br><span class="line">        t = self.fc2(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (6) output layer</span></span><br><span class="line">        t = self.out(t)</span><br><span class="line">        <span class="comment">#t = F.softmax(t, dim=1)</span></span><br><span class="line">        <span class="keyword">return</span> t</span><br><span class="line"></span><br><span class="line">&gt; network = Network()</span><br><span class="line">&gt; print(network)</span><br><span class="line">Network(</span><br><span class="line">  (conv1): Conv2d(<span class="number">1</span>, <span class="number">6</span>, kernel_size=(<span class="number">5</span>, <span class="number">5</span>), stride=(<span class="number">1</span>, <span class="number">1</span>))</span><br><span class="line">  (conv2): Conv2d(<span class="number">6</span>, <span class="number">12</span>, kernel_size=(<span class="number">5</span>, <span class="number">5</span>), stride=(<span class="number">1</span>, <span class="number">1</span>))</span><br><span class="line">  (fc1): Linear(in_features=<span class="number">192</span>, out_features=<span class="number">120</span>, bias=<span class="literal">True</span>)</span><br><span class="line">  (fc2): Linear(in_features=<span class="number">120</span>, out_features=<span class="number">60</span>, bias=<span class="literal">True</span>)</span><br><span class="line">  (out): Linear(in_features=<span class="number">60</span>, out_features=<span class="number">10</span>, bias=<span class="literal">True</span>)</span><br><span class="line">)</span><br><span class="line">&gt; network.conv1.weight.shape <span class="comment"># [channels,kernel_nums, kernel_size,kernel_size]</span></span><br><span class="line">torch.Size([<span class="number">6</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">5</span>])</span><br><span class="line">&gt; network.conv2.weight.shape</span><br><span class="line">torch.Size([<span class="number">12</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">5</span>])</span><br></pre></td></tr></table></figure>
 <p>总的来说，要经过 3 个步骤：</p>
 <ol>
@@ -399,50 +399,72 @@ M = \frac{N-f}{s} + 1</script><h4 id="2-2-训练你的模型"><a href="#2-2-训�
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">sets = iter(train_loader)</span><br><span class="line">batch = next(sets)</span><br><span class="line">images,labels = batch</span><br><span class="line">input = images[<span class="number">0</span>].unsqueeze(<span class="number">0</span>) <span class="comment">#[1, 1, 28, 28] 升维，增加一个维度 batch</span></span><br><span class="line">network = Network()</span><br><span class="line">feature1 = network.conv1(input)</span><br><span class="line">feature2 = network.conv2(feature1)</span><br><span class="line">feature1_ = feature1.squeeze() <span class="comment">#[6,24,24]</span></span><br><span class="line">feature2_ = feature2.squeeze() <span class="comment">#[12,20,20]</span></span><br><span class="line"></span><br><span class="line">ch1 = feature1_[<span class="number">5</span>]</span><br><span class="line">ch1_ = ch1.data.numpy()</span><br><span class="line">ch2 = feature2_[<span class="number">5</span>]</span><br><span class="line">ch2_ = ch2.data.numpy()</span><br><span class="line"></span><br><span class="line">plt.imshow(ch1_)</span><br><span class="line">plt.show()</span><br><span class="line">plt.imshow(ch2_)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 <p><img src="/images/f1_6.png" alt=""></p>
 <center>conv1后第6通道的feature</center>
-![](/images/f2_6.png)
 
+<p><img src="/images/f2_6.png" alt=""></p>
 <center>conv2后第6通道的feature</center>
 
-<h4 id="2-3-记点其他的知识"><a href="#2-3-记点其他的知识" class="headerlink" title="2.3 记点其他的知识"></a>2.3 记点其他的知识</h4><h5 id="2-3-1-Batch-Normalization"><a href="#2-3-1-Batch-Normalization" class="headerlink" title="2.3.1 Batch Normalization"></a>2.3.1 Batch Normalization</h5><p>​ 在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。[ <a href="https://pytorch.org/docs/stable/nn.html#batchnorm2d" target="_blank" rel="noopener">https://pytorch.org/docs/stable/nn.html#batchnorm2d</a> ]</p>
-<p>​ <strong>提出原因</strong>：解决梯度消失问题， 加速训练收敛过程 。</p>
-<p>​ <strong>原理</strong>：将隐层的输入分布变为均值为 $0$ ，方差为 $1$ 的正态分布。</p>
-<p>​ 设$X = \{x_1,x_2,…,x_m\}$表示$X$的维度。$m$ 代表 $batch-size$.</p>
+<h4 id="2-3-记点其他的知识"><a href="#2-3-记点其他的知识" class="headerlink" title="2.3 记点其他的知识"></a>2.3 记点其他的知识</h4><h5 id="2-3-1-Batch-Normalization"><a href="#2-3-1-Batch-Normalization" class="headerlink" title="2.3.1 Batch Normalization"></a>2.3.1 Batch Normalization</h5><p>在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。[ <a href="https://pytorch.org/docs/stable/nn.html#batchnorm2d" target="_blank" rel="noopener">https://pytorch.org/docs/stable/nn.html#batchnorm2d</a> ]</p>
+<p><strong>提出原因</strong>：解决梯度消失问题， 加速训练收敛过程 。</p>
+<p><strong>原理</strong>：将隐层的输入分布变为均值为 $0$ ，方差为 $1$ 的正态分布。</p>
+<p>设$X = \{x_1,x_2,…,x_m\}$表示$X$的维度。$m$ 代表 $batch-size$.</p>
 <script type="math/tex; mode=display">
-x = Wu + b</script><p>​ 计算样本每个维度均值：</p>
+x = Wu + b</script><p>计算样本每个维度均值：</p>
 <script type="math/tex; mode=display">
-\mu_B = \frac{1}{m} \sum_{i = 1}^{m} x_i</script><p>​ 计算样本每个维度的方差：</p>
+\mu_B = \frac{1}{m} \sum_{i = 1}^{m} x_i</script><p>计算样本每个维度的方差：</p>
 <script type="math/tex; mode=display">
 \sigma_B^2 = \frac{1}{m} \sum_{i = 1}^{m} (x_i - \mu_B)^2</script><script type="math/tex; mode=display">
 \hat x_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}</script><script type="math/tex; mode=display">
-y_i = \gamma\hat x_i + \beta = BN_{\gamma,\beta}(x_i)</script><p>​ 其中，$\gamma$、$\beta$ 是通过学习得到的。</p>
-<p>​ <strong>如何操作</strong>：即将<code>input</code>与<code>weight matrix</code>相乘后，再作为激活函数的输入。在<code>CNN</code>中，是做完卷积操作后，激活函数之前。在训练时，均值、方差都是训练时<code>batch</code>的统计数据，可以记下然后做加权平均得到测试时使用的均值和方差，在测试时使用。</p>
+y_i = \gamma\hat x_i + \beta = BN_{\gamma,\beta}(x_i)</script><p>其中，$\gamma$、$\beta$ 是通过学习得到的。</p>
+<p><strong>如何操作</strong>：即将<code>input</code>与<code>weight matrix</code>相乘后，再作为激活函数的输入。在<code>CNN</code>中，是做完卷积操作后，激活函数之前。在训练时，均值、方差都是训练时<code>batch</code>的统计数据，可以记下然后做加权平均得到测试时使用的均值和方差，在测试时使用。</p>
 <p><img src="https://img-blog.csdn.net/20160522210927345" alt=""></p>
 <center>全连接层，bn层的位置</center>
+<img src="/images/cnn-bn.png" style="zoom:70%;" />
 
-<p><img src="https://images2018.cnblogs.com/blog/1182370/201808/1182370-20180827170732674-1953691984.png" style="zoom:70%;" /></p>
 <center>一般卷积操作中，bn层的位置</center>
 
-<p>​ <strong>进一步的理解</strong>：</p>
-<p>​ 在原论文<code>3.2</code>节，作者提到 $BN$ 通常加入到<strong>非线性单元（激活函数）之前</strong>，对 $Wu + b$ 进行<code>normalizing</code>，而不是 $u$，作者是这样解释的：$u$ 可能是上一个非线性单元的输出，非线性单元的输出分布形状会在训练过程中变化，归一化无法消除他的方差偏移。</p>
-<p>​ 而对于 $Wu+b$ （线性变换，卷积操作也是线性变换）这种变换的输出一般是一个对称，非稀疏的一个分布，更加类似高斯分布，对他们进行归一化会产生更加稳定的分布。</p>
-<p>​ 看一下 $W u + b$ 经过$BN$后，参数 $b$ 的变化：</p>
+<p><strong>进一步的理解</strong>：</p>
+<p>在原论文<code>3.2</code>节，作者提到 $BN$ 通常加入到<strong>非线性单元（激活函数）之前</strong>，对 $Wu + b$ 进行<code>normalizing</code>，而不是 $u$，作者是这样解释的：$u$ 可能是上一个非线性单元的输出，非线性单元的输出分布形状会在训练过程中变化，归一化无法消除他的方差偏移。</p>
+<p>而对于 $Wu+b$ （线性变换，卷积操作也是线性变换）这种变换的输出一般是一个对称，非稀疏的一个分布，更加类似高斯分布，对他们进行归一化会产生更加稳定的分布。</p>
+<p>看一下 $W u + b$ 经过$BN$后，参数 $b$ 的变化：</p>
 <script type="math/tex; mode=display">
 \mu = \frac{1}{m} \sum_{i = 1}^{m} Wu_i + b = \frac{1}{m}\sum_{i=1}^{m}Wu_i + \frac{bm}{m}</script><script type="math/tex; mode=display">
-\hat x_i = \frac{Wu_i + b- \mu}{\sqrt{\sigma^2 + \epsilon}} = \frac{Wu_i - \frac{1}{m}\sum_{i=1}^{m}Wu_i}{\sqrt{\sigma^2 + \epsilon}}</script><p>​ 可以看到参数$b$最后被消掉了，可有可无。因此可以表示为：</p>
+\hat x_i = \frac{Wu_i + b- \mu}{\sqrt{\sigma^2 + \epsilon}} = \frac{Wu_i - \frac{1}{m}\sum_{i=1}^{m}Wu_i}{\sqrt{\sigma^2 + \epsilon}}</script><p>可以看到参数$b$最后被消掉了，可有可无。因此可以表示为：</p>
 <script type="math/tex; mode=display">
-z = g(BN(Wu + b)) \rightarrow z = g(BN(Wu))</script><p>​ <strong>We could have also normalized the layer inputs u, but since u is likely the output of another nonlinearity, the shape of its distribution is likely to change during training, and constraining<br>its first and second moments would not eliminate the co-variate shift.</strong></p>
-<p>​ <strong>In contrast, Wu + b is more likely to have a symmetric, non-sparse distribution, that is “more Gaussian”; normalizing it is likely to produce activations with a stable distribution.</strong></p>
-<p>​ <strong>经过卷积后怎么 BN</strong></p>
-<p>​ 通常经过卷积操作后，会产生多个<code>channel</code>。将每个<code>channel</code>视为一个维度，统计<code>channel</code>内所有样本的均值和方差，这样每个<code>channel</code>对应一对参数$\gamma,\beta$。比如：<code>[batch_size,channel,width,height]</code>，每个<code>channel</code>内，<code>batch_size * width * height</code>的均值和方差。</p>
-<h5 id="2-3-2-Dropout"><a href="#2-3-2-Dropout" class="headerlink" title="2.3.2 Dropout"></a>2.3.2 Dropout</h5><p>​ 在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。</p>
-<p>​ <strong>提出原因</strong>：解决过拟合问题。</p>
+z = g(BN(Wu + b)) \rightarrow z = g(BN(Wu))</script><p><strong>We could have also normalized the layer inputs u, but since u is likely the output of another nonlinearity, the shape of its distribution is likely to change during training, and constraining its first and second moments would not eliminate the co-variate shift.</strong></p>
+<p><strong>In contrast, Wu + b is more likely to have a symmetric, non-sparse distribution, that is “more Gaussian”; normalizing it is likely to produce activations with a stable distribution.</strong></p>
+<p><strong>经过卷积后怎么 BN</strong></p>
+<p>通常经过卷积操作后，会产生多个<code>channel</code>。将每个<code>channel</code>视为一个维度，统计<code>channel</code>内所有样本的均值和方差，这样每个<code>channel</code>对应一对参数$\gamma,\beta$。比如：<code>[batch_size,channel,width,height]</code>，每个<code>channel</code>内，<code>batch_size * width * height</code>的均值和方差。</p>
+<h5 id="2-3-2-Dropout"><a href="#2-3-2-Dropout" class="headerlink" title="2.3.2 Dropout"></a>2.3.2 Dropout</h5><p>在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。</p>
+<p><strong>提出原因</strong>：解决过拟合问题。</p>
+<h3 id="3-循环神经网络"><a href="#3-循环神经网络" class="headerlink" title="3. 循环神经网络"></a>3. 循环神经网络</h3><p>​ 循环神经网络的提出是为了解决序列数据。如：AI 翻译、语言识别、时间序列问题等。</p>
+<h4 id="3-1-基本结构"><a href="#3-1-基本结构" class="headerlink" title="3.1 基本结构"></a>3.1 基本结构</h4><p>​ 循环神经网络（Recurrent Neutral Network）不同于卷积网络，刚开始接触时个人感觉比较抽象。</p>
+<p>在每个 cell 中，激活函数输入的不仅包含这个时序内输入的数据$x^{<t>}$，而且还包括上个时序的输出 $a^{t-1}$。因此，可以表示为：</p>
+<script type="math/tex; mode=display">
+a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)</script><p>其中，$W_{aa}$表示 $t-1$ 时段输出的权重，$W_{ax}$表示 $t$ 时段输入的权重。之后，$a^{\langle t \rangle}$再向 $t+1$ 时段传播，或者经过$soft\max$函数，作为 $t$ 时段的输出。</p>
+<p><img src="/images/RNN.png" alt=""></p>
+<p><img src="/images/LSTM1.png" alt=""></p>
+<center>基本RNN结构</center>
 
+<p>​ <strong>RNN 的特点</strong>：</p>
+<ol>
+<li>RNNs 主要用于处理序列数据。对于传统神经网络模型，从输入层到隐含层再到输出层，层与层之间一般为全连接，每层之间神经元是无连接的。但是传统神经网络无法处理数据间的前后关联问题。例如，为了预测句子的下一个单词，一般需要该词之前的语义信息。这是因为一个句子中前后单词是存在语义联系的。</li>
+<li>RNNs 中当前单元的输出与之前步骤输出也有关，因此称之为循环神经网络。具体的表现形式为当前单元会对之前步骤信息进行储存并应用于当前输出的计算中。隐藏层之间的节点连接起来，隐藏层当前输出由当前时刻输入向量和之前时刻隐藏层状态共同决定。</li>
+<li>标准的 RNNs 结构图，图中每个箭头代表做一次变换，也就是说箭头连接带有权值。</li>
+<li>在标准的 RNN 结构中，隐层的神经元之间也是带有权值的，且权值共享。</li>
+</ol>
+<h4 id="3-2-LSTM-和-GRU"><a href="#3-2-LSTM-和-GRU" class="headerlink" title="3.2 LSTM 和 GRU"></a>3.2 LSTM 和 GRU</h4><h5 id="3-2-1-LSTM"><a href="#3-2-1-LSTM" class="headerlink" title="3.2.1 LSTM"></a>3.2.1 LSTM</h5><p><img src="/images/LSTM.png" alt=""></p>
+<p><img src="/images/LSTM2.png" alt=""></p>
+<center>基本LSTM结构</center>
+
+<p><strong>提出原因</strong>：</p>
+<p>​ RNN 在处理长期依赖（时间序列上距离较远的节点）时会遇到巨大的困难，因为计算距离较远的节点之间的联系时会涉及雅可比矩阵的多次相乘，会造成梯度消失或者梯度膨胀的现象。为了解决该问题，研究人员提出了许多解决办法，例如 ESN（Echo State Network），增加有漏单元（Leaky Units）等等。其中最成功应用最广泛的就是门限 RNN（Gated RNN），而 LSTM 就是门限 RNN 中最著名的一种。有漏单元通过设计连接间的权重系数，从而允许 RNN 累积距离较远节点间的长期联系；而门限 RNN 则泛化了这样的思想，允许在不同时刻改变该系数，且允许网络忘记当前已经累积的信息。</p>
+<h5 id="3-2-2-GRU"><a href="#3-2-2-GRU" class="headerlink" title="3.2.2 GRU"></a>3.2.2 GRU</h5><h4 id="3-3-Pytorch-构建-RNN"><a href="#3-3-Pytorch-构建-RNN" class="headerlink" title="3.3 Pytorch 构建 RNN"></a>3.3 Pytorch 构建 RNN</h4>
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck6kl003z000zlgug9ji21k5x"
+      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck6kweqhc0012y8ug86bp3qhy"
         class="article-share-link">分享</a>
         
       
@@ -593,7 +615,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ck6kl0033000klgughvk305mo"
+      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ck6kweqfu000iy8ug7jvm6c7j"
         class="article-share-link">分享</a>
         
       
@@ -867,7 +889,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ck6kl003w000ylgug6gccabth"
+      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ck6kweqh30010y8ug4xyjarko"
         class="article-share-link">分享</a>
         
       
@@ -979,7 +1001,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ck6kkzzzv0000lgugejep9z1i"
+      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ck6kweqfe0001y8ugboevhohe"
         class="article-share-link">分享</a>
         
       
@@ -1090,7 +1112,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ck6kl003p000wlgugdll28u48"
+      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ck6kweqgf000uy8ug4f4l7ewm"
         class="article-share-link">分享</a>
         
       
@@ -1171,7 +1193,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ck6kl001v0009lgug4d45fymt"
+      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ck6kweqfq000dy8ug23bialv2"
         class="article-share-link">分享</a>
         
       
@@ -1264,7 +1286,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ck6kl001d0005lgugarqc6w9k"
+      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ck6kweqfk0005y8ug00jhh2i9"
         class="article-share-link">分享</a>
         
       
@@ -1344,7 +1366,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="ck6kl002v000hlgughjwn9ib8"
+      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="ck6kweqfx000jy8ugf2sj93ft"
         class="article-share-link">分享</a>
         
       
@@ -1416,7 +1438,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" data-id="ck6kl002s000glgug91697gf6"
+      <a data-url="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" data-id="ck6kweqf70000y8ugbjejbhn7"
         class="article-share-link">分享</a>
         
       
