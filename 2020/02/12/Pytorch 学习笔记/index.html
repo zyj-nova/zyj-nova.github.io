@@ -322,10 +322,10 @@ x = Wu + b</script><p>计算样本每个维度均值：</p>
 \hat x_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}</script><script type="math/tex; mode=display">
 y_i = \gamma\hat x_i + \beta = BN_{\gamma,\beta}(x_i)</script><p>其中，$\gamma$、$\beta$ 是通过学习得到的。</p>
 <p><strong>如何操作</strong>：即将<code>input</code>与<code>weight matrix</code>相乘后，再作为激活函数的输入。在<code>CNN</code>中，是做完卷积操作后，激活函数之前。在训练时，均值、方差都是训练时<code>batch</code>的统计数据，可以记下然后做加权平均得到测试时使用的均值和方差，在测试时使用。</p>
-<p><img src="https://img-blog.csdn.net/20160522210927345" alt=""></p>
+<p><img src="/images/20160522210927345.png" alt=""></p>
 <center>全连接层，bn层的位置</center>
-<img src="/images/cnn-bn.png" style="zoom:70%;" />
 
+<p><img src="/images/cnn-bn.png" style="zoom:70%;" /></p>
 <center>一般卷积操作中，bn层的位置</center>
 
 <p><strong>进一步的理解</strong>：</p>
@@ -370,7 +370,7 @@ a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck6kweqhc0012y8ug86bp3qhy"
+      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck6ne8f4p0014n4uga2mqdjsl"
         class="article-share-link">分享</a>
         
       

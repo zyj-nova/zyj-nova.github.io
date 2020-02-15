@@ -60,6 +60,80 @@
     
     
     
+    <article id="post-Faster R-CNN中anchor的理解" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/"
+    >Faster R-CNN中anchor的理解</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" class="article-date">
+  <time datetime="2020-02-04T02:37:19.958Z" itemprop="datePublished">2020-02-04</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="Faster-R-CNN-中-anchor-的理解"><a href="#Faster-R-CNN-中-anchor-的理解" class="headerlink" title="Faster R-CNN 中 anchor 的理解"></a>Faster R-CNN 中 anchor 的理解</h2><h3 id="1-什么是-anchor"><a href="#1-什么是-anchor" class="headerlink" title="1 什么是 anchor"></a>1 什么是 anchor</h3><p>​ 当图像经过 CNN 网络（如 VGG16）提取出特征即 <strong>feature map</strong> 之后，针对 <strong>feature map</strong> 进行 Region Proposal 操作。首先要明白的是 anchor 是相对于 feature map 在原图上的概念。提取出来的特征相对于原图像存在视野域这个概念，如果视野比例为 8，即 feature map 上一个点，对应在原图是一个 8 * 8 的正方形。那么，该正方形的中心就被称为 anchor。</p>
+<h3 id="2-anchor-boxes"><a href="#2-anchor-boxes" class="headerlink" title="2 anchor boxes"></a>2 anchor boxes</h3><p>​ 在确定 anchor 后，针对改 anchor 要选定 9 个框，首先有 anchor ratio 这个概念。即 <strong>1:1, 1:2, 2:1</strong> 。也就是说 9 个 anchor boxes 的边长比例满足 ratio，确切的说，anchor boxes 存在 3 组，每组 3 个，每个 boxes 的边长都是 1:1,1:2,2:1 。 还有 scales 这个概念， 即 <strong>8, 16, 32</strong> 。anchor boxes 中，1:1 这组的边长<strong>等于</strong>视野域比例*scale。</p>
+<p>如果视野域比例为<strong>16</strong>，那么边长分别为<strong>128,256,512</strong>。其余比例为 2 的边，按照 128/256/512 的 1.5 倍进行扩大。</p>
+<p>如 512*1.5 = 768，768 /2 = 384，256*1.5 = 384，384/2 = 192，128*1.5 = 192, 192 /2= 96</p>
+<p><img src="/images/faster-rcnn.jpg" alt="anchor示意图"></p>
+<h3 id="3-后续操作"><a href="#3-后续操作" class="headerlink" title="3 后续操作"></a>3 后续操作</h3><p>​ 假设 feature map 大小为 M*N，那么 anchor boxes 数量为 <strong>9MN*</strong> 。对于这些 boxes 在进行前景背景分类以及 ground truth 回归等操作，最终选定目标物体。</p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" data-id="ck6ne8f260000n4ug32y8d24b"
+        class="article-share-link">分享</a>
+        
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CV/" rel="tag">CV</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-PCA-StepByStep" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -112,7 +186,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/10/PCA-StepByStep/" data-id="ck6kweqfn0009y8ugfrsb7j1r"
+      <a data-url="http://yoursite.com/2019/11/10/PCA-StepByStep/" data-id="ck6ne8f2n0009n4ugf3pofxe2"
         class="article-share-link">分享</a>
         
       
@@ -177,7 +251,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/09/Hashap-LoadFactor/" data-id="ck6kweqfi0004y8ug7knw2806"
+      <a data-url="http://yoursite.com/2019/11/09/Hashap-LoadFactor/" data-id="ck6ne8f2j0006n4ug4s4s2jqp"
         class="article-share-link">分享</a>
         
       
@@ -260,7 +334,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" data-id="ck6kweqfr000fy8ugao32eyg2"
+      <a data-url="http://yoursite.com/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" data-id="ck6ne8f2w000in4ugg96wen05"
         class="article-share-link">分享</a>
         
       
@@ -325,7 +399,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/07/canny/" data-id="ck6kweqfo000ay8ugfdjg0svf"
+      <a data-url="http://yoursite.com/2019/11/07/canny/" data-id="ck6ne8f2q000dn4ug4h5f8koy"
         class="article-share-link">分享</a>
         
       

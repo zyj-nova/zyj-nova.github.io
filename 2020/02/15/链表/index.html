@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    HMM模型笔记 |  张永剑的博客
+    链表 |  张永剑的博客
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -30,7 +30,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-HMM模型笔记" class="article article-type-post" itemscope
+  <article id="post-链表" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -38,7 +38,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  HMM模型笔记
+  链表
 </h1>
   
 
@@ -47,12 +47,12 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" class="article-date">
-  <time datetime="2020-02-07T03:46:41.529Z" itemprop="datePublished">2020-02-07</time>
+      <a href="/2020/02/15/%E9%93%BE%E8%A1%A8/" class="article-date">
+  <time datetime="2020-02-15T09:18:26.225Z" itemprop="datePublished">2020-02-15</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
   </div>
 
       
@@ -62,7 +62,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1k字</span>
+            <span class="post-count">351字</span>
         </span>
     </span>
 
@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3分钟</span>
+            <span class="post-count">1分钟</span>
         </span>
     </span>
 </div>
@@ -97,59 +97,21 @@
       
 
       
-      <h2 id="隐马尔可夫模型"><a href="#隐马尔可夫模型" class="headerlink" title="隐马尔可夫模型"></a>隐马尔可夫模型</h2><p><strong>记住一下几个要点</strong></p>
-<ul>
-    <li>
-        <strong>3个基本组成元素</strong>
-    </li>
-    <li>
-        <strong>2个基本假设</strong>
-    </li>
-    <li>
-        <strong>3个基本问题</strong>
-    </li>
-</ul>
-
-<p><strong>tips</strong>：其实我在看好多算法时，涉及到许多数学公式，如果你刚开始接触这个模型算法，先不要直接就开始研究公式，先明白这个算法或模型时如何工作的，找个例子算一下，跑一下。数学公式是方便为了归纳总结而提出来的，如果你能很好的理解这个算法，那么他的公式也就不难理解了。这是我学习中的一点小经验。</p>
-<h3 id="1-3个基本组成元素"><a href="#1-3个基本组成元素" class="headerlink" title="1 3个基本组成元素"></a>1 3个基本组成元素</h3><p><strong>隐马尔科夫模型可以用三元组表示</strong></p>
-<p>同时，一般用 $I$ 表示<em>隐藏序列</em>，$O$ 表示<em>观测序列</em> ，用 $Q$ 表示可能的状态集合，用 $V$ 表示可能的观测集合</p>
-<script type="math/tex; mode=display">
-Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的状态数，$N$ 为可能的观测数。则可以确定状态转移概率矩阵大小为 $M$ 阶的方阵，观测概率矩阵大小为 $M * N$ 的矩阵。 </p>
-<p><strong>总结</strong>：一条隐藏的马尔可夫链随机生成了一个不可观测的状态序列，然后每个状态又对应生成了一个观测结果（状态—&gt;观测, 观测概率矩阵B），这些观测结果按照时序排列形成了观测序列。</p>
-<h4 id="1-1-初始状态概率序列（-pi-）"><a href="#1-1-初始状态概率序列（-pi-）" class="headerlink" title="1.1 初始状态概率序列（$\pi$）"></a>1.1 初始状态概率序列（$\pi$）</h4><h4 id="1-2-状态转移概率矩阵（-A-）"><a href="#1-2-状态转移概率矩阵（-A-）" class="headerlink" title="1.2 状态转移概率矩阵（$A$）"></a>1.2 状态转移概率矩阵（$A$）</h4><h4 id="1-3-观测概率矩阵（-B-）"><a href="#1-3-观测概率矩阵（-B-）" class="headerlink" title="1.3 观测概率矩阵（$B$）"></a>1.3 观测概率矩阵（$B$）</h4><p>不同状态生成不同观测结果的概率。</p>
-<h3 id="2-2个基本假设"><a href="#2-2个基本假设" class="headerlink" title="2 2个基本假设"></a>2 2个基本假设</h3><h4 id="2-1-齐次性，当前状态只和前一个状态相关"><a href="#2-1-齐次性，当前状态只和前一个状态相关" class="headerlink" title="2.1  齐次性，当前状态只和前一个状态相关"></a>2.1  齐次性，当前状态只和前一个状态相关</h4><p>​        任意时刻 $t$ 的状态只依赖前一时刻的状态。与其他时刻的观测与状态无关，也与 $t$ 时刻无关。 </p>
-<h4 id="2-2-观测独立性假设"><a href="#2-2-观测独立性假设" class="headerlink" title="2.2 观测独立性假设"></a>2.2 观测独立性假设</h4><p>​        假设任意时刻的观测只依赖于该时刻的马尔科夫链的状态，与其他观测及状态无关。</p>
-<h3 id="3-3个基本问题"><a href="#3-3个基本问题" class="headerlink" title="3 3个基本问题"></a>3 3个基本问题</h3><h4 id="3-1-概率计算"><a href="#3-1-概率计算" class="headerlink" title="3.1 概率计算"></a>3.1 概率计算</h4><p><strong>问题描述</strong>： </p>
-<p>​        在给定模型参数 $\lambda$ 的情况下，观测序列 $O$ 出现的概率是多少？即 $P(O|\lambda)$ 概率值为多少？</p>
-<p><strong>如何解决</strong></p>
-<p>​        1.暴力计算，算法实现的时间复杂度太高，理论可行，实际不采用！</p>
-<p>​        2.前向算法，利用动态规划，将时间复杂度降到O($n^2$)</p>
-<p>​        3.后向算法，基本同前向算法。</p>
-<h4 id="3-2-预测问题（解码问题）"><a href="#3-2-预测问题（解码问题）" class="headerlink" title="3.2 预测问题（解码问题）"></a>3.2 预测问题（解码问题）</h4><p><strong>问题描述</strong></p>
-<p>​        给定信息：</p>
-<p>​        <strong>模型</strong>：$\lambda = \{A,B,\pi\}$</p>
-<p>​        <strong>观测序列</strong>：$O = \{o_1,o_2,…,o_T\}$</p>
-<p>​        <strong>求解</strong>：求使得$P(O|S)$最大的状态序列$S$.</p>
-<p><strong>如何解决</strong></p>
-<p>​        <strong>维特比</strong>算法（动态规划—最大概率路径）。其实简单来说，要找到一条从起点到终点的最优路径，最大概率路径因为满足<strong>最优子结构</strong>和<strong>重叠子问题</strong>，因此可以从采用动态规划来解。</p>
-<p>$\sigma_t(i)$ 表示 <code>t</code>时刻状态为 <code>i</code>, 计算如下：</p>
-<script type="math/tex; mode=display">
-\sigma_{t+1}(i) = max\{\sigma_{t}a_{ji}\} * b_i(o_{t+1}), j = 1,2,...N. N为状态数</script><p>$a_{ji}$表示由第<code>j</code>个状态向第<code>i</code>个状态转移的概率，$b_i(o_{t+1})$表示由第<code>i</code>个状态生成<code>t+1</code>时序时的观测的概率。递推计算，<code>from t =1 to t = T</code>。然后输出状态序列。</p>
-<h4 id="3-3-学习问题（参数估计）"><a href="#3-3-学习问题（参数估计）" class="headerlink" title="3.3 学习问题（参数估计）"></a>3.3 学习问题（参数估计）</h4><p><strong>问题描述</strong></p>
-<p>​        给定信息：</p>
-<p>​        <strong>观测序列</strong>: $O = \{o_1,o_2,…,o_T\}$</p>
-<p>​        <strong>求解</strong>：模型$\lambda$ 参数，</p>
-<p><strong>如何求解</strong></p>
-<p>​        <strong>EM</strong>算法</p>
-<h3 id="4-有啥用"><a href="#4-有啥用" class="headerlink" title="4 有啥用?"></a>4 有啥用?</h3><h4 id="4-1-中文分词"><a href="#4-1-中文分词" class="headerlink" title="4.1 中文分词"></a>4.1 中文分词</h4><p>我们假设每个词都有Begin、Medium、End、S分别代表开头、中间、结尾、独立的词等隐状态，所给的文本为观测态，我们要做的就是训练（语料库）一个HMM模型，在给定文本的情况下，输出隐含态，也就是分词结果。</p>
-<h4 id="4-2-语音识别"><a href="#4-2-语音识别" class="headerlink" title="4.2 语音识别"></a>4.2 语音识别</h4><h4 id="参考书目"><a href="#参考书目" class="headerlink" title="参考书目"></a>参考书目</h4><p>统计学习方法（第2版），李航。</p>
+      <h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> val;</span><br><span class="line">	ListNode next;</span><br><span class="line">	ListNode(<span class="keyword">int</span> x) &#123;</span><br><span class="line">		val = x;</span><br><span class="line">		next = <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-反转链表"><a href="#1-反转链表" class="headerlink" title="1. 反转链表"></a>1. 反转链表</h3><p>​         反转一个单链表。 这是<code>Leetcode 206</code>号问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 头插法</span></span><br><span class="line">        ListNode dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode cur = <span class="keyword">null</span>, next = <span class="keyword">null</span>;</span><br><span class="line">      <span class="comment">//cur指向dummy结点后的第一个节点，在dummy和cur之间添加节点</span></span><br><span class="line">        <span class="keyword">while</span>(head!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            next = head.next;<span class="comment">//保存原链表下一个节点</span></span><br><span class="line">            dummy.next = head;</span><br><span class="line">            head.next = cur;</span><br><span class="line">            cur = head;<span class="comment">//更新cur结点，将其指向刚插入的结点head</span></span><br><span class="line">            <span class="comment">//原链表指向下一个节点</span></span><br><span class="line">            head = next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummy.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/reverse-node.png" alt=""></p>
+<h3 id="2-环形链表"><a href="#2-环形链表" class="headerlink" title="2. 环形链表"></a>2. 环形链表</h3><p>​         给定一个链表，判断链表中是否有环。 这是<code>Leetcode 141</code>号问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCycle</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">if</span> (head == <span class="keyword">null</span> || head.next == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        ListNode slow = head, fast = head.next;</span><br><span class="line">        <span class="keyword">while</span> (slow != fast) &#123;</span><br><span class="line">            <span class="keyword">if</span> (fast == <span class="keyword">null</span> || fast.next == <span class="keyword">null</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            slow = slow.next;</span><br><span class="line">            fast = fast.next.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-相交链表"><a href="#3-相交链表" class="headerlink" title="3. 相交链表"></a>3. 相交链表</h3><p>​         编写一个程序，找到两个单链表相交的起始节点。 这是<code>Leetcode 160</code>号问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">getIntersectionNode</span><span class="params">(ListNode headA, ListNode headB)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">if</span> (headA == <span class="keyword">null</span> || headB == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">int</span> lena = <span class="number">0</span>, lenb = <span class="number">0</span>;</span><br><span class="line">        ListNode heada = headA, headb = headB;</span><br><span class="line">        <span class="keyword">while</span>(heada!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            heada = heada.next;</span><br><span class="line">            lena++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(headb!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            headb = headb.next;</span><br><span class="line">            lenb++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(lena &gt; lenb)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= lena - lenb; i++ )</span><br><span class="line">                headA = headA.next;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= lenb - lena; i++)</span><br><span class="line">                headB = headB.next;</span><br><span class="line">        &#125;</span><br><span class="line">      <span class="keyword">while</span>(headA != <span class="keyword">null</span> &amp;&amp; headB != <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(headA == headB)&#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            headA = headA.next;</span><br><span class="line">            headB = headB.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> headA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ck6ne8f2e0002n4ugha9s9iyg"
+      <a data-url="http://yoursite.com/2020/02/15/%E9%93%BE%E8%A1%A8/" data-id="ck6ne8f34000rn4ug331rewge"
         class="article-share-link">分享</a>
         
       
@@ -161,19 +123,10 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
   
   <nav class="article-nav">
     
-      <a href="/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            JAVA 并发编程
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" class="article-nav-link">
+      <a href="/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">二叉树</div>
+        <div class="article-nav-title">Java虚拟机内存结构</div>
       </a>
     
   </nav>
