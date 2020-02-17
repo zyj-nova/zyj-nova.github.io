@@ -116,7 +116,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/15/%E9%93%BE%E8%A1%A8/" data-id="ck6ne8f34000rn4ug331rewge"
+      <a data-url="http://yoursite.com/2020/02/15/%E9%93%BE%E8%A1%A8/" data-id="ck6q1o8yd000yhcug23td4c5d"
         class="article-share-link">分享</a>
         
       
@@ -205,7 +205,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" data-id="ck6ne8f2p000cn4ug5u98akzb"
+      <a data-url="http://yoursite.com/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" data-id="ck6q1o8x90008hcugbo1j7mee"
         class="article-share-link">分享</a>
         
       
@@ -472,11 +472,8 @@ M = \frac{N-f}{s} + 1</script><h4 id="2-2-训练你的模型"><a href="#2-2-训�
 <p>下面观察以下经过<code>conv1</code>、<code>conv2</code>后的<code>feature maps</code>。（没有经过最大池化）</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">sets = iter(train_loader)</span><br><span class="line">batch = next(sets)</span><br><span class="line">images,labels = batch</span><br><span class="line">input = images[<span class="number">0</span>].unsqueeze(<span class="number">0</span>) <span class="comment">#[1, 1, 28, 28] 升维，增加一个维度 batch</span></span><br><span class="line">network = Network()</span><br><span class="line">feature1 = network.conv1(input)</span><br><span class="line">feature2 = network.conv2(feature1)</span><br><span class="line">feature1_ = feature1.squeeze() <span class="comment">#[6,24,24]</span></span><br><span class="line">feature2_ = feature2.squeeze() <span class="comment">#[12,20,20]</span></span><br><span class="line"></span><br><span class="line">ch1 = feature1_[<span class="number">5</span>]</span><br><span class="line">ch1_ = ch1.data.numpy()</span><br><span class="line">ch2 = feature2_[<span class="number">5</span>]</span><br><span class="line">ch2_ = ch2.data.numpy()</span><br><span class="line"></span><br><span class="line">plt.imshow(ch1_)</span><br><span class="line">plt.show()</span><br><span class="line">plt.imshow(ch2_)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 <p><img src="/images/f1_6.png" alt=""></p>
-<center>conv1后第6通道的feature</center>
-
-<p><img src="/images/f2_6.png" alt=""></p>
-<center>conv2后第6通道的feature</center>
-
+<p><center>conv1后第6通道的feature</center><br><img src="/images/f2_6.png" alt=""></p>
+<p><center>conv2后第6通道的feature</center></p>
 <h4 id="2-3-记点其他的知识"><a href="#2-3-记点其他的知识" class="headerlink" title="2.3 记点其他的知识"></a>2.3 记点其他的知识</h4><h5 id="2-3-1-Batch-Normalization"><a href="#2-3-1-Batch-Normalization" class="headerlink" title="2.3.1 Batch Normalization"></a>2.3.1 Batch Normalization</h5><p>在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。[ <a href="https://pytorch.org/docs/stable/nn.html#batchnorm2d" target="_blank" rel="noopener">https://pytorch.org/docs/stable/nn.html#batchnorm2d</a> ]</p>
 <p><strong>提出原因</strong>：解决梯度消失问题， 加速训练收敛过程 。</p>
 <p><strong>原理</strong>：将隐层的输入分布变为均值为 $0$ ，方差为 $1$ 的正态分布。</p>
@@ -491,12 +488,8 @@ x = Wu + b</script><p>计算样本每个维度均值：</p>
 y_i = \gamma\hat x_i + \beta = BN_{\gamma,\beta}(x_i)</script><p>其中，$\gamma$、$\beta$ 是通过学习得到的。</p>
 <p><strong>如何操作</strong>：即将<code>input</code>与<code>weight matrix</code>相乘后，再作为激活函数的输入。在<code>CNN</code>中，是做完卷积操作后，激活函数之前。在训练时，均值、方差都是训练时<code>batch</code>的统计数据，可以记下然后做加权平均得到测试时使用的均值和方差，在测试时使用。</p>
 <p><img src="/images/20160522210927345.png" alt=""></p>
-<center>全连接层，bn层的位置</center>
-
-<p><img src="/images/cnn-bn.png" style="zoom:70%;" /></p>
-<center>一般卷积操作中，bn层的位置</center>
-
-<p><strong>进一步的理解</strong>：</p>
+<p><center>全连接层，bn层的位置</center><br><img src="/images/cnn-bn.png" style="zoom:70%;" /></p>
+<p><center>一般卷积操作中，bn层的位置</center><br><strong>进一步的理解</strong>：</p>
 <p>在原论文<code>3.2</code>节，作者提到 $BN$ 通常加入到<strong>非线性单元（激活函数）之前</strong>，对 $Wu + b$ 进行<code>normalizing</code>，而不是 $u$，作者是这样解释的：$u$ 可能是上一个非线性单元的输出，非线性单元的输出分布形状会在训练过程中变化，归一化无法消除他的方差偏移。</p>
 <p>而对于 $Wu+b$ （线性变换，卷积操作也是线性变换）这种变换的输出一般是一个对称，非稀疏的一个分布，更加类似高斯分布，对他们进行归一化会产生更加稳定的分布。</p>
 <p>看一下 $W u + b$ 经过$BN$后，参数 $b$ 的变化：</p>
@@ -510,16 +503,17 @@ z = g(BN(Wu + b)) \rightarrow z = g(BN(Wu))</script><p><strong>We could have als
 <p>通常经过卷积操作后，会产生多个<code>channel</code>。将每个<code>channel</code>视为一个维度，统计<code>channel</code>内所有样本的均值和方差，这样每个<code>channel</code>对应一对参数$\gamma,\beta$。比如：<code>[batch_size,channel,width,height]</code>，每个<code>channel</code>内，<code>batch_size * width * height</code>的均值和方差。</p>
 <h5 id="2-3-2-Dropout"><a href="#2-3-2-Dropout" class="headerlink" title="2.3.2 Dropout"></a>2.3.2 Dropout</h5><p>在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。</p>
 <p><strong>提出原因</strong>：解决过拟合问题。</p>
-<h3 id="3-循环神经网络"><a href="#3-循环神经网络" class="headerlink" title="3. 循环神经网络"></a>3. 循环神经网络</h3><p>​ 循环神经网络的提出是为了解决序列数据。如：AI 翻译、语言识别、时间序列问题等。</p>
-<h4 id="3-1-基本结构"><a href="#3-1-基本结构" class="headerlink" title="3.1 基本结构"></a>3.1 基本结构</h4><p>​ 循环神经网络（Recurrent Neutral Network）不同于卷积网络，刚开始接触时个人感觉比较抽象。</p>
+<h5 id="2-3-3-一维卷积"><a href="#2-3-3-一维卷积" class="headerlink" title="2.3.3 一维卷积"></a>2.3.3 一维卷积</h5><p>​        二维卷积其实就是一维卷积的每<strong>行</strong>加和。</p>
+<p>​        一维卷积示例：</p>
+<p><img src="/images/one-conv.png" alt=""></p>
+<h3 id="3-循环神经网络"><a href="#3-循环神经网络" class="headerlink" title="3. 循环神经网络"></a>3. 循环神经网络</h3><p> 循环神经网络的提出是为了解决序列数据。如：AI 翻译、语言识别、时间序列问题等。</p>
+<h4 id="3-1-基本结构"><a href="#3-1-基本结构" class="headerlink" title="3.1 基本结构"></a>3.1 基本结构</h4><p> 循环神经网络（Recurrent Neutral Network）不同于卷积网络，刚开始接触时个人感觉比较抽象。</p>
 <p>在每个 cell 中，激活函数输入的不仅包含这个时序内输入的数据$x^{<t>}$，而且还包括上个时序的输出 $a^{t-1}$。因此，可以表示为：</p>
 <script type="math/tex; mode=display">
 a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)</script><p>其中，$W_{aa}$表示 $t-1$ 时段输出的权重，$W_{ax}$表示 $t$ 时段输入的权重。之后，$a^{\langle t \rangle}$再向 $t+1$ 时段传播，或者经过$soft\max$函数，作为 $t$ 时段的输出。</p>
 <p><img src="/images/RNN.png" alt=""></p>
 <p><img src="/images/LSTM1.png" alt=""></p>
-<center>基本RNN结构</center>
-
-<p>​ <strong>RNN 的特点</strong>：</p>
+<p><center>基本RNN结构</center><br> <strong>RNN 的特点</strong>：</p>
 <ol>
 <li>RNNs 主要用于处理序列数据。对于传统神经网络模型，从输入层到隐含层再到输出层，层与层之间一般为全连接，每层之间神经元是无连接的。但是传统神经网络无法处理数据间的前后关联问题。例如，为了预测句子的下一个单词，一般需要该词之前的语义信息。这是因为一个句子中前后单词是存在语义联系的。</li>
 <li>RNNs 中当前单元的输出与之前步骤输出也有关，因此称之为循环神经网络。具体的表现形式为当前单元会对之前步骤信息进行储存并应用于当前输出的计算中。隐藏层之间的节点连接起来，隐藏层当前输出由当前时刻输入向量和之前时刻隐藏层状态共同决定。</li>
@@ -528,17 +522,15 @@ a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \
 </ol>
 <h4 id="3-2-LSTM-和-GRU"><a href="#3-2-LSTM-和-GRU" class="headerlink" title="3.2 LSTM 和 GRU"></a>3.2 LSTM 和 GRU</h4><h5 id="3-2-1-LSTM"><a href="#3-2-1-LSTM" class="headerlink" title="3.2.1 LSTM"></a>3.2.1 LSTM</h5><p><img src="/images/LSTM.png" alt=""></p>
 <p><img src="/images/LSTM2.png" alt=""></p>
-<center>基本LSTM结构</center>
-
-<p><strong>提出原因</strong>：</p>
-<p>​ RNN 在处理长期依赖（时间序列上距离较远的节点）时会遇到巨大的困难，因为计算距离较远的节点之间的联系时会涉及雅可比矩阵的多次相乘，会造成梯度消失或者梯度膨胀的现象。为了解决该问题，研究人员提出了许多解决办法，例如 ESN（Echo State Network），增加有漏单元（Leaky Units）等等。其中最成功应用最广泛的就是门限 RNN（Gated RNN），而 LSTM 就是门限 RNN 中最著名的一种。有漏单元通过设计连接间的权重系数，从而允许 RNN 累积距离较远节点间的长期联系；而门限 RNN 则泛化了这样的思想，允许在不同时刻改变该系数，且允许网络忘记当前已经累积的信息。</p>
+<p><center>基本LSTM结构</center><br><strong>提出原因</strong>：</p>
+<p> RNN 在处理长期依赖（时间序列上距离较远的节点）时会遇到巨大的困难，因为计算距离较远的节点之间的联系时会涉及雅可比矩阵的多次相乘，会造成梯度消失或者梯度膨胀的现象。为了解决该问题，研究人员提出了许多解决办法，例如 ESN（Echo State Network），增加有漏单元（Leaky Units）等等。其中最成功应用最广泛的就是门限 RNN（Gated RNN），而 LSTM 就是门限 RNN 中最著名的一种。有漏单元通过设计连接间的权重系数，从而允许 RNN 累积距离较远节点间的长期联系；而门限 RNN 则泛化了这样的思想，允许在不同时刻改变该系数，且允许网络忘记当前已经累积的信息。</p>
 <h5 id="3-2-2-GRU"><a href="#3-2-2-GRU" class="headerlink" title="3.2.2 GRU"></a>3.2.2 GRU</h5><h4 id="3-3-Pytorch-构建-RNN"><a href="#3-3-Pytorch-构建-RNN" class="headerlink" title="3.3 Pytorch 构建 RNN"></a>3.3 Pytorch 构建 RNN</h4>
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck6ne8f4p0014n4uga2mqdjsl"
+      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck6q1o8ys0016hcug704acx6y"
         class="article-share-link">分享</a>
         
       
@@ -689,7 +681,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ck6ne8f2z000ln4ug787n3z3t"
+      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ck6q1o8xg000ehcug4vx9fdr9"
         class="article-share-link">分享</a>
         
       
@@ -963,7 +955,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ck6ne8f4g0012n4ug0myz4mo0"
+      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ck6q1o8yo0014hcugajpd0kda"
         class="article-share-link">分享</a>
         
       
@@ -1075,7 +1067,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ck6ne8f2e0002n4ugha9s9iyg"
+      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ck6q1o8x10002hcugfr89fk94"
         class="article-share-link">分享</a>
         
       
@@ -1186,7 +1178,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ck6ne8f3m000zn4ugbsanf269"
+      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ck6q1o8y8000vhcug0kyxcjcu"
         class="article-share-link">分享</a>
         
       
@@ -1267,7 +1259,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ck6ne8f2t000gn4ug54c6hspj"
+      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ck6q1o8ya000whcug6bl822g0"
         class="article-share-link">分享</a>
         
       
@@ -1360,7 +1352,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ck6ne8f2l0008n4ug2lzp43d8"
+      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ck6q1o8xb000ahcugdtizhib0"
         class="article-share-link">分享</a>
         
       
@@ -1440,7 +1432,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="ck6ne8f32000mn4ugb7jkd9lt"
+      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="ck6q1o8xi000ihcug6eoq0c64"
         class="article-share-link">分享</a>
         
       
