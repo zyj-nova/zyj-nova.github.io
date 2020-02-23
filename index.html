@@ -145,7 +145,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" data-id="ck6ynlqxt000fu8ugh3sw1jl9"
+      <a data-url="http://yoursite.com/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" data-id="ck6z6hl980008ssug4ssoh7db"
         class="article-share-link">分享</a>
         
       
@@ -219,7 +219,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/15/%E9%93%BE%E8%A1%A8/" data-id="ck6ynlqya000uu8ugd45zaxhd"
+      <a data-url="http://yoursite.com/2020/02/15/%E9%93%BE%E8%A1%A8/" data-id="ck6z6hlad000wssug7c8t6nj4"
         class="article-share-link">分享</a>
         
       
@@ -308,7 +308,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" data-id="ck6ynlqx90006u8ug446z41uk"
+      <a data-url="http://yoursite.com/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" data-id="ck6z6hl9e000essugg1sj6mfa"
         class="article-share-link">分享</a>
         
       
@@ -576,139 +576,66 @@ M = \frac{N-f}{s} + 1</script><h4 id="2-2-训练你的模型"><a href="#2-2-训�
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">sets = iter(train_loader)</span><br><span class="line">batch = next(sets)</span><br><span class="line">images,labels = batch</span><br><span class="line">input = images[<span class="number">0</span>].unsqueeze(<span class="number">0</span>) <span class="comment">#[1, 1, 28, 28] 升维，增加一个维度 batch</span></span><br><span class="line">network = Network()</span><br><span class="line">feature1 = network.conv1(input)</span><br><span class="line">feature2 = network.conv2(feature1)</span><br><span class="line">feature1_ = feature1.squeeze() <span class="comment">#[6,24,24]</span></span><br><span class="line">feature2_ = feature2.squeeze() <span class="comment">#[12,20,20]</span></span><br><span class="line"></span><br><span class="line">ch1 = feature1_[<span class="number">5</span>]</span><br><span class="line">ch1_ = ch1.data.numpy()</span><br><span class="line">ch2 = feature2_[<span class="number">5</span>]</span><br><span class="line">ch2_ = ch2.data.numpy()</span><br><span class="line"></span><br><span class="line">plt.imshow(ch1_)</span><br><span class="line">plt.show()</span><br><span class="line">plt.imshow(ch2_)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 <p><img src="/images/f1_6.png" alt=""></p>
 <center>conv1后第6通道的feature</center>
-![](/images/f2_6.png)
 
+<p><img src="/images/f2_6.png" alt=""></p>
 <center>conv2后第6通道的feature</center>
-#### 2.3 记点其他的知识
 
-##### 2.3.1 Batch Normalization
-
-在`Pytorch`中，位于`torch.nn`包下。[ https://pytorch.org/docs/stable/nn.html#batchnorm2d ]
-
-**提出原因**：解决梯度消失问题， 加速训练收敛过程 。
-
-**原理**：将隐层的输入分布变为均值为 $0$ ，方差为 $1$ 的正态分布。
-
-设$X = \{x_1,x_2,...,x_m\}$表示$X$的维度。$m$ 代表 $batch-size$.
-
-$$
-x = Wu + b
-$$
-
-计算样本每个维度均值：
-
-$$
-\mu_B = \frac{1}{m} \sum_{i = 1}^{m} x_i
-$$
-
-计算样本每个维度的方差：
-
-$$
-\sigma_B^2 = \frac{1}{m} \sum_{i = 1}^{m} (x_i - \mu_B)^2
-$$
-
-$$
-\hat x_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}
-$$
-
-$$
-y_i = \gamma\hat x_i + \beta = BN_{\gamma,\beta}(x_i)
-$$
-
-其中，$\gamma$、$\beta$ 是通过学习得到的。
-
-**如何操作**：即将`input`与`weight matrix`相乘后，再作为激活函数的输入。在`CNN`中，是做完卷积操作后，激活函数之前。在训练时，均值、方差都是训练时`batch`的统计数据，可以记下然后做加权平均得到测试时使用的均值和方差，在测试时使用。
-
-![](/images/20160522210927345.png)
-
+<h4 id="2-3-记点其他的知识"><a href="#2-3-记点其他的知识" class="headerlink" title="2.3 记点其他的知识"></a>2.3 记点其他的知识</h4><h5 id="2-3-1-Batch-Normalization"><a href="#2-3-1-Batch-Normalization" class="headerlink" title="2.3.1 Batch Normalization"></a>2.3.1 Batch Normalization</h5><p>在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。[ <a href="https://pytorch.org/docs/stable/nn.html#batchnorm2d" target="_blank" rel="noopener">https://pytorch.org/docs/stable/nn.html#batchnorm2d</a> ]</p>
+<p><strong>提出原因</strong>：解决梯度消失问题， 加速训练收敛过程 。</p>
+<p><strong>原理</strong>：将隐层的输入分布变为均值为 $0$ ，方差为 $1$ 的正态分布。</p>
+<p>设$X = \{x_1,x_2,…,x_m\}$表示$X$的维度。$m$ 代表 $batch-size$.</p>
+<script type="math/tex; mode=display">
+x = Wu + b</script><p>计算样本每个维度均值：</p>
+<script type="math/tex; mode=display">
+\mu_B = \frac{1}{m} \sum_{i = 1}^{m} x_i</script><p>计算样本每个维度的方差：</p>
+<script type="math/tex; mode=display">
+\sigma_B^2 = \frac{1}{m} \sum_{i = 1}^{m} (x_i - \mu_B)^2</script><script type="math/tex; mode=display">
+\hat x_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}</script><script type="math/tex; mode=display">
+y_i = \gamma\hat x_i + \beta = BN_{\gamma,\beta}(x_i)</script><p>其中，$\gamma$、$\beta$ 是通过学习得到的。</p>
+<p><strong>如何操作</strong>：即将<code>input</code>与<code>weight matrix</code>相乘后，再作为激活函数的输入。在<code>CNN</code>中，是做完卷积操作后，激活函数之前。在训练时，均值、方差都是训练时<code>batch</code>的统计数据，可以记下然后做加权平均得到测试时使用的均值和方差，在测试时使用。</p>
+<p><img src="/images/20160522210927345.png" alt=""></p>
 <center>全连接层，bn层的位置</center>
-<img src="/images/cnn-bn.png" style="zoom:70%;" />
 
+<p><img src="/images/cnn-bn.png" style="zoom:70%;" /></p>
 <center>一般卷积操作中，bn层的位置</center>
-**进一步的理解**：
 
-在原论文`3.2`节，作者提到 $BN$ 通常加入到**非线性单元（激活函数）之前**，对 $Wu + b$ 进行`normalizing`，而不是 $u$，作者是这样解释的：$u$ 可能是上一个非线性单元的输出，非线性单元的输出分布形状会在训练过程中变化，归一化无法消除他的方差偏移。
-
-而对于 $Wu+b$ （线性变换，卷积操作也是线性变换）这种变换的输出一般是一个对称，非稀疏的一个分布，更加类似高斯分布，对他们进行归一化会产生更加稳定的分布。
-
-看一下 $W u + b$ 经过$BN$后，参数 $b$ 的变化：
-
-$$
-\mu = \frac{1}{m} \sum_{i = 1}^{m} Wu_i + b = \frac{1}{m}\sum_{i=1}^{m}Wu_i + \frac{bm}{m}
-$$
-
-$$
-\hat x_i = \frac{Wu_i + b- \mu}{\sqrt{\sigma^2 + \epsilon}} = \frac{Wu_i - \frac{1}{m}\sum_{i=1}^{m}Wu_i}{\sqrt{\sigma^2 + \epsilon}}
-$$
-
-可以看到参数$b$最后被消掉了，可有可无。因此可以表示为：
-
-$$
-z = g(BN(Wu + b)) \rightarrow z = g(BN(Wu))
-$$
-
-**We could have also normalized the layer inputs u, but since u is likely the output of another nonlinearity, the shape of its distribution is likely to change during training, and constraining its first and second moments would not eliminate the co-variate shift.**
-
-**In contrast, Wu + b is more likely to have a symmetric, non-sparse distribution, that is "more Gaussian"; normalizing it is likely to produce activations with a stable distribution.**
-
-**经过卷积后怎么 BN**
-
-通常经过卷积操作后，会产生多个`channel`。将每个`channel`视为一个维度，统计`channel`内所有样本的均值和方差，这样每个`channel`对应一对参数$\gamma,\beta$。比如：`[batch_size,channel,width,height]`，每个`channel`内，`batch_size * width * height`的均值和方差。
-
-##### 2.3.2 Dropout
-
-在`Pytorch`中，位于`torch.nn`包下。
-
-**提出原因**：解决过拟合问题。
-
-##### 2.3.3 一维卷积
-
-​ 二维卷积其实就是一维卷积的每**行**加和。
-
-​ 一维卷积示例：
-
-![](/images/one-conv.png)
-
-### 3. 循环神经网络
-
-循环神经网络的提出是为了解决序列数据。如：AI 翻译、语言识别、时间序列问题等。
-
-#### 3.1 基本结构
-
-循环神经网络（Recurrent Neutral Network）不同于卷积网络，刚开始接触时个人感觉比较抽象。
-
-在每个 cell 中，激活函数输入的不仅包含这个时序内输入的数据$x^{<t>}$，而且还包括上个时序的输出 $a^{t-1}$(隐藏态)。因此，可以表示为：
-
-$$
-a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)
-$$
-
-其中，$W_{aa}$表示 $t-1$ 时段输出的权重，$W_{ax}$表示 $t$ 时段输入的权重。之后，$a^{\langle t \rangle}$再向 $t+1$ 时段传播，或者经过$soft\max$函数，作为 $t$ 时段的输出。
-
-![](/images/RNN.png)
-
-![](/images/LSTM1.png)
-
+<p><strong>进一步的理解</strong>：</p>
+<p>在原论文<code>3.2</code>节，作者提到 $BN$ 通常加入到<strong>非线性单元（激活函数）之前</strong>，对 $Wu + b$ 进行<code>normalizing</code>，而不是 $u$，作者是这样解释的：$u$ 可能是上一个非线性单元的输出，非线性单元的输出分布形状会在训练过程中变化，归一化无法消除他的方差偏移。</p>
+<p>而对于 $Wu+b$ （线性变换，卷积操作也是线性变换）这种变换的输出一般是一个对称，非稀疏的一个分布，更加类似高斯分布，对他们进行归一化会产生更加稳定的分布。</p>
+<p>看一下 $W u + b$ 经过$BN$后，参数 $b$ 的变化：</p>
+<script type="math/tex; mode=display">
+\mu = \frac{1}{m} \sum_{i = 1}^{m} Wu_i + b = \frac{1}{m}\sum_{i=1}^{m}Wu_i + \frac{bm}{m}</script><script type="math/tex; mode=display">
+\hat x_i = \frac{Wu_i + b- \mu}{\sqrt{\sigma^2 + \epsilon}} = \frac{Wu_i - \frac{1}{m}\sum_{i=1}^{m}Wu_i}{\sqrt{\sigma^2 + \epsilon}}</script><p>可以看到参数$b$最后被消掉了，可有可无。因此可以表示为：</p>
+<script type="math/tex; mode=display">
+z = g(BN(Wu + b)) \rightarrow z = g(BN(Wu))</script><p><strong>We could have also normalized the layer inputs u, but since u is likely the output of another nonlinearity, the shape of its distribution is likely to change during training, and constraining its first and second moments would not eliminate the co-variate shift.</strong></p>
+<p><strong>In contrast, Wu + b is more likely to have a symmetric, non-sparse distribution, that is “more Gaussian”; normalizing it is likely to produce activations with a stable distribution.</strong></p>
+<p><strong>经过卷积后怎么 BN</strong></p>
+<p>通常经过卷积操作后，会产生多个<code>channel</code>。将每个<code>channel</code>视为一个维度，统计<code>channel</code>内所有样本的均值和方差，这样每个<code>channel</code>对应一对参数$\gamma,\beta$。比如：<code>[batch_size,channel,width,height]</code>，每个<code>channel</code>内，<code>batch_size * width * height</code>的均值和方差。</p>
+<h5 id="2-3-2-Dropout"><a href="#2-3-2-Dropout" class="headerlink" title="2.3.2 Dropout"></a>2.3.2 Dropout</h5><p>在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。</p>
+<p><strong>提出原因</strong>：解决过拟合问题。</p>
+<h5 id="2-3-3-一维卷积"><a href="#2-3-3-一维卷积" class="headerlink" title="2.3.3 一维卷积"></a>2.3.3 一维卷积</h5><p>二维卷积其实就是一维卷积的每<strong>行</strong>加和。</p>
+<p>一维卷积示例：</p>
+<p><img src="/images/one-conv.png" alt=""></p>
+<h3 id="3-循环神经网络"><a href="#3-循环神经网络" class="headerlink" title="3. 循环神经网络"></a>3. 循环神经网络</h3><p>循环神经网络的提出是为了解决序列数据。如：AI 翻译、语言识别、时间序列问题等。</p>
+<h4 id="3-1-基本结构"><a href="#3-1-基本结构" class="headerlink" title="3.1 基本结构"></a>3.1 基本结构</h4><p>循环神经网络（Recurrent Neutral Network）不同于卷积网络，刚开始接触时个人感觉比较抽象。</p>
+<p>在每个 cell 中，激活函数输入的不仅包含这个时序内输入的数据$x^{<t>}$，而且还包括上个时序的输出 $a^{t-1}$(隐藏态)。因此，可以表示为：</p>
+<script type="math/tex; mode=display">
+a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)</script><p>其中，$W_{aa}$表示 $t-1$ 时段输出的权重，$W_{ax}$表示 $t$ 时段输入的权重。之后，$a^{\langle t \rangle}$再向 $t+1$ 时段传播，或者经过$soft\max$函数，作为 $t$ 时段的输出。</p>
+<p><img src="/images/RNN.png" alt=""></p>
+<p><img src="/images/LSTM1.png" alt=""></p>
 <center>基本RNN结构</center>
- **多层RNN结构**：
 
-![](/images/multi_rnn.png)
-
-**RNN 的特点**：
-
-1. RNNs 主要用于处理序列数据。对于传统神经网络模型，从输入层到隐含层再到输出层，层与层之间一般为全连接，每层之间神经元是无连接的。但是传统神经网络无法处理数据间的前后关联问题。例如，为了预测句子的下一个单词，一般需要该词之前的语义信息。这是因为一个句子中前后单词是存在语义联系的。
-2. RNNs 中当前单元的输出与之前步骤输出也有关，因此称之为循环神经网络。具体的表现形式为当前单元会对之前步骤信息进行储存并应用于当前输出的计算中。隐藏层之间的节点连接起来，隐藏层当前输出由当前时刻输入向量和之前时刻隐藏层状态共同决定。
-3. 标准的 RNNs 结构图，图中每个箭头代表做一次变换，也就是说箭头连接带有权值。
-4. 在标准的 RNN 结构中，隐层的神经元之间也是带有权值的，且权值共享。
-
-#### 3.2 LSTM 和 GRU
-
-##### 3.2.1 LSTM
-
-![](/images/LSTM.png)
-
-![](/images/LSTM2.png)
-
+<p><strong>多层 RNN 结构</strong>：</p>
+<p><img src="/images/multi_rnn.png" alt=""></p>
+<p><strong>RNN 的特点</strong>：</p>
+<ol>
+<li>RNNs 主要用于处理序列数据。对于传统神经网络模型，从输入层到隐含层再到输出层，层与层之间一般为全连接，每层之间神经元是无连接的。但是传统神经网络无法处理数据间的前后关联问题。例如，为了预测句子的下一个单词，一般需要该词之前的语义信息。这是因为一个句子中前后单词是存在语义联系的。</li>
+<li>RNNs 中当前单元的输出与之前步骤输出也有关，因此称之为循环神经网络。具体的表现形式为当前单元会对之前步骤信息进行储存并应用于当前输出的计算中。隐藏层之间的节点连接起来，隐藏层当前输出由当前时刻输入向量和之前时刻隐藏层状态共同决定。</li>
+<li>标准的 RNNs 结构图，图中每个箭头代表做一次变换，也就是说箭头连接带有权值。</li>
+<li>在标准的 RNN 结构中，隐层的神经元之间也是带有权值的，且权值共享。</li>
+</ol>
+<h4 id="3-2-LSTM-和-GRU"><a href="#3-2-LSTM-和-GRU" class="headerlink" title="3.2 LSTM 和 GRU"></a>3.2 LSTM 和 GRU</h4><h5 id="3-2-1-LSTM"><a href="#3-2-1-LSTM" class="headerlink" title="3.2.1 LSTM"></a>3.2.1 LSTM</h5><p><img src="/images/LSTM.png" alt=""></p>
+<p><img src="/images/LSTM2.png" alt=""></p>
 <center>基本LSTM结构</center>
 
 <p><strong>提出原因</strong>：</p>
@@ -738,7 +665,7 @@ W_{aa} \rightarrow \left[h_n, h_n\right],W_{ax} \rightarrow [x_m, h_n]</script><
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck6ynlqzs0018u8ug75q4b1d4"
+      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck6z6hlaq0017ssugauepcewm"
         class="article-share-link">分享</a>
         
       
@@ -889,7 +816,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ck6ynlqxw000iu8ugen1g1ny5"
+      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ck6z6hlaf000yssugg8tfd00p"
         class="article-share-link">分享</a>
         
       
@@ -1163,7 +1090,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ck6ynlqzj0014u8ug7uqxaj3c"
+      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ck6z6hlam0013ssugafvg33cq"
         class="article-share-link">分享</a>
         
       
@@ -1275,7 +1202,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ck6ynlqx40002u8ug9nncd6u9"
+      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ck6z6hl910002ssuge2ip25g8"
         class="article-share-link">分享</a>
         
       
@@ -1388,7 +1315,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ck6ynlqzl0015u8ug5udd95fx"
+      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ck6z6hlan0014ssug7ch9865h"
         class="article-share-link">分享</a>
         
       
@@ -1469,7 +1396,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ck6ynlqy8000su8ug1r0x8wbu"
+      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ck6z6hla6000vssug7cpagoze"
         class="article-share-link">分享</a>
         
       
@@ -1562,7 +1489,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ck6ynlqxg000du8ug1p4536tr"
+      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ck6z6hl9k000jssug71c88o02"
         class="article-share-link">分享</a>
         
       
