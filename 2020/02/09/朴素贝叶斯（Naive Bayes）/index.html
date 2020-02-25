@@ -151,10 +151,10 @@ P(spam|W_1,W_2,...) ∝ P(W_1|spam)P(W_2|spam)...P(spam)</script><p>同理可以
 P(ham|W_1,W_2,...) ∝ P(W_1|ham)P(W_2|ham)...P(ham)</script><p>最后将二者概率进行归一化，就可得出是垃圾邮件还是正常邮件的概率。</p>
 <script type="math/tex; mode=display">
 P(ham|W_1,W_2,...) = \frac{P(W_1|ham)P(W_2|ham)...P(ham)}{P(W_1|ham)P(W_2|ham)...P(ham)+P(W_1|spam)P(W_2|spam)...P(spam)}</script><h3 id="5-生成模型和判别模型"><a href="#5-生成模型和判别模型" class="headerlink" title="5 生成模型和判别模型"></a>5 生成模型和判别模型</h3><ul>
-<li><p><strong>生成模型(generative model)</strong></p>
+<li><p><strong>判别模型(discriminative model)</strong></p>
 <p>通过求解<strong>条件概率分布</strong> $P(y|x)$ 或者直接计算 $y$ 的值来预测 $y$。如：线性回归（Linear Regression）,逻辑回归（Logistic Regression）,支持向量机（<code>SVM</code>）, 传统神经网络（Traditional Neural Networks）,线性判别分析（Linear Discriminative Analysis），条件随机场（Conditional Random Field）。</p>
 </li>
-<li><p><strong>判别模型( discriminative model)</strong></p>
+<li><p><strong>生成模型(generative model)</strong></p>
 <p>通过对观测值和标注数据计算<strong>联合概率分布</strong> $P(x,y)$ 来达到判定估算 $y$ 的目的。朴素贝叶斯（Naive Bayes）, 隐马尔科夫模型（<code>HMM</code>）,贝叶斯网络（Bayesian Networks）和隐含狄利克雷分布（Latent Dirichlet Allocation）、混合高斯模型（<code>GMM</code>）。</p>
 </li>
 </ul>
@@ -188,7 +188,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ck6z6hlaf000yssugg8tfd00p"
+      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ck71mmnz7000nrougcjl9bdzy"
         class="article-share-link">分享</a>
         
       
