@@ -1,6 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>GitHub的骚操作</title>
+    <url>/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h2 id="GitHub的骚操作"><a href="#GitHub的骚操作" class="headerlink" title="GitHub的骚操作"></a>GitHub的骚操作</h2><h3 id="1-in-限制搜索"><a href="#1-in-限制搜索" class="headerlink" title="1. in 限制搜索"></a>1. in 限制搜索</h3><p><strong>用法</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">gnn <span class="keyword">in</span>:name</span><br><span class="line">spring <span class="keyword">in</span>:readme,name,description</span><br></pre></td></tr></table></figure>
+<h3 id="2-starts-forks范围搜索"><a href="#2-starts-forks范围搜索" class="headerlink" title="2. starts/forks范围搜索"></a>2. starts/forks范围搜索</h3><p><strong>用法</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">name stars/forks:&gt;500</span><br><span class="line">name stars/forks:500..600</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">组合命令</span></span><br><span class="line">redis starts:&gt;5000 forks:6000..10000 in:name</span><br></pre></td></tr></table></figure>
+<h3 id="3-awesome搜索"><a href="#3-awesome搜索" class="headerlink" title="3. awesome搜索"></a>3. awesome搜索</h3><p><strong>用法</strong>：展示站点上较好的项目</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">awesome gan</span><br></pre></td></tr></table></figure>
+<h3 id="4-高亮显示代码"><a href="#4-高亮显示代码" class="headerlink" title="4.高亮显示代码"></a>4.高亮显示代码</h3><p><strong>用法</strong>：在代码链接后加<code>#Lnum</code>，将高亮该行代码；<code>#L5-L50</code>高亮<code>5-50</code>行的代码。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">https://github.com/JeffLi1993/springboot-learning-example/blob/master/chapter-2-spring-boot-config/src/main/java/demo/springboot/web/HelloBookController.java#L1</span><br><span class="line"></span><br><span class="line">https://github.com/JeffLi1993/springboot-learning-example/blob/master/chapter-2-spring-boot-config/src/main/java/demo/springboot/web/HelloBookController.java#L1-L15</span><br></pre></td></tr></table></figure>
+<h3 id="5-t搜索"><a href="#5-t搜索" class="headerlink" title="5. t搜索"></a>5. t搜索</h3><p>在某个项目首页下，<code>t</code>键可以查看该项目所有代码文件。</p>
+<p>还有其他快捷键，可参考官方文档。</p>
+<p><img src="/images/image-20200227130114291.png" alt="image-20200227130114291"></p>
+<p><img src="/images/image-20200227130247176.png" alt="image-20200227130247176"></p>
+<h3 id="6-关于git的一些知识"><a href="#6-关于git的一些知识" class="headerlink" title="6. 关于git的一些知识"></a>6. 关于git的一些知识</h3><ul>
+<li><p><code>git</code>分为工作区、暂存区、版本库。将工作区的文件<code>add</code>到暂存区，<code>git</code>才可以对改文件进行版本管理，<code>add</code>之后就可以<code>commit</code>到版本库</p>
+</li>
+<li><p>已经<code>add</code>到暂存区的文件，又对其进行了修改，务必再次执行<code>add</code>操作，否则<code>commit</code>时，这个修改不会被提交到版本库。第一次修改 -&gt; <code>git add</code> -&gt; 第二次修改 -&gt; <code>git add</code> -&gt; <code>git commit</code>，两次修改合并为一次<code>commit</code></p>
+</li>
+<li><p>撤销修改：</p>
+<ul>
+<li><p>已经执行<code>add</code>的文件，现在在工作区区又进行了一次修改（这次修改还没<code>add</code>），<code>git checkout -- filename</code>可放弃工作区的这次修改</p>
+</li>
+<li><p>做了修改，并且已经<code>add</code>到暂存区，现在不想要这次修改了，先</p>
+<p><code>git reset HEAD filename</code>，从暂存区中拉回到工作区，然后<code>git checkout -- filename</code>放弃这次修改。</p>
+</li>
+</ul>
+</li>
+<li><p>版本回退</p>
+<ul>
+<li><code>git reset --hard commitId</code>，可回退到之前的版本。可采用<code>git log</code>来查看每次<code>commit</code>的详细情况</li>
+<li>要重新返回到最新版本，用<code>git reflog</code>查看命令历史，获取<code>commitId</code>，以便确定要回到未来的哪个版本。然后采用<code>reset</code>命令。</li>
+</ul>
+</li>
+<li><p>分支管理</p>
+<p>参考<a href="https://www.liaoxuefeng.com/wiki/896043488029600/900003767775424" target="_blank" rel="noopener">https://www.liaoxuefeng.com/wiki/896043488029600/900003767775424</a></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Java 反射和动态代理</title>
     <url>/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/</url>
     <content><![CDATA[<h2 id="Java-反射和动态代理"><a href="#Java-反射和动态代理" class="headerlink" title="Java 反射和动态代理"></a>Java 反射和动态代理</h2><h3 id="1-类加载机制"><a href="#1-类加载机制" class="headerlink" title="1. 类加载机制"></a>1. 类加载机制</h3><h4 id="1-1-类加载过程"><a href="#1-1-类加载过程" class="headerlink" title="1.1 类加载过程"></a>1.1 类加载过程</h4><p>大体来说，可以分为三个阶段：<strong>加载 $\rightarrow$ 链接 $\rightarrow$ 初始化</strong>。具体过程如图：1</p>
