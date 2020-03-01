@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-02-27T08:12:26.620Z</updated>
+  <updated>2020-03-01T14:16:24.681Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>实现梯度下降（线性回归为例）</title>
+    <link href="http://yoursite.com/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/"/>
+    <id>http://yoursite.com/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/</id>
+    <published>2020-03-01T02:51:25.748Z</published>
+    <updated>2020-03-01T14:16:24.681Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;梯度下降（线性回归为例）&quot;&gt;&lt;a href=&quot;#梯度下降（线性回归为例）&quot; class=&quot;headerlink&quot; title=&quot;梯度下降（线性回归为例）&quot;&gt;&lt;/a&gt;梯度下降（线性回归为例）&lt;/h2&gt;&lt;h3 id=&quot;0-相关工作&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>GitHub的骚操作</title>
@@ -121,7 +146,7 @@
     <link href="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <id>http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
     <published>2020-02-12T03:43:02.260Z</published>
-    <updated>2020-02-25T08:26:47.308Z</updated>
+    <updated>2020-03-01T14:30:12.458Z</updated>
     
     <summary type="html">
     

@@ -60,6 +60,116 @@
     
     
     
+    <article id="post-实现梯度下降（线性回归为例）" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/"
+    >实现梯度下降（线性回归为例）</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/" class="article-date">
+  <time datetime="2020-03-01T02:51:25.748Z" itemprop="datePublished">2020-03-01</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="梯度下降（线性回归为例）"><a href="#梯度下降（线性回归为例）" class="headerlink" title="梯度下降（线性回归为例）"></a>梯度下降（线性回归为例）</h2><h3 id="0-相关工作"><a href="#0-相关工作" class="headerlink" title="0. 相关工作"></a>0. 相关工作</h3><h4 id="0-1-线性回归模型"><a href="#0-1-线性回归模型" class="headerlink" title="0.1 线性回归模型"></a>0.1 线性回归模型</h4><script type="math/tex; mode=display">
+\hat {y} = \theta_0 + \theta_1x_1 + \theta_2x_2 +···+\theta_nx_n</script><p>其中，$n$ 为 $x$ 的特征数量。</p>
+<p>转为矩阵相乘形式：</p>
+<script type="math/tex; mode=display">
+y = X·\theta</script><p>其中，$X$ 为样本矩阵，个人喜欢行数代表样本数量 $m$，列数代表特征维度 $n$。$\theta$ 为参数矩阵，大小为 $n * 1$。</p>
+<p>若行数代表特征维度 $n$，列数代表样本数量 $m$，可写为：</p>
+<script type="math/tex; mode=display">
+y = \theta^{T}·X</script><h4 id="0-2-定义损失函数"><a href="#0-2-定义损失函数" class="headerlink" title="0.2 定义损失函数"></a>0.2 定义损失函数</h4><p>采用均方误差损失函数$Mean Square Error(MSE) $ 。</p>
+<p>某个样本的损失函数定义如下：</p>
+<script type="math/tex; mode=display">
+loss_j = (X_{j}·\theta - y)^2</script><p>整个训练集的损失函数为：</p>
+<script type="math/tex; mode=display">
+J(\theta) = \frac{1}{2m} \sum_{i=1}^{m} (X_i·\theta - y_i)^2</script><p>我们要求的就是使得$J(\theta)$最小的$\theta$。</p>
+<script type="math/tex; mode=display">
+\hat{\theta} = arg\min_{\theta} J(\theta)</script><h4 id="0-3-定义梯度公式"><a href="#0-3-定义梯度公式" class="headerlink" title="0.3 定义梯度公式"></a>0.3 定义梯度公式</h4><p>梯度就是由多维变量偏导数的向量。</p>
+<p>可知$J(\theta)$ 是一个复合函数，求导时采用链式法则，$J$ 对每个维度的参数的偏导，定义为：</p>
+<script type="math/tex; mode=display">
+\frac{\partial J}{\partial \theta_j} = \frac{1}{m} \sum_{i=1}^{m}(X^{i}·\theta - y^i)X_{j}^{i}</script><p>其中$X_j^i$是第$j$个属性之前的系数。表示第i个样本第j个维度的特征值。</p>
+<p>矩阵相乘形式：</p>
+<script type="math/tex; mode=display">
+\frac{\partial J}{\partial \theta_j} = \frac{1}{m} X_j^T(X·\theta - y)</script><p>$X_j^T$表示样本矩阵第j个维度的所有特征值。</p>
+<p>由此进一步推导出：</p>
+<script type="math/tex; mode=display">
+\frac{\partial J}{\partial \theta} = \frac{1}{m} X^T(X·\theta - y)</script><h3 id="1-批量梯度下降"><a href="#1-批量梯度下降" class="headerlink" title="1. 批量梯度下降"></a>1. 批量梯度下降</h3><script type="math/tex; mode=display">
+\theta_{t+1} = \theta_t - \alpha\nabla\theta</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment">#定义损失函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loss</span><span class="params">(W,x,y)</span>:</span></span><br><span class="line">    m = len(y)</span><br><span class="line">    predictions = np.dot(x,W)</span><br><span class="line">    <span class="keyword">return</span> (<span class="number">1</span>/<span class="number">2</span>*m)*np.sum(np.square(predictions - y))</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义批量梯度公式</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradient</span><span class="params">(W,x,y)</span>:</span></span><br><span class="line">    m = len(y)</span><br><span class="line">    predictions = np.dot(x,W)</span><br><span class="line">    <span class="keyword">return</span> (<span class="number">1</span>/m)*x.T.dot(predictions-y)</span><br><span class="line"><span class="comment">#迭代训练</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradient_descent</span><span class="params">(W,x,y,alpha=<span class="number">0.001</span>,iterations=<span class="number">1000</span>)</span>:</span></span><br><span class="line">    cost_history = np.zeros(iterations)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(iterations):</span><br><span class="line">        cost_history[i] = loss(W,x,y)</span><br><span class="line">        grd = gradient(W,x,y)</span><br><span class="line">        print(grd.shape)<span class="comment">#(x.shape[1],1)</span></span><br><span class="line">        W = W - alpha*grd</span><br><span class="line">    <span class="keyword">return</span> W,cost_history</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="comment">#生成数据</span></span><br><span class="line">    X = <span class="number">2</span> * np.random.rand(<span class="number">100</span>,<span class="number">1</span>)</span><br><span class="line">    y = <span class="number">10</span> +<span class="number">3</span> * X + np.random.randn(<span class="number">100</span>,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    W = np.random.randn(<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">    <span class="comment">#偏置项</span></span><br><span class="line">    X_b = np.ones((X.shape[<span class="number">0</span>],<span class="number">1</span>))</span><br><span class="line">    <span class="comment">#加入偏置项，偏执项为(100,1)的全为1的向量</span></span><br><span class="line">    X_ = np.hstack((X_b,X))<span class="comment">#(100,2)</span></span><br><span class="line">    iteration = <span class="number">10000</span></span><br><span class="line">    W,loss = gradient_descent(W,X_,y,alpha=<span class="number">0.01</span>,iterations=iteration)</span><br><span class="line"></span><br><span class="line">    print(W)</span><br><span class="line">    <span class="comment">#由于将偏置项放在X的第一列，也就是第0维。因此，bias = 8.67 weight = 3.85</span></span><br><span class="line">    <span class="comment">#array([[8.67047187],</span></span><br><span class="line">    <span class="comment">#      [3.85509216]])</span></span><br><span class="line"></span><br><span class="line">    y_predict = np.dot(X_,W)</span><br><span class="line">    it = np.linspace(<span class="number">1</span>,iteration,iteration)</span><br><span class="line">    plt.plot(it,loss)</span><br><span class="line"></span><br><span class="line">    plt.scatter(X,y)</span><br><span class="line">    plt.plot(X,y_predict)</span><br></pre></td></tr></table></figure>
+<p><img src="C:\Users\ASUS\Pictures\loss.png" alt=""></p>
+<p><img src="C:\Users\ASUS\Pictures\linear_reg.png" alt=""></p>
+<h3 id="2-随机梯度下降"><a href="#2-随机梯度下降" class="headerlink" title="2. 随机梯度下降"></a>2. 随机梯度下降</h3><p>随机梯度下降是指，在进行梯度更新时，随机选取某一个样本来更新梯度，而非对整个样本数据集求梯度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">stochastic_gradient_descent</span><span class="params">(W,x,y,alpha,iterations = <span class="number">1000</span>)</span>:</span></span><br><span class="line">    m = len(y)</span><br><span class="line">    cost_history = np.zeros(iterations)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(iterations):</span><br><span class="line">        predictions = np.dot(x,W)</span><br><span class="line">        cost_history[i] = (<span class="number">1</span>/<span class="number">2</span>*m)*np.sum(np.square(predictions - y))</span><br><span class="line">        </span><br><span class="line">        rand_index = np.random.randint(<span class="number">0</span>,m)</span><br><span class="line">        <span class="comment">#从数据集中取出索引为rand_index的数据</span></span><br><span class="line">        x_i = x[rand_index,:].reshape(<span class="number">1</span>,x.shape[<span class="number">1</span>])</span><br><span class="line">        y_i = y[rand_index].reshape(<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">        grad = gradient(W,x_i,y_i)</span><br><span class="line">        </span><br><span class="line">        W = W - alpha*grad</span><br><span class="line">    <span class="keyword">return</span> W,cost_history</span><br></pre></td></tr></table></figure>
+<h3 id="3-小批量梯度下降-mini-batch"><a href="#3-小批量梯度下降-mini-batch" class="headerlink" title="3. 小批量梯度下降(mini-batch)"></a>3. 小批量梯度下降(mini-batch)</h3><p>小批量梯度下降指：每一步的梯度计算，既不是基于整个训练集（如批量梯度下降）也不是基于单个实例（如随机梯度下降），而是基于一小部分随机的实例集也就是小批量，来进行梯度的更新。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mini_batch_gradient_descent</span><span class="params">(W,x,y,alpha=<span class="number">0.01</span>,itera=<span class="number">1000</span>,batch_size=<span class="number">10</span>)</span>:</span></span><br><span class="line">	m = len(y)</span><br><span class="line">    cost_history = []</span><br><span class="line">    batches = int(m / batch_size)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> it <span class="keyword">in</span> range(itera):</span><br><span class="line">       	cost = <span class="number">0.0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,m,batch_size):</span><br><span class="line">            X_i = x[i:i+batch_size]<span class="comment">#size:[batch_size,m]</span></span><br><span class="line">            y_i = y[i:i+batch_size]<span class="comment">#size:[batch_size,1]</span></span><br><span class="line">        	</span><br><span class="line">            predictions = np.dot(X_i,W)</span><br><span class="line">            <span class="comment">#计算整个数据集上的loss</span></span><br><span class="line">            cost += (<span class="number">1</span>/<span class="number">2</span>*m)*np.sum(np.square(predictions - y_i))</span><br><span class="line">            grad = gradient(W,X_i,y_i)</span><br><span class="line">            </span><br><span class="line">            W = W - alpha*grad</span><br><span class="line">        cost_history.append(cost)</span><br><span class="line">    <span class="keyword">return</span> W,cost_history</span><br></pre></td></tr></table></figure>
+<h3 id="4-动量梯度下降"><a href="#4-动量梯度下降" class="headerlink" title="4. 动量梯度下降"></a>4. 动量梯度下降</h3><script type="math/tex; mode=display">
+v_t = \gamma v_{t-1} + \alpha \nabla J(\theta)</script><script type="math/tex; mode=display">
+\theta = \theta - v_t</script><p>$\alpha$ 即学习率。$\gamma$ 是动量系数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">momentum_gradient_descent</span><span class="params">(W,x,y,alpha=<span class="number">0.01</span>,mini_batch=<span class="number">20</span>,itera=<span class="number">1000</span>)</span>:</span></span><br><span class="line">    volocity = np.zeros(W.shape)</span><br><span class="line">    gamma = <span class="number">0.9</span></span><br><span class="line">    m = len(y)</span><br><span class="line">    cost_history = []</span><br><span class="line">    <span class="keyword">for</span> it <span class="keyword">in</span> range(itera):</span><br><span class="line">        cost = <span class="number">0.0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,m,batch_size):</span><br><span class="line">            X_i = x[i:i+batch_size]<span class="comment">#size:[batch_size,m]</span></span><br><span class="line">            y_i = y[i:i+batch_size]<span class="comment">#size:[batch_size,1]</span></span><br><span class="line"></span><br><span class="line">            predictions = np.dot(X_i,W)</span><br><span class="line">            <span class="comment">#计算整个数据集上的loss</span></span><br><span class="line">            cost += (<span class="number">1</span>/<span class="number">2</span>*m)*np.sum(np.square(predictions - y_i))</span><br><span class="line">            grad = gradient(W,X_i,y_i)</span><br><span class="line">            <span class="comment">#volocity的维度和W相同，列向量 直接矩阵计算</span></span><br><span class="line">            <span class="comment">#相当于在每个维度上计算gamma*volocity[dim] + alpha*grad[dim]</span></span><br><span class="line">            volocity = gamma * volocity + alpha*grad </span><br><span class="line">            W = W - volocity</span><br><span class="line">        cost_history.append(cost)</span><br><span class="line">    <span class="keyword">return</span> W,cost_history</span><br></pre></td></tr></table></figure>
+<h3 id="5-AdaGrad"><a href="#5-AdaGrad" class="headerlink" title="5. AdaGrad"></a>5. AdaGrad</h3><p>算法简介：</p>
+<p><img src="/images/adagrad.png" alt=""></p>
+<p><strong>在参数空间更为平缓的方向，该算法会取得更大的进步（因为平缓，所以历史梯度平方和较小，作为分母。对应学习下降的幅度较大），并且能够使得陡峭的方向变得平缓，从而加快训练速度。</strong>同时，每次迭代时，学习率也在不断改变，全局学习率逐参数的，除以历史梯度平方和的平方根，使得每个参数的学习率不同。</p>
+<p><img src="/images/v2-1d979af221d94aea41972e62a8935a95_r.jpg" alt=""></p>
+<h3 id="6-RMSprop"><a href="#6-RMSprop" class="headerlink" title="6. RMSprop"></a>6. RMSprop</h3><p>算法简介：</p>
+<p><img src="/images/RMSprop.png" alt=""></p>
+<p>相比于之前的<strong>AdaGrad</strong>，采用了指数加权平均来更新每个参数的历史梯度(近期的梯度比重较大，历史梯度指数减小)，增加了一个衰减系数来控制历史信息的获取多少。</p>
+<p><img src="/images/momprop2-2.png" alt=""></p>
+<h3 id="7-Adam"><a href="#7-Adam" class="headerlink" title="7. Adam"></a>7. Adam</h3><p><img src="/images/adam.png" alt=""></p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/" data-id="ck794ucml000m4wug4wvvfmne"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-GitHub的骚操作" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -144,7 +254,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/" data-id="ck74h1emj0000wgug2i72g27g"
+      <a data-url="http://yoursite.com/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/" data-id="ck794ucla00054wuga2zq58ta"
         class="article-share-link">分享</a>
         
       
@@ -247,7 +357,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" data-id="ck74h1epn000jwgug78s29bm3"
+      <a data-url="http://yoursite.com/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" data-id="ck794uclb00064wuggxvjdj1j"
         class="article-share-link">分享</a>
         
       
@@ -321,7 +431,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/15/%E9%93%BE%E8%A1%A8/" data-id="ck74h1eq3000vwguggzqwfix1"
+      <a data-url="http://yoursite.com/2020/02/15/%E9%93%BE%E8%A1%A8/" data-id="ck794ucmy000y4wuge33m645l"
         class="article-share-link">分享</a>
         
       
@@ -410,7 +520,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" data-id="ck74h1epe000fwgug4zb249kc"
+      <a data-url="http://yoursite.com/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" data-id="ck794ucm6000f4wug6c25bc7m"
         class="article-share-link">分享</a>
         
       
@@ -708,22 +818,26 @@ z = g(BN(Wu + b)) \rightarrow z = g(BN(Wu))</script><p><strong>We could have als
 <p>通常经过卷积操作后，会产生多个<code>channel</code>。将每个<code>channel</code>视为一个维度，统计<code>channel</code>内所有样本的均值和方差，这样每个<code>channel</code>对应一对参数$\gamma,\beta$。比如：<code>[batch_size,channel,width,height]</code>，每个<code>channel</code>内，<code>batch_size * width * height</code>的均值和方差。</p>
 <h5 id="2-3-2-Dropout"><a href="#2-3-2-Dropout" class="headerlink" title="2.3.2 Dropout"></a>2.3.2 Dropout</h5><p>在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。</p>
 <p><strong>提出原因</strong>：解决过拟合问题。</p>
-<h5 id="2-3-3-一维卷积"><a href="#2-3-3-一维卷积" class="headerlink" title="2.3.3 一维卷积"></a>2.3.3 一维卷积</h5><p>二维卷积其实就是一维卷积的每<strong>行</strong>加和。</p>
-<p>一维卷积示例：</p>
-<p><img src="/images/one-conv.png" alt=""></p>
+<h5 id="2-3-3-卷积数学定义"><a href="#2-3-3-卷积数学定义" class="headerlink" title="2.3.3 卷积数学定义"></a>2.3.3 卷积数学定义</h5><p><strong>离散卷积</strong></p>
+<script type="math/tex; mode=display">
+(f*g)(n) = \sum_{\tau = -m}^{m} f(\tau)g(n-\tau)</script><p><strong>连续卷积</strong></p>
+<script type="math/tex; mode=display">
+(f*g)(n) = \int_{\tau = -m}^{\tau = m} f(\tau)g(n-\tau)</script><p>事实上，我们在二维卷积的时候，使用的卷积核<script type="math/tex">(g)</script>是经过反转后的，为了方便计算。在进行一维卷积时，也需要对核进行反转（左右反转）。</p>
+<p>参考：<a href="https://www.cnblogs.com/itmorn/p/11177439.html" target="_blank" rel="noopener">https://www.cnblogs.com/itmorn/p/11177439.html</a></p>
+<p>计算：<a href="https://www.nowcoder.com/questionTerminal/0a3fc6ff7d89441db100fdd00ce22132?orderByHotValue=1&amp;page=1&amp;onlyReference=false" target="_blank" rel="noopener">https://www.nowcoder.com/questionTerminal/0a3fc6ff7d89441db100fdd00ce22132?orderByHotValue=1&amp;page=1&amp;onlyReference=false</a></p>
 <h5 id="2-3-4-Attention-机制"><a href="#2-3-4-Attention-机制" class="headerlink" title="2.3.4 Attention 机制"></a>2.3.4 Attention 机制</h5><p><strong>传统 Encoder-Decoder 模型</strong>：</p>
-<p>​ 在传统的模型中， 我们仅使用 Encoder 的最后一个隐状态作为 Decoder 的初始隐状态，Encoder 最后的隐状态被称为<strong>context vector</strong>向量，因为他对整个输入的 sentence 做了一个编码。在之后的 Decoder 模型中，<code>Decoder</code>初始<code>input</code>为<code>SOS(start of string) token</code>，初始隐状态为这个 context vector，然后接受上一次的<code>output</code>作为<code>input</code>迭代完成训练。</p>
+<p> 在传统的模型中， 我们仅使用 Encoder 的最后一个隐状态作为 Decoder 的初始隐状态，Encoder 最后的隐状态被称为<strong>context vector</strong>向量，因为他对整个输入的 sentence 做了一个编码。在之后的 Decoder 模型中，<code>Decoder</code>初始<code>input</code>为<code>SOS(start of string) token</code>，初始隐状态为这个 context vector，然后接受上一次的<code>output</code>作为<code>input</code>迭代完成训练。</p>
 <p><img src="/images/encoder-decoder.png" alt=""></p>
 <p><strong>加入了 Attention 机制的 Encoder-Decoder 模型</strong>：</p>
-<p>​ 标准$seq2seq$模型通常无法准确处理长输入序列，因为只有编码器的最后一个隐藏状态被用作解码器的上下文向量。 另一方面，注意力机制在解码过程中保留并利用了输入序列的所有隐藏状态(context vector)，因此直接解决了此问题。 它通过在解码器输出的每个时间步长到所有编码器隐藏状态之间创建唯一的映射来实现此目的。 这意味着，对于解码器产生的每个输出，它都可以访问整个输入序列，并且可以从该序列中有选择地选择特定元素以产生输出。 相对于传统 LSTM 记忆网络处理长度较长的序列，加入 Attention 后参数减少。</p>
+<p> 标准$seq2seq$模型通常无法准确处理长输入序列，因为只有编码器的最后一个隐藏状态被用作解码器的上下文向量。 另一方面，注意力机制在解码过程中保留并利用了输入序列的所有隐藏状态(context vector)，因此直接解决了此问题。 它通过在解码器输出的每个时间步长到所有编码器隐藏状态之间创建唯一的映射来实现此目的。 这意味着，对于解码器产生的每个输出，它都可以访问整个输入序列，并且可以从该序列中有选择地选择特定元素以产生输出。 相对于传统 LSTM 记忆网络处理长度较长的序列，加入 Attention 后参数减少。</p>
 <p><img src="/images/1152PYf.png" alt=""></p>
-<p>​ Attention 机制分为不同的种类，但总的来说大概分为以下几步：</p>
+<p> Attention 机制分为不同的种类，但总的来说大概分为以下几步：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> Calculating Alignment Scores</span><br><span class="line"><span class="number">2.</span> Softmaxing alignment scores to get Attention weights（归一化）</span><br><span class="line"><span class="number">3.</span> Multiplying the Attention weights <span class="keyword">with</span> encoder outputs/all hidden states to get the context vector(加权求和)</span><br><span class="line"><span class="number">4.</span> Concatenating context vector <span class="keyword">with</span> embedded input word</span><br></pre></td></tr></table></figure>
 <p>具体实现参考：</p>
 <p><a href="https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html" target="_blank" rel="noopener">https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html</a></p>
 <p><a href="https://blog.floydhub.com/attention-mechanism/" target="_blank" rel="noopener">https://blog.floydhub.com/attention-mechanism/</a></p>
 <p><img src="/images/attention-decoder-network.png" alt=""></p>
-<p>​ 下面介绍<strong>NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</strong>论文中提到的 Attention 机制。</p>
+<p> 下面介绍<strong>NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</strong>论文中提到的 Attention 机制。</p>
 <ul>
 <li><p>首先将序列经过 Encoder 模型，产生所有隐状态$H_{Encoder}$</p>
 </li>
@@ -791,7 +905,7 @@ W_{aa} \rightarrow \left[h_n, h_n\right],W_{ax} \rightarrow [x_m, h_n]</script><
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck74h1eqy0018wguggniy6c83"
+      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck794ucnm001b4wugdft0ausw"
         class="article-share-link">分享</a>
         
       
@@ -942,7 +1056,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ck74h1eqd0012wgug7wzb0nvp"
+      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ck794ucn300154wug3un01b1u"
         class="article-share-link">分享</a>
         
       
@@ -1216,7 +1330,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ck74h1eqk0014wgugfw2768gl"
+      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ck794ucn900174wughpvs9ky4"
         class="article-share-link">分享</a>
         
       
@@ -1328,7 +1442,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ck74h1emw0001wgugforq4nes"
+      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ck794ucl800044wug3k4e7dek"
         class="article-share-link">分享</a>
         
       
@@ -1441,88 +1555,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ck74h1eqm0015wgug7w5s9tqv"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-二分查找" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/"
-    >二分查找</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" class="article-date">
-  <time datetime="2020-02-05T10:33:14.945Z" itemprop="datePublished">2020-02-05</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><h3 id="1-写一个正确的二分查找程序"><a href="#1-写一个正确的二分查找程序" class="headerlink" title="1. 写一个正确的二分查找程序"></a>1. 写一个正确的二分查找程序</h3><p>需要注意的是，二分查找有许多注意的地方，比如循环中止条件是什么，<code>left</code> 和 <code>right</code> 初始值是什么。下面以<code>Leetcode 704</code>号问题，写一个基本的二分查找算法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">链接：https://leetcode-cn.com/problems/binary-search</span></span><br><span class="line"><span class="comment">著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;<span class="comment">// 前闭后闭的取值范围 对应着循环结束时，要取等号。</span></span><br><span class="line">        <span class="keyword">while</span>(left &lt;= right)&#123; <span class="comment">// 此时取值范围里只有一个数字。</span></span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) /<span class="number">2</span>; <span class="comment">// 防止 left + right 越界</span></span><br><span class="line">            <span class="keyword">if</span>(nums[mid] == target)&#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(nums[mid] &gt; target)&#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-left的意义是什么"><a href="#2-left的意义是什么" class="headerlink" title="2. left的意义是什么"></a>2. left的意义是什么</h3><p>我们可以看最后要跳出循环时，也就是<code>left = right</code>时，此时<code>mid = left = right</code>,如果数组中存在这个元素，自然返回<code>mid</code>索引，如果不存在呢，回到以下代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(nums[mid] &gt; target)&#123;</span><br><span class="line">    right = mid - <span class="number">1</span>;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    left = mid + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong><code>left</code>的位置恰好就是该元素插入到该数组的位置</strong>。当<code>nums[mid] &gt; target</code>时，如果要将<code>target</code>插入到数组中，要将<code>nums[mid]</code>元素向后移一个位置，空出来的位置就是应该插入的位置，也就是<code>left</code>指向的位置。如果小于呢，<code>left = mid + 1</code>,此时<code>left</code>会向后移一位，恰好又是应该插入的位置。</p>
-<p>由此解决<code>Leetcode 35</code>号问题。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">你可以假设数组中无重复元素。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">searchInsert</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//解决target不存在数组中时，返回要插入的位置</span></span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(left &lt;= right)&#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[mid] == target)&#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(target &gt; nums[mid])&#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-其他相关问题"><a href="#3-其他相关问题" class="headerlink" title="3. 其他相关问题"></a>3. 其他相关问题</h3><h4 id="3-1-在排序数组中查找元素的第一个和最后一个位置"><a href="#3-1-在排序数组中查找元素的第一个和最后一个位置" class="headerlink" title="3.1 在排序数组中查找元素的第一个和最后一个位置"></a>3.1 在排序数组中查找元素的第一个和最后一个位置</h4><p>这是<code>Leetcode 34</code>号问题。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">你的算法时间复杂度必须是 O(log n) 级别。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">如果数组中不存在目标值，返回 [-1, -1]。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">链接：https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-		sorted-array</span></span><br><span class="line"><span class="comment">著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span>  <span class="keyword">int</span>[] searchRange(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) &#123;</span><br><span class="line">       <span class="keyword">int</span> first = -<span class="number">1</span>, second = -<span class="number">1</span>;</span><br><span class="line">       first = lower_boud(nums,target);</span><br><span class="line">       second = upper_boud(nums,target);</span><br><span class="line">       <span class="keyword">int</span> ans[] = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;first,second&#125;;</span><br><span class="line">       <span class="keyword">return</span> ans;</span><br><span class="line">   &#125;</span><br><span class="line"><span class="comment">// 以下是辅助函数</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">lower_boud</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> target)</span></span>&#123;</span><br><span class="line">       <span class="comment">//利用二分搜索查找target在数组中最左边位置</span></span><br><span class="line">       <span class="keyword">int</span> left = <span class="number">0</span>, right = arr.length - <span class="number">1</span>,res = -<span class="number">1</span>;</span><br><span class="line">       <span class="keyword">while</span> (left &lt;= right)&#123;</span><br><span class="line">           <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">           <span class="keyword">if</span> (target == arr[mid])&#123;</span><br><span class="line">               res = mid;</span><br><span class="line">               <span class="comment">//逼近左边界,继续向左</span></span><br><span class="line">               right = mid - <span class="number">1</span>;</span><br><span class="line">           &#125;<span class="keyword">else</span> <span class="keyword">if</span> (target &lt; arr[mid])&#123;</span><br><span class="line">               right = mid - <span class="number">1</span>;</span><br><span class="line">           &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">               left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> res;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">upper_boud</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> target)</span></span>&#123;</span><br><span class="line">       <span class="keyword">int</span> left = <span class="number">0</span>, right = arr.length - <span class="number">1</span>,res = -<span class="number">1</span>;</span><br><span class="line">       <span class="keyword">while</span> (left &lt;= right)&#123;</span><br><span class="line">           <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">           <span class="keyword">if</span> (target == arr[mid])&#123;</span><br><span class="line">               res = mid;</span><br><span class="line">               <span class="comment">//逼近右边界,继续向右</span></span><br><span class="line">               left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;<span class="keyword">else</span> <span class="keyword">if</span> (target &lt; arr[mid])&#123;</span><br><span class="line">               right = mid - <span class="number">1</span>;</span><br><span class="line">           &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">               left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> res;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<h4 id="3-2-第一个错误的版本"><a href="#3-2-第一个错误的版本" class="headerlink" title="3.2 第一个错误的版本"></a>3.2 第一个错误的版本</h4><p>这是<code>Leetcode 278</code>号问题。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本	都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">假设你有 n 个版本 [1, 2, ..., n]，你想找出导致之后所有版本出错的第一个错误的版本。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个		函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">示例:</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">给定 n = 5，并且 version = 4 是第一个错误的版本。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">调用 isBadVersion(3) -&gt; false</span></span><br><span class="line"><span class="comment">调用 isBadVersion(5) -&gt; true</span></span><br><span class="line"><span class="comment">调用 isBadVersion(4) -&gt; true</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">所以，4 是第一个错误的版本。 </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">链接：https://leetcode-cn.com/problems/first-bad-version</span></span><br><span class="line"><span class="comment">著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">firstBadVersion</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">int</span> left = <span class="number">1</span>, right = n;</span><br><span class="line">       <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">           <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">           <span class="keyword">if</span> (isBadVersion(mid) == <span class="keyword">true</span>) &#123;<span class="comment">// 已经是错误版本，看看之前的版本有没有错</span></span><br><span class="line">               right = mid - <span class="number">1</span>;</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;<span class="comment">// 正确版本，看往后的版本有没有错</span></span><br><span class="line">               left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> left;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>还是看一下边界条件，当<code>left = right = mid</code>, 如果<code>isBadVersion(mid) == true</code>成立，表明这就是第一个错误版本，返回<code>left</code>；否则，表明mid是一个正确版本，那么<code>left = mid + 1;</code> <code>left</code> 就是第一个错误的版本。</p>
-<h4 id="3-3-寻找峰值"><a href="#3-3-寻找峰值" class="headerlink" title="3.3 寻找峰值"></a>3.3 寻找峰值</h4><p>这是<code>Leetcode 162</code>号问题</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">峰值元素是指其值大于左右相邻值的元素。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">给定一个输入数组 nums，其中 nums[i] ≠ nums[i+1]，找到峰值元素并返回其索引。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">数组可能包含多个峰值，在这种情况下，返回任何一个峰值所在位置即可。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">你可以假设 nums[-1] = nums[n] = -∞。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">链接：https://leetcode-cn.com/problems/find-peak-element</span></span><br><span class="line"><span class="comment">著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findPeakElement</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (nums.length == <span class="number">1</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length -<span class="number">1</span>;</span><br><span class="line">       <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">           <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">           <span class="keyword">if</span> (nums[mid] &gt; nums[mid + <span class="number">1</span>]) &#123;</span><br><span class="line">               right = mid;</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               left = mid + <span class="number">1</span>;y</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> left;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>其他想法后续补充…</p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ck74h1ept000owgugf6odhexn"
+      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ck794ucna00184wugfjv9ht27"
         class="article-share-link">分享</a>
         
       

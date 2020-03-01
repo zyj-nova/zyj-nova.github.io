@@ -62,7 +62,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">5.9k字</span>
+            <span class="post-count">6k字</span>
         </span>
     </span>
 
@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">27分钟</span>
+            <span class="post-count">28分钟</span>
         </span>
     </span>
 </div>
@@ -335,22 +335,26 @@ z = g(BN(Wu + b)) \rightarrow z = g(BN(Wu))</script><p><strong>We could have als
 <p>通常经过卷积操作后，会产生多个<code>channel</code>。将每个<code>channel</code>视为一个维度，统计<code>channel</code>内所有样本的均值和方差，这样每个<code>channel</code>对应一对参数$\gamma,\beta$。比如：<code>[batch_size,channel,width,height]</code>，每个<code>channel</code>内，<code>batch_size * width * height</code>的均值和方差。</p>
 <h5 id="2-3-2-Dropout"><a href="#2-3-2-Dropout" class="headerlink" title="2.3.2 Dropout"></a>2.3.2 Dropout</h5><p>在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。</p>
 <p><strong>提出原因</strong>：解决过拟合问题。</p>
-<h5 id="2-3-3-一维卷积"><a href="#2-3-3-一维卷积" class="headerlink" title="2.3.3 一维卷积"></a>2.3.3 一维卷积</h5><p>二维卷积其实就是一维卷积的每<strong>行</strong>加和。</p>
-<p>一维卷积示例：</p>
-<p><img src="/images/one-conv.png" alt=""></p>
+<h5 id="2-3-3-卷积数学定义"><a href="#2-3-3-卷积数学定义" class="headerlink" title="2.3.3 卷积数学定义"></a>2.3.3 卷积数学定义</h5><p><strong>离散卷积</strong></p>
+<script type="math/tex; mode=display">
+(f*g)(n) = \sum_{\tau = -m}^{m} f(\tau)g(n-\tau)</script><p><strong>连续卷积</strong></p>
+<script type="math/tex; mode=display">
+(f*g)(n) = \int_{\tau = -m}^{\tau = m} f(\tau)g(n-\tau)</script><p>事实上，我们在二维卷积的时候，使用的卷积核<script type="math/tex">(g)</script>是经过反转后的，为了方便计算。在进行一维卷积时，也需要对核进行反转（左右反转）。</p>
+<p>参考：<a href="https://www.cnblogs.com/itmorn/p/11177439.html" target="_blank" rel="noopener">https://www.cnblogs.com/itmorn/p/11177439.html</a></p>
+<p>计算：<a href="https://www.nowcoder.com/questionTerminal/0a3fc6ff7d89441db100fdd00ce22132?orderByHotValue=1&amp;page=1&amp;onlyReference=false" target="_blank" rel="noopener">https://www.nowcoder.com/questionTerminal/0a3fc6ff7d89441db100fdd00ce22132?orderByHotValue=1&amp;page=1&amp;onlyReference=false</a></p>
 <h5 id="2-3-4-Attention-机制"><a href="#2-3-4-Attention-机制" class="headerlink" title="2.3.4 Attention 机制"></a>2.3.4 Attention 机制</h5><p><strong>传统 Encoder-Decoder 模型</strong>：</p>
-<p>​ 在传统的模型中， 我们仅使用 Encoder 的最后一个隐状态作为 Decoder 的初始隐状态，Encoder 最后的隐状态被称为<strong>context vector</strong>向量，因为他对整个输入的 sentence 做了一个编码。在之后的 Decoder 模型中，<code>Decoder</code>初始<code>input</code>为<code>SOS(start of string) token</code>，初始隐状态为这个 context vector，然后接受上一次的<code>output</code>作为<code>input</code>迭代完成训练。</p>
+<p> 在传统的模型中， 我们仅使用 Encoder 的最后一个隐状态作为 Decoder 的初始隐状态，Encoder 最后的隐状态被称为<strong>context vector</strong>向量，因为他对整个输入的 sentence 做了一个编码。在之后的 Decoder 模型中，<code>Decoder</code>初始<code>input</code>为<code>SOS(start of string) token</code>，初始隐状态为这个 context vector，然后接受上一次的<code>output</code>作为<code>input</code>迭代完成训练。</p>
 <p><img src="/images/encoder-decoder.png" alt=""></p>
 <p><strong>加入了 Attention 机制的 Encoder-Decoder 模型</strong>：</p>
-<p>​ 标准$seq2seq$模型通常无法准确处理长输入序列，因为只有编码器的最后一个隐藏状态被用作解码器的上下文向量。 另一方面，注意力机制在解码过程中保留并利用了输入序列的所有隐藏状态(context vector)，因此直接解决了此问题。 它通过在解码器输出的每个时间步长到所有编码器隐藏状态之间创建唯一的映射来实现此目的。 这意味着，对于解码器产生的每个输出，它都可以访问整个输入序列，并且可以从该序列中有选择地选择特定元素以产生输出。 相对于传统 LSTM 记忆网络处理长度较长的序列，加入 Attention 后参数减少。</p>
+<p> 标准$seq2seq$模型通常无法准确处理长输入序列，因为只有编码器的最后一个隐藏状态被用作解码器的上下文向量。 另一方面，注意力机制在解码过程中保留并利用了输入序列的所有隐藏状态(context vector)，因此直接解决了此问题。 它通过在解码器输出的每个时间步长到所有编码器隐藏状态之间创建唯一的映射来实现此目的。 这意味着，对于解码器产生的每个输出，它都可以访问整个输入序列，并且可以从该序列中有选择地选择特定元素以产生输出。 相对于传统 LSTM 记忆网络处理长度较长的序列，加入 Attention 后参数减少。</p>
 <p><img src="/images/1152PYf.png" alt=""></p>
-<p>​ Attention 机制分为不同的种类，但总的来说大概分为以下几步：</p>
+<p> Attention 机制分为不同的种类，但总的来说大概分为以下几步：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> Calculating Alignment Scores</span><br><span class="line"><span class="number">2.</span> Softmaxing alignment scores to get Attention weights（归一化）</span><br><span class="line"><span class="number">3.</span> Multiplying the Attention weights <span class="keyword">with</span> encoder outputs/all hidden states to get the context vector(加权求和)</span><br><span class="line"><span class="number">4.</span> Concatenating context vector <span class="keyword">with</span> embedded input word</span><br></pre></td></tr></table></figure>
 <p>具体实现参考：</p>
 <p><a href="https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html" target="_blank" rel="noopener">https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html</a></p>
 <p><a href="https://blog.floydhub.com/attention-mechanism/" target="_blank" rel="noopener">https://blog.floydhub.com/attention-mechanism/</a></p>
 <p><img src="/images/attention-decoder-network.png" alt=""></p>
-<p>​ 下面介绍<strong>NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</strong>论文中提到的 Attention 机制。</p>
+<p> 下面介绍<strong>NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</strong>论文中提到的 Attention 机制。</p>
 <ul>
 <li><p>首先将序列经过 Encoder 模型，产生所有隐状态$H_{Encoder}$</p>
 </li>
@@ -418,7 +422,7 @@ W_{aa} \rightarrow \left[h_n, h_n\right],W_{ax} \rightarrow [x_m, h_n]</script><
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck74h1eqy0018wguggniy6c83"
+      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck794ucnm001b4wugdft0ausw"
         class="article-share-link">分享</a>
         
       
