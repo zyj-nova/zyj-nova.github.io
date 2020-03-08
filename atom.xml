@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-03-01T14:16:24.681Z</updated>
+  <updated>2020-03-08T06:25:22.933Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PyTorch 使用GPU加速</title>
+    <link href="http://yoursite.com/2020/03/07/PyTorch%20%E4%BD%BF%E7%94%A8GPU%E5%8A%A0%E9%80%9F/"/>
+    <id>http://yoursite.com/2020/03/07/PyTorch%20%E4%BD%BF%E7%94%A8GPU%E5%8A%A0%E9%80%9F/</id>
+    <published>2020-03-07T12:22:07.172Z</published>
+    <updated>2020-03-08T06:25:22.933Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;PyTorch-使用GPU加速&quot;&gt;&lt;a href=&quot;#PyTorch-使用GPU加速&quot; class=&quot;headerlink&quot; title=&quot;PyTorch 使用GPU加速&quot;&gt;&lt;/a&gt;PyTorch
+        
+      
+    
+    </summary>
+    
+    
+      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>实现梯度下降（线性回归为例）</title>
@@ -146,7 +171,7 @@
     <link href="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <id>http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
     <published>2020-02-12T03:43:02.260Z</published>
-    <updated>2020-03-01T14:30:12.458Z</updated>
+    <updated>2020-03-04T10:05:59.562Z</updated>
     
     <summary type="html">
     

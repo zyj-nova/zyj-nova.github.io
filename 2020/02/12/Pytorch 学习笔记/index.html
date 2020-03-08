@@ -62,7 +62,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">6k字</span>
+            <span class="post-count">6.1k字</span>
         </span>
     </span>
 
@@ -373,6 +373,7 @@ e_{ij} = \alpha(s_{i-1},h_j),j=1,2,3,...,T_x</script><p>表示不同$h_j$对$s_{
 c_i = \sum_{j=1}^{T_x} \alpha_{ij}h_j</script><p><strong>注意</strong>：此时$c_i$仍是一个多维向量，相加的时候是各个维度分别相加。</p>
 </li>
 <li><p>将 context vector 与$t-1$的 output 作为输入（ _concatenated_ ），与$s_{i-1}$传入 decoder 模型中得到输出。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># 所有encoder隐状态 共有3个隐态，维度为4</span></span><br><span class="line">hidden_states = np.array([</span><br><span class="line">    [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],</span><br><span class="line">    [<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>],</span><br><span class="line">    [<span class="number">0</span>,<span class="number">-1</span>,<span class="number">3</span>,<span class="number">6</span>]</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 得出的attention权重</span></span><br><span class="line">weights = np.array([[<span class="number">0.6</span>,<span class="number">0.3</span>,<span class="number">0.1</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># weights和hidden_states 相乘</span></span><br><span class="line">np.dot(weights,hidden_states)</span><br><span class="line"><span class="comment">#各个维度相加得到context_vector</span></span><br><span class="line">array([[<span class="number">1.2</span>, <span class="number">2.</span> , <span class="number">3.6</span>, <span class="number">5.1</span>]])</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <p><img src="/images/attn_mem.jpeg" alt=""></p>
@@ -422,7 +423,7 @@ W_{aa} \rightarrow \left[h_n, h_n\right],W_{ax} \rightarrow [x_m, h_n]</script><
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck794ucnm001b4wugdft0ausw"
+      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck7isttf5001d88ug3m3igf19"
         class="article-share-link">分享</a>
         
       
