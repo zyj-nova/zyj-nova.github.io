@@ -48,7 +48,7 @@ C - (C-k) = k</script><p>同样是k个距离。</p>
 <p>得证。</p>
 </li>
 </ol>
-<p><img src="/images/寻找重复数.jpg" alt=""></p>
+<p><img src="/images/快慢指针示意图.jpg" alt=""></p>
 ]]></content>
       <categories>
         <category>Leetcode</category>
@@ -106,7 +106,31 @@ L(\mu,\sigma^2) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x_i - \m
 <li>$\mu$ 即为样本<strong>均值</strong></li>
 <li>$\sigma^2$ 为样本的<strong>方差</strong></li>
 </ul>
-<h3 id="2-Jensen不等式"><a href="#2-Jensen不等式" class="headerlink" title="2. Jensen不等式"></a>2. Jensen不等式</h3><h3 id="3-E-M算法的导出"><a href="#3-E-M算法的导出" class="headerlink" title="3. E-M算法的导出"></a>3. E-M算法的导出</h3>]]></content>
+<h3 id="2-Jensen不等式"><a href="#2-Jensen不等式" class="headerlink" title="2. Jensen不等式"></a>2. Jensen不等式</h3><h3 id="3-E-M算法的导出"><a href="#3-E-M算法的导出" class="headerlink" title="3. E-M算法的导出"></a>3. E-M算法的导出</h3><script type="math/tex; mode=display">
+L(\theta) = \prod_i^n P(x_i|\theta)</script><script type="math/tex; mode=display">
+L(\theta) =  \sum_i^n \log P(x_i|\theta) =\\ \sum_i^n\log\sum_Z  P(x_i,z|\theta) = \\
+\sum_i^n\log\sum_ZQ(z)\frac{p(x_i,z|\theta)}{Q(z)}</script><p>注意：$z$为隐变量（<strong>latent variables</strong>）$Q(z)$为$z$的一个分布，是啥分布不确定。</p>
+<p>求这个似然函数的导数比较麻烦和困难，因此提出了EM算法，通过迭代的方式逐步求解。</p>
+<p>继续推导，有Jensen不等式有：</p>
+<script type="math/tex; mode=display">
+\sum_i^n\log\sum_ZQ(z)\frac{p(x_i,z|\theta)}{Q(z)} >= \sum_i^n\sum_ZQ(z)\log\frac{p(x_i,z|\theta)}{Q(z)}</script><p>当且仅当$\frac{p(x_i,z|\theta)}{Q(z)}$ 为常数时取等。即：</p>
+<script type="math/tex; mode=display">
+\frac{p(x_i,z|\theta)}{Q(z)} = c \\
+\sum_Z Q(z) = 1 \\
+Q(z) ∝ p(x_i,z;\theta)
+Q(z) = p(z|x_i;\theta)</script><p>可以看出，Q是给定观测数据、参数的条件下，隐变量的一个后验分布(条件分布)。</p>
+<p>带回到上个式子：</p>
+<script type="math/tex; mode=display">
+\theta^{j+1} = \arg\max_\theta \sum_i^n\sum_ZQ(z)\log\frac{p(x_i,z|\theta^j)}{Q(z)} = \\
+
+\arg\max_\theta \sum_i^n\sum_Z p(z|x_i;\theta^j)\log p(x_i,z;\theta^j)</script><p>(与z无关的省略掉，给定参数$\theta^j$ 、观测数据，计算出$p(z|x_i;\theta^j)$ 再带进去。然后就只需要最大化$p(x,z;\theta)$ 得到$\theta^{j+1}$)。上述就是M步；我们来看看要极大化的那个式子</p>
+<script type="math/tex; mode=display">
+Q(z)\log p(x_i,z;\theta^j) = E_{Q}[\log p(x_i,z;\theta^j)] = \\
+E_{p(z|x_i,\theta^j)}[\log p(x_i,z;\theta^j)] = \\
+E_Z[\log p(x_i,z;\theta)|x_i;\theta^j]</script><p>我们将最后一个式子称为<strong>Q函数</strong>。注意，这个Q不同于上面那个Q分布。</p>
+<p>​        <strong>Q函数是完全数据（观测数据和隐变量）的对数似然函数关于隐变量在给定观测数据和参数的情况下的条件分布的期望。E步的求期望，求的就是这个期望。</strong></p>
+<p>​        念起来真的很抽象，结合例子做的话就好多了。</p>
+]]></content>
       <categories>
         <category>机器学习</category>
       </categories>
