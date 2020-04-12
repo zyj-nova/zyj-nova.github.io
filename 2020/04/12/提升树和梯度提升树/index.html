@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    卷积操作的线性性质 |  张永剑的博客
+    提升树和梯度提升树 |  张永剑的博客
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -30,7 +30,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-卷积操作的线性性质" class="article article-type-post" itemscope
+  <article id="post-提升树和梯度提升树" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -38,7 +38,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  卷积操作的线性性质
+  提升树和梯度提升树
 </h1>
   
 
@@ -47,12 +47,12 @@
 
     
     <div class="article-meta">
-      <a href="/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" class="article-date">
-  <time datetime="2019-11-08T02:47:10.000Z" itemprop="datePublished">2019-11-08</time>
+      <a href="/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" class="article-date">
+  <time datetime="2020-04-12T12:21:03.660Z" itemprop="datePublished">2020-04-12</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
   </div>
 
       
@@ -62,7 +62,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">297字</span>
+            <span class="post-count">981字</span>
         </span>
     </span>
 
@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1分钟</span>
+            <span class="post-count">3分钟</span>
         </span>
     </span>
 </div>
@@ -97,35 +97,44 @@
       
 
       
-      <h2 id="卷积操作的线性性质"><a href="#卷积操作的线性性质" class="headerlink" title="卷积操作的线性性质"></a>卷积操作的线性性质</h2><h3 id="卷积"><a href="#卷积" class="headerlink" title="卷积"></a>卷积</h3><p>我们假设有一幅大小为<strong>4 ×4</strong> 的图像 <strong>_x_</strong>，卷积核大小为 <strong>3×3</strong> <strong>_A_</strong></p>
-<p>卷积核滑动步长为 1 ，没有 padding；那么经过卷积以后图像大小即为 <strong>2×2</strong></p>
-<p>如何将其写为矩阵相乘形式？</p>
-<p>我们将卷积核拓展为 一个 <strong>4 × 16</strong> 的矩阵 <strong>=&gt;</strong> <strong>_T_</strong>，将图像<strong>_x_</strong> 压缩(flatten)为 <strong>16 × 1</strong> <strong>=&gt;</strong> <strong>_X_</strong></p>
-<p>卷积操作即可表示为:</p>
-<center>T*x = C</center>
-
-<p>其中，结果 <strong>_C_</strong> 为<strong>4×1</strong>的矩阵。很显然，上面的这个式子是<strong>线性</strong>的；</p>
-<p>这是矩阵和一个列向量相乘，可以理解为这个列向量经过矩阵变化之后，最终成了<strong>_C_</strong></p>
-<p>那么，这么矩阵就可以理解为列向量的一个<strong>函数</strong>。</p>
-<p>也就是说，图像经过了卷积核这个函数，变成了最后的结果。</p>
-<h3 id="转置卷积"><a href="#转置卷积" class="headerlink" title="转置卷积"></a>转置卷积</h3><p>现在我们有<strong>2 × 2</strong> 的图像 <strong>_x_</strong>，想让他变成 <strong>4 × 4</strong>的，我们该如何操作？</p>
-<p>我们仍然可以利用上文提到的那个卷积矩阵 <strong>_T_</strong>，</p>
-<p>即：</p>
-<center>T^T(16*4) * x(4*1) = R(16*1)</center>
-
-<p>转置卷积通常用来做上采样(up sample)。</p>
+      <h2 id="提升树和梯度提升树"><a href="#提升树和梯度提升树" class="headerlink" title="提升树和梯度提升树"></a>提升树和梯度提升树</h2><p>​        集成学习主要分为<strong>boosting</strong>、<strong>bagging</strong>、<strong>stacking</strong>，随机森林属于<strong>bagging</strong>，而本文介绍的提升算法属于<strong>boosting</strong>，同为该类的还有<strong>Adaboost</strong>。提升方法实际采用加法模型（基函数的线性组合）与前向分布算法。</p>
+<p>​        注：阅读前请熟悉<strong>CART</strong>回归树的构建过程。</p>
+<h3 id="1-提升树"><a href="#1-提升树" class="headerlink" title="1. 提升树"></a>1. 提升树</h3><p>​        根据《统计学习方法》中提升树的定义，提升树是以分类树或回归树为基本分类器的提升方法。以决策树为基函数的提升方法称为提升树。提升树可以表示为决策树的加法模型。即</p>
+<script type="math/tex; mode=display">
+f_M(x) = \sum_{m=1}^{M} T(x;\Theta_m)</script><p>，其中$M$为决策树的个数，$\Theta$为决策树的参数（若是回归树，参数就是在哪个维度哪个点进行分裂）。</p>
+<p>首先确定初始的提升树$f_0(x) = 0$，第$m$步的模型表达式是：</p>
+<script type="math/tex; mode=display">
+f_m(x) = f_{m-1}(x) + T(x;\Theta_m)</script><p>意思就是前一次的模型的值与第$m$步训练出来的决策树的和。</p>
+<p>在第$m$步，</p>
+<script type="math/tex; mode=display">
+\hat \Theta_m = arg\min_{\Theta_m} \sum_{i=1}^{N}L(y_i,f_{m-1}(x) + T(x;\Theta_m))</script><p>$L$为损失函数，在第$m$步时，$f_{m-1}(x) + T(x;\Theta_m)$即为$x$的预测值。$f_{m-1}(x)$的值已经确定（常数）。</p>
+<p>在回归问题中，$L$为二次函数，</p>
+<script type="math/tex; mode=display">
+L(y_i,f_{m-1}(x) + T(x;\Theta_m) = [y -f_{m-1}(x) - T(x;\Theta_m ]^2 
+=[r -  T(x;\Theta_m)]^2</script><p>$r = y - f_{m-1}(x)$，为<strong>残差</strong>（真实值-预测值）。当$L$最小即$L = 0$，$r = T$，即这一棵树在拟合残差。在第$m$步，训练的这棵树是在拟合$f_{m-1}(x)$与$y$的差值即残差，以此不停的迭代。</p>
+<p>​        个人想法：当在构建回归树时，采用了贪心的构建算法，因此，针对相同的$y$值，构建无数次都是同一棵树。因此，在提升树算法中，我们通过损失函数看到了，回归树是在拟合残差，即每一步输入到回归树中的y值是$y - f_{m-1}(x)$。</p>
+<h3 id="2-梯度提升算法"><a href="#2-梯度提升算法" class="headerlink" title="2. 梯度提升算法"></a>2. 梯度提升算法</h3><p>​        针对提升树的优化问题，当损失函数是二次函数时，可以看到很好优化，但当损失函数为其他形式时，没有更好的优化方法，或者说优化比较困难。因此，$Fridemam$提出了梯度提升算法来优化提升树。回归问题和分类问题的区别是损失函数定义的不同。</p>
+<p>针对回归问题的梯度提升算法，介绍如下：</p>
+<h3 id="3-梯度提升树（GBDT）"><a href="#3-梯度提升树（GBDT）" class="headerlink" title="3. 梯度提升树（GBDT）"></a>3. 梯度提升树（GBDT）</h3><p>​        当梯度提升的损失函数为二次函数时，此时即梯度提升树。恰好，损失函数负梯度 == 伪残差。</p>
+<script type="math/tex; mode=display">
+r_{mi} = - [\frac{\partial L(y_i,f(x_i))}{\partial f(x_i)}]_{f(x) = f_{m-1}(x)}\\
+\frac{\partial \frac{1}{2}(y_i-f(x_i)^2}{\partial f(x_i)} = -(y-f(x_i)) \\
+\frac{\partial \frac{1}{2}(y_i-f(x_i)^2}{\partial^2 f(x_i)} = 1</script><p>还有就是，当损失函数为二次函数，第一步初始化的值是所有$y$值的均值。原因如下：</p>
+<script type="math/tex; mode=display">
+f_0(x) = arg\min_c \sum_{i=1}^N L(y_i,c) \\=  arg\min_c\sum_{i=1}^N (y_i-c)^2</script><p>令$p(c) = \sum_{i=1}^N (y_i-c)^2$，$\partial p/ \partial c = -2\sum_{i=1}^N(y_i-c) = 0$，$c = (y_1 + y_2 + … + y_N) / N$。即初始化时，</p>
+<script type="math/tex; mode=display">
+f_0(x) = \frac{y_1+y_2 + ... + y_N}{N}</script><p>与<strong>梯度下降</strong>不同的是，梯度提升是在<strong>函数空间</strong>求梯度，把函数作为参数来看待。而梯度下降是在<strong>参数空间</strong>求梯度。</p>
+<h3 id="4-XGBoost"><a href="#4-XGBoost" class="headerlink" title="4. XGBoost"></a>4. XGBoost</h3><p>​        xgboost与梯度提升树不同的是目标函数中加入了正则项，以及使用了二阶导数（目标函数泰勒展开式中用到了），结果更为精确，同时支持分布式并行计算（特征维度），在大规模机器学习中速度很快。本章介绍xgboost的推导，以及xgboost框架中是如何构建一棵xgboost树的。</p>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" data-id="ck8x4ce8h001blkugaikxd4pd"
+      <a data-url="http://yoursite.com/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" data-id="ck8x4ce7o000rlkug6f0u6s01"
         class="article-share-link">分享</a>
         
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CNN-NET/" rel="tag">CNN NET</a></li></ul>
-
     </footer>
 
   </div>
@@ -134,19 +143,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2019/11/09/Hashap-LoadFactor/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            HashMap LoadFactor
-          
-        </div>
-      </a>
     
-    
-      <a href="/2019/11/07/canny/" class="article-nav-link">
+      <a href="/2020/03/20/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Canny Edge Detection Step By Step</div>
+        <div class="article-nav-title">寻找重复数</div>
       </a>
     
   </nav>
