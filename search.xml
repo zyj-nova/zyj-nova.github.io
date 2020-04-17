@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Word Embedding</title>
+    <url>/2020/04/17/Word%20Embedding/</url>
+    <content><![CDATA[<h2 id="Word-Embedding之skip-gram"><a href="#Word-Embedding之skip-gram" class="headerlink" title="Word Embedding之skip-gram"></a>Word Embedding之skip-gram</h2><h3 id="1-Word-Embedding"><a href="#1-Word-Embedding" class="headerlink" title="1.Word Embedding"></a>1.Word Embedding</h3><p>​        词的分布式表示大致可以分为基于矩阵、基于聚类、基于神经网络等表示方法。基于神经网络的分布式表示一般称为词向量、词嵌入（word embedding）、分布式表示（ distributed representation）。词嵌入就是指将<strong>词汇映射到实数向量</strong>空间的概念（模型）。神经网络词向量表示技术通过神经网络技术对上下文，以及上下文与目标词之间的关系进行建模。神经网络模型有skip-gram和Continous Bag of Words Model(CBOW)模型。</p>
+<p>​        word2vec是谷歌提出一种word embedding 的工具或者算法集合，在word2vec中给出了这skip-gram和cbow模型的训练和生成方式。</p>
+<h3 id="2-skip-gram"><a href="#2-skip-gram" class="headerlink" title="2. skip gram"></a>2. skip gram</h3><p>​        由于词为字符串，而输入到网络中的是向量，因此传统常用one-hot表示，把每个词表示为一个很长的向量，但这个向量是非常稀疏的，且向量不包含其他含义，因此，word embedding就是找到n个属性来表示这个词，这种表示方法不仅可以大大降低维度，而且可以通过向量计算两个词的“距离”。比如少年、男人、少女这几个词，就可以选择年龄、性别这两个属性来描述。</p>
+<p>​        skip-gram其实就是训练一个小型神经网络，将单词映射到向量空间只是其中的一步。<strong>该神经网络最后的输出，其实是词库中各个单词出现在给定输入单词附近的概率——给定中心词，预测附近单词。</strong></p>
+<p>​        整体网络架构为三层（输入层、隐藏层、输出层）。假设有一个词汇量为10000的词库。</p>
+<p>输入层为单词的one-hot表示向量（10000维），隐藏层没有激活函数，输出层采用softmax函数，输出一个概率分布（10000维向量），表示词汇表各个单词在输入词附近（nearby）的概率。隐藏层的神经元数量就是单词映射到实数空间属性个数。<strong>输入层和隐藏层之间的权重就是我们需要的，也就是作为词汇最后的映射空间。</strong></p>
+<p><strong>网络模型</strong>：</p>
+<p>输入：$word_{1\times v}、target$</p>
+<p>参数：$W_{v \times N}$、$W_{N\times V}$</p>
+<p>输出：$P_{1\times V}$</p>
+<p><img src="/images/model.jpg" alt=""></p>
+<p><strong>训练过程</strong>：</p>
+<ol>
+<li><p>训练数据的产生</p>
+<p>训练数据采用滑动窗口，在一个句子中滑动，窗口大小是一个超参数。比如：</p>
+</li>
+</ol>
+<p>   <img src="/images/word2vec.jpg" alt=""></p>
+<p>   中心单词not，窗口大小为2。此次滑动产生的数据为：</p>
+<p>   <img src="/images/2.jpg" alt=""></p>
+<p>   以此类推。</p>
+<p>   <img src="/images/3.jpg" alt=""></p>
+<ol>
+<li><p>训练</p>
+<p>将产生的数据输入网络，计算输出层产生的概率向量和target word的one-hot向量的loss，然后反向传播更新参数矩阵。</p>
+</li>
+</ol>
+<p>   <img src="/images/4.png" alt=""></p>
+<h3 id="3-Negative-Sampling"><a href="#3-Negative-Sampling" class="headerlink" title="3. Negative Sampling"></a>3. Negative Sampling</h3><p>​        以上过程有助于了解网络是如何运作的，但是该网络采用softmax激活函数，训练成本较高，因此word2vec中使用了基于负例采样（negative sampling）的skip gram以此来降低计算成本。具体就是将softmax函数转化为逻辑回归（二分类），输出target是否为input的nearby。负采样就是在数据集中加入target不是input的nearby的样本。</p>
+<p>​        个人理解：加入了negative sampling后的训练过程如下：</p>
+<p>​        选择与input word相邻的单词作为output word，target为1，表示相邻，再随机选择5-20个不相邻单词作为output word，target为0，将input word输入到网络中经过隐藏层得到embedding后的vector，与output word对应的weight（参数矩阵2的某一列）点乘得到向量积，再经过sigmod函数，得到一个分数，与target的差即为loss，反向传播然后更新参数矩阵1中input word对应的weight，和参数矩阵2中output word对应的weight，这样每次训练只需要更新部分权重，而非整个权重，从而加快收敛过程。</p>
+<p><img src="/images/word2vec-training-update.png" alt=""></p>
+<h3 id="4-后续"><a href="#4-后续" class="headerlink" title="4. 后续"></a>4. 后续</h3><p>​        word2vec不仅可以用来处理nlp问题，其他序列问题也可以采用，比如购物网站、音乐网站产生的用户浏览序列等可以用来构建推荐系统模型。</p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>强烈推荐！！！</p>
+<p>[1]. <a href="http://jalammar.github.io/illustrated-word2vec/" target="_blank" rel="noopener">http://jalammar.github.io/illustrated-word2vec/</a></p>
+<p>[2]. <a href="https://mp.weixin.qq.com/s?__biz=MjM5MTQzNzU2NA==&amp;mid=2651669277&amp;idx=2&amp;sn=bc8f0590f9e340c1f1359982726c5a30&amp;chksm=bd4c648e8a3bed9817f30c5a512e79fe0cc6fbc58544f97c857c30b120e76508fef37cae49bc&amp;scene=0&amp;xtrack=1#rd（[1]中文翻译版）" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MjM5MTQzNzU2NA==&amp;mid=2651669277&amp;idx=2&amp;sn=bc8f0590f9e340c1f1359982726c5a30&amp;chksm=bd4c648e8a3bed9817f30c5a512e79fe0cc6fbc58544f97c857c30b120e76508fef37cae49bc&amp;scene=0&amp;xtrack=1#rd（[1]中文翻译版）</a></p>
+<p>[3]. <a href="http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/" target="_blank" rel="noopener">http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/</a></p>
+]]></content>
+      <categories>
+        <category>“深度学习”</category>
+      </categories>
+  </entry>
+  <entry>
     <title>提升树和梯度提升树</title>
     <url>/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/</url>
     <content><![CDATA[<h2 id="提升树和梯度提升树"><a href="#提升树和梯度提升树" class="headerlink" title="提升树和梯度提升树"></a>提升树和梯度提升树</h2><p>​        集成学习主要分为<strong>boosting</strong>、<strong>bagging</strong>、<strong>stacking</strong>，随机森林属于<strong>bagging</strong>，而本文介绍的提升算法属于<strong>boosting</strong>，同为该类的还有<strong>Adaboost</strong>。提升方法实际采用加法模型（基函数的线性组合）与前向分布算法。</p>
@@ -16,12 +61,22 @@ f_m(x) = f_{m-1}(x) + T(x;\Theta_m)</script><p>意思就是前一次的模型的
 \hat \Theta_m = arg\min_{\Theta_m} \sum_{i=1}^{N}L(y_i,f_{m-1}(x) + T(x;\Theta_m))</script><p>$L$为损失函数，在第$m$步时，$f_{m-1}(x) + T(x;\Theta_m)$即为$x$的预测值。$f_{m-1}(x)$的值已经确定（常数）。</p>
 <p>在回归问题中，$L$为二次函数，</p>
 <script type="math/tex; mode=display">
-L(y_i,f_{m-1}(x) + T(x;\Theta_m) = [y -f_{m-1}(x) - T(x;\Theta_m ]^2 
+L(y_i,f_{m-1}(x) + T(x;\Theta_m)) = [y -f_{m-1}(x) - T(x;\Theta_m ]^2 
 =[r -  T(x;\Theta_m)]^2</script><p>$r = y - f_{m-1}(x)$，为<strong>残差</strong>（真实值-预测值）。当$L$最小即$L = 0$，$r = T$，即这一棵树在拟合残差。在第$m$步，训练的这棵树是在拟合$f_{m-1}(x)$与$y$的差值即残差，以此不停的迭代。</p>
 <p>​        个人想法：当在构建回归树时，采用了贪心的构建算法，因此，针对相同的$y$值，构建无数次都是同一棵树。因此，在提升树算法中，我们通过损失函数看到了，回归树是在拟合残差，即每一步输入到回归树中的y值是$y - f_{m-1}(x)$。</p>
 <h3 id="2-梯度提升算法"><a href="#2-梯度提升算法" class="headerlink" title="2. 梯度提升算法"></a>2. 梯度提升算法</h3><p>​        针对提升树的优化问题，当损失函数是二次函数时，可以看到很好优化，但当损失函数为其他形式时，没有更好的优化方法，或者说优化比较困难。因此，$Fridemam$提出了梯度提升算法来优化提升树。回归问题和分类问题的区别是损失函数定义的不同。</p>
 <p>针对回归问题的梯度提升算法，介绍如下：</p>
-<h3 id="3-梯度提升树（GBDT）"><a href="#3-梯度提升树（GBDT）" class="headerlink" title="3. 梯度提升树（GBDT）"></a>3. 梯度提升树（GBDT）</h3><p>​        当梯度提升的损失函数为二次函数时，此时即梯度提升树。恰好，损失函数负梯度 == 伪残差。</p>
+<p>（1）初始化</p>
+<script type="math/tex; mode=display">
+f_0(x) = arg\min_c \sum_{i=1}^N L(y_i,c)</script><p>（2）对$m = 1,2,…M$</p>
+<p>​        1）对$i = 1,2,3,…,N$ 计算</p>
+<script type="math/tex; mode=display">
+r_{mi} = - [\frac{\partial L(y_i,f(x_i))}{\partial f(x_i)}]_{f(x) = f_{m-1}(x)}</script><p>​        2）针对$r_{mi}$拟合一个回归树，得到第$m$棵树的叶子结点$R_{mj},j = 1,2,…,J$</p>
+<p>​        3）对每个叶子结点$j = 1,2,…,J$，根据损失函数计算该叶子节点的权值（和1一样的问题，只有一个根节点的树）</p>
+<script type="math/tex; mode=display">
+c_{mj} =arg\min_c \sum_{x_i\in R_{mj}} L(y_i,c + f_{m-1}(x_i))</script><p>​        4）更新$f_m(x) = f_{m-1}(x) + \sum_{j=1}^J c_{mj}I(x\in R_{mj})$</p>
+<p>​    （3）得到最终的梯度提升树。</p>
+<h3 id="3-梯度提升树（GBDT）"><a href="#3-梯度提升树（GBDT）" class="headerlink" title="3. 梯度提升树（GBDT）"></a>3. 梯度提升树（GBDT）</h3><p>​        当梯度提升的损失函数为二次函数时，恰好，损失函数负梯度 == 伪残差。</p>
 <script type="math/tex; mode=display">
 r_{mi} = - [\frac{\partial L(y_i,f(x_i))}{\partial f(x_i)}]_{f(x) = f_{m-1}(x)}\\
 \frac{\partial \frac{1}{2}(y_i-f(x_i)^2}{\partial f(x_i)} = -(y-f(x_i)) \\
@@ -30,8 +85,10 @@ r_{mi} = - [\frac{\partial L(y_i,f(x_i))}{\partial f(x_i)}]_{f(x) = f_{m-1}(x)}\
 f_0(x) = arg\min_c \sum_{i=1}^N L(y_i,c) \\=  arg\min_c\sum_{i=1}^N (y_i-c)^2</script><p>令$p(c) = \sum_{i=1}^N (y_i-c)^2$，$\partial p/ \partial c = -2\sum_{i=1}^N(y_i-c) = 0$，$c = (y_1 + y_2 + … + y_N) / N$。即初始化时，</p>
 <script type="math/tex; mode=display">
 f_0(x) = \frac{y_1+y_2 + ... + y_N}{N}</script><p>与<strong>梯度下降</strong>不同的是，梯度提升是在<strong>函数空间</strong>求梯度，把函数作为参数来看待。而梯度下降是在<strong>参数空间</strong>求梯度。</p>
-<h3 id="4-XGBoost"><a href="#4-XGBoost" class="headerlink" title="4. XGBoost"></a>4. XGBoost</h3><p>​        xgboost与梯度提升树不同的是目标函数中加入了正则项，以及使用了二阶导数（目标函数泰勒展开式中用到了），结果更为精确，同时支持分布式并行计算（特征维度），在大规模机器学习中速度很快。本章介绍xgboost的推导，以及xgboost框架中是如何构建一棵xgboost树的。</p>
-]]></content>
+<p>当损失函数为二次函数，每个<strong>叶子结点最后的权值</strong>是划到该叶子结点所有y值的均值。(和初始化问题一样)。</p>
+<h3 id="4-XGBoost"><a href="#4-XGBoost" class="headerlink" title="4. XGBoost"></a>4. XGBoost</h3><p>​        xgboost与梯度提升树不同的是目标函数中加入了正则项，以及使用了二阶导数（目标函数泰勒展开式中用到了），结果更为精确，同时支持分布式并行计算（特征维度），在大规模机器学习中速度很快。本章介绍xgboost的推导，以及xgboost框架中是如何构建一棵xgboost树的。二阶泰勒展开：</p>
+<script type="math/tex; mode=display">
+f(x+\Delta x) \approx f(x) + f^{\\'}(x)\Delta x + \frac{1}{2}\ddot{f(x)}\Delta x^2</script>]]></content>
       <categories>
         <category>机器学习</category>
       </categories>

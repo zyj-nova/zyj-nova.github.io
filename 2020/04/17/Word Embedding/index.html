@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    GitHub的骚操作 |  张永剑的博客
+    Word Embedding |  张永剑的博客
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -30,7 +30,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-GitHub的骚操作" class="article article-type-post" itemscope
+  <article id="post-Word Embedding" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -38,7 +38,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  GitHub的骚操作
+  Word Embedding
 </h1>
   
 
@@ -47,12 +47,12 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/" class="article-date">
-  <time datetime="2020-02-27T04:57:10.082Z" itemprop="datePublished">2020-02-27</time>
+      <a href="/2020/04/17/Word%20Embedding/" class="article-date">
+  <time datetime="2020-04-16T16:06:20.840Z" itemprop="datePublished">2020-04-17</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
+    <a class="article-category-link" href="/categories/%E2%80%9C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E2%80%9D/">“深度学习”</a>
   </div>
 
       
@@ -62,7 +62,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">505字</span>
+            <span class="post-count">1.1k字</span>
         </span>
     </span>
 
@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2分钟</span>
+            <span class="post-count">4分钟</span>
         </span>
     </span>
 </div>
@@ -97,49 +97,50 @@
       
 
       
-      <h2 id="GitHub的骚操作"><a href="#GitHub的骚操作" class="headerlink" title="GitHub的骚操作"></a>GitHub的骚操作</h2><h3 id="1-in-限制搜索"><a href="#1-in-限制搜索" class="headerlink" title="1. in 限制搜索"></a>1. in 限制搜索</h3><p><strong>用法</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gnn <span class="keyword">in</span>:name</span><br><span class="line">spring <span class="keyword">in</span>:readme,name,description</span><br></pre></td></tr></table></figure>
-<h3 id="2-starts-forks范围搜索"><a href="#2-starts-forks范围搜索" class="headerlink" title="2. starts/forks范围搜索"></a>2. starts/forks范围搜索</h3><p><strong>用法</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name stars/forks:&gt;500</span><br><span class="line">name stars/forks:500..600</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">组合命令</span></span><br><span class="line">redis starts:&gt;5000 forks:6000..10000 in:name</span><br></pre></td></tr></table></figure>
-<h3 id="3-awesome搜索"><a href="#3-awesome搜索" class="headerlink" title="3. awesome搜索"></a>3. awesome搜索</h3><p><strong>用法</strong>：展示站点上较好的项目</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awesome gan</span><br></pre></td></tr></table></figure>
-<h3 id="4-高亮显示代码"><a href="#4-高亮显示代码" class="headerlink" title="4.高亮显示代码"></a>4.高亮显示代码</h3><p><strong>用法</strong>：在代码链接后加<code>#Lnum</code>，将高亮该行代码；<code>#L5-L50</code>高亮<code>5-50</code>行的代码。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/JeffLi1993/springboot-learning-example/blob/master/chapter-2-spring-boot-config/src/main/java/demo/springboot/web/HelloBookController.java#L1</span><br><span class="line"></span><br><span class="line">https://github.com/JeffLi1993/springboot-learning-example/blob/master/chapter-2-spring-boot-config/src/main/java/demo/springboot/web/HelloBookController.java#L1-L15</span><br></pre></td></tr></table></figure>
-<h3 id="5-t搜索"><a href="#5-t搜索" class="headerlink" title="5. t搜索"></a>5. t搜索</h3><p>在某个项目首页下，<code>t</code>键可以查看该项目所有代码文件。</p>
-<p>还有其他快捷键，可参考官方文档。</p>
-<p><img src="/images/image-20200227130114291.png" alt="image-20200227130114291"></p>
-<p><img src="/images/image-20200227130247176.png" alt="image-20200227130247176"></p>
-<h3 id="6-关于git的一些知识"><a href="#6-关于git的一些知识" class="headerlink" title="6. 关于git的一些知识"></a>6. 关于git的一些知识</h3><ul>
-<li><p><code>git</code>分为工作区、暂存区、版本库。将工作区的文件<code>add</code>到暂存区，<code>git</code>才可以对改文件进行版本管理，<code>add</code>之后就可以<code>commit</code>到版本库</p>
+      <h2 id="Word-Embedding之skip-gram"><a href="#Word-Embedding之skip-gram" class="headerlink" title="Word Embedding之skip-gram"></a>Word Embedding之skip-gram</h2><h3 id="1-Word-Embedding"><a href="#1-Word-Embedding" class="headerlink" title="1.Word Embedding"></a>1.Word Embedding</h3><p>​        词的分布式表示大致可以分为基于矩阵、基于聚类、基于神经网络等表示方法。基于神经网络的分布式表示一般称为词向量、词嵌入（word embedding）、分布式表示（ distributed representation）。词嵌入就是指将<strong>词汇映射到实数向量</strong>空间的概念（模型）。神经网络词向量表示技术通过神经网络技术对上下文，以及上下文与目标词之间的关系进行建模。神经网络模型有skip-gram和Continous Bag of Words Model(CBOW)模型。</p>
+<p>​        word2vec是谷歌提出一种word embedding 的工具或者算法集合，在word2vec中给出了这skip-gram和cbow模型的训练和生成方式。</p>
+<h3 id="2-skip-gram"><a href="#2-skip-gram" class="headerlink" title="2. skip gram"></a>2. skip gram</h3><p>​        由于词为字符串，而输入到网络中的是向量，因此传统常用one-hot表示，把每个词表示为一个很长的向量，但这个向量是非常稀疏的，且向量不包含其他含义，因此，word embedding就是找到n个属性来表示这个词，这种表示方法不仅可以大大降低维度，而且可以通过向量计算两个词的“距离”。比如少年、男人、少女这几个词，就可以选择年龄、性别这两个属性来描述。</p>
+<p>​        skip-gram其实就是训练一个小型神经网络，将单词映射到向量空间只是其中的一步。<strong>该神经网络最后的输出，其实是词库中各个单词出现在给定输入单词附近的概率——给定中心词，预测附近单词。</strong></p>
+<p>​        整体网络架构为三层（输入层、隐藏层、输出层）。假设有一个词汇量为10000的词库。</p>
+<p>输入层为单词的one-hot表示向量（10000维），隐藏层没有激活函数，输出层采用softmax函数，输出一个概率分布（10000维向量），表示词汇表各个单词在输入词附近（nearby）的概率。隐藏层的神经元数量就是单词映射到实数空间属性个数。<strong>输入层和隐藏层之间的权重就是我们需要的，也就是作为词汇最后的映射空间。</strong></p>
+<p><strong>网络模型</strong>：</p>
+<p>输入：$word_{1\times v}、target$</p>
+<p>参数：$W_{v \times N}$、$W_{N\times V}$</p>
+<p>输出：$P_{1\times V}$</p>
+<p><img src="/images/model.jpg" alt=""></p>
+<p><strong>训练过程</strong>：</p>
+<ol>
+<li><p>训练数据的产生</p>
+<p>训练数据采用滑动窗口，在一个句子中滑动，窗口大小是一个超参数。比如：</p>
 </li>
-<li><p>已经<code>add</code>到暂存区的文件，又对其进行了修改，务必再次执行<code>add</code>操作，否则<code>commit</code>时，这个修改不会被提交到版本库。第一次修改 -&gt; <code>git add</code> -&gt; 第二次修改 -&gt; <code>git add</code> -&gt; <code>git commit</code>，两次修改合并为一次<code>commit</code></p>
+</ol>
+<p>   <img src="/images/word2vec.jpg" alt=""></p>
+<p>   中心单词not，窗口大小为2。此次滑动产生的数据为：</p>
+<p>   <img src="/images/2.jpg" alt=""></p>
+<p>   以此类推。</p>
+<p>   <img src="/images/3.jpg" alt=""></p>
+<ol>
+<li><p>训练</p>
+<p>将产生的数据输入网络，计算输出层产生的概率向量和target word的one-hot向量的loss，然后反向传播更新参数矩阵。</p>
 </li>
-<li><p>撤销修改：</p>
-<ul>
-<li><p>已经执行<code>add</code>的文件，现在在工作区区又进行了一次修改（这次修改还没<code>add</code>），<code>git checkout -- filename</code>可放弃工作区的这次修改</p>
-</li>
-<li><p>做了修改，并且已经<code>add</code>到暂存区，现在不想要这次修改了，先</p>
-<p><code>git reset HEAD filename</code>，从暂存区中拉回到工作区，然后<code>git checkout -- filename</code>放弃这次修改。</p>
-</li>
-</ul>
-</li>
-<li><p>版本回退</p>
-<ul>
-<li><code>git reset --hard commitId</code>，可回退到之前的版本。可采用<code>git log</code>来查看每次<code>commit</code>的详细情况</li>
-<li>要重新返回到最新版本，用<code>git reflog</code>查看命令历史，获取<code>commitId</code>，以便确定要回到未来的哪个版本。然后采用<code>reset</code>命令。</li>
-</ul>
-</li>
-<li><p>分支管理</p>
-<p>参考<a href="https://www.liaoxuefeng.com/wiki/896043488029600/900003767775424" target="_blank" rel="noopener">https://www.liaoxuefeng.com/wiki/896043488029600/900003767775424</a></p>
-</li>
-</ul>
+</ol>
+<p>   <img src="/images/4.png" alt=""></p>
+<h3 id="3-Negative-Sampling"><a href="#3-Negative-Sampling" class="headerlink" title="3. Negative Sampling"></a>3. Negative Sampling</h3><p>​        以上过程有助于了解网络是如何运作的，但是该网络采用softmax激活函数，训练成本较高，因此word2vec中使用了基于负例采样（negative sampling）的skip gram以此来降低计算成本。具体就是将softmax函数转化为逻辑回归（二分类），输出target是否为input的nearby。负采样就是在数据集中加入target不是input的nearby的样本。</p>
+<p>​        个人理解：加入了negative sampling后的训练过程如下：</p>
+<p>​        选择与input word相邻的单词作为output word，target为1，表示相邻，再随机选择5-20个不相邻单词作为output word，target为0，将input word输入到网络中经过隐藏层得到embedding后的vector，与output word对应的weight（参数矩阵2的某一列）点乘得到向量积，再经过sigmod函数，得到一个分数，与target的差即为loss，反向传播然后更新参数矩阵1中input word对应的weight，和参数矩阵2中output word对应的weight，这样每次训练只需要更新部分权重，而非整个权重，从而加快收敛过程。</p>
+<p><img src="/images/word2vec-training-update.png" alt=""></p>
+<h3 id="4-后续"><a href="#4-后续" class="headerlink" title="4. 后续"></a>4. 后续</h3><p>​        word2vec不仅可以用来处理nlp问题，其他序列问题也可以采用，比如购物网站、音乐网站产生的用户浏览序列等可以用来构建推荐系统模型。</p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>强烈推荐！！！</p>
+<p>[1]. <a href="http://jalammar.github.io/illustrated-word2vec/" target="_blank" rel="noopener">http://jalammar.github.io/illustrated-word2vec/</a></p>
+<p>[2]. <a href="https://mp.weixin.qq.com/s?__biz=MjM5MTQzNzU2NA==&amp;mid=2651669277&amp;idx=2&amp;sn=bc8f0590f9e340c1f1359982726c5a30&amp;chksm=bd4c648e8a3bed9817f30c5a512e79fe0cc6fbc58544f97c857c30b120e76508fef37cae49bc&amp;scene=0&amp;xtrack=1#rd（[1]中文翻译版）" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MjM5MTQzNzU2NA==&amp;mid=2651669277&amp;idx=2&amp;sn=bc8f0590f9e340c1f1359982726c5a30&amp;chksm=bd4c648e8a3bed9817f30c5a512e79fe0cc6fbc58544f97c857c30b120e76508fef37cae49bc&amp;scene=0&amp;xtrack=1#rd（[1]中文翻译版）</a></p>
+<p>[3]. <a href="http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/" target="_blank" rel="noopener">http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/</a></p>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/" data-id="ck949a61k0000w0ug36w465df"
+      <a data-url="http://yoursite.com/2020/04/17/Word%20Embedding/" data-id="ck949a62p000iw0ugfjewcdx5"
         class="article-share-link">分享</a>
         
       
@@ -151,19 +152,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            实现梯度下降（线性回归为例）
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" class="article-nav-link">
+      <a href="/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Java 反射和动态代理</div>
+        <div class="article-nav-title">提升树和梯度提升树</div>
       </a>
     
   </nav>

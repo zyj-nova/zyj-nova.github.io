@@ -62,7 +62,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">981字</span>
+            <span class="post-count">1.2k字</span>
         </span>
     </span>
 
@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3分钟</span>
+            <span class="post-count">5分钟</span>
         </span>
     </span>
 </div>
@@ -110,12 +110,22 @@ f_m(x) = f_{m-1}(x) + T(x;\Theta_m)</script><p>意思就是前一次的模型的
 \hat \Theta_m = arg\min_{\Theta_m} \sum_{i=1}^{N}L(y_i,f_{m-1}(x) + T(x;\Theta_m))</script><p>$L$为损失函数，在第$m$步时，$f_{m-1}(x) + T(x;\Theta_m)$即为$x$的预测值。$f_{m-1}(x)$的值已经确定（常数）。</p>
 <p>在回归问题中，$L$为二次函数，</p>
 <script type="math/tex; mode=display">
-L(y_i,f_{m-1}(x) + T(x;\Theta_m) = [y -f_{m-1}(x) - T(x;\Theta_m ]^2 
+L(y_i,f_{m-1}(x) + T(x;\Theta_m)) = [y -f_{m-1}(x) - T(x;\Theta_m ]^2 
 =[r -  T(x;\Theta_m)]^2</script><p>$r = y - f_{m-1}(x)$，为<strong>残差</strong>（真实值-预测值）。当$L$最小即$L = 0$，$r = T$，即这一棵树在拟合残差。在第$m$步，训练的这棵树是在拟合$f_{m-1}(x)$与$y$的差值即残差，以此不停的迭代。</p>
 <p>​        个人想法：当在构建回归树时，采用了贪心的构建算法，因此，针对相同的$y$值，构建无数次都是同一棵树。因此，在提升树算法中，我们通过损失函数看到了，回归树是在拟合残差，即每一步输入到回归树中的y值是$y - f_{m-1}(x)$。</p>
 <h3 id="2-梯度提升算法"><a href="#2-梯度提升算法" class="headerlink" title="2. 梯度提升算法"></a>2. 梯度提升算法</h3><p>​        针对提升树的优化问题，当损失函数是二次函数时，可以看到很好优化，但当损失函数为其他形式时，没有更好的优化方法，或者说优化比较困难。因此，$Fridemam$提出了梯度提升算法来优化提升树。回归问题和分类问题的区别是损失函数定义的不同。</p>
 <p>针对回归问题的梯度提升算法，介绍如下：</p>
-<h3 id="3-梯度提升树（GBDT）"><a href="#3-梯度提升树（GBDT）" class="headerlink" title="3. 梯度提升树（GBDT）"></a>3. 梯度提升树（GBDT）</h3><p>​        当梯度提升的损失函数为二次函数时，此时即梯度提升树。恰好，损失函数负梯度 == 伪残差。</p>
+<p>（1）初始化</p>
+<script type="math/tex; mode=display">
+f_0(x) = arg\min_c \sum_{i=1}^N L(y_i,c)</script><p>（2）对$m = 1,2,…M$</p>
+<p>​        1）对$i = 1,2,3,…,N$ 计算</p>
+<script type="math/tex; mode=display">
+r_{mi} = - [\frac{\partial L(y_i,f(x_i))}{\partial f(x_i)}]_{f(x) = f_{m-1}(x)}</script><p>​        2）针对$r_{mi}$拟合一个回归树，得到第$m$棵树的叶子结点$R_{mj},j = 1,2,…,J$</p>
+<p>​        3）对每个叶子结点$j = 1,2,…,J$，根据损失函数计算该叶子节点的权值（和1一样的问题，只有一个根节点的树）</p>
+<script type="math/tex; mode=display">
+c_{mj} =arg\min_c \sum_{x_i\in R_{mj}} L(y_i,c + f_{m-1}(x_i))</script><p>​        4）更新$f_m(x) = f_{m-1}(x) + \sum_{j=1}^J c_{mj}I(x\in R_{mj})$</p>
+<p>​    （3）得到最终的梯度提升树。</p>
+<h3 id="3-梯度提升树（GBDT）"><a href="#3-梯度提升树（GBDT）" class="headerlink" title="3. 梯度提升树（GBDT）"></a>3. 梯度提升树（GBDT）</h3><p>​        当梯度提升的损失函数为二次函数时，恰好，损失函数负梯度 == 伪残差。</p>
 <script type="math/tex; mode=display">
 r_{mi} = - [\frac{\partial L(y_i,f(x_i))}{\partial f(x_i)}]_{f(x) = f_{m-1}(x)}\\
 \frac{\partial \frac{1}{2}(y_i-f(x_i)^2}{\partial f(x_i)} = -(y-f(x_i)) \\
@@ -124,14 +134,16 @@ r_{mi} = - [\frac{\partial L(y_i,f(x_i))}{\partial f(x_i)}]_{f(x) = f_{m-1}(x)}\
 f_0(x) = arg\min_c \sum_{i=1}^N L(y_i,c) \\=  arg\min_c\sum_{i=1}^N (y_i-c)^2</script><p>令$p(c) = \sum_{i=1}^N (y_i-c)^2$，$\partial p/ \partial c = -2\sum_{i=1}^N(y_i-c) = 0$，$c = (y_1 + y_2 + … + y_N) / N$。即初始化时，</p>
 <script type="math/tex; mode=display">
 f_0(x) = \frac{y_1+y_2 + ... + y_N}{N}</script><p>与<strong>梯度下降</strong>不同的是，梯度提升是在<strong>函数空间</strong>求梯度，把函数作为参数来看待。而梯度下降是在<strong>参数空间</strong>求梯度。</p>
-<h3 id="4-XGBoost"><a href="#4-XGBoost" class="headerlink" title="4. XGBoost"></a>4. XGBoost</h3><p>​        xgboost与梯度提升树不同的是目标函数中加入了正则项，以及使用了二阶导数（目标函数泰勒展开式中用到了），结果更为精确，同时支持分布式并行计算（特征维度），在大规模机器学习中速度很快。本章介绍xgboost的推导，以及xgboost框架中是如何构建一棵xgboost树的。</p>
-
+<p>当损失函数为二次函数，每个<strong>叶子结点最后的权值</strong>是划到该叶子结点所有y值的均值。(和初始化问题一样)。</p>
+<h3 id="4-XGBoost"><a href="#4-XGBoost" class="headerlink" title="4. XGBoost"></a>4. XGBoost</h3><p>​        xgboost与梯度提升树不同的是目标函数中加入了正则项，以及使用了二阶导数（目标函数泰勒展开式中用到了），结果更为精确，同时支持分布式并行计算（特征维度），在大规模机器学习中速度很快。本章介绍xgboost的推导，以及xgboost框架中是如何构建一棵xgboost树的。二阶泰勒展开：</p>
+<script type="math/tex; mode=display">
+f(x+\Delta x) \approx f(x) + f^{\\'}(x)\Delta x + \frac{1}{2}\ddot{f(x)}\Delta x^2</script>
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" data-id="ck8x4ce7o000rlkug6f0u6s01"
+      <a data-url="http://yoursite.com/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" data-id="ck949a63e0014w0ugfm4df7gr"
         class="article-share-link">分享</a>
         
       
@@ -142,6 +154,15 @@ f_0(x) = \frac{y_1+y_2 + ... + y_N}{N}</script><p>与<strong>梯度下降</stron
   
   
   <nav class="article-nav">
+    
+      <a href="/2020/04/17/Word%20Embedding/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Word Embedding
+          
+        </div>
+      </a>
     
     
       <a href="/2020/03/20/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/" class="article-nav-link">

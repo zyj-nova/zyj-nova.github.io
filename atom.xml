@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-04-12T13:52:40.700Z</updated>
+  <updated>2020-04-17T13:55:17.009Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,36 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Word Embedding</title>
+    <link href="http://yoursite.com/2020/04/17/Word%20Embedding/"/>
+    <id>http://yoursite.com/2020/04/17/Word%20Embedding/</id>
+    <published>2020-04-16T16:06:20.840Z</published>
+    <updated>2020-04-17T13:55:17.009Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Word-Embedding之skip-gram&quot;&gt;&lt;a href=&quot;#Word-Embedding之skip-gram&quot; class=&quot;headerlink&quot; title=&quot;Word Embedding之skip-gram&quot;&gt;&lt;/a&gt;Word
+        
+      
+    
+    </summary>
+    
+    
+      <category term="“深度学习”" scheme="http://yoursite.com/categories/%E2%80%9C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E2%80%9D/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>提升树和梯度提升树</title>
     <link href="http://yoursite.com/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/"/>
     <id>http://yoursite.com/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/</id>
     <published>2020-04-12T12:21:03.660Z</published>
-    <updated>2020-04-12T13:52:40.700Z</updated>
+    <updated>2020-04-12T15:08:37.562Z</updated>
     
     <summary type="html">
     
@@ -487,29 +512,6 @@
         
         
           &lt;h3 id=&quot;How-to-Implements-PCA&quot;&gt;&lt;a href=&quot;#How-to-Implements-PCA&quot; class=&quot;headerlink&quot; title=&quot;How to Implements PCA&quot;&gt;&lt;/a&gt;How to Implements
-        
-      
-    
-    </summary>
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>HashMap LoadFactor</title>
-    <link href="http://yoursite.com/2019/11/09/Hashap-LoadFactor/"/>
-    <id>http://yoursite.com/2019/11/09/Hashap-LoadFactor/</id>
-    <published>2019-11-09T09:14:00.000Z</published>
-    <updated>2019-11-09T09:18:00.105Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;The Load factor is a measure that decides when to increase the HashMap capacity to maintain the get() and put() operation complexity of
         
       
     
