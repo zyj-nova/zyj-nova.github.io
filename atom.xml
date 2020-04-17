@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-04-17T13:55:17.009Z</updated>
+  <updated>2020-04-17T13:58:04.461Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://yoursite.com/2020/04/17/Word%20Embedding/"/>
     <id>http://yoursite.com/2020/04/17/Word%20Embedding/</id>
     <published>2020-04-16T16:06:20.840Z</published>
-    <updated>2020-04-17T13:55:17.009Z</updated>
+    <updated>2020-04-17T13:58:04.461Z</updated>
     
     <summary type="html">
     
@@ -36,7 +36,7 @@
     </summary>
     
     
-      <category term="“深度学习”" scheme="http://yoursite.com/categories/%E2%80%9C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E2%80%9D/"/>
+      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
   </entry>
