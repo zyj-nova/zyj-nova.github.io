@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-04-17T13:58:04.461Z</updated>
+  <updated>2020-04-29T10:34:49.233Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,36 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Spring Boot配置文件的加载位置</title>
+    <link href="http://yoursite.com/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/"/>
+    <id>http://yoursite.com/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/</id>
+    <published>2020-04-29T10:22:39.477Z</published>
+    <updated>2020-04-29T10:34:49.233Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Spring-Boot配置文件的加载位置&quot;&gt;&lt;a href=&quot;#Spring-Boot配置文件的加载位置&quot; class=&quot;headerlink&quot; title=&quot;Spring Boot配置文件的加载位置&quot;&gt;&lt;/a&gt;Spring
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Word Embedding</title>
     <link href="http://yoursite.com/2020/04/17/Word%20Embedding/"/>
     <id>http://yoursite.com/2020/04/17/Word%20Embedding/</id>
     <published>2020-04-16T16:06:20.840Z</published>
-    <updated>2020-04-17T13:58:04.461Z</updated>
+    <updated>2020-04-30T12:22:27.616Z</updated>
     
     <summary type="html">
     
@@ -401,7 +426,7 @@
     <link href="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/"/>
     <id>http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/</id>
     <published>2020-02-05T10:33:14.945Z</published>
-    <updated>2020-02-05T10:37:41.356Z</updated>
+    <updated>2020-04-29T03:50:22.719Z</updated>
     
     <summary type="html">
     
@@ -495,29 +520,6 @@
     
     
       <category term="CV" scheme="http://yoursite.com/tags/CV/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>How to Implements PCA and SVD</title>
-    <link href="http://yoursite.com/2019/11/10/PCA-StepByStep/"/>
-    <id>http://yoursite.com/2019/11/10/PCA-StepByStep/</id>
-    <published>2019-11-10T11:55:25.000Z</published>
-    <updated>2020-02-04T04:34:21.272Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h3 id=&quot;How-to-Implements-PCA&quot;&gt;&lt;a href=&quot;#How-to-Implements-PCA&quot; class=&quot;headerlink&quot; title=&quot;How to Implements PCA&quot;&gt;&lt;/a&gt;How to Implements
-        
-      
-    
-    </summary>
-    
-    
     
   </entry>
   
