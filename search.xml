@@ -60,7 +60,8 @@
 <p>​        采用negative sampling的skip-gram大致训练过程如下：</p>
 <p>​        选择与input word相邻的单词作为output word，target为1，表示相邻，再随机选择5-20个不相邻单词作为output word，target为0，将input word输入到网络中经过隐藏层得到embedding后的vector，与output word对应的weight（参数矩阵2的某一列）点乘得到向量积，再经过sigmod函数，得到一个分数，与target的差即为loss，反向传播然后更新参数矩阵1（Embedding矩阵）中input word对应的weight，和参数矩阵2（Context矩阵）中output word对应的weight，这样每次训练只需要更新部分权重（负例对应的Context权重、input word对应的Embedding权重），而非整个权重，从而加快收敛过程。</p>
 <p><img src="/images/word2vec-training-update.png" alt=""></p>
-<h4 id="3-2-Hierarchical-softmax"><a href="#3-2-Hierarchical-softmax" class="headerlink" title="3.2 Hierarchical softmax"></a>3.2 Hierarchical softmax</h4><p>​        Hierarchical softmax利用词汇建立一棵哈夫曼树，树中每个结点除了包含指向左右子树结点的指针，还有对应结点的权重向量，隐层每个结点都和这棵树中每一个非叶子结点相连接（个人感觉相当于共享连接了）。树中每个节点都相当于一个二分类模型，计算左右结点的概率，最终到达叶子节点。</p>
+<h4 id="3-2-Hierarchical-softmax"><a href="#3-2-Hierarchical-softmax" class="headerlink" title="3.2 Hierarchical softmax"></a>3.2 Hierarchical softmax</h4><p>​        Hierarchical softmax利用词汇建立一棵哈夫曼树，树中每个结点除了包含指向左右子树结点的指针，还有对应结点的权重向量。树中每个节点都相当于一个二分类模型，计算左右结点的概率，最终到达叶子节点。</p>
+<p><img src="/images/Hierarchical-Softmax.jpg" alt=""></p>
 <h3 id="4-后续"><a href="#4-后续" class="headerlink" title="4. 后续"></a>4. 后续</h3><p>​        word2vec不仅可以用来处理nlp问题，而且基本已经成为深度学习中的一个基本模型。</p>
 <h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>强烈推荐！！！</p>
 <p>[1]. <a href="http://jalammar.github.io/illustrated-word2vec/" target="_blank" rel="noopener">http://jalammar.github.io/illustrated-word2vec/</a></p>
