@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-04-29T10:34:49.233Z</updated>
+  <updated>2020-05-12T10:16:32.759Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spark学习笔记</title>
+    <link href="http://yoursite.com/2020/05/12/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>http://yoursite.com/2020/05/12/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
+    <published>2020-05-12T10:20:50.665Z</published>
+    <updated>2020-05-12T10:16:32.759Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Spark学习笔记&quot;&gt;&lt;a href=&quot;#Spark学习笔记&quot; class=&quot;headerlink&quot; title=&quot;Spark学习笔记&quot;&gt;&lt;/a&gt;Spark学习笔记&lt;/h2&gt;&lt;h3 id=&quot;1-概述&quot;&gt;&lt;a href=&quot;#1-概述&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Spring Boot配置文件的加载位置</title>
@@ -493,33 +518,6 @@
     
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>Faster R-CNN中anchor的理解</title>
-    <link href="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/"/>
-    <id>http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/</id>
-    <published>2020-02-04T02:37:19.958Z</published>
-    <updated>2020-02-04T04:26:32.206Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;Faster-R-CNN-中-anchor-的理解&quot;&gt;&lt;a href=&quot;#Faster-R-CNN-中-anchor-的理解&quot; class=&quot;headerlink&quot; title=&quot;Faster R-CNN 中 anchor 的理解&quot;&gt;&lt;/a&gt;Faster
-        
-      
-    
-    </summary>
-    
-    
-      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="CV" scheme="http://yoursite.com/tags/CV/"/>
     
   </entry>
   

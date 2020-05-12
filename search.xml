@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Spark学习笔记</title>
+    <url>/2020/05/12/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="Spark学习笔记"><a href="#Spark学习笔记" class="headerlink" title="Spark学习笔记"></a>Spark学习笔记</h2><h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h3><p>​        Spark是一个计算框架，可以整合Hadoop的HDFS和其他资源调度器s（YARN、Mesos、K8s）。</p>
+<h3 id="2-Spark安装"><a href="#2-Spark安装" class="headerlink" title="2. Spark安装"></a>2. Spark安装</h3><h4 id="2-1-Local模式"><a href="#2-1-Local模式" class="headerlink" title="2.1 Local模式"></a>2.1 Local模式</h4><h4 id="2-2-Standalone模式"><a href="#2-2-Standalone模式" class="headerlink" title="2.2 Standalone模式"></a>2.2 Standalone模式</h4><h4 id="2-3-Yarn模式"><a href="#2-3-Yarn模式" class="headerlink" title="2.3 Yarn模式"></a>2.3 Yarn模式</h4><h3 id="3-Spark设计与运行流程"><a href="#3-Spark设计与运行流程" class="headerlink" title="3. Spark设计与运行流程"></a>3. Spark设计与运行流程</h3><h4 id="3-1-Spark基本概念"><a href="#3-1-Spark基本概念" class="headerlink" title="3.1 Spark基本概念"></a>3.1 Spark基本概念</h4><p>Driver、Master、Worker、Executor、RDD、DAG、Application、Job、Stage、Tasks、Partition</p>
+<p><strong>一个Application可以划分为多个Job，当遇到一个Action操作后就会触发一个Job的计算；一个Job可划分为多个Stage，出现shuffle就划分一个阶段（ShuffleMapStage）；一个Stage包含多个Partition，一个Partition对应一个Task，因此一个Stage就是一个TaskSet</strong>。</p>
+<p>划分Job依据：</p>
+<p>注：有的Transformation算子也会被划分为一个Job。</p>
+<p>application -&gt; jobs -&gt; stage -&gt; tasks。</p>
+<h4 id="3-2-Spark架构"><a href="#3-2-Spark架构" class="headerlink" title="3.2 Spark架构"></a>3.2 Spark架构</h4><p><img src="C:\Users\ASUS\Pictures\spark.jpg" alt=""></p>
+<h4 id="3-3-Spark运行流程"><a href="#3-3-Spark运行流程" class="headerlink" title="3.3 Spark运行流程"></a>3.3 Spark运行流程</h4><p>宽依赖：发生了Shuffle，就是宽依赖（不可以并行处理）一个父RDD对应多个儿子RDD分区，这些所有儿子RDD在没有得到父RDD分区数据时，不能干别的，只能等待。比如groupByKey操作。Shuffle会引发写磁盘操作(spill to disk)。</p>
+<p>窄依赖： 一个父RDD对应一个儿子RDD，或多个父RDD对应一个儿子RDD。可以进行流水线优化（不发生磁盘写操作），对其中一个父RDD传过来的数据就可以处理，儿子RDD无需等待所有父RDD数据到达。filter、map操作。</p>
+<p>Spark的DAGScheduler会根据程序生成的DAG确定宽依赖、窄依赖，进而划分作业到不同的阶段。</p>
+<h4 id="3-4-Scheduler模块源码分析"><a href="#3-4-Scheduler模块源码分析" class="headerlink" title="3.4 Scheduler模块源码分析"></a>3.4 Scheduler模块源码分析</h4><p>​        Spark的任务调度是从DAG切割开始，主要是由DAGScheduler来完成。当遇到一个Action操作后就会触发一个Job的计算，并交给DAGScheduler来提交，下图是涉及到Job提交的相关方法调用流程图。</p>
+<p>Stage的调度</p>
+<p><img src="/images/spark-scheduler-dag-process.png" alt=""></p>
+<p>Task级的调度</p>
+<p><img src="/images/spark-scheduler-task-process.png" alt=""></p>
+<p>​        DAGScheduler将Stage打包到TaskSet交给TaskScheduler，TaskScheduler会将其封装为TaskSetManager加入到调度队列中，TaskSetManager负责监控管理同一个Stage中的Tasks，TaskScheduler就是以TaskSetManager为单元来调度任务。</p>
+<p>​        TaskScheduler支持两种调度策略，一种是FIFO，也是默认的调度策略，另一种是FAIR。</p>
+<p>​        从调度队列中拿到TaskSetManager后，那么接下来的工作就是TaskSetManager按照一定的规则一个个取出Task给TaskScheduler，TaskScheduler再交给SchedulerBackend去发到Executor上执行。前面也提到，TaskSetManager封装了一个Stage的所有Task，并负责管理调度这些Task。(<a href="http://sharkdtu.com/posts/spark-scheduler.htm" target="_blank" rel="noopener">http://sharkdtu.com/posts/spark-scheduler.htm</a>)</p>
+<h4 id="3-5-1-单机模式"><a href="#3-5-1-单机模式" class="headerlink" title="3.5.1 单机模式"></a>3.5.1 单机模式</h4><p>独立集群（stand alone）模式：该模式，Spark既负责计算，也负责资源的调度。有Master结点和Slaves结点，Master负责资源调度，Slaves负责执行计算（Executor）。</p>
+<p>Yarn模式：Yarn负责资源调度，Spark负责计算。</p>
+<p>yarn-client：driver位于提交job的机器上，实时展示job运行情况</p>
+<p><img src="C:\Users\ASUS\Pictures\yarn-client.png" alt=""></p>
+<p><strong>执行流程：</strong></p>
+<p>1.客户端提交一个Application，在客户端启动一个Driver进程。</p>
+<p>2.Driver进程会向RS(ResourceManager)发送请求，启动AM(ApplicationMaster)。</p>
+<p>3.RS收到请求，随机选择一台NM(NodeManager)启动AM。这里的NM相当于Standalone中的Worker节点。</p>
+<p>4.AM启动后，会向RS请求一批container资源，用于启动Executor。</p>
+<p>5.RS会找到一批NM返回给AM,用于启动Executor。AM会向NM发送命令启动Executor。</p>
+<p>6.Executor启动后，会反向注册给Driver，Driver发送task到Executor,执行情况和结果返回给Driver端。</p>
+<p>yarn-cluster：driver位于集群中某个结点。</p>
+<p><img src="/images/spark-submit-time.png" alt=""></p>
+<p><strong>执行流程：</strong></p>
+<p>1.客户机提交Application应用程序，发送请求到RS(ResourceManager),请求启动AM(ApplicationMaster)。</p>
+<p>2.RS收到请求后随机在一台NM(NodeManager)上启动AM，</p>
+<p>3.AM启动，AM拿到客户机提交的程序的代码，运行Driver进程；AM发送请求到RS，请求一批container用于启动Executor。</p>
+<p>3.RS返回一批NM节点给AM，。</p>
+<p>4.AM连接到NM,发送请求到NM在Container启动Executor。</p>
+<p>5.Executor反向注册到AM所在的节点的Driver。Driver发送task到Executor。</p>
+<p>NodeManager会向AM报告container资源情况，而Executor会向Driver报告计算情况。AM一个负责资源调度、一个负责计算，在cluster模式时。</p>
+<h4 id="3-6-RDD编程"><a href="#3-6-RDD编程" class="headerlink" title="3.6 RDD编程"></a>3.6 RDD编程</h4><p>​        Resilient Distributed Dataset（弹性分布式数据集）是多个分区（Partition）的集合。一个RDD对象包含一个或多个Partition。</p>
+<p>​        RDD操作（算子）类型：transformations和actions，前者不会进行计算（只生成新的RDD对象），后者会引起真正的计算（runJob进而划分阶段提交task，driver分发task给Executor去计算）。</p>
+<p>RDD创建：</p>
+<p>1.集合中创建：<code>parallelize</code>/<code>makeRDD</code></p>
+<p>2.外部存储：<code>textFile</code></p>
+<p>3.其他RDD转换</p>
+<figure class="highlight scala"><table><tr><td class="code"><pre><span class="line">&gt;<span class="keyword">val</span> rdd = sc.makeRDD(<span class="type">List</span>(<span class="string">"a_b"</span>,<span class="string">"c_d"</span>,<span class="string">"e_f"</span>))</span><br><span class="line">&gt;rdd.flatMap(_.split(<span class="string">"_"</span>)).foreach(println)</span><br><span class="line">a</span><br><span class="line">b</span><br><span class="line">c</span><br><span class="line">d</span><br><span class="line">e</span><br><span class="line">f</span><br><span class="line">&gt;rdd.map(_.split(<span class="string">"_"</span>)).foreach(println)</span><br><span class="line">a,b</span><br><span class="line">c,d</span><br><span class="line">e,f</span><br></pre></td></tr></table></figure>
+<p><code>mapPartition</code>、<code>foreachPartiton</code> 容易造成内存溢出（OOM）。</p>
+<p><code>collect</code>会把所有数据拉取到Driver结点上。</p>
+<p><strong>广播变量</strong></p>
+<p>是一个只读变量，每个Worker结点保存一份，Worker上的Executor线程用到时直接读取，而并非通过线程通信去和其他结点获取，从而减少了网络开销，优化计算性能。</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Spring Boot配置文件的加载位置</title>
     <url>/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/</url>
     <content><![CDATA[<h2 id="Spring-Boot配置文件的加载位置"><a href="#Spring-Boot配置文件的加载位置" class="headerlink" title="Spring Boot配置文件的加载位置"></a>Spring Boot配置文件的加载位置</h2><p>整个项目路径如下：</p>
