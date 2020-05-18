@@ -60,6 +60,267 @@
     
     
     
+    <article id="post-二分查找" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/"
+    >二分查找</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" class="article-date">
+  <time datetime="2020-02-05T10:33:14.945Z" itemprop="datePublished">2020-02-05</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><h3 id="1-写一个正确的二分查找程序"><a href="#1-写一个正确的二分查找程序" class="headerlink" title="1. 写一个正确的二分查找程序"></a>1. 写一个正确的二分查找程序</h3><p>需要注意的是，二分查找有许多注意的地方，比如循环中止条件是什么，<code>left</code> 和 <code>right</code> 初始值是什么。下面以<code>Leetcode 704</code>号问题，写一个基本的二分查找算法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">链接：https://leetcode-cn.com/problems/binary-search</span></span><br><span class="line"><span class="comment">著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;<span class="comment">// 前闭后闭的取值范围 对应着循环结束时，要取等号。</span></span><br><span class="line">        <span class="keyword">while</span>(left &lt;= right)&#123; <span class="comment">// 此时取值范围里只有一个数字。</span></span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) /<span class="number">2</span>; <span class="comment">// 防止 left + right 越界</span></span><br><span class="line">            <span class="keyword">if</span>(nums[mid] == target)&#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(nums[mid] &gt; target)&#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-left的意义是什么"><a href="#2-left的意义是什么" class="headerlink" title="2. left的意义是什么"></a>2. left的意义是什么</h3><p>我们可以看最后要跳出循环时，也就是<code>left = right</code>时，此时<code>mid = left = right</code>,如果数组中存在这个元素，自然返回<code>mid</code>索引，如果不存在呢，回到以下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(nums[mid] &gt; target)&#123;</span><br><span class="line">    right = mid - <span class="number">1</span>;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    left = mid + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><code>left</code>的位置恰好就是该元素插入到该数组的位置</strong>。当<code>nums[mid] &gt; target</code>时，如果要将<code>target</code>插入到数组中，要将<code>nums[mid]</code>元素向后移一个位置，空出来的位置就是应该插入的位置，也就是<code>left</code>指向的位置。如果小于呢，<code>left = mid + 1</code>,此时<code>left</code>会向后移一位，恰好又是应该插入的位置。</p>
+<p>由此解决<code>Leetcode 35</code>号问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">你可以假设数组中无重复元素。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">searchInsert</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//解决target不存在数组中时，返回要插入的位置</span></span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(left &lt;= right)&#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[mid] == target)&#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(target &gt; nums[mid])&#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-其他相关问题"><a href="#3-其他相关问题" class="headerlink" title="3. 其他相关问题"></a>3. 其他相关问题</h3><h4 id="3-1-在排序数组中查找元素的第一个和最后一个位置"><a href="#3-1-在排序数组中查找元素的第一个和最后一个位置" class="headerlink" title="3.1 在排序数组中查找元素的第一个和最后一个位置"></a>3.1 在排序数组中查找元素的第一个和最后一个位置</h4><p>这是<code>Leetcode 34</code>号问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">你的算法时间复杂度必须是 O(log n) 级别。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">如果数组中不存在目标值，返回 [-1, -1]。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">链接：https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-		sorted-array</span></span><br><span class="line"><span class="comment">著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span>  <span class="keyword">int</span>[] searchRange(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) &#123;</span><br><span class="line">       <span class="keyword">int</span> first = -<span class="number">1</span>, second = -<span class="number">1</span>;</span><br><span class="line">       first = lower_boud(nums,target);</span><br><span class="line">       second = upper_boud(nums,target);</span><br><span class="line">       <span class="keyword">int</span> ans[] = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;first,second&#125;;</span><br><span class="line">       <span class="keyword">return</span> ans;</span><br><span class="line">   &#125;</span><br><span class="line"><span class="comment">// 以下是辅助函数</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">lower_boud</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> target)</span></span>&#123;</span><br><span class="line">       <span class="comment">//利用二分搜索查找target在数组中最左边位置</span></span><br><span class="line">       <span class="keyword">int</span> left = <span class="number">0</span>, right = arr.length - <span class="number">1</span>,res = -<span class="number">1</span>;</span><br><span class="line">       <span class="keyword">while</span> (left &lt;= right)&#123;</span><br><span class="line">           <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">           <span class="keyword">if</span> (target == arr[mid])&#123;</span><br><span class="line">               res = mid;</span><br><span class="line">               <span class="comment">//逼近左边界,继续向左</span></span><br><span class="line">               right = mid - <span class="number">1</span>;</span><br><span class="line">           &#125;<span class="keyword">else</span> <span class="keyword">if</span> (target &lt; arr[mid])&#123;</span><br><span class="line">               right = mid - <span class="number">1</span>;</span><br><span class="line">           &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">               left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> res;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">upper_boud</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> target)</span></span>&#123;</span><br><span class="line">       <span class="keyword">int</span> left = <span class="number">0</span>, right = arr.length - <span class="number">1</span>,res = -<span class="number">1</span>;</span><br><span class="line">       <span class="keyword">while</span> (left &lt;= right)&#123;</span><br><span class="line">           <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">           <span class="keyword">if</span> (target == arr[mid])&#123;</span><br><span class="line">               res = mid;</span><br><span class="line">               <span class="comment">//逼近右边界,继续向右</span></span><br><span class="line">               left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;<span class="keyword">else</span> <span class="keyword">if</span> (target &lt; arr[mid])&#123;</span><br><span class="line">               right = mid - <span class="number">1</span>;</span><br><span class="line">           &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">               left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> res;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-2-第一个错误的版本"><a href="#3-2-第一个错误的版本" class="headerlink" title="3.2 第一个错误的版本"></a>3.2 第一个错误的版本</h4><p>这是<code>Leetcode 278</code>号问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本	都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">假设你有 n 个版本 [1, 2, ..., n]，你想找出导致之后所有版本出错的第一个错误的版本。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个		函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">示例:</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">给定 n = 5，并且 version = 4 是第一个错误的版本。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">调用 isBadVersion(3) -&gt; false</span></span><br><span class="line"><span class="comment">调用 isBadVersion(5) -&gt; true</span></span><br><span class="line"><span class="comment">调用 isBadVersion(4) -&gt; true</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">所以，4 是第一个错误的版本。 </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">链接：https://leetcode-cn.com/problems/first-bad-version</span></span><br><span class="line"><span class="comment">著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">firstBadVersion</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">int</span> left = <span class="number">1</span>, right = n;</span><br><span class="line">       <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">           <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">           <span class="keyword">if</span> (isBadVersion(mid) == <span class="keyword">true</span>) &#123;<span class="comment">// 已经是错误版本，看看之前的版本有没有错</span></span><br><span class="line">               right = mid - <span class="number">1</span>;</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;<span class="comment">// 正确版本，看往后的版本有没有错</span></span><br><span class="line">               left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> left;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>还是看一下边界条件，当<code>left = right = mid</code>, 如果<code>isBadVersion(mid) == true</code>成立，表明这就是第一个错误版本，返回<code>left</code>；否则，表明<code>mid</code>是一个正确版本，那么<code>left = mid + 1;</code> <code>left</code> 就是第一个错误的版本。</p>
+<h4 id="3-3-寻找峰值"><a href="#3-3-寻找峰值" class="headerlink" title="3.3 寻找峰值"></a>3.3 寻找峰值</h4><p>这是<code>Leetcode 162</code>号问题</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">峰值元素是指其值大于左右相邻值的元素。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">给定一个输入数组 nums，其中 nums[i] ≠ nums[i+1]，找到峰值元素并返回其索引。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">数组可能包含多个峰值，在这种情况下，返回任何一个峰值所在位置即可。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">你可以假设 nums[-1] = nums[n] = -∞。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">链接：https://leetcode-cn.com/problems/find-peak-element</span></span><br><span class="line"><span class="comment">著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findPeakElement</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (nums.length == <span class="number">1</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length -<span class="number">1</span>;</span><br><span class="line">       <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">           <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">           <span class="keyword">if</span> (nums[mid] &gt; nums[mid + <span class="number">1</span>]) &#123;</span><br><span class="line">               right = mid;</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> left;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>类似的还有<code>Leetcode 852</code>号问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">我们把符合下列属性的数组 A 称作山脉：</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">A.length &gt;= 3</span></span><br><span class="line"><span class="comment">存在 0 &lt; i &lt; A.length - 1 使得A[0] &lt; A[1] &lt; ... A[i-1] &lt; A[i] &gt; A[i+1] &gt; ... &gt; A[A.length - 1]</span></span><br><span class="line"><span class="comment">给定一个确定为山脉的数组，返回任何满足 A[0] &lt; A[1] &lt; ... A[i-1] &lt; A[i] &gt; A[i+1] &gt; ... &gt; A[A.length - 1] 的 i 的值。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">链接：https://leetcode-cn.com/problems/peak-index-in-a-mountain-array</span></span><br><span class="line"><span class="comment">著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">peakIndexInMountainArray</span><span class="params">(<span class="keyword">int</span>[] A)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>, right = A.length - <span class="number">1</span>; </span><br><span class="line">		 <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">	            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">	            <span class="keyword">int</span> v = A[mid];</span><br><span class="line">	            <span class="comment">// 按照定义，peak元素后至少有一个比他小的元素，因此不必担心越界</span></span><br><span class="line">             	<span class="keyword">if</span> (v &lt; A[mid + <span class="number">1</span>]) &#123;</span><br><span class="line">	                left = mid + <span class="number">1</span>;</span><br><span class="line">	            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	                right = mid - <span class="number">1</span>;</span><br><span class="line">	            &#125;</span><br><span class="line">	        &#125;</span><br><span class="line">	    <span class="keyword">return</span> left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：以上两道题在边界处理方面有所不同，应当注意取分。</p>
+<p>考虑<code>852</code>号问题边界情况，最后一次循环已经到了“峰顶”元素，且此时<code>left = right = mid</code>，由于<code>A[mid]</code>为“峰顶”元素，且其后面至少有一个元素，那么<code>A[mid] &gt; A[mid+1]</code>（<code>mid+1</code>没有越界），因此执行<code>right = mid - 1</code>，又<code>right &lt; left</code>，跳出循环，返回<code>left</code>。</p>
+<p><code>Leetcode 1095</code>号问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * // This is MountainArray's API interface.</span></span><br><span class="line"><span class="comment"> * // You should not implement it, or speculate about its implementation</span></span><br><span class="line"><span class="comment"> * interface MountainArray &#123;</span></span><br><span class="line"><span class="comment"> *     public int get(int index) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     public int length() &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findInMountainArray</span><span class="params">(<span class="keyword">int</span> target, MountainArray mountainArr)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 最小的index</span></span><br><span class="line">        <span class="comment">// [1,2,3,4,5,3,1]</span></span><br><span class="line">        <span class="keyword">int</span> len = mountainArr.length();</span><br><span class="line">        <span class="keyword">int</span> peak = findPeak(<span class="number">0</span>, len - <span class="number">1</span>, mountainArr);</span><br><span class="line">        <span class="keyword">int</span> l = searchLeft(<span class="number">0</span>, peak, target, mountainArr);</span><br><span class="line">        <span class="keyword">return</span> l == -<span class="number">1</span> ? searchRight(peak, len - <span class="number">1</span>, target, mountainArr) : l;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 找到山峰值</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">findPeak</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> right, MountainArray mountainArray)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> v = mountainArray.get(mid);</span><br><span class="line">            <span class="comment">// 由于题中定义peak后面会有一个元素，因此不会越界</span></span><br><span class="line">            <span class="keyword">if</span> (v &lt; mountainArray.get(mid + <span class="number">1</span>)) &#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> left;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 左边找 [0, peak]严格升序数组</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">searchLeft</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> right, <span class="keyword">int</span> target, MountainArray mountainArray)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> v = mountainArray.get(mid);</span><br><span class="line">            <span class="keyword">if</span> (v == target) &#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (v &gt; target) &#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// [peak,len-1]右边是严格降序数组</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">searchRight</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> right, <span class="keyword">int</span> target, MountainArray mountainArray)</span>	</span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> v = mountainArray.get(mid);</span><br><span class="line">            <span class="keyword">if</span> (v == target) &#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (v &gt; target) &#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ckabwjxwt001o1wug9y0g8xoh"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-JVM 垃圾回收器分类总结" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/"
+    >JVM 垃圾回收器分类总结</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" class="article-date">
+  <time datetime="2020-02-04T05:58:43.203Z" itemprop="datePublished">2020-02-04</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="JVM-垃圾回收器分类总结"><a href="#JVM-垃圾回收器分类总结" class="headerlink" title="JVM 垃圾回收器分类总结"></a>JVM 垃圾回收器分类总结</h2><p>概览：</p>
+<p>由于垃圾回收存在多种算法：标记-复制、标记-清除、标记-整理。组合多种垃圾回收器，形成分代收集算法。</p>
+<p><strong>新生代收集器</strong>：Serial、ParNew、Parallel Scavenge</p>
+<p><strong>老年代收集器</strong>：CMS、Serial Old、Parallel Old</p>
+<p><strong>整堆收集器</strong>： G1</p>
+<h3 id="1-Serial-垃圾回收器"><a href="#1-Serial-垃圾回收器" class="headerlink" title="1. Serial 垃圾回收器"></a>1. Serial 垃圾回收器</h3><p> 串行垃圾回收器，单线程，执行垃圾回收时其他线程停止等待。</p>
+<h3 id="2-Parallel-New-垃圾回收器"><a href="#2-Parallel-New-垃圾回收器" class="headerlink" title="2. Parallel New 垃圾回收器"></a>2. Parallel New 垃圾回收器</h3><p> 并行垃圾回收器。相较于 Serial，多线程并行进行垃圾回收。其他线程也必须停止等待。</p>
+<h3 id="3-Parallel-Scavenge-收集器"><a href="#3-Parallel-Scavenge-收集器" class="headerlink" title="3. Parallel Scavenge 收集器"></a>3. Parallel Scavenge 收集器</h3><p> 与<strong>吞吐量</strong>关系密切，故也称为吞吐量优先收集器。</p>
+<p> <strong>特点</strong>：属于新生代收集器也是采用复制算法的收集器，又是并行的多线程收集器（与 ParNew 收集器类似）。</p>
+<h3 id="4-Parallel-Old-收集器"><a href="#4-Parallel-Old-收集器" class="headerlink" title="4. Parallel Old 收集器"></a>4. Parallel Old 收集器</h3><p> 是 Parallel Scavenge 收集器的老年代版本。</p>
+<p> <strong>特点</strong>：多线程，采用标记-整理算法。</p>
+<p> <strong>应用场景</strong>：注重高吞吐量以及 CPU 资源敏感的场合，都可以优先考虑 Parallel Scavenge+Parallel Old 收集器。</p>
+<h3 id="5-Serial-Old-收集器"><a href="#5-Serial-Old-收集器" class="headerlink" title="5. Serial Old 收集器"></a>5. Serial Old 收集器</h3><p> Serial Old 是 Serial 收集器的老年代版本。</p>
+<p> <strong>特点</strong>：同样是单线程收集器，采用标记-整理算法。</p>
+<h3 id="6-CMS-垃圾回收器"><a href="#6-CMS-垃圾回收器" class="headerlink" title="6. CMS 垃圾回收器"></a>6. CMS 垃圾回收器</h3><p> 并发垃圾回收器，在进行垃圾回收时，其余线程不必停止等待。</p>
+<p> <strong>CMS 收集器的运行过程分为下列 4 步：</strong></p>
+<p> <strong>初始标记</strong>：标记 GC Roots 能直接到的对象。速度很快但是仍存在 Stop The World 问题。</p>
+<p> <strong>并发标记</strong>：进行 GC Roots Tracing 的过程，找出存活对象且用户线程可并发执行。</p>
+<p> <strong>重新标记</strong>：为了修正并发标记期间因用户程序继续运行而导致标记产生变动的那一部分对象的标记记录。仍然存在 Stop The World 问题。</p>
+<p> <strong>并发清除</strong>：对标记的对象进行清除回收。</p>
+<p> CMS 收集器的内存回收过程是与用户线程一起并发执行的。</p>
+<h3 id="7-G1-垃圾回收器"><a href="#7-G1-垃圾回收器" class="headerlink" title="7. G1 垃圾回收器"></a>7. G1 垃圾回收器</h3><p>一款面向服务端应用的垃圾收集器。它把内存划分为多个不同的子区域，G1只存在逻辑上的分区，子区域可能随G1的运行在不同代期间前后切换，每个子区域大小为1-32<code>M</code>不等，最多设置<code>2048</code>个区域。</p>
+<p><strong>特点如下：</strong></p>
+<p>并行与并发：G1 能充分利用多 CPU、多核环境下的硬件优势，使用多个 CPU 来缩短 Stop-The-World 停顿时间。部分收集器原本需要停顿 Java 线程来执行 GC 动作，G1 收集器仍然可以通过并发的方式让 Java 程序继续运行。</p>
+<p>分代收集：G1 能够独自管理整个 Java 堆，并且采用不同的方式去处理新创建的对象和已经存活了一段时间、熬过多次 GC 的旧对象以获取更好的收集效果。</p>
+<p>空间整合：G1 运作期间不会产生空间碎片，收集后能提供规整的可用内存。</p>
+<p>可预测的停顿：G1 除了追求低停顿外，还能建立可预测的停顿时间模型。能让使用者明确指定在一个长度为 M 毫秒的时间段内，消耗在垃圾收集上的时间不得超过 N 毫秒。</p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ckabwjxvq000b1wugeb390m3h"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-造成Java Out Of Memory原因总结" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/"
+    >造成Java Out Of Memory原因总结</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" class="article-date">
+  <time datetime="2020-02-04T04:34:09.363Z" itemprop="datePublished">2020-02-04</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="造成-Java-Out-Of-Memory-原因总结"><a href="#造成-Java-Out-Of-Memory-原因总结" class="headerlink" title="造成 Java Out Of Memory 原因总结"></a>造成 Java Out Of Memory 原因总结</h2><p>总结起来有 6 点原因，以下分点阐述。</p>
+<h3 id="1-heap-space"><a href="#1-heap-space" class="headerlink" title="1 heap space"></a>1 heap space</h3><p> 当申请的空间大小超出了堆中剩余空间就会产生这个原因。比如：通过 <strong>_-Xmx10m_</strong> 设置虚拟机堆最大空间为 10 M，运行代码：<code>byte data[] = new data[1024 * 1024 * 20];</code> 就会产生错误。</p>
+<h3 id="2-GC-overhead-limit"><a href="#2-GC-overhead-limit" class="headerlink" title="2 GC overhead limit"></a>2 GC overhead limit</h3><p> 当 Java 虚拟机连续多次垃圾回收却只回收了不到$2\%$的内存，也就是说你的程序有$98\%$的时间都在进行垃圾回收，却回收了不到$2\%$的内存，就会产生这个错误。</p>
+<h3 id="3-Direct-buffer-memory"><a href="#3-Direct-buffer-memory" class="headerlink" title="3 Direct buffer memory"></a>3 Direct buffer memory</h3><p> 由于在 Java 8 以后，hotspot 虚拟机废止了永久代，转而采用<i>MetaSpace</i>实现方法区。Metaspace 并不依赖于 JVM 内存，而直接占用本地内存。因此，当在 NIO 过程中，经常使用 ByteBuffer 来读取和写入数据，这是一种基于 Channel、Buffer 的 I/O 方式。它可以使用 native 函数库直接分配 OS 本地内存，然后通过一个存储在堆里的 DirectByteBuffer 对象作为这块内存的引用进行操作。因为避免了 Java 堆和 Native 堆中来回复制数据（不需要内存拷贝），可以提高性能。Buffer 空间直接在本地分配内存，不属于 GC 管辖范围，JVM 不要执行 GC。当本地内存(Direct Memory)用完，而堆内存反而很少使用，就会产生这个错误。</p>
+<p>以下代码设置元空间占用本地最大内存为 5 m，却要直接申请 50 m 的内存，会报错。</p>
+<p><code>-XX:+PrintGCDetails -XX:MaxDirectMemorySize=5m</code></p>
+<p><code>ByteBuffer buffer = ByteBuffer.allocateDirect(50 * 1024 * 1024);</code></p>
+<h3 id="4-Metaspace"><a href="#4-Metaspace" class="headerlink" title="4 Metaspace"></a>4 Metaspace</h3><p> Java 8 后，采用元空间实现方法区。方法区主要存放加载的类信息、静态变量/方法、运行时常量池等信息。当加载的类过多以致超出了元空间的大小，就会产生这个错误。</p>
+<p><strong>注意</strong>：</p>
+<p>方法区是Java虚拟机的一个规范，在Java 8之前，持久代作为方法区的实现，Java 8及以后，采用元空间(Meta Space)作为方法区的实现，并且元空间使用的是本地内存。</p>
+<p><code>-XX:MetaspaceSize=8m -XX:MaxMetaspaceSize=8m</code> 设置初始和最大元空间大小。</p>
+<h3 id="5-unable-to-create-new-native-thread"><a href="#5-unable-to-create-new-native-thread" class="headerlink" title="5 unable to create new native thread"></a>5 unable to create new native thread</h3><p>高并发请求服务器时，经常出现：</p>
+<p><code>java.lang.OutOfMemoryError: unable to create new native thread</code></p>
+<p>不同操作系统允许进程创建的线程数量有限，当 Java 应用创建太多线程时，超过了系统承载极限。linux 默认徐云一个进程创建 1024 个线程。</p>
+<p><strong>tips</strong>:当一个线程 start 后，线程状态会发生改变，不允许再次 start。</p>
+<h3 id="6-Stack-Overflow"><a href="#6-Stack-Overflow" class="headerlink" title="6 Stack Overflow"></a>6 Stack Overflow</h3><p> 最经典的一个错误，无限递归导致虚拟机栈空间不足，就会报这个错误。</p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="ckabwjxwh001b1wugabxs99kg"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-Faster R-CNN中anchor的理解" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -114,7 +375,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" data-id="cka5covia0002fkuggdqcabah"
+      <a data-url="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" data-id="ckabwjxva00021wug3qi4ekbf"
         class="article-share-link">分享</a>
         
       
@@ -186,7 +447,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/10/PCA-StepByStep/" data-id="cka5covjk000kfkug0vm14ft1"
+      <a data-url="http://yoursite.com/2019/11/10/PCA-StepByStep/" data-id="ckabwjxvv000i1wug31xnhgmv"
         class="article-share-link">分享</a>
         
       
@@ -251,7 +512,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/09/Hashap-LoadFactor/" data-id="cka5covj30008fkug1hpb64sr"
+      <a data-url="http://yoursite.com/2019/11/09/Hashap-LoadFactor/" data-id="ckabwjxvo00091wug5le7dxxr"
         class="article-share-link">分享</a>
         
       
@@ -334,7 +595,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" data-id="cka5covk0000zfkug097i9ntv"
+      <a data-url="http://yoursite.com/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" data-id="ckabwjxw9000v1wuggia5595t"
         class="article-share-link">分享</a>
         
       
@@ -399,7 +660,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/07/canny/" data-id="cka5covjp000ofkug57xog3rv"
+      <a data-url="http://yoursite.com/2019/11/07/canny/" data-id="ckabwjxw8000t1wugd2euazto"
         class="article-share-link">分享</a>
         
       

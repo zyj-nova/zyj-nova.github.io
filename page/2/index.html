@@ -60,6 +60,321 @@
     
     
     
+    <article id="post-实现梯度下降（线性回归为例）" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/"
+    >实现梯度下降（线性回归为例）</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/" class="article-date">
+  <time datetime="2020-03-01T02:51:25.748Z" itemprop="datePublished">2020-03-01</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="梯度下降（线性回归为例）"><a href="#梯度下降（线性回归为例）" class="headerlink" title="梯度下降（线性回归为例）"></a>梯度下降（线性回归为例）</h2><h3 id="0-相关工作"><a href="#0-相关工作" class="headerlink" title="0. 相关工作"></a>0. 相关工作</h3><h4 id="0-1-线性回归模型"><a href="#0-1-线性回归模型" class="headerlink" title="0.1 线性回归模型"></a>0.1 线性回归模型</h4><script type="math/tex; mode=display">
+\hat {y} = \theta_0 + \theta_1x_1 + \theta_2x_2 +···+\theta_nx_n</script><p>其中，$n$ 为 $x$ 的特征数量。</p>
+<p>转为矩阵相乘形式：</p>
+<script type="math/tex; mode=display">
+y = X·\theta</script><p>其中，$X$ 为样本矩阵，个人喜欢行数代表样本数量 $m$，列数代表特征维度 $n$。$\theta$ 为参数矩阵，大小为 $n * 1$。</p>
+<p>若行数代表特征维度 $n$，列数代表样本数量 $m$，可写为：</p>
+<script type="math/tex; mode=display">
+y = \theta^{T}·X</script><h4 id="0-2-定义损失函数"><a href="#0-2-定义损失函数" class="headerlink" title="0.2 定义损失函数"></a>0.2 定义损失函数</h4><p>采用均方误差损失函数$Mean Square Error(MSE) $ 。</p>
+<p>某个样本的损失函数定义如下：</p>
+<script type="math/tex; mode=display">
+loss_j = (X_{j}·\theta - y)^2</script><p>整个训练集的损失函数为：</p>
+<script type="math/tex; mode=display">
+J(\theta) = \frac{1}{2m} \sum_{i=1}^{m} (X_i·\theta - y_i)^2</script><p>我们要求的就是使得$J(\theta)$最小的$\theta$。</p>
+<script type="math/tex; mode=display">
+\hat{\theta} = arg\min_{\theta} J(\theta)</script><h4 id="0-3-定义梯度公式"><a href="#0-3-定义梯度公式" class="headerlink" title="0.3 定义梯度公式"></a>0.3 定义梯度公式</h4><p>梯度就是由多维变量偏导数的向量。</p>
+<p>可知$J(\theta)$ 是一个复合函数，求导时采用链式法则，$J$ 对每个维度的参数的偏导，定义为：</p>
+<script type="math/tex; mode=display">
+\frac{\partial J}{\partial \theta_j} = \frac{1}{m} \sum_{i=1}^{m}(X^{i}·\theta - y^i)X_{j}^{i}</script><p>其中$X_j^i$是第$j$个属性之前的系数。表示第i个样本第j个维度的特征值。</p>
+<p>矩阵相乘形式：</p>
+<script type="math/tex; mode=display">
+\frac{\partial J}{\partial \theta_j} = \frac{1}{m} X_j^T(X·\theta - y)</script><p>$X_j^T$表示样本矩阵第j个维度的所有特征值。</p>
+<p>由此进一步推导出：</p>
+<script type="math/tex; mode=display">
+\frac{\partial J}{\partial \theta} = \frac{1}{m} X^T(X·\theta - y)</script><h3 id="1-批量梯度下降"><a href="#1-批量梯度下降" class="headerlink" title="1. 批量梯度下降"></a>1. 批量梯度下降</h3><script type="math/tex; mode=display">
+\theta_{t+1} = \theta_t - \alpha\nabla\theta</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment">#定义损失函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loss</span><span class="params">(W,x,y)</span>:</span></span><br><span class="line">    m = len(y)</span><br><span class="line">    predictions = np.dot(x,W)</span><br><span class="line">    <span class="keyword">return</span> (<span class="number">1</span>/<span class="number">2</span>*m)*np.sum(np.square(predictions - y))</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义批量梯度公式</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradient</span><span class="params">(W,x,y)</span>:</span></span><br><span class="line">    m = len(y)</span><br><span class="line">    predictions = np.dot(x,W)</span><br><span class="line">    <span class="keyword">return</span> (<span class="number">1</span>/m)*x.T.dot(predictions-y)</span><br><span class="line"><span class="comment">#迭代训练</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradient_descent</span><span class="params">(W,x,y,alpha=<span class="number">0.001</span>,iterations=<span class="number">1000</span>)</span>:</span></span><br><span class="line">    cost_history = np.zeros(iterations)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(iterations):</span><br><span class="line">        cost_history[i] = loss(W,x,y)</span><br><span class="line">        grd = gradient(W,x,y)</span><br><span class="line">        print(grd.shape)<span class="comment">#(x.shape[1],1)</span></span><br><span class="line">        W = W - alpha*grd</span><br><span class="line">    <span class="keyword">return</span> W,cost_history</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="comment">#生成数据</span></span><br><span class="line">    X = <span class="number">2</span> * np.random.rand(<span class="number">100</span>,<span class="number">1</span>)</span><br><span class="line">    y = <span class="number">10</span> +<span class="number">3</span> * X + np.random.randn(<span class="number">100</span>,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    W = np.random.randn(<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">    <span class="comment">#偏置项</span></span><br><span class="line">    X_b = np.ones((X.shape[<span class="number">0</span>],<span class="number">1</span>))</span><br><span class="line">    <span class="comment">#加入偏置项，偏执项为(100,1)的全为1的向量</span></span><br><span class="line">    X_ = np.hstack((X_b,X))<span class="comment">#(100,2)</span></span><br><span class="line">    iteration = <span class="number">10000</span></span><br><span class="line">    W,loss = gradient_descent(W,X_,y,alpha=<span class="number">0.01</span>,iterations=iteration)</span><br><span class="line"></span><br><span class="line">    print(W)</span><br><span class="line">    <span class="comment">#由于将偏置项放在X的第一列，也就是第0维。因此，bias = 8.67 weight = 3.85</span></span><br><span class="line">    <span class="comment">#array([[8.67047187],</span></span><br><span class="line">    <span class="comment">#      [3.85509216]])</span></span><br><span class="line"></span><br><span class="line">    y_predict = np.dot(X_,W)</span><br><span class="line">    it = np.linspace(<span class="number">1</span>,iteration,iteration)</span><br><span class="line">    plt.plot(it,loss)</span><br><span class="line"></span><br><span class="line">    plt.scatter(X,y)</span><br><span class="line">    plt.plot(X,y_predict)</span><br></pre></td></tr></table></figure>
+<p><img src="C:\Users\ASUS\Pictures\loss.png" alt=""></p>
+<p><img src="C:\Users\ASUS\Pictures\linear_reg.png" alt=""></p>
+<h3 id="2-随机梯度下降"><a href="#2-随机梯度下降" class="headerlink" title="2. 随机梯度下降"></a>2. 随机梯度下降</h3><p>随机梯度下降是指，在进行梯度更新时，随机选取某一个样本来更新梯度，而非对整个样本数据集求梯度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">stochastic_gradient_descent</span><span class="params">(W,x,y,alpha,iterations = <span class="number">1000</span>)</span>:</span></span><br><span class="line">    m = len(y)</span><br><span class="line">    cost_history = np.zeros(iterations)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(iterations):</span><br><span class="line">        predictions = np.dot(x,W)</span><br><span class="line">        cost_history[i] = (<span class="number">1</span>/<span class="number">2</span>*m)*np.sum(np.square(predictions - y))</span><br><span class="line">        </span><br><span class="line">        rand_index = np.random.randint(<span class="number">0</span>,m)</span><br><span class="line">        <span class="comment">#从数据集中取出索引为rand_index的数据</span></span><br><span class="line">        x_i = x[rand_index,:].reshape(<span class="number">1</span>,x.shape[<span class="number">1</span>])</span><br><span class="line">        y_i = y[rand_index].reshape(<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">        grad = gradient(W,x_i,y_i)</span><br><span class="line">        </span><br><span class="line">        W = W - alpha*grad</span><br><span class="line">    <span class="keyword">return</span> W,cost_history</span><br></pre></td></tr></table></figure>
+<h3 id="3-小批量梯度下降-mini-batch"><a href="#3-小批量梯度下降-mini-batch" class="headerlink" title="3. 小批量梯度下降(mini-batch)"></a>3. 小批量梯度下降(mini-batch)</h3><p>小批量梯度下降指：每一步的梯度计算，既不是基于整个训练集（如批量梯度下降）也不是基于单个实例（如随机梯度下降），而是基于一小部分随机的实例集也就是小批量，来进行梯度的更新。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mini_batch_gradient_descent</span><span class="params">(W,x,y,alpha=<span class="number">0.01</span>,itera=<span class="number">1000</span>,batch_size=<span class="number">10</span>)</span>:</span></span><br><span class="line">	m = len(y)</span><br><span class="line">    cost_history = []</span><br><span class="line">    batches = int(m / batch_size)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> it <span class="keyword">in</span> range(itera):</span><br><span class="line">       	cost = <span class="number">0.0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,m,batch_size):</span><br><span class="line">            X_i = x[i:i+batch_size]<span class="comment">#size:[batch_size,m]</span></span><br><span class="line">            y_i = y[i:i+batch_size]<span class="comment">#size:[batch_size,1]</span></span><br><span class="line">        	</span><br><span class="line">            predictions = np.dot(X_i,W)</span><br><span class="line">            <span class="comment">#计算整个数据集上的loss</span></span><br><span class="line">            cost += (<span class="number">1</span>/<span class="number">2</span>*m)*np.sum(np.square(predictions - y_i))</span><br><span class="line">            grad = gradient(W,X_i,y_i)</span><br><span class="line">            </span><br><span class="line">            W = W - alpha*grad</span><br><span class="line">        cost_history.append(cost)</span><br><span class="line">    <span class="keyword">return</span> W,cost_history</span><br></pre></td></tr></table></figure>
+<h3 id="4-动量梯度下降"><a href="#4-动量梯度下降" class="headerlink" title="4. 动量梯度下降"></a>4. 动量梯度下降</h3><script type="math/tex; mode=display">
+v_t = \gamma v_{t-1} + \alpha \nabla J(\theta)</script><script type="math/tex; mode=display">
+\theta = \theta - v_t</script><p>$\alpha$ 即学习率。$\gamma$ 是动量系数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">momentum_gradient_descent</span><span class="params">(W,x,y,alpha=<span class="number">0.01</span>,mini_batch=<span class="number">20</span>,itera=<span class="number">1000</span>)</span>:</span></span><br><span class="line">    volocity = np.zeros(W.shape)</span><br><span class="line">    gamma = <span class="number">0.9</span></span><br><span class="line">    m = len(y)</span><br><span class="line">    cost_history = []</span><br><span class="line">    <span class="keyword">for</span> it <span class="keyword">in</span> range(itera):</span><br><span class="line">        cost = <span class="number">0.0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,m,batch_size):</span><br><span class="line">            X_i = x[i:i+batch_size]<span class="comment">#size:[batch_size,m]</span></span><br><span class="line">            y_i = y[i:i+batch_size]<span class="comment">#size:[batch_size,1]</span></span><br><span class="line"></span><br><span class="line">            predictions = np.dot(X_i,W)</span><br><span class="line">            <span class="comment">#计算整个数据集上的loss</span></span><br><span class="line">            cost += (<span class="number">1</span>/<span class="number">2</span>*m)*np.sum(np.square(predictions - y_i))</span><br><span class="line">            grad = gradient(W,X_i,y_i)</span><br><span class="line">            <span class="comment">#volocity的维度和W相同，列向量 直接矩阵计算</span></span><br><span class="line">            <span class="comment">#相当于在每个维度上计算gamma*volocity[dim] + alpha*grad[dim]</span></span><br><span class="line">            volocity = gamma * volocity + alpha*grad </span><br><span class="line">            W = W - volocity</span><br><span class="line">        cost_history.append(cost)</span><br><span class="line">    <span class="keyword">return</span> W,cost_history</span><br></pre></td></tr></table></figure>
+<h3 id="5-AdaGrad"><a href="#5-AdaGrad" class="headerlink" title="5. AdaGrad"></a>5. AdaGrad</h3><p>算法简介：</p>
+<p><img src="/images/adagrad.png" alt=""></p>
+<p><strong>在参数空间更为平缓的方向，该算法会取得更大的进步（因为平缓，所以历史梯度平方和较小，作为分母。对应学习下降的幅度较大），并且能够使得陡峭的方向变得平缓，从而加快训练速度。</strong>同时，每次迭代时，学习率也在不断改变，全局学习率逐参数的，除以历史梯度平方和的平方根，使得每个参数的学习率不同。</p>
+<p><img src="/images/v2-1d979af221d94aea41972e62a8935a95_r.jpg" alt=""></p>
+<h3 id="6-RMSprop"><a href="#6-RMSprop" class="headerlink" title="6. RMSprop"></a>6. RMSprop</h3><p>算法简介：</p>
+<p><img src="/images/RMSprop.png" alt=""></p>
+<p>相比于之前的<strong>AdaGrad</strong>，采用了指数加权平均来更新每个参数的历史梯度(近期的梯度比重较大，历史梯度指数减小)，增加了一个衰减系数来控制历史信息的获取多少。</p>
+<p><img src="/images/momprop2-2.png" alt=""></p>
+<h3 id="7-Adam"><a href="#7-Adam" class="headerlink" title="7. Adam"></a>7. Adam</h3><p><img src="/images/adam.png" alt=""></p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/" data-id="ckabwjxwa000y1wuga12fflje"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-GitHub的骚操作" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/"
+    >GitHub的骚操作</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/" class="article-date">
+  <time datetime="2020-02-27T04:57:10.082Z" itemprop="datePublished">2020-02-27</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="GitHub的骚操作"><a href="#GitHub的骚操作" class="headerlink" title="GitHub的骚操作"></a>GitHub的骚操作</h2><h3 id="1-in-限制搜索"><a href="#1-in-限制搜索" class="headerlink" title="1. in 限制搜索"></a>1. in 限制搜索</h3><p><strong>用法</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gnn <span class="keyword">in</span>:name</span><br><span class="line">spring <span class="keyword">in</span>:readme,name,description</span><br></pre></td></tr></table></figure>
+<h3 id="2-starts-forks范围搜索"><a href="#2-starts-forks范围搜索" class="headerlink" title="2. starts/forks范围搜索"></a>2. starts/forks范围搜索</h3><p><strong>用法</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name stars/forks:&gt;500</span><br><span class="line">name stars/forks:500..600</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">组合命令</span></span><br><span class="line">redis starts:&gt;5000 forks:6000..10000 in:name</span><br></pre></td></tr></table></figure>
+<h3 id="3-awesome搜索"><a href="#3-awesome搜索" class="headerlink" title="3. awesome搜索"></a>3. awesome搜索</h3><p><strong>用法</strong>：展示站点上较好的项目</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awesome gan</span><br></pre></td></tr></table></figure>
+<h3 id="4-高亮显示代码"><a href="#4-高亮显示代码" class="headerlink" title="4.高亮显示代码"></a>4.高亮显示代码</h3><p><strong>用法</strong>：在代码链接后加<code>#Lnum</code>，将高亮该行代码；<code>#L5-L50</code>高亮<code>5-50</code>行的代码。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/JeffLi1993/springboot-learning-example/blob/master/chapter-2-spring-boot-config/src/main/java/demo/springboot/web/HelloBookController.java#L1</span><br><span class="line"></span><br><span class="line">https://github.com/JeffLi1993/springboot-learning-example/blob/master/chapter-2-spring-boot-config/src/main/java/demo/springboot/web/HelloBookController.java#L1-L15</span><br></pre></td></tr></table></figure>
+<h3 id="5-t搜索"><a href="#5-t搜索" class="headerlink" title="5. t搜索"></a>5. t搜索</h3><p>在某个项目首页下，<code>t</code>键可以查看该项目所有代码文件。</p>
+<p>还有其他快捷键，可参考官方文档。</p>
+<p><img src="/images/image-20200227130114291.png" alt="image-20200227130114291"></p>
+<p><img src="/images/image-20200227130247176.png" alt="image-20200227130247176"></p>
+<h3 id="6-关于git的一些知识"><a href="#6-关于git的一些知识" class="headerlink" title="6. 关于git的一些知识"></a>6. 关于git的一些知识</h3><ul>
+<li><p><code>git</code>分为工作区、暂存区、版本库。将工作区的文件<code>add</code>到暂存区，<code>git</code>才可以对改文件进行版本管理，<code>add</code>之后就可以<code>commit</code>到版本库</p>
+</li>
+<li><p>已经<code>add</code>到暂存区的文件，又对其进行了修改，务必再次执行<code>add</code>操作，否则<code>commit</code>时，这个修改不会被提交到版本库。第一次修改 -&gt; <code>git add</code> -&gt; 第二次修改 -&gt; <code>git add</code> -&gt; <code>git commit</code>，两次修改合并为一次<code>commit</code></p>
+</li>
+<li><p>撤销修改：</p>
+<ul>
+<li><p>已经执行<code>add</code>的文件，现在在工作区区又进行了一次修改（这次修改还没<code>add</code>），<code>git checkout -- filename</code>可放弃工作区的这次修改</p>
+</li>
+<li><p>做了修改，并且已经<code>add</code>到暂存区，现在不想要这次修改了，先</p>
+<p><code>git reset HEAD filename</code>，从暂存区中拉回到工作区，然后<code>git checkout -- filename</code>放弃这次修改。</p>
+</li>
+</ul>
+</li>
+<li><p>版本回退</p>
+<ul>
+<li><code>git reset --hard commitId</code>，可回退到之前的版本。可采用<code>git log</code>来查看每次<code>commit</code>的详细情况</li>
+<li>要重新返回到最新版本，用<code>git reflog</code>查看命令历史，获取<code>commitId</code>，以便确定要回到未来的哪个版本。然后采用<code>reset</code>命令。</li>
+</ul>
+</li>
+<li><p>分支管理</p>
+<p>参考<a href="https://www.liaoxuefeng.com/wiki/896043488029600/900003767775424" target="_blank" rel="noopener">https://www.liaoxuefeng.com/wiki/896043488029600/900003767775424</a></p>
+</li>
+</ul>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/" data-id="ckabwjxvj00051wug0vwafs8l"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-Java 反射和动态代理" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"
+    >Java 反射和动态代理</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" class="article-date">
+  <time datetime="2020-02-23T03:34:51.877Z" itemprop="datePublished">2020-02-23</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="Java-反射和动态代理"><a href="#Java-反射和动态代理" class="headerlink" title="Java 反射和动态代理"></a>Java 反射和动态代理</h2><h3 id="1-类加载机制"><a href="#1-类加载机制" class="headerlink" title="1. 类加载机制"></a>1. 类加载机制</h3><h4 id="1-1-类加载过程"><a href="#1-1-类加载过程" class="headerlink" title="1.1 类加载过程"></a>1.1 类加载过程</h4><p>大体来说，可以分为三个阶段：<strong>加载 $\rightarrow$ 链接 $\rightarrow$ 初始化</strong>。具体过程如图：1</p>
+<p><img src="/images/loader.png" alt=""></p>
+<p><strong>类加载时机</strong>:</p>
+<p>1.创建类的实例，也就是new一个对象</p>
+<p>2.访问某个类或接口的静态变量，或者对该静态变量赋值</p>
+<p>3.调用类的静态方法</p>
+<p>4.反射</p>
+<p>5.初始化一个类的子类（会首先初始化子类的父类）</p>
+<p>6.虚拟机启动时标明的启动类，即文件名和类名相同的那个类</p>
+<h4 id="1-2-加载"><a href="#1-2-加载" class="headerlink" title="1.2 加载"></a>1.2 加载</h4><p>​        将<code>class</code>字节码文件内容加载到内存中，并将这些静态数据转换为方法区的运行时数据结构，然后在堆中生成一个代表这个类的<code>java.lang.Class</code>对象，作为方法区中<strong>类数据（Class Metadata）</strong>的返回入口。</p>
+<p><strong><code>Class</code></strong>对象代表啥：</p>
+<p>​        每当一个类加载到内存中后，这个类便成为运行时类，虚拟机会在<strong>堆区</strong>创建一个有关这个类的<code>Class</code>对象。</p>
+<h4 id="1-1-类加载过程-1"><a href="#1-1-类加载过程-1" class="headerlink" title="1.1 类加载过程"></a>1.1 类加载过程</h4><h4 id="1-3-类加载器"><a href="#1-3-类加载器" class="headerlink" title="1.3 类加载器"></a>1.3 类加载器</h4><ul>
+<li><code>Bootstrap  Class loader</code></li>
+<li><code>Extension Class loader</code></li>
+<li><code>Application Class loader</code></li>
+</ul>
+<p><strong>双亲委托模型</strong>：</p>
+<p>​         如果一个类加载器收到了类加载请求，它并不会自己先去加载，而是把这个请求委托给父类的加载器去执行，如果父类加载器还存在其父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的启动类加载器，如果父类加载器可以完成类加载任务，就成功返回，倘若父类加载器无法完成此加载任务，子加载器才会尝试自己去加载，这就是双亲委派模式。</p>
+<p>​        即每个儿子都很懒，每次有活就丢给父亲去干，直到父亲说这件事我也干不了时，儿子自己才想办法去完成。 </p>
+<p><strong>为什么采用这种模式</strong>：</p>
+<ul>
+<li>避免类的重复加载 </li>
+<li>保证安全， Java中定义的核心类不会被随意替换 </li>
+</ul>
+<p><img src="/images/classloder.jpg" alt=""></p>
+<h3 id="2-反射"><a href="#2-反射" class="headerlink" title="2. 反射"></a>2. 反射</h3><p>​        反射到底是干啥的？答：不用new也可以获取到一个对象的实例。可以在运行时构造任意一个类的对象，可以在运行时处理注解、获取泛型信息等。</p>
+<p>​        反射相关的<code>api</code>在<code>java.lang.reflect</code>包下。以下是通过反射调用<code>show</code>方法的代码清单。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.nefu.reflect;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException </span>&#123;</span><br><span class="line">        <span class="comment">//1. 获取Class对象实例</span></span><br><span class="line">		Class&lt;?&gt; clazz = Class.forName(<span class="string">"com.nefu.reflect.Main"</span>);</span><br><span class="line">        <span class="comment">//2. 创建一个Main类的实例对象</span></span><br><span class="line">		Object obj = clazz.getDeclaredConstructor().newInstance();</span><br><span class="line">		Method show = clazz.getDeclaredMethod(<span class="string">"show"</span>);</span><br><span class="line">        <span class="comment">//3. 避免权限不够</span></span><br><span class="line">		show.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">		System.out.println(show.getReturnType());</span><br><span class="line">        <span class="comment">//4. 调用obj的show方法</span></span><br><span class="line">		show.invoke(obj);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"hello world"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-动态代理"><a href="#3-动态代理" class="headerlink" title="3. 动态代理"></a>3. 动态代理</h3><p>​        代理类可以增强被代理类对象方法。</p>
+<h4 id="3-1-静态代理"><a href="#3-1-静态代理" class="headerlink" title="3.1 静态代理"></a>3.1 静态代理</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test01</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		NikeClothFactory nikeClothFactory = <span class="keyword">new</span> NikeClothFactory();</span><br><span class="line">		NikeClothFactoryProxy proxy = <span class="keyword">new</span> NikeClothFactoryProxy(nikeClothFactory);</span><br><span class="line">		proxy.invoke();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ClothFactory</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">product</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">///被代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NikeClothFactory</span> <span class="keyword">implements</span> <span class="title">ClothFactory</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">product</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"Nike 开始生产...."</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NikeClothFactoryProxy</span></span>&#123;</span><br><span class="line">	ClothFactory clothFactory;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">NikeClothFactoryProxy</span><span class="params">(ClothFactory clothFactory)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">this</span>.clothFactory = clothFactory;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">invoke</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"前置处理"</span>);</span><br><span class="line">		clothFactory.product();</span><br><span class="line">		System.out.println(<span class="string">"后置处理"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​        以上代码可以看出，当再有一个类实现<code>ClothFactory</code>接口，我们得继续编写一个对应的代理类进行增强处理。<strong>静态代理在编译期就确定了代理对象</strong>。</p>
+<h4 id="3-2-动态代理"><a href="#3-2-动态代理" class="headerlink" title="3.2 动态代理"></a>3.2 动态代理</h4><p>​        在Java中，动态代理实现有<code>JDK</code>自带的动态代理，<code>CGLib</code>动态代理。 通过动态代理，可以无需声明代理类。是使用反射和字节码的技术，在运行期创建指定接口或类的子类（即动态代理类）以及其实例对象的技术。通过动态代理技术可以无侵入地对代码进行增强。 </p>
+<p>​        两种动态代理的最大的区别是：<code>JDK</code>动态代理要求被代理对象必须基于接口来实现。动态代理类和被代理类必须实现同一个接口。动态代理只能对接口中声明的方法进行代理。对那些没有实现接口的bean。<code>JDK</code>动态代理无法代理。而<code>CGLib</code>通过继承被代理类的方式实现代理。</p>
+<p>​        在<code>JDK</code>动态代理中，主要调用<code>java.lang.reflect.Proxy</code>类和<code>java.lang.reflect.InvocationHandler</code>接口。依然以静态代理中的<code>ClothFactory</code>为例，编写动态代理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Proxy;</span><br><span class="line"></span><br><span class="line"><span class="comment">//被代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PumaClothFactory</span> <span class="keyword">implements</span> <span class="title">ClothFactory</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">product</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"Puma 源自南美！"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//测试类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test02</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		PumaClothFactory obj = <span class="keyword">new</span> PumaClothFactory();</span><br><span class="line">		ClothFactory proxy = (ClothFactory)Proxy</span><br><span class="line">				.newProxyInstance(obj.getClass().getClassLoader(), </span><br><span class="line">						obj.getClass().getInterfaces(),</span><br><span class="line">						<span class="keyword">new</span> PumaInvocationHandler(obj));</span><br><span class="line">		proxy.product();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//每一个动态代理实例都有一个关联的InvocationHandler</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PumaInvocationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span></span>&#123;</span><br><span class="line">	ClothFactory obj;</span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="title">PumaInvocationHandler</span><span class="params">(ClothFactory clothFactory)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">		 <span class="keyword">this</span>.obj = clothFactory;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		System.out.println(<span class="string">"前置处理"</span>);</span><br><span class="line">		<span class="comment">//真正调用被代理类的方法</span></span><br><span class="line">		method.invoke(obj, args);</span><br><span class="line">		System.out.println(<span class="string">"后置处理"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​        可以看出，上述代码中并没有显示的编写代理类，而是调用了<code>Proxy.newProxyInstance</code>方法来动态创建代理类。</p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" data-id="ckabwjxvr000d1wuggpwbdf3j"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-链表" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -116,7 +431,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/15/%E9%93%BE%E8%A1%A8/" data-id="cka5covk40018fkug27667zvp"
+      <a data-url="http://yoursite.com/2020/02/15/%E9%93%BE%E8%A1%A8/" data-id="ckabwjxwi001e1wug0bbta3p0"
         class="article-share-link">分享</a>
         
       
@@ -205,7 +520,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" data-id="cka5covj9000dfkuggixe7apc"
+      <a data-url="http://yoursite.com/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" data-id="ckabwjxvu000g1wug79sn7wfq"
         class="article-share-link">分享</a>
         
       
@@ -223,7 +538,7 @@
 
 </article>
     
-    <article id="post-Pytorch 学习笔记" class="article article-type-post" itemscope
+    <article id="post-Pytorch 学习笔记之入门" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -231,8 +546,8 @@
     <header class="article-header">
        
 <h2 itemprop="name">
-  <a class="article-title" href="/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"
-    >Pytorch 学习笔记</a
+  <a class="article-title" href="/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%85%A5%E9%97%A8/"
+    >Pytorch 学习笔记之入门</a
   >
 </h2>
   
@@ -242,7 +557,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="article-date">
+      <a href="/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%85%A5%E9%97%A8/" class="article-date">
   <time datetime="2020-02-12T03:43:02.260Z" itemprop="datePublished">2020-02-12</time>
 </a>
       
@@ -265,7 +580,7 @@
       
 
       
-      <h2 id="Pytorch-学习笔记-CPU-only"><a href="#Pytorch-学习笔记-CPU-only" class="headerlink" title="Pytorch 学习笔记(CPU only)"></a>Pytorch 学习笔记(CPU only)</h2><p>如果想进一步了解神经网络的内部结构，建议不要使用这些深度学习框架，如果有能力和时间，建议采用<code>numpy</code>类库从底层实现一个神经网络各种操作，比如：前向传播、反向传播、梯度下降等。</p>
+      <h2 id="Pytorch-学习笔记-CPU-only-之入门"><a href="#Pytorch-学习笔记-CPU-only-之入门" class="headerlink" title="Pytorch 学习笔记(CPU only)之入门"></a>Pytorch 学习笔记(CPU only)之入门</h2><p>如果想进一步了解神经网络的内部结构，建议不要使用这些深度学习框架，如果有能力和时间，建议采用<code>numpy</code>类库从底层实现一个神经网络各种操作，比如：前向传播、反向传播、梯度下降等。</p>
 <h3 id="1-开始"><a href="#1-开始" class="headerlink" title="1. 开始"></a>1. 开始</h3><h4 id="1-1-构成"><a href="#1-1-构成" class="headerlink" title="1.1 构成"></a>1.1 构成</h4><p>Pytorch 是由 Facebook 于 2016 年推出的一款深度学习框架。Pytorch 主要由以下包构成：</p>
 <div class="table-container">
 <table>
@@ -394,8 +709,8 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&gt; t = torch.tensor([</span><br><span class="line">    [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>],</span><br><span class="line">    [<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>],</span><br><span class="line">    [<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>]</span><br><span class="line">])</span><br><span class="line">&gt; t.size()</span><br><span class="line">torch.Size([<span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line"></span><br><span class="line">&gt; t.shape</span><br><span class="line">torch.Size([<span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line"></span><br><span class="line">&gt; t.reshape([<span class="number">1</span>,<span class="number">12</span>])</span><br><span class="line">tensor([[<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">2.</span>, <span class="number">2.</span>, <span class="number">2.</span>, <span class="number">2.</span>, <span class="number">3.</span>, <span class="number">3.</span>, <span class="number">3.</span>, <span class="number">3.</span>]]) <span class="comment">#二维的</span></span><br><span class="line"></span><br><span class="line">&gt; t.reshape(<span class="number">-1</span>)</span><br><span class="line">tensor([<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">2.</span>, <span class="number">2.</span>, <span class="number">2.</span>, <span class="number">2.</span>, <span class="number">3.</span>, <span class="number">3.</span>, <span class="number">3.</span>, <span class="number">3.</span>])  <span class="comment">#一维的</span></span><br><span class="line"></span><br><span class="line">&gt; t.reshape(<span class="number">6</span>,<span class="number">2</span>)</span><br><span class="line">tensor([[<span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">        [<span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">        [<span class="number">2.</span>, <span class="number">2.</span>],</span><br><span class="line">        [<span class="number">2.</span>, <span class="number">2.</span>],</span><br><span class="line">        [<span class="number">3.</span>, <span class="number">3.</span>],</span><br><span class="line">        [<span class="number">3.</span>, <span class="number">3.</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment">#升维</span></span><br><span class="line">&gt; t.reshape(<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line">tensor(</span><br><span class="line">[</span><br><span class="line">    [</span><br><span class="line">        [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">        [<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">2.</span>]</span><br><span class="line">    ],</span><br><span class="line"></span><br><span class="line">    [</span><br><span class="line">        [<span class="number">2.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</span><br><span class="line">        [<span class="number">3.</span>, <span class="number">3.</span>, <span class="number">3.</span>]</span><br><span class="line">    ]</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
 <p><strong>注意：</strong>reshape 返回后的结果可能与原<code>tensor</code>共享数据，而维度不同，即：你改变了 reshape 后的数据，原数据也会被修改；又或者 reshape 后的不共享存储。（无语….）</p>
 </li>
-<li><p><code>squeeze()</code> 将所有为 1 的维度删掉</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&gt; t1 = torch.tensor([[1],[2],[3],[4]])</span><br><span class="line">&gt; t1_ = t1.squeeze(-1)</span><br><span class="line">tensor([1, 2, 3, 4])</span><br><span class="line">&gt; t1_.shape</span><br><span class="line">torch.Size([4])</span><br><span class="line"></span><br><span class="line">&gt; a = torch.randn(1,1,3)</span><br><span class="line">&gt; print(a)</span><br><span class="line">tensor([[[ 1.8239, -1.0579,  0.3052]]])</span><br><span class="line"></span><br><span class="line">&gt; b = torch.squeeze(a) # 将a中所有为1的维度删掉。不为1的维度没有影响。</span><br><span class="line">&gt; b</span><br><span class="line">tensor([ 1.8239, -1.0579,  0.3052])</span><br><span class="line"></span><br><span class="line">&gt; c=torch.squeeze(a,1) # 第2维度是否为1，为1就删掉，成为2维矩阵；不为1则不受影响</span><br><span class="line">&gt; c</span><br><span class="line">tensor([[ 0.6552,  0.9220, -0.9763]])</span><br></pre></td></tr></table></figure>
+<li><p><code>squeeze()</code> 将所有为 1 的维度删掉，可以传入具体的参数，表示将第几个维度进行“挤压”，如果指定维度不为1，那么调用该方法tensor不发生改变。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">  &gt; t1 = torch.tensor([[1],[2],[3],[4]]) # [4,1]</span><br><span class="line">  &gt; t1_ = t1.squeeze(-1)# t1.squeeze(1)</span><br><span class="line">  tensor([1, 2, 3, 4])#[4]</span><br><span class="line">  &gt; t1_.shape</span><br><span class="line">  torch.Size([4])</span><br><span class="line"></span><br><span class="line">  &gt; a = torch.randn(1,1,3)</span><br><span class="line">  &gt; print(a)</span><br><span class="line">  tensor([[[ 1.8239, -1.0579,  0.3052]]])</span><br><span class="line"></span><br><span class="line">  &gt; b = torch.squeeze(a) # 将a中所有为1的维度删掉。不为1的维度没有影响。</span><br><span class="line">  &gt; b</span><br><span class="line">  tensor([ 1.8239, -1.0579,  0.3052])</span><br><span class="line">#[3]</span><br><span class="line">  &gt; c=torch.squeeze(a,1) # 第2维度是否为1，为1就删掉，成为2维矩阵；不为1则不受影响</span><br><span class="line">  &gt; c</span><br><span class="line">  tensor([[ 0.6552,  0.9220, -0.9763]])</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><code>unsqueeze()</code> 对给指定位置加上维数为一的维度</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt; a = torch.linspace(<span class="number">-1</span>, <span class="number">1</span>, <span class="number">100</span>)</span><br><span class="line">&gt; a,shape</span><br><span class="line">torch.Size([<span class="number">100</span>])</span><br><span class="line"></span><br><span class="line">&gt; b = a.unsqueeze(<span class="number">0</span>)</span><br><span class="line">&gt; b.shape</span><br><span class="line">torch.Size([<span class="number">1</span>,<span class="number">100</span>])</span><br><span class="line"></span><br><span class="line">&gt; c = a.unsqueeze(<span class="number">1</span>)</span><br><span class="line">&gt; c.shape</span><br><span class="line">torch.Size([<span class="number">100</span>,<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
@@ -413,7 +728,10 @@
 <p><strong>tips</strong>：在图像数据集中，<code>data</code>的维度通常是四维的。每个维度分别代表：<code>[batch,channel,width,height]</code>*</p>
 </li>
 <li><p><code>view()</code>：用来改变<code>tensor</code>的维度。类似于<code>reshape()</code>。 如果是<code>torch.view(-1)</code>，则原张量会变成一维的结构（和<code>flatten</code>操作相同） 。</p>
-<p><strong>注意：</strong><code>view()</code>操作会与原<code>tensor</code>共享数据！！！。</p>
+<p><strong>注意：</strong><code>view()</code>操作会与原<code>tensor</code>共享数据！！！</p>
+</li>
+<li><p><code>permute</code>：交换维度</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; t = torch.randn(<span class="number">5</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line">&gt; t = t.permute(<span class="number">1</span>,<span class="number">2</span>,<span class="number">0</span>)</span><br><span class="line">&gt; t.shape</span><br><span class="line">[<span class="number">3</span>,<span class="number">2</span>,<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><code>type_as</code>：转换<code>tensor</code>类型，<code>tensor</code>默认小数为<code>float</code>型。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; t1 = np.linspace(-10,10,100)</span><br><span class="line">&gt; t1_ = torch.tensor(t1)</span><br><span class="line">&gt; t1_.dtype</span><br><span class="line">torch.float64</span><br><span class="line"></span><br><span class="line">t1_ = t1_.type_as(torch.FloatTensor())</span><br><span class="line">&gt; t1_.dtype</span><br><span class="line">torch.float32</span><br></pre></td></tr></table></figure>
@@ -430,168 +748,13 @@
 <p>数据集的加载通常用到<code>torchvision</code>这个包。下面以<code>FASHIONMNIST</code>数据集为例，介绍如何导入。<code>FASHIONMNIST</code>是 $Zalando$ 公司制作的类似<code>MINST</code>的数据集，该数据集包含了各类衣服共 10 个类别，每个类别的训练集有 6000 张图片，用于检测模型图像分类的性能。</p>
 <h4 id="1-6-实现一个线性回归"><a href="#1-6-实现一个线性回归" class="headerlink" title="1.6 实现一个线性回归"></a>1.6 实现一个线性回归</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义模型</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinearRegression</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.linear = nn.Linear(in_features=<span class="number">1</span>,out_features=<span class="number">1</span>,bias=<span class="literal">True</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self,x)</span>:</span></span><br><span class="line">        x = x</span><br><span class="line">        out = self.linear(x)</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line">x = torch.unsqueeze(torch.linspace(<span class="number">-1</span>, <span class="number">1</span>, <span class="number">100</span>), dim=<span class="number">1</span>)</span><br><span class="line">y = <span class="number">3</span>*x + <span class="number">5</span> + torch.rand(x.size())</span><br><span class="line"></span><br><span class="line">model = LinearRegression()</span><br><span class="line"><span class="comment"># 选定loss函数</span></span><br><span class="line">loss = nn.MSELoss()</span><br><span class="line"><span class="comment"># 定义优化函数 ，梯度下降</span></span><br><span class="line">optimizer = torch.optim.SGD(model.parameters(), lr=<span class="number">1e-2</span>)</span><br><span class="line"><span class="comment"># 开始训练</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    out = model(x)</span><br><span class="line">    ls = loss(out,y)</span><br><span class="line">    optimizer.zero_grad()</span><br><span class="line">    ls.backward()</span><br><span class="line">    optimizer.step()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"loss:"</span> + str(ls.item()))</span><br><span class="line"><span class="comment">#检验模型</span></span><br><span class="line">preds = model(x)</span><br><span class="line">plt.plot(x.numpy(), y.numpy(), <span class="string">'ro'</span>, label=<span class="string">'Original Data'</span>)</span><br><span class="line">plt.plot(x.numpy(), preds.data.numpy(), label=<span class="string">'Fitting Line'</span>)</span><br><span class="line"></span><br><span class="line">print(model.linear.weight,model.linear.bias)</span><br><span class="line">输出如下:</span><br><span class="line">Parameter containing:</span><br><span class="line">tensor([[<span class="number">3.0281</span>]], requires_grad=<span class="literal">True</span>)</span><br><span class="line">Parameter containing:</span><br><span class="line">tensor([<span class="number">5.4789</span>], requires_grad=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
 <p><img src="/images/linearRegress.png" alt=""></p>
-<h3 id="2-构造一个卷积神经网络"><a href="#2-构造一个卷积神经网络" class="headerlink" title="2. 构造一个卷积神经网络"></a>2. 构造一个卷积神经网络</h3><h4 id="2-1-模型构建"><a href="#2-1-模型构建" class="headerlink" title="2.1 模型构建"></a>2.1 模型构建</h4><p>在<code>pytorch</code>中，我们构建的模型都继承自<code>torch.nn.Module</code>这个类，并且要重写其<code>forward</code>方法。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Network</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.conv1 = nn.Conv2d(in_channels=<span class="number">1</span>, out_channels=<span class="number">6</span>, kernel_size=<span class="number">5</span>)</span><br><span class="line">        self.conv2 = nn.Conv2d(in_channels=<span class="number">6</span>, out_channels=<span class="number">12</span>, kernel_size=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">        self.fc1 = nn.Linear(in_features=<span class="number">12</span> * <span class="number">4</span> * <span class="number">4</span>, out_features=<span class="number">120</span>)</span><br><span class="line">        self.fc2 = nn.Linear(in_features=<span class="number">120</span>, out_features=<span class="number">60</span>)</span><br><span class="line">        self.out = nn.Linear(in_features=<span class="number">60</span>, out_features=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, t)</span>:</span></span><br><span class="line">        <span class="comment"># implement the forward pass</span></span><br><span class="line">        <span class="comment"># (1) input layer</span></span><br><span class="line">		t = t</span><br><span class="line">        <span class="comment"># (2) hidden conv layer</span></span><br><span class="line">        t = self.conv1(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line">        t = F.max_pool2d(t, kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (3) hidden conv layer</span></span><br><span class="line">        t = self.conv2(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line">        t = F.max_pool2d(t, kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (4) hidden linear layer</span></span><br><span class="line">        t = t.reshape(<span class="number">-1</span>, <span class="number">12</span> * <span class="number">4</span> * <span class="number">4</span>)</span><br><span class="line">        t = self.fc1(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (5) hidden linear layer</span></span><br><span class="line">        t = self.fc2(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (6) output layer</span></span><br><span class="line">        t = self.out(t)</span><br><span class="line">        <span class="comment">#t = F.softmax(t, dim=1)</span></span><br><span class="line">        <span class="keyword">return</span> t</span><br><span class="line"></span><br><span class="line">&gt; network = Network()</span><br><span class="line">&gt; print(network)</span><br><span class="line">Network(</span><br><span class="line">  (conv1): Conv2d(<span class="number">1</span>, <span class="number">6</span>, kernel_size=(<span class="number">5</span>, <span class="number">5</span>), stride=(<span class="number">1</span>, <span class="number">1</span>))</span><br><span class="line">  (conv2): Conv2d(<span class="number">6</span>, <span class="number">12</span>, kernel_size=(<span class="number">5</span>, <span class="number">5</span>), stride=(<span class="number">1</span>, <span class="number">1</span>))</span><br><span class="line">  (fc1): Linear(in_features=<span class="number">192</span>, out_features=<span class="number">120</span>, bias=<span class="literal">True</span>)</span><br><span class="line">  (fc2): Linear(in_features=<span class="number">120</span>, out_features=<span class="number">60</span>, bias=<span class="literal">True</span>)</span><br><span class="line">  (out): Linear(in_features=<span class="number">60</span>, out_features=<span class="number">10</span>, bias=<span class="literal">True</span>)</span><br><span class="line">)</span><br><span class="line">&gt; network.conv1.weight.shape <span class="comment"># [channels,kernel_nums, kernel_size,kernel_size]</span></span><br><span class="line">torch.Size([<span class="number">6</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">5</span>])</span><br><span class="line">&gt; network.conv2.weight.shape</span><br><span class="line">torch.Size([<span class="number">12</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">5</span>])</span><br></pre></td></tr></table></figure>
-<p>总的来说，要经过 3 个步骤：</p>
-<ol>
-<li><p>继承<code>nn.Moudle</code></p>
-</li>
-<li><p>在<code>__init__(self)</code>方法中定义神经网络中的<code>layer</code>作为类的属性</p>
-</li>
-<li>实现<code>forward()</code>方法。</li>
-</ol>
-<p><strong>tips</strong>：一个多通道卷积与<strong>feature maps</strong>作卷积，结果是一个数值（每个通道卷积最后加起来），因此，<code>output_channels</code>的数量<strong>取决于卷积核的数量</strong>。每一层卷积的参数 = <code>channels * kernel_nums * size</code>。</p>
-<p>在定义好模型结构后，就可以输入训练集进行迭代训练直至收敛。</p>
-<p>上述网络结构中，<code>feature maps</code>尺寸变化如下：</p>
-<p><img src="/images/feature——maps.png" alt=""></p>
-<p><strong><code>feature_map</code>变换公式</strong>：</p>
-<ul>
-<li>图片大小 $W$</li>
-<li>卷积核<code>filter</code>大小 $F$</li>
-<li>步长<code>stride</code> 大小 $S$</li>
-<li>填充<code>padding</code>大小 $P$</li>
-<li><code>max_pooling</code>层 核大小 $f$</li>
-<li><code>max_pooling</code>层步长 <code>stride</code> $s$</li>
-</ul>
-<p>经过卷积输出大小 $N$ 有：</p>
-<script type="math/tex; mode=display">
-N = \frac{W - F + 2P}{S} + 1</script><p>再经过<code>max_pooling</code> ,最终大小 $M$ ,有:</p>
-<script type="math/tex; mode=display">
-M = \frac{N-f}{s} + 1</script><h4 id="2-2-训练你的模型"><a href="#2-2-训练你的模型" class="headerlink" title="2.2 训练你的模型"></a>2.2 训练你的模型</h4><p><strong>训练流程</strong>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. Get batch from the training set.</span><br><span class="line">2. Pass batch to network.</span><br><span class="line">3. Calculate the loss (difference between the predicted values and the true values).</span><br><span class="line">4. Calculate the gradient of the loss function w.r.t the network&apos;s weights.</span><br><span class="line">5. Update the weights using the gradients to reduce the loss.（反向传播）</span><br><span class="line">6. Repeat steps 1-5 until one epoch is completed.</span><br><span class="line">7. Repeat steps 1-6 for as many epochs required to reach the minimum loss.</span><br></pre></td></tr></table></figure>
-<p><strong>batch</strong>：每次输入神经网络中的数据集数量。</p>
-<p><strong>epoch</strong>：遍历完整个数据集称之为一个<code>epoch</code>。</p>
-<p>整个流程代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</span><br><span class="line"><span class="comment">#from plotcm import plot_confusion_matrix</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pdb</span><br><span class="line"></span><br><span class="line">torch.set_printoptions(linewidth=<span class="number">120</span>)</span><br><span class="line"><span class="comment">#训练数据集的加载</span></span><br><span class="line">train_set = torchvision.datasets.FashionMNIST(</span><br><span class="line">    root=<span class="string">'./data'</span></span><br><span class="line">    ,train=<span class="literal">True</span></span><br><span class="line">    ,download=<span class="literal">True</span></span><br><span class="line">    ,transform=transforms.Compose([</span><br><span class="line">        transforms.ToTensor()</span><br><span class="line">    ])</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">train_loader = torch.utils.data.DataLoader(train_set</span><br><span class="line">    ,batch_size=<span class="number">1000</span></span><br><span class="line">    ,shuffle=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_num_correct</span><span class="params">(preds, labels)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> preds.argmax(dim=<span class="number">1</span>).eq(labels).sum().item()</span><br><span class="line"></span><br><span class="line"><span class="comment">#开始训练</span></span><br><span class="line">network = Network()</span><br><span class="line">torch.set_grad_enabled(<span class="literal">True</span>)</span><br><span class="line">train_loader = torch.utils.data.DataLoader(train_set, batch_size=<span class="number">100</span>)</span><br><span class="line">optimizer = optim.Adam(network.parameters(), lr=<span class="number">0.01</span>)</span><br><span class="line"><span class="comment"># 要遍历10次整个数据集</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    total_loss = <span class="number">0</span></span><br><span class="line">    total_correct = <span class="number">0</span></span><br><span class="line">	<span class="comment"># batchsize = 1000</span></span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> train_loader: <span class="comment"># Get Batch</span></span><br><span class="line">        images, labels = batch</span><br><span class="line"></span><br><span class="line">        preds = network(images) <span class="comment"># Pass Batch</span></span><br><span class="line">        loss = F.cross_entropy(preds, labels) <span class="comment"># Calculate Loss</span></span><br><span class="line"></span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        loss.backward() <span class="comment"># Calculate Gradients</span></span><br><span class="line">        optimizer.step() <span class="comment"># Update Weights</span></span><br><span class="line"></span><br><span class="line">        total_loss += loss.item()</span><br><span class="line">        total_correct += get_num_correct(preds, labels)</span><br><span class="line"></span><br><span class="line">    print(</span><br><span class="line">        <span class="string">"epoch"</span>, epoch,</span><br><span class="line">        <span class="string">"total_correct:"</span>, total_correct,</span><br><span class="line">        <span class="string">"loss:"</span>, total_loss</span><br><span class="line">    )</span><br><span class="line">total_correct/len(train_set) <span class="comment"># 0.8858833333333334</span></span><br></pre></td></tr></table></figure>
-<p>最后可以看出，在训练集上的准确率为 $88\%$ 左右。</p>
-<p>输出如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">epoch <span class="number">0</span> total_correct: <span class="number">51138</span> loss: <span class="number">238.7455054372549</span></span><br><span class="line">epoch <span class="number">1</span> total_correct: <span class="number">52016</span> loss: <span class="number">216.4094382673502</span></span><br><span class="line">epoch <span class="number">2</span> total_correct: <span class="number">52269</span> loss: <span class="number">206.6615267843008</span></span><br><span class="line">epoch <span class="number">3</span> total_correct: <span class="number">52513</span> loss: <span class="number">201.51278421282768</span></span><br><span class="line">epoch <span class="number">4</span> total_correct: <span class="number">52504</span> loss: <span class="number">197.78098802268505</span></span><br><span class="line">epoch <span class="number">5</span> total_correct: <span class="number">52791</span> loss: <span class="number">192.42419914901257</span></span><br><span class="line">epoch <span class="number">6</span> total_correct: <span class="number">52802</span> loss: <span class="number">193.69900572299957</span></span><br><span class="line">epoch <span class="number">7</span> total_correct: <span class="number">53002</span> loss: <span class="number">187.62913002073765</span></span><br><span class="line">epoch <span class="number">8</span> total_correct: <span class="number">53087</span> loss: <span class="number">183.71526048332453</span></span><br><span class="line">epoch <span class="number">9</span> total_correct: <span class="number">53153</span> loss: <span class="number">182.18467965722084</span></span><br></pre></td></tr></table></figure>
-<p>在测试集上的表现如何？</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">test_set = torchvision.datasets.FashionMNIST(</span><br><span class="line">    root=<span class="string">'./data'</span>,</span><br><span class="line">    train= <span class="literal">False</span>,</span><br><span class="line">    download=<span class="literal">False</span>,</span><br><span class="line">    transform=transforms.Compose([</span><br><span class="line">        transforms.ToTensor()])</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">test_loader = torch.utils.data.DataLoader(test_set,batch_size=<span class="number">500</span>,shuffle=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">global</span> correct</span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    correct = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> test_loader:</span><br><span class="line"></span><br><span class="line">        images,labels = batch</span><br><span class="line">        preds = network(images)</span><br><span class="line">        preds = preds.argmax(dim = <span class="number">1</span>)</span><br><span class="line">        correct += (preds == labels).sum()</span><br><span class="line">        print(correct)</span><br><span class="line">print(correct.item() *<span class="number">1.0</span> / len(test_set)) <span class="comment">#0.8631</span></span><br></pre></td></tr></table></figure>
-<p>在测试集上的准确率为 $86.31\%$。仍然有很大改善空间。</p>
-<p>下面观察以下经过<code>conv1</code>、<code>conv2</code>后的<code>feature maps</code>。（没有经过最大池化）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">sets = iter(train_loader)</span><br><span class="line">batch = next(sets)</span><br><span class="line">images,labels = batch</span><br><span class="line">input = images[<span class="number">0</span>].unsqueeze(<span class="number">0</span>) <span class="comment">#[1, 1, 28, 28] 升维，增加一个维度 batch</span></span><br><span class="line">network = Network()</span><br><span class="line">feature1 = network.conv1(input)</span><br><span class="line">feature2 = network.conv2(feature1)</span><br><span class="line">feature1_ = feature1.squeeze() <span class="comment">#[6,24,24]</span></span><br><span class="line">feature2_ = feature2.squeeze() <span class="comment">#[12,20,20]</span></span><br><span class="line"></span><br><span class="line">ch1 = feature1_[<span class="number">5</span>]</span><br><span class="line">ch1_ = ch1.data.numpy()</span><br><span class="line">ch2 = feature2_[<span class="number">5</span>]</span><br><span class="line">ch2_ = ch2.data.numpy()</span><br><span class="line"></span><br><span class="line">plt.imshow(ch1_)</span><br><span class="line">plt.show()</span><br><span class="line">plt.imshow(ch2_)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p><img src="/images/f1_6.png" alt=""></p>
-<p><center>conv1后第6通道的feature</center><br><img src="/images/f2_6.png" alt=""></p>
-<p><center>conv2后第6通道的feature</center></p>
-<h4 id="2-3-记点其他的知识"><a href="#2-3-记点其他的知识" class="headerlink" title="2.3 记点其他的知识"></a>2.3 记点其他的知识</h4><h5 id="2-3-1-Batch-Normalization"><a href="#2-3-1-Batch-Normalization" class="headerlink" title="2.3.1 Batch Normalization"></a>2.3.1 Batch Normalization</h5><p>在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。[ <a href="https://pytorch.org/docs/stable/nn.html#batchnorm2d" target="_blank" rel="noopener">https://pytorch.org/docs/stable/nn.html#batchnorm2d</a> ]</p>
-<p><strong>提出原因</strong>：解决梯度消失问题， 加速训练收敛过程 。</p>
-<p><strong>原理</strong>：将隐层的输入分布变为均值为 $0$ ，方差为 $1$ 的正态分布。</p>
-<p>设$X = \{x_1,x_2,…,x_m\}$表示$X$的维度。$m$ 代表 $batch-size$.</p>
-<script type="math/tex; mode=display">
-x = Wu + b</script><p>计算样本每个维度均值：</p>
-<script type="math/tex; mode=display">
-\mu_B = \frac{1}{m} \sum_{i = 1}^{m} x_i</script><p>计算样本每个维度的方差：</p>
-<script type="math/tex; mode=display">
-\sigma_B^2 = \frac{1}{m} \sum_{i = 1}^{m} (x_i - \mu_B)^2</script><script type="math/tex; mode=display">
-\hat x_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}</script><script type="math/tex; mode=display">
-y_i = \gamma\hat x_i + \beta = BN_{\gamma,\beta}(x_i)</script><p>其中，$\gamma$、$\beta$ 是通过学习得到的。</p>
-<p><strong>如何操作</strong>：即将<code>input</code>与<code>weight matrix</code>相乘后，再作为激活函数的输入。在<code>CNN</code>中，是做完卷积操作后，激活函数之前。在训练时，均值、方差都是训练时<code>batch</code>的统计数据，可以记下然后做加权平均得到测试时使用的均值和方差，在测试时使用。</p>
-<p><img src="/images/20160522210927345.png" alt=""></p>
-<p><center>全连接层，bn层的位置</center><br><img src="/images/cnn-bn.png" style="zoom:70%;" /></p>
-<p><center>一般卷积操作中，bn层的位置</center><br><strong>进一步的理解</strong>：</p>
-<p>在原论文<code>3.2</code>节，作者提到 $BN$ 通常加入到<strong>非线性单元（激活函数）之前</strong>，对 $Wu + b$ 进行<code>normalizing</code>，而不是 $u$，作者是这样解释的：$u$ 可能是上一个非线性单元的输出，非线性单元的输出分布形状会在训练过程中变化，归一化无法消除他的方差偏移。</p>
-<p>而对于 $Wu+b$ （线性变换，卷积操作也是线性变换）这种变换的输出一般是一个对称，非稀疏的一个分布，更加类似高斯分布，对他们进行归一化会产生更加稳定的分布。</p>
-<p>看一下 $W u + b$ 经过$BN$后，参数 $b$ 的变化：</p>
-<script type="math/tex; mode=display">
-\mu = \frac{1}{m} \sum_{i = 1}^{m} Wu_i + b = \frac{1}{m}\sum_{i=1}^{m}Wu_i + \frac{bm}{m}</script><script type="math/tex; mode=display">
-\hat x_i = \frac{Wu_i + b- \mu}{\sqrt{\sigma^2 + \epsilon}} = \frac{Wu_i - \frac{1}{m}\sum_{i=1}^{m}Wu_i}{\sqrt{\sigma^2 + \epsilon}}</script><p>可以看到参数$b$最后被消掉了，可有可无。因此可以表示为：</p>
-<script type="math/tex; mode=display">
-z = g(BN(Wu + b)) \rightarrow z = g(BN(Wu))</script><p><strong>We could have also normalized the layer inputs u, but since u is likely the output of another nonlinearity, the shape of its distribution is likely to change during training, and constraining its first and second moments would not eliminate the co-variate shift.</strong></p>
-<p><strong>In contrast, Wu + b is more likely to have a symmetric, non-sparse distribution, that is “more Gaussian”; normalizing it is likely to produce activations with a stable distribution.</strong></p>
-<p><strong>经过卷积后怎么 BN</strong></p>
-<p>通常经过卷积操作后，会产生多个<code>channel</code>。将每个<code>channel</code>视为一个维度，统计<code>channel</code>内所有样本的均值和方差，这样每个<code>channel</code>对应一对参数$\gamma,\beta$。比如：<code>[batch_size,channel,width,height]</code>，每个<code>channel</code>内，<code>batch_size * width * height</code>的均值和方差。</p>
-<h5 id="2-3-2-Dropout"><a href="#2-3-2-Dropout" class="headerlink" title="2.3.2 Dropout"></a>2.3.2 Dropout</h5><p>在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。</p>
-<p><strong>提出原因</strong>：解决过拟合问题。</p>
-<h5 id="2-3-3-卷积数学定义"><a href="#2-3-3-卷积数学定义" class="headerlink" title="2.3.3 卷积数学定义"></a>2.3.3 卷积数学定义</h5><p><strong>离散卷积</strong></p>
-<script type="math/tex; mode=display">
-(f*g)(n) = \sum_{\tau = -m}^{m} f(\tau)g(n-\tau)</script><p><strong>连续卷积</strong></p>
-<script type="math/tex; mode=display">
-(f*g)(n) = \int_{\tau = -m}^{\tau = m} f(\tau)g(n-\tau)</script><p>事实上，我们在二维卷积的时候，使用的卷积核<script type="math/tex">(g)</script>是经过反转后的，为了方便计算。在进行一维卷积时，也需要对核进行反转（左右反转）。</p>
-<p>参考：<a href="https://www.cnblogs.com/itmorn/p/11177439.html" target="_blank" rel="noopener">https://www.cnblogs.com/itmorn/p/11177439.html</a></p>
-<p>计算：<a href="https://www.nowcoder.com/questionTerminal/0a3fc6ff7d89441db100fdd00ce22132?orderByHotValue=1&amp;page=1&amp;onlyReference=false" target="_blank" rel="noopener">https://www.nowcoder.com/questionTerminal/0a3fc6ff7d89441db100fdd00ce22132?orderByHotValue=1&amp;page=1&amp;onlyReference=false</a></p>
-<h5 id="2-3-4-Attention-机制"><a href="#2-3-4-Attention-机制" class="headerlink" title="2.3.4 Attention 机制"></a>2.3.4 Attention 机制</h5><p><strong>传统 Encoder-Decoder 模型</strong>：</p>
-<p> 在传统的模型中， 我们仅使用 Encoder 的最后一个隐状态作为 Decoder 的初始隐状态，Encoder 最后的隐状态被称为<strong>context vector</strong>向量，因为他对整个输入的 sentence 做了一个编码。在之后的 Decoder 模型中，<code>Decoder</code>初始<code>input</code>为<code>SOS(start of string) token</code>，初始隐状态为这个 context vector，然后接受上一次的<code>output</code>作为<code>input</code>迭代完成训练。</p>
-<p><img src="/images/encoder-decoder.png" alt=""></p>
-<p><strong>加入了 Attention 机制的 Encoder-Decoder 模型</strong>：</p>
-<p> 标准$seq2seq$模型通常无法准确处理长输入序列，因为只有编码器的最后一个隐藏状态被用作解码器的上下文向量。 另一方面，注意力机制在解码过程中保留并利用了输入序列的所有隐藏状态(context vector)，因此直接解决了此问题。 它通过在解码器输出的每个时间步长到所有编码器隐藏状态之间创建唯一的映射来实现此目的。 这意味着，对于解码器产生的每个输出，它都可以访问整个输入序列，并且可以从该序列中有选择地选择特定元素以产生输出。 相对于传统 LSTM 记忆网络处理长度较长的序列，加入 Attention 后参数减少。</p>
-<p><img src="/images/1152PYf.png" alt=""></p>
-<p> Attention 机制分为不同的种类，但总的来说大概分为以下几步：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> Calculating Alignment Scores</span><br><span class="line"><span class="number">2.</span> Softmaxing alignment scores to get Attention weights（归一化）</span><br><span class="line"><span class="number">3.</span> Multiplying the Attention weights <span class="keyword">with</span> encoder outputs/all hidden states to get the context vector(加权求和)</span><br><span class="line"><span class="number">4.</span> Concatenating context vector <span class="keyword">with</span> embedded input word</span><br></pre></td></tr></table></figure>
-<p>具体实现参考：</p>
-<p><a href="https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html" target="_blank" rel="noopener">https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html</a></p>
-<p><a href="https://blog.floydhub.com/attention-mechanism/" target="_blank" rel="noopener">https://blog.floydhub.com/attention-mechanism/</a></p>
-<p><img src="/images/attention-decoder-network.png" alt=""></p>
-<p> 下面介绍<strong>NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</strong>论文中提到的 Attention 机制。</p>
-<ul>
-<li><p>首先将序列经过 Encoder 模型，产生所有隐状态$H_{Encoder}$</p>
-</li>
-<li><p>计算 Alignment Scores:</p>
-<p>在 Decoder 模型中，时间 $i$ 对应的前一个隐状态为$s_{i-1}$，</p>
-<script type="math/tex; mode=display">
-e_{ij} = \alpha(s_{i-1},h_j),j=1,2,3,...,T_x</script><p>表示不同$h_j$对$s_{i}$的影响程度。即将 $s_{i-1}$ 与每一个 Encoder 的隐状态经过一个函数得到输出，这个函数的参数通过学习得到。</p>
-</li>
-<li><p>$soft\max$归一化，得到 attention weights</p>
-<script type="math/tex; mode=display">
-\alpha_{ij} = \frac{\exp(e_{ij})}{\sum_{k=1}^{T_X} \exp(e_{ik})}</script></li>
-</ul>
-<ul>
-<li><p>计算 context vector:</p>
-<script type="math/tex; mode=display">
-c_i = \sum_{j=1}^{T_x} \alpha_{ij}h_j</script><p><strong>注意</strong>：此时$c_i$仍是一个多维向量，相加的时候是各个维度分别相加。</p>
-</li>
-<li><p>将 context vector 与$t-1$的 output 作为输入（ _concatenated_ ），与$s_{i-1}$传入 decoder 模型中得到输出。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># 所有encoder隐状态 共有3个隐态，维度为4</span></span><br><span class="line">hidden_states = np.array([</span><br><span class="line">    [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],</span><br><span class="line">    [<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>],</span><br><span class="line">    [<span class="number">0</span>,<span class="number">-1</span>,<span class="number">3</span>,<span class="number">6</span>]</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 得出的attention权重</span></span><br><span class="line">weights = np.array([[<span class="number">0.6</span>,<span class="number">0.3</span>,<span class="number">0.1</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># weights和hidden_states 相乘</span></span><br><span class="line">np.dot(weights,hidden_states)</span><br><span class="line"><span class="comment">#各个维度相加得到context_vector</span></span><br><span class="line">array([[<span class="number">1.2</span>, <span class="number">2.</span> , <span class="number">3.6</span>, <span class="number">5.1</span>]])</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><img src="/images/attn_mem.jpeg" alt=""></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BahdanauDecoder</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, hidden_size, output_size, n_layers=<span class="number">1</span>, drop_prob=<span class="number">0.1</span>)</span>:</span></span><br><span class="line">    super(BahdanauDecoder, self).__init__()</span><br><span class="line">    self.hidden_size = hidden_size</span><br><span class="line">    self.output_size = output_size</span><br><span class="line">    self.n_layers = n_layers</span><br><span class="line">    self.drop_prob = drop_prob</span><br><span class="line"></span><br><span class="line">    self.embedding = nn.Embedding(self.output_size, self.hidden_size)</span><br><span class="line"></span><br><span class="line">    self.fc_hidden = nn.Linear(self.hidden_size, self.hidden_size, bias=<span class="literal">False</span>)</span><br><span class="line">    self.fc_encoder = nn.Linear(self.hidden_size, self.hidden_size, bias=<span class="literal">False</span>)</span><br><span class="line">    self.weight = nn.Parameter(torch.FloatTensor(<span class="number">1</span>, hidden_size))</span><br><span class="line">    self.attn_combine = nn.Linear(self.hidden_size * <span class="number">2</span>, self.hidden_size)</span><br><span class="line">    self.dropout = nn.Dropout(self.drop_prob)</span><br><span class="line">    self.lstm = nn.LSTM(self.hidden_size*<span class="number">2</span>, self.hidden_size, batch_first=<span class="literal">True</span>)</span><br><span class="line">    self.classifier = nn.Linear(self.hidden_size, self.output_size)</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, inputs, hidden, encoder_outputs)</span>:</span></span><br><span class="line">    encoder_outputs = encoder_outputs.squeeze()</span><br><span class="line">    <span class="comment"># Embed input words</span></span><br><span class="line">    embedded = self.embedding(inputs).view(<span class="number">1</span>, <span class="number">-1</span>)</span><br><span class="line">    embedded = self.dropout(embedded)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Calculating Alignment Scores</span></span><br><span class="line">    x = torch.tanh(self.fc_hidden(hidden[<span class="number">0</span>])+self.fc_encoder(encoder_outputs))</span><br><span class="line">    alignment_scores = x.bmm(self.weight.unsqueeze(<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Softmaxing alignment scores to get Attention weights</span></span><br><span class="line">    attn_weights = F.softmax(alignment_scores.view(<span class="number">1</span>,<span class="number">-1</span>), dim=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Multiplying the Attention weights with encoder outputs to get the context vector</span></span><br><span class="line">    context_vector = torch.bmm(attn_weights.unsqueeze(<span class="number">0</span>),</span><br><span class="line">                             encoder_outputs.unsqueeze(<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Concatenating context vector with embedded input word</span></span><br><span class="line">    output = torch.cat((embedded, context_vector[<span class="number">0</span>]), <span class="number">1</span>).unsqueeze(<span class="number">0</span>)</span><br><span class="line">    <span class="comment"># Passing the concatenated vector as input to the LSTM cell</span></span><br><span class="line">    output, hidden = self.lstm(output, hidden)</span><br><span class="line">    <span class="comment"># Passing the LSTM output through a Linear layer acting as a classifier</span></span><br><span class="line">    output = F.log_softmax(self.classifier(output[<span class="number">0</span>]), dim=<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> output, hidden, attn_weights</span><br></pre></td></tr></table></figure>
-<h3 id="3-循环神经网络"><a href="#3-循环神经网络" class="headerlink" title="3. 循环神经网络"></a>3. 循环神经网络</h3><p>循环神经网络的提出是为了解决序列数据。如：AI 翻译、语言识别、时间序列问题等。</p>
-<h4 id="3-1-基本结构"><a href="#3-1-基本结构" class="headerlink" title="3.1 基本结构"></a>3.1 基本结构</h4><p>循环神经网络（Recurrent Neutral Network）不同于卷积网络，刚开始接触时个人感觉比较抽象。</p>
-<p>在每个 cell 中，激活函数输入的不仅包含这个时序内输入的数据$x^{<t>}$，而且还包括上个时序的输出 $a^{t-1}$(隐藏态)。因此，可以表示为：</p>
-<script type="math/tex; mode=display">
-a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)</script><p>其中，$W_{aa}$表示 $t-1$ 时段输出的权重，$W_{ax}$表示 $t$ 时段输入的权重。之后，$a^{\langle t \rangle}$再向 $t+1$ 时段传播，或者经过$soft\max$函数，作为 $t$ 时段的输出。</p>
-<p><img src="/images/RNN.png" alt=""></p>
-<p><img src="/images/LSTM1.png" alt=""></p>
-<p><center>基本RNN结构</center><br><strong>多层 RNN 结构</strong>：</p>
-<p><img src="/images/multi_rnn.png" alt=""></p>
-<p><strong>RNN 的特点</strong>：</p>
-<ol>
-<li>RNNs 主要用于处理序列数据。对于传统神经网络模型，从输入层到隐含层再到输出层，层与层之间一般为全连接，每层之间神经元是无连接的。但是传统神经网络无法处理数据间的前后关联问题。例如，为了预测句子的下一个单词，一般需要该词之前的语义信息。这是因为一个句子中前后单词是存在语义联系的。</li>
-<li>RNNs 中当前单元的输出与之前步骤输出也有关，因此称之为循环神经网络。具体的表现形式为当前单元会对之前步骤信息进行储存并应用于当前输出的计算中。隐藏层之间的节点连接起来，隐藏层当前输出由当前时刻输入向量和之前时刻隐藏层状态共同决定。</li>
-<li>标准的 RNNs 结构图，图中每个箭头代表做一次变换，也就是说箭头连接带有权值。</li>
-<li>在标准的 RNN 结构中，隐层的神经元之间也是带有权值的，且权值共享。</li>
-</ol>
-<h4 id="3-2-LSTM-和-GRU"><a href="#3-2-LSTM-和-GRU" class="headerlink" title="3.2 LSTM 和 GRU"></a>3.2 LSTM 和 GRU</h4><h5 id="3-2-1-LSTM"><a href="#3-2-1-LSTM" class="headerlink" title="3.2.1 LSTM"></a>3.2.1 LSTM</h5><p><img src="/images/LSTM.png" alt=""></p>
-<p><img src="/images/LSTM2.png" alt=""></p>
-<p><center>基本LSTM结构</center><br><strong>提出原因</strong>：</p>
-<p>$RNN$ 在处理长期依赖（时间序列上距离较远的节点）时会遇到巨大的困难，因为计算距离较远的节点之间的联系时会涉及雅可比矩阵的多次相乘，会造成梯度消失或者梯度膨胀的现象。为了解决该问题，研究人员提出了许多解决办法，例如 ESN（Echo State Network），增加有漏单元（Leaky Units）等等。其中最成功应用最广泛的就是门限 RNN（Gated RNN），而 LSTM 就是门限 RNN 中最著名的一种。有漏单元通过设计连接间的权重系数，从而允许 RNN 累积距离较远节点间的长期联系；而门限 RNN 则泛化了这样的思想，允许在不同时刻改变该系数，且允许网络忘记当前已经累积的信息。</p>
-<h5 id="3-2-2-GRU"><a href="#3-2-2-GRU" class="headerlink" title="3.2.2 GRU"></a>3.2.2 GRU</h5><h4 id="3-3-Pytorch-构建-RNN"><a href="#3-3-Pytorch-构建-RNN" class="headerlink" title="3.3 Pytorch 构建 RNN"></a>3.3 Pytorch 构建 RNN</h4><script type="math/tex; mode=display">
-a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)</script><p>根据计算公式，为了提高运算速度，在具体实现经常采用矩阵相乘的形式。一般来说，可以分解为如下形式：</p>
-<script type="math/tex; mode=display">
-\left[
- \begin{matrix}
- a^{\langle t-1 \rangle} & x^{\langle t \rangle}
-  \end{matrix}
-\right]*
-\left[
- \begin{matrix}
-  W_{aa} \\
-  W_{ax}
-  \end{matrix}
-\right]</script><p>即，将$W_{aa},W_{ax}$按照<strong>列</strong>进行拼接，将$a^{\langle t-1 \rangle},x^{\langle t \rangle}$ 按照<strong>行</strong>进行拼接。下面确定两个权重矩阵的维度。</p>
-<p>如果假设输入($input$)的维度为 $x_m$，$hidden$ 的维度为$h_n$。可知$W_{aa},W_{ax}$ 的列维度一定是相同的，否则不能按$1*D$的大小，经过激活函数成为隐藏态，那么$D$的大小必然要和$hidden$的维度相同。因此$W_{aa},W_{ax}$的维度分别为：</p>
-<script type="math/tex; mode=display">
-W_{aa} \rightarrow \left[h_n, h_n\right],W_{ax} \rightarrow [x_m, h_n]</script><p>在<code>Pytorch</code>中，使用<code>torch.nn.RNN</code>来完成<code>RNN</code>的设计。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line">&gt; rnn = nn.RNN(input_size=<span class="number">5</span>,hidden_size=<span class="number">10</span>,num_layers=<span class="number">1</span>)</span><br><span class="line">&gt; rnn.weight_hh_l0.shape <span class="comment">#hidden to hidden 即W_aa</span></span><br><span class="line">torch.Size([<span class="number">10</span>, <span class="number">10</span>])</span><br><span class="line">&gt; rnn.weight_ih_l0.shape <span class="comment"># input to hidden 即W_ax</span></span><br><span class="line">torch.Size([<span class="number">10</span>, <span class="number">5</span>])</span><br></pre></td></tr></table></figure>
-<p>在<code>torch RNN</code> 训练时，样本维度大小可以参考<code>torch</code>官方文档。</p>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="cka5covkz001rfkugaxj02pwg"
+      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%85%A5%E9%97%A8/" data-id="ckabwjxwr001m1wug3ujw32ey"
         class="article-share-link">分享</a>
         
       
@@ -743,7 +906,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="cka5covk10012fkuge7nn54nd"
+      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ckabwjxwg00191wug8cu408jv"
         class="article-share-link">分享</a>
         
       
@@ -1017,7 +1180,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="cka5covkp001nfkugfx6se1v8"
+      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ckabwjxx0001s1wug5nbnarhf"
         class="article-share-link">分享</a>
         
       
@@ -1129,7 +1292,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="cka5covir0005fkug7jht2b33"
+      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ckabwjxvn00081wug0xd98n86"
         class="article-share-link">分享</a>
         
       
@@ -1246,268 +1409,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="cka5covkp001ofkugd4ewhasu"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-二分查找" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/"
-    >二分查找</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" class="article-date">
-  <time datetime="2020-02-05T10:33:14.945Z" itemprop="datePublished">2020-02-05</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><h3 id="1-写一个正确的二分查找程序"><a href="#1-写一个正确的二分查找程序" class="headerlink" title="1. 写一个正确的二分查找程序"></a>1. 写一个正确的二分查找程序</h3><p>需要注意的是，二分查找有许多注意的地方，比如循环中止条件是什么，<code>left</code> 和 <code>right</code> 初始值是什么。下面以<code>Leetcode 704</code>号问题，写一个基本的二分查找算法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">链接：https://leetcode-cn.com/problems/binary-search</span></span><br><span class="line"><span class="comment">著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;<span class="comment">// 前闭后闭的取值范围 对应着循环结束时，要取等号。</span></span><br><span class="line">        <span class="keyword">while</span>(left &lt;= right)&#123; <span class="comment">// 此时取值范围里只有一个数字。</span></span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) /<span class="number">2</span>; <span class="comment">// 防止 left + right 越界</span></span><br><span class="line">            <span class="keyword">if</span>(nums[mid] == target)&#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(nums[mid] &gt; target)&#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-left的意义是什么"><a href="#2-left的意义是什么" class="headerlink" title="2. left的意义是什么"></a>2. left的意义是什么</h3><p>我们可以看最后要跳出循环时，也就是<code>left = right</code>时，此时<code>mid = left = right</code>,如果数组中存在这个元素，自然返回<code>mid</code>索引，如果不存在呢，回到以下代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(nums[mid] &gt; target)&#123;</span><br><span class="line">    right = mid - <span class="number">1</span>;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    left = mid + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong><code>left</code>的位置恰好就是该元素插入到该数组的位置</strong>。当<code>nums[mid] &gt; target</code>时，如果要将<code>target</code>插入到数组中，要将<code>nums[mid]</code>元素向后移一个位置，空出来的位置就是应该插入的位置，也就是<code>left</code>指向的位置。如果小于呢，<code>left = mid + 1</code>,此时<code>left</code>会向后移一位，恰好又是应该插入的位置。</p>
-<p>由此解决<code>Leetcode 35</code>号问题。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">你可以假设数组中无重复元素。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">searchInsert</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//解决target不存在数组中时，返回要插入的位置</span></span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(left &lt;= right)&#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[mid] == target)&#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(target &gt; nums[mid])&#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-其他相关问题"><a href="#3-其他相关问题" class="headerlink" title="3. 其他相关问题"></a>3. 其他相关问题</h3><h4 id="3-1-在排序数组中查找元素的第一个和最后一个位置"><a href="#3-1-在排序数组中查找元素的第一个和最后一个位置" class="headerlink" title="3.1 在排序数组中查找元素的第一个和最后一个位置"></a>3.1 在排序数组中查找元素的第一个和最后一个位置</h4><p>这是<code>Leetcode 34</code>号问题。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">你的算法时间复杂度必须是 O(log n) 级别。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">如果数组中不存在目标值，返回 [-1, -1]。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">链接：https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-		sorted-array</span></span><br><span class="line"><span class="comment">著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span>  <span class="keyword">int</span>[] searchRange(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) &#123;</span><br><span class="line">       <span class="keyword">int</span> first = -<span class="number">1</span>, second = -<span class="number">1</span>;</span><br><span class="line">       first = lower_boud(nums,target);</span><br><span class="line">       second = upper_boud(nums,target);</span><br><span class="line">       <span class="keyword">int</span> ans[] = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;first,second&#125;;</span><br><span class="line">       <span class="keyword">return</span> ans;</span><br><span class="line">   &#125;</span><br><span class="line"><span class="comment">// 以下是辅助函数</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">lower_boud</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> target)</span></span>&#123;</span><br><span class="line">       <span class="comment">//利用二分搜索查找target在数组中最左边位置</span></span><br><span class="line">       <span class="keyword">int</span> left = <span class="number">0</span>, right = arr.length - <span class="number">1</span>,res = -<span class="number">1</span>;</span><br><span class="line">       <span class="keyword">while</span> (left &lt;= right)&#123;</span><br><span class="line">           <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">           <span class="keyword">if</span> (target == arr[mid])&#123;</span><br><span class="line">               res = mid;</span><br><span class="line">               <span class="comment">//逼近左边界,继续向左</span></span><br><span class="line">               right = mid - <span class="number">1</span>;</span><br><span class="line">           &#125;<span class="keyword">else</span> <span class="keyword">if</span> (target &lt; arr[mid])&#123;</span><br><span class="line">               right = mid - <span class="number">1</span>;</span><br><span class="line">           &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">               left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> res;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">upper_boud</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> target)</span></span>&#123;</span><br><span class="line">       <span class="keyword">int</span> left = <span class="number">0</span>, right = arr.length - <span class="number">1</span>,res = -<span class="number">1</span>;</span><br><span class="line">       <span class="keyword">while</span> (left &lt;= right)&#123;</span><br><span class="line">           <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">           <span class="keyword">if</span> (target == arr[mid])&#123;</span><br><span class="line">               res = mid;</span><br><span class="line">               <span class="comment">//逼近右边界,继续向右</span></span><br><span class="line">               left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;<span class="keyword">else</span> <span class="keyword">if</span> (target &lt; arr[mid])&#123;</span><br><span class="line">               right = mid - <span class="number">1</span>;</span><br><span class="line">           &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">               left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> res;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<h4 id="3-2-第一个错误的版本"><a href="#3-2-第一个错误的版本" class="headerlink" title="3.2 第一个错误的版本"></a>3.2 第一个错误的版本</h4><p>这是<code>Leetcode 278</code>号问题。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本	都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">假设你有 n 个版本 [1, 2, ..., n]，你想找出导致之后所有版本出错的第一个错误的版本。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个		函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">示例:</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">给定 n = 5，并且 version = 4 是第一个错误的版本。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">调用 isBadVersion(3) -&gt; false</span></span><br><span class="line"><span class="comment">调用 isBadVersion(5) -&gt; true</span></span><br><span class="line"><span class="comment">调用 isBadVersion(4) -&gt; true</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">所以，4 是第一个错误的版本。 </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">链接：https://leetcode-cn.com/problems/first-bad-version</span></span><br><span class="line"><span class="comment">著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">firstBadVersion</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">int</span> left = <span class="number">1</span>, right = n;</span><br><span class="line">       <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">           <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">           <span class="keyword">if</span> (isBadVersion(mid) == <span class="keyword">true</span>) &#123;<span class="comment">// 已经是错误版本，看看之前的版本有没有错</span></span><br><span class="line">               right = mid - <span class="number">1</span>;</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;<span class="comment">// 正确版本，看往后的版本有没有错</span></span><br><span class="line">               left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> left;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>还是看一下边界条件，当<code>left = right = mid</code>, 如果<code>isBadVersion(mid) == true</code>成立，表明这就是第一个错误版本，返回<code>left</code>；否则，表明<code>mid</code>是一个正确版本，那么<code>left = mid + 1;</code> <code>left</code> 就是第一个错误的版本。</p>
-<h4 id="3-3-寻找峰值"><a href="#3-3-寻找峰值" class="headerlink" title="3.3 寻找峰值"></a>3.3 寻找峰值</h4><p>这是<code>Leetcode 162</code>号问题</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">峰值元素是指其值大于左右相邻值的元素。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">给定一个输入数组 nums，其中 nums[i] ≠ nums[i+1]，找到峰值元素并返回其索引。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">数组可能包含多个峰值，在这种情况下，返回任何一个峰值所在位置即可。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">你可以假设 nums[-1] = nums[n] = -∞。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">链接：https://leetcode-cn.com/problems/find-peak-element</span></span><br><span class="line"><span class="comment">著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findPeakElement</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (nums.length == <span class="number">1</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">int</span> left = <span class="number">0</span>, right = nums.length -<span class="number">1</span>;</span><br><span class="line">       <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">           <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">           <span class="keyword">if</span> (nums[mid] &gt; nums[mid + <span class="number">1</span>]) &#123;</span><br><span class="line">               right = mid;</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> left;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>类似的还有<code>Leetcode 852</code>号问题。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">我们把符合下列属性的数组 A 称作山脉：</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">A.length &gt;= 3</span></span><br><span class="line"><span class="comment">存在 0 &lt; i &lt; A.length - 1 使得A[0] &lt; A[1] &lt; ... A[i-1] &lt; A[i] &gt; A[i+1] &gt; ... &gt; A[A.length - 1]</span></span><br><span class="line"><span class="comment">给定一个确定为山脉的数组，返回任何满足 A[0] &lt; A[1] &lt; ... A[i-1] &lt; A[i] &gt; A[i+1] &gt; ... &gt; A[A.length - 1] 的 i 的值。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">来源：力扣（LeetCode）</span></span><br><span class="line"><span class="comment">链接：https://leetcode-cn.com/problems/peak-index-in-a-mountain-array</span></span><br><span class="line"><span class="comment">著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">peakIndexInMountainArray</span><span class="params">(<span class="keyword">int</span>[] A)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>, right = A.length - <span class="number">1</span>; </span><br><span class="line">		 <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">	            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">	            <span class="keyword">int</span> v = A[mid];</span><br><span class="line">	            <span class="comment">// 按照定义，peak元素后至少有一个比他小的元素，因此不必担心越界</span></span><br><span class="line">             	<span class="keyword">if</span> (v &lt; A[mid + <span class="number">1</span>]) &#123;</span><br><span class="line">	                left = mid + <span class="number">1</span>;</span><br><span class="line">	            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	                right = mid - <span class="number">1</span>;</span><br><span class="line">	            &#125;</span><br><span class="line">	        &#125;</span><br><span class="line">	    <span class="keyword">return</span> left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>注意</strong>：以上两道题在边界处理方面有所不同，应当注意取分。</p>
-<p>考虑<code>852</code>号问题边界情况，最后一次循环已经到了“峰顶”元素，且此时<code>left = right = mid</code>，由于<code>A[mid]</code>为“峰顶”元素，且其后面至少有一个元素，那么<code>A[mid] &gt; A[mid+1]</code>（<code>mid+1</code>没有越界），因此执行<code>right = mid - 1</code>，又<code>right &lt; left</code>，跳出循环，返回<code>left</code>。</p>
-<p><code>Leetcode 1095</code>号问题。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * // This is MountainArray's API interface.</span></span><br><span class="line"><span class="comment"> * // You should not implement it, or speculate about its implementation</span></span><br><span class="line"><span class="comment"> * interface MountainArray &#123;</span></span><br><span class="line"><span class="comment"> *     public int get(int index) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     public int length() &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findInMountainArray</span><span class="params">(<span class="keyword">int</span> target, MountainArray mountainArr)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 最小的index</span></span><br><span class="line">        <span class="comment">// [1,2,3,4,5,3,1]</span></span><br><span class="line">        <span class="keyword">int</span> len = mountainArr.length();</span><br><span class="line">        <span class="keyword">int</span> peak = findPeak(<span class="number">0</span>, len - <span class="number">1</span>, mountainArr);</span><br><span class="line">        <span class="keyword">int</span> l = searchLeft(<span class="number">0</span>, peak, target, mountainArr);</span><br><span class="line">        <span class="keyword">return</span> l == -<span class="number">1</span> ? searchRight(peak, len - <span class="number">1</span>, target, mountainArr) : l;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 找到山峰值</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">findPeak</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> right, MountainArray mountainArray)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> v = mountainArray.get(mid);</span><br><span class="line">            <span class="comment">// 由于题中定义peak后面会有一个元素，因此不会越界</span></span><br><span class="line">            <span class="keyword">if</span> (v &lt; mountainArray.get(mid + <span class="number">1</span>)) &#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> left;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 左边找 [0, peak]严格升序数组</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">searchLeft</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> right, <span class="keyword">int</span> target, MountainArray mountainArray)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> v = mountainArray.get(mid);</span><br><span class="line">            <span class="keyword">if</span> (v == target) &#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (v &gt; target) &#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// [peak,len-1]右边是严格降序数组</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">searchRight</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> right, <span class="keyword">int</span> target, MountainArray mountainArray)</span>	</span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> v = mountainArray.get(mid);</span><br><span class="line">            <span class="keyword">if</span> (v == target) &#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (v &gt; target) &#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="cka5covka001ifkugadlyf3ef"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-JVM 垃圾回收器分类总结" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/"
-    >JVM 垃圾回收器分类总结</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" class="article-date">
-  <time datetime="2020-02-04T05:58:43.203Z" itemprop="datePublished">2020-02-04</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="JVM-垃圾回收器分类总结"><a href="#JVM-垃圾回收器分类总结" class="headerlink" title="JVM 垃圾回收器分类总结"></a>JVM 垃圾回收器分类总结</h2><p>概览：</p>
-<p>由于垃圾回收存在多种算法：标记-复制、标记-清除、标记-整理。组合多种垃圾回收器，形成分代收集算法。</p>
-<p><strong>新生代收集器</strong>：Serial、ParNew、Parallel Scavenge</p>
-<p><strong>老年代收集器</strong>：CMS、Serial Old、Parallel Old</p>
-<p><strong>整堆收集器</strong>： G1</p>
-<h3 id="1-Serial-垃圾回收器"><a href="#1-Serial-垃圾回收器" class="headerlink" title="1. Serial 垃圾回收器"></a>1. Serial 垃圾回收器</h3><p> 串行垃圾回收器，单线程，执行垃圾回收时其他线程停止等待。</p>
-<h3 id="2-Parallel-New-垃圾回收器"><a href="#2-Parallel-New-垃圾回收器" class="headerlink" title="2. Parallel New 垃圾回收器"></a>2. Parallel New 垃圾回收器</h3><p> 并行垃圾回收器。相较于 Serial，多线程并行进行垃圾回收。其他线程也必须停止等待。</p>
-<h3 id="3-Parallel-Scavenge-收集器"><a href="#3-Parallel-Scavenge-收集器" class="headerlink" title="3. Parallel Scavenge 收集器"></a>3. Parallel Scavenge 收集器</h3><p> 与<strong>吞吐量</strong>关系密切，故也称为吞吐量优先收集器。</p>
-<p> <strong>特点</strong>：属于新生代收集器也是采用复制算法的收集器，又是并行的多线程收集器（与 ParNew 收集器类似）。</p>
-<h3 id="4-Parallel-Old-收集器"><a href="#4-Parallel-Old-收集器" class="headerlink" title="4. Parallel Old 收集器"></a>4. Parallel Old 收集器</h3><p> 是 Parallel Scavenge 收集器的老年代版本。</p>
-<p> <strong>特点</strong>：多线程，采用标记-整理算法。</p>
-<p> <strong>应用场景</strong>：注重高吞吐量以及 CPU 资源敏感的场合，都可以优先考虑 Parallel Scavenge+Parallel Old 收集器。</p>
-<h3 id="5-Serial-Old-收集器"><a href="#5-Serial-Old-收集器" class="headerlink" title="5. Serial Old 收集器"></a>5. Serial Old 收集器</h3><p> Serial Old 是 Serial 收集器的老年代版本。</p>
-<p> <strong>特点</strong>：同样是单线程收集器，采用标记-整理算法。</p>
-<h3 id="6-CMS-垃圾回收器"><a href="#6-CMS-垃圾回收器" class="headerlink" title="6. CMS 垃圾回收器"></a>6. CMS 垃圾回收器</h3><p> 并发垃圾回收器，在进行垃圾回收时，其余线程不必停止等待。</p>
-<p> <strong>CMS 收集器的运行过程分为下列 4 步：</strong></p>
-<p> <strong>初始标记</strong>：标记 GC Roots 能直接到的对象。速度很快但是仍存在 Stop The World 问题。</p>
-<p> <strong>并发标记</strong>：进行 GC Roots Tracing 的过程，找出存活对象且用户线程可并发执行。</p>
-<p> <strong>重新标记</strong>：为了修正并发标记期间因用户程序继续运行而导致标记产生变动的那一部分对象的标记记录。仍然存在 Stop The World 问题。</p>
-<p> <strong>并发清除</strong>：对标记的对象进行清除回收。</p>
-<p> CMS 收集器的内存回收过程是与用户线程一起并发执行的。</p>
-<h3 id="7-G1-垃圾回收器"><a href="#7-G1-垃圾回收器" class="headerlink" title="7. G1 垃圾回收器"></a>7. G1 垃圾回收器</h3><p>一款面向服务端应用的垃圾收集器。它把内存划分为多个不同的子区域，G1只存在逻辑上的分区，子区域可能随G1的运行在不同代期间前后切换，每个子区域大小为1-32<code>M</code>不等，最多设置<code>2048</code>个区域。</p>
-<p><strong>特点如下：</strong></p>
-<p>并行与并发：G1 能充分利用多 CPU、多核环境下的硬件优势，使用多个 CPU 来缩短 Stop-The-World 停顿时间。部分收集器原本需要停顿 Java 线程来执行 GC 动作，G1 收集器仍然可以通过并发的方式让 Java 程序继续运行。</p>
-<p>分代收集：G1 能够独自管理整个 Java 堆，并且采用不同的方式去处理新创建的对象和已经存活了一段时间、熬过多次 GC 的旧对象以获取更好的收集效果。</p>
-<p>空间整合：G1 运作期间不会产生空间碎片，收集后能提供规整的可用内存。</p>
-<p>可预测的停顿：G1 除了追求低停顿外，还能建立可预测的停顿时间模型。能让使用者明确指定在一个长度为 M 毫秒的时间段内，消耗在垃圾收集上的时间不得超过 N 毫秒。</p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="cka5covj60009fkug5wuu8zgk"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-造成Java Out Of Memory原因总结" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/"
-    >造成Java Out Of Memory原因总结</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" class="article-date">
-  <time datetime="2020-02-04T04:34:09.363Z" itemprop="datePublished">2020-02-04</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="造成-Java-Out-Of-Memory-原因总结"><a href="#造成-Java-Out-Of-Memory-原因总结" class="headerlink" title="造成 Java Out Of Memory 原因总结"></a>造成 Java Out Of Memory 原因总结</h2><p>总结起来有 6 点原因，以下分点阐述。</p>
-<h3 id="1-heap-space"><a href="#1-heap-space" class="headerlink" title="1 heap space"></a>1 heap space</h3><p> 当申请的空间大小超出了堆中剩余空间就会产生这个原因。比如：通过 <strong>_-Xmx10m_</strong> 设置虚拟机堆最大空间为 10 M，运行代码：<code>byte data[] = new data[1024 * 1024 * 20];</code> 就会产生错误。</p>
-<h3 id="2-GC-overhead-limit"><a href="#2-GC-overhead-limit" class="headerlink" title="2 GC overhead limit"></a>2 GC overhead limit</h3><p> 当 Java 虚拟机连续多次垃圾回收却只回收了不到$2\%$的内存，也就是说你的程序有$98\%$的时间都在进行垃圾回收，却回收了不到$2\%$的内存，就会产生这个错误。</p>
-<h3 id="3-Direct-buffer-memory"><a href="#3-Direct-buffer-memory" class="headerlink" title="3 Direct buffer memory"></a>3 Direct buffer memory</h3><p> 由于在 Java 8 以后，hotspot 虚拟机废止了永久代，转而采用<i>MetaSpace</i>实现方法区。Metaspace 并不依赖于 JVM 内存，而直接占用本地内存。因此，当在 NIO 过程中，经常使用 ByteBuffer 来读取和写入数据，这是一种基于 Channel、Buffer 的 I/O 方式。它可以使用 native 函数库直接分配 OS 本地内存，然后通过一个存储在堆里的 DirectByteBuffer 对象作为这块内存的引用进行操作。因为避免了 Java 堆和 Native 堆中来回复制数据（不需要内存拷贝），可以提高性能。Buffer 空间直接在本地分配内存，不属于 GC 管辖范围，JVM 不要执行 GC。当本地内存(Direct Memory)用完，而堆内存反而很少使用，就会产生这个错误。</p>
-<p>以下代码设置元空间占用本地最大内存为 5 m，却要直接申请 50 m 的内存，会报错。</p>
-<p><code>-XX:+PrintGCDetails -XX:MaxDirectMemorySize=5m</code></p>
-<p><code>ByteBuffer buffer = ByteBuffer.allocateDirect(50 * 1024 * 1024);</code></p>
-<h3 id="4-Metaspace"><a href="#4-Metaspace" class="headerlink" title="4 Metaspace"></a>4 Metaspace</h3><p> Java 8 后，采用元空间实现方法区。方法区主要存放加载的类信息、静态变量/方法、运行时常量池等信息。当加载的类过多以致超出了元空间的大小，就会产生这个错误。</p>
-<p><strong>注意</strong>：</p>
-<p>方法区是Java虚拟机的一个规范，在Java 8之前，持久代作为方法区的实现，Java 8及以后，采用元空间(Meta Space)作为方法区的实现，并且元空间使用的是本地内存。</p>
-<p><code>-XX:MetaspaceSize=8m -XX:MaxMetaspaceSize=8m</code> 设置初始和最大元空间大小。</p>
-<h3 id="5-unable-to-create-new-native-thread"><a href="#5-unable-to-create-new-native-thread" class="headerlink" title="5 unable to create new native thread"></a>5 unable to create new native thread</h3><p>高并发请求服务器时，经常出现：</p>
-<p><code>java.lang.OutOfMemoryError: unable to create new native thread</code></p>
-<p>不同操作系统允许进程创建的线程数量有限，当 Java 应用创建太多线程时，超过了系统承载极限。linux 默认徐云一个进程创建 1024 个线程。</p>
-<p><strong>tips</strong>:当一个线程 start 后，线程状态会发生改变，不允许再次 start。</p>
-<h3 id="6-Stack-Overflow"><a href="#6-Stack-Overflow" class="headerlink" title="6 Stack Overflow"></a>6 Stack Overflow</h3><p> 最经典的一个错误，无限递归导致虚拟机栈空间不足，就会报这个错误。</p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="cka5covk4001afkug4vl00cfu"
+      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ckabwjxx2001u1wugdlykazt3"
         class="article-share-link">分享</a>
         
       
