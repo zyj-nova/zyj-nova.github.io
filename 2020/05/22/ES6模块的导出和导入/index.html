@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    EM算法 |  张永剑的博客
+    ES6模块的导出和导入 |  张永剑的博客
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -30,7 +30,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-EM算法" class="article article-type-post" itemscope
+  <article id="post-ES6模块的导出和导入" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -38,7 +38,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  EM算法
+  ES6模块的导出和导入
 </h1>
   
 
@@ -47,12 +47,12 @@
 
     
     <div class="article-meta">
-      <a href="/2020/03/19/EM%E7%AE%97%E6%B3%95/" class="article-date">
-  <time datetime="2020-03-19T08:59:43.608Z" itemprop="datePublished">2020-03-19</time>
+      <a href="/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" class="article-date">
+  <time datetime="2020-05-22T14:52:05.540Z" itemprop="datePublished">2020-05-22</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+    <a class="article-category-link" href="/categories/JS/">JS</a>
   </div>
 
       
@@ -62,7 +62,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.2k字</span>
+            <span class="post-count">333字</span>
         </span>
     </span>
 
@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">5分钟</span>
+            <span class="post-count">1分钟</span>
         </span>
     </span>
 </div>
@@ -97,86 +97,26 @@
       
 
       
-      <h2 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h2><p>唉，em算法是我看过最恶心的算法。是我概率论知识太差了？…</p>
-<p>参考资料：$Andrew Ng$ $cs229-notes8$ 、统计学习方法（第二版）</p>
-<h3 id="1-极大似然估计"><a href="#1-极大似然估计" class="headerlink" title="1.极大似然估计"></a>1.极大似然估计</h3><ul>
-<li><p>似然（$likelihood$）与概率（$probability$）</p>
-<p>​        概率，用于在已知一些参数的情况下，预测接下来在观测上所得到的结果；似然性，则是用于在已知某些观测所得到的结果时，对有关事物之性质的参数进行估值，即<strong>估计参数的可能性</strong>。</p>
-<p>参见：<a href="https://zh.wikipedia.org/wiki/似然函数" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E4%BC%BC%E7%84%B6%E5%87%BD%E6%95%B0</a></p>
+      <h2 id="ES6模块的导出和导入"><a href="#ES6模块的导出和导入" class="headerlink" title="ES6模块的导出和导入"></a>ES6模块的导出和导入</h2><p>​    es6采用export、import进行模块的导出和导入。</p>
+<p>​    假如有如下三个文件，处于相同目录下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">A.js</span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">a1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"a1 run"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">a2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"a2 run"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> a3 = <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//或者</span></span><br><span class="line"><span class="comment">// export &#123;a1,a2,a3&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">B.js</span><br><span class="line"><span class="keyword">let</span> b1 = <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"b2 run"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> b3 = <span class="number">6</span></span><br><span class="line"><span class="comment">//只可以使用一次 export default</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    b1,b2,b3</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> &#123;</span><br><span class="line">	b1,b3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">main.js</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123;a3, a2 <span class="keyword">as</span> myfunc&#125; <span class="keyword">from</span> <span class="string">"./A.js"</span></span><br><span class="line"><span class="keyword">import</span> MyB <span class="keyword">from</span> <span class="string">"./B.js"</span> </span><br><span class="line"><span class="keyword">import</span> &#123;b1,b3&#125; <span class="keyword">from</span> <span class="string">"./B.js"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(a3) <span class="comment">// 5</span></span><br><span class="line">myfunc() <span class="comment">// a2 run</span></span><br><span class="line"></span><br><span class="line">MyB.b2() <span class="comment">// b2 run</span></span><br><span class="line">MyB.b1(<span class="string">"hello world"</span>) <span class="comment">// hello world</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(b3); <span class="comment">// 6</span></span><br><span class="line">b1(<span class="string">"word"</span>) <span class="comment">// word</span></span><br></pre></td></tr></table></figure>
+<p><strong>说明：</strong></p>
+<ol>
+<li><p><code>export default</code>意味着将大括号中的函数、变量封装成default对象全部导出，且该语句在一个js文件中只可以使用一次。在另一个文件中导入时，导入名字可以随便写。</p>
 </li>
-</ul>
-<p>​        <strong>其实极大似然估计就是根据样本来估计统计模型的参数，选取一个参数使得当前观测的概率最大</strong>。<strong>似然函数取得最大值表示相应的参数能够使得统计模型最为合理。</strong></p>
-<p>推荐宋浩老师的这节课。<a href="https://www.bilibili.com/video/av36206436?t=3565&amp;p=67" target="_blank" rel="noopener">https://www.bilibili.com/video/av36206436?t=3565&amp;p=67</a></p>
-<p>主要有以下步骤：</p>
-<ol>
-<li>写出总体的概率函数或概率密度函数</li>
-<li>写出似然函数（通常是概率连乘的形式）。在数理统计学中，似然函数是一种关于统计模型中的参数的函数。</li>
-<li>两边取对数，得到<strong>对数似然函数</strong></li>
-<li>求对数似然函数关于参数的导数或偏导，并求出使得导数或偏导为0的参数。该参数即为所求</li>
+<li><p><code>export</code> + 变量/常量/函数，部分导出；在另一个文件进行导入时，导入名称必须和模块中定义的相同，但是可以使用<code>as</code>进行重命名，注意导入时需要使用大括号（<code>ES6</code>中对象的解构赋值）。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> p = &#123;<span class="attr">name</span>:<span class="string">"bill"</span>, <span class="attr">age</span>: <span class="number">25</span>&#125;</span><br><span class="line"><span class="keyword">let</span> &#123;name,age&#125; = p <span class="comment">//变量名务必和对象属性名相同，否则会得到undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(name + <span class="string">","</span> + age) <span class="comment">// bill 25</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> &#123;log&#125; = <span class="built_in">console</span></span><br><span class="line">log(<span class="string">"hello world"</span>)</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-<p><strong>注意：</strong></p>
-<ul>
-<li>Q：为什么是连乘的形式？A：所有样本之间的概率是相互独立的。</li>
-<li>通常某个函数的极值点，导数为0或不存在。</li>
-</ul>
-<p><strong>例子：</strong></p>
-<p>已知存在一批可观测样本$\{x_1,x_2,…,x_n\}$，随机变量 $X$ 满足正态分布 $N(\mu,\sigma^2)$，利用极大似然估计，求出正态分布的相关参数。</p>
-<p><strong>解：</strong></p>
-<ol>
-<li><p>先写出正态分布的概率密度函数：</p>
-<script type="math/tex; mode=display">
-f(x) = \frac{1}{\sqrt{2\pi}\sigma}\exp^{-\frac{(x - \mu)^2}{2\sigma^2}}</script></li>
-<li><p>写出似然函数</p>
-<script type="math/tex; mode=display">
-L(\mu,\sigma^2) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x_i - \mu)^2}{2\sigma^2}} = (\frac{1}{\sqrt{2\pi}})^n(\sigma^2)^{-\frac{1}{2}n}e^{-\frac{\sum_{i}^{n}(x_i-\mu)^2 }{2\sigma^2}}</script></li>
-<li><p>两边取对数，得到对数似然函数</p>
-<script type="math/tex; mode=display">
-\ln L(\mu,\sigma^2) = n\ln(\frac{1}{\sqrt{2\pi}})-\frac{1}{2}n\ln(\sigma^2)-\frac{\sum_{i=1}^n (x_i-\mu)^2}{2\sigma^2}</script></li>
-<li><p>求对数似然函数关于$\mu$ ，$\sigma^2$ 的偏导</p>
-<script type="math/tex; mode=display">
-\frac{\partial \ln(L(\mu,\sigma^2))}{\partial \mu} = \frac{\sum_{i=1}^n(x_i-\mu)}{\sigma^2} = 0</script><script type="math/tex; mode=display">
-\sum_{i=1}^n(x_i-\mu) = 0 \rightarrow x_1+x_2+...+x_n-n\mu = 0</script></li>
-</ol>
-<script type="math/tex; mode=display">
-\mu = \frac{x_1+x_2+x_3+...+x_n}{n}</script><script type="math/tex; mode=display">
-\frac{\partial \ln(L(\mu,\sigma^2))}{\partial \sigma^2} =-\frac{n}{2\sigma^2}+\frac{\sum_{i=1}^n (x_i-\mu)^2}{2\sigma^4} = 0</script><p>化简，可得：</p>
-<script type="math/tex; mode=display">
-\sigma^2 = \frac{(x_1-\mu)^2 + (x_2-\mu)^2 +...+(x_n-\mu)^2}{n}</script><p>观察上式可知:</p>
-<ul>
-<li>$\mu$ 即为样本<strong>均值</strong></li>
-<li>$\sigma^2$ 为样本的<strong>方差</strong></li>
-</ul>
-<h3 id="2-Jensen不等式"><a href="#2-Jensen不等式" class="headerlink" title="2. Jensen不等式"></a>2. Jensen不等式</h3><h3 id="3-E-M算法的导出"><a href="#3-E-M算法的导出" class="headerlink" title="3. E-M算法的导出"></a>3. E-M算法的导出</h3><script type="math/tex; mode=display">
-L(\theta) = \prod_i^n P(x_i|\theta)</script><script type="math/tex; mode=display">
-L(\theta) =  \sum_i^n \log P(x_i|\theta) =\\ \sum_i^n\log\sum_Z  P(x_i,z|\theta) = \\
-\sum_i^n\log\sum_ZQ(z)\frac{p(x_i,z|\theta)}{Q(z)}</script><p>注意：$z$为隐变量（<strong>latent variables</strong>）$Q(z)$为$z$的一个分布，是啥分布不确定。</p>
-<p>求这个似然函数的导数比较麻烦和困难，因此提出了EM算法，通过迭代的方式逐步求解。</p>
-<p>继续推导，有Jensen不等式有：</p>
-<script type="math/tex; mode=display">
-\sum_i^n\log\sum_ZQ(z)\frac{p(x_i,z|\theta)}{Q(z)} >= \sum_i^n\sum_ZQ(z)\log\frac{p(x_i,z|\theta)}{Q(z)}</script><p>当且仅当$\frac{p(x_i,z|\theta)}{Q(z)}$ 为常数时取等。即：</p>
-<script type="math/tex; mode=display">
-\frac{p(x_i,z|\theta)}{Q(z)} = c \\
-\sum_Z Q(z) = 1 \\
-Q(z) ∝ p(x_i,z;\theta)
-Q(z) = p(z|x_i;\theta)</script><p>可以看出，Q是给定观测数据、参数的条件下，隐变量的一个后验分布(条件分布)。</p>
-<p>带回到上个式子：</p>
-<script type="math/tex; mode=display">
-\theta^{j+1} = \arg\max_\theta \sum_i^n\sum_ZQ(z)\log\frac{p(x_i,z|\theta^j)}{Q(z)} = \\
-
-\arg\max_\theta \sum_i^n\sum_Z p(z|x_i;\theta^j)\log p(x_i,z;\theta^j)</script><p>(与z无关的省略掉，给定参数$\theta^j$ 、观测数据，计算出$p(z|x_i;\theta^j)$ 再带进去。然后就只需要最大化$p(x,z;\theta)$ 得到$\theta^{j+1}$)。上述就是M步；我们来看看要极大化的那个式子</p>
-<script type="math/tex; mode=display">
-Q(z)\log p(x_i,z;\theta^j) = E_{Q}[\log p(x_i,z;\theta^j)] = \\
-E_{p(z|x_i,\theta^j)}[\log p(x_i,z;\theta^j)] = \\
-E_Z[\log p(x_i,z;\theta)|x_i;\theta^j]</script><p>我们将最后一个式子称为<strong>Q函数</strong>。注意，这个Q不同于上面那个Q分布。</p>
-<p>​        <strong>Q函数是完全数据（观测数据和隐变量）的对数似然函数关于隐变量在给定观测数据和参数的情况下的条件分布的期望。E步的求期望，求的就是这个期望。</strong></p>
-<p>​        念起来真的很抽象，结合例子做的话就好多了。</p>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/19/EM%E7%AE%97%E6%B3%95/" data-id="ckajhr63e000azgug42ud3v8c"
+      <a data-url="http://yoursite.com/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" data-id="ckajhr6340002zgugda4z3kdd"
         class="article-share-link">分享</a>
         
       
@@ -188,19 +128,19 @@ E_Z[\log p(x_i,z;\theta)|x_i;\theta^j]</script><p>我们将最后一个式子称
   
   <nav class="article-nav">
     
-      <a href="/2020/03/20/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/" class="article-nav-link">
+      <a href="/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            寻找重复数
+            Vuex使用
           
         </div>
       </a>
     
     
-      <a href="/2020/03/07/PyTorch%20%E4%BD%BF%E7%94%A8GPU%E5%8A%A0%E9%80%9F/" class="article-nav-link">
+      <a href="/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">PyTorch 使用GPU加速</div>
+        <div class="article-nav-title">Pytorch学习笔记之卷积神经网络</div>
       </a>
     
   </nav>

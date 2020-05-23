@@ -60,6 +60,163 @@
     
     
     
+    <article id="post-Vuex使用" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/"
+    >Vuex使用</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time datetime="2020-05-23T09:17:03.636Z" itemprop="datePublished">2020-05-23</time>
+</a>
+      
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <hr>
+<h2 id="categories-”JS”"><a href="#categories-”JS”" class="headerlink" title="categories:”JS”"></a>categories:”JS”</h2><h2 id="Vuex使用"><a href="#Vuex使用" class="headerlink" title="Vuex使用"></a>Vuex使用</h2><p>​        <code>Vuex</code>是一个状态管理库，使用单一状态树管理应用内的全局状态。</p>
+<p>​        <code>index.js</code>文件如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">"vue"</span>;</span><br><span class="line"><span class="keyword">import</span> Vuex <span class="keyword">from</span> <span class="string">"vuex"</span>;</span><br><span class="line"><span class="keyword">import</span> cart <span class="keyword">from</span> <span class="string">"./cart"</span></span><br><span class="line">Vue.use(Vuex);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">  <span class="comment">//全局的state</span></span><br><span class="line">  <span class="comment">// 如何调用：this.$store.state.状态名 / this.$store.state.模块名.状态名</span></span><br><span class="line">  state: &#123;</span><br><span class="line">    isTabbarShow: <span class="literal">true</span>,</span><br><span class="line">    itemList: [],</span><br><span class="line">  &#125;,</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    <span class="comment">//修改state操作，state为第一个参数，vue会自动注入该函数</span></span><br><span class="line">    <span class="comment">//如何调用：this.$store.commit("函数名",[data])</span></span><br><span class="line">    HideTabbar(state, data) &#123;</span><br><span class="line">      state.isTabbarShow = data;</span><br><span class="line">    &#125;,</span><br><span class="line">    ShowTabbar(state, data) &#123;</span><br><span class="line">      state.isTabbarShow = data;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  actions: &#123;</span><br><span class="line">    <span class="comment">//主要执行异步操作,</span></span><br><span class="line">    <span class="comment">// 如何调用：this.$store.dispatch("模块名/函数名称",[data])</span></span><br><span class="line">    test(store, data) &#123;</span><br><span class="line">      <span class="comment">//使用commit通过mutation中方法修改state</span></span><br><span class="line">      store.commit(<span class="string">""</span>, data);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  getters: &#123;</span><br><span class="line">    <span class="comment">// store中的计算属性</span></span><br><span class="line">    <span class="comment">// 调用方式 $store.getters."函数名字"</span></span><br><span class="line">    getItemListTop3(state) &#123;</span><br><span class="line">      <span class="keyword">return</span> state.itemList.slice(<span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  modules: &#123;</span><br><span class="line">    <span class="comment">//不同模块中可以定义state、mutations、actions，然后包装成一个对象导出，在这儿进行导入，注意在子模块中不需要使用Vuex.Store构造函数。</span></span><br><span class="line">      cart,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">cart/index.js</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> state = &#123;</span><br><span class="line">  items: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>],</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> getters = &#123;</span><br><span class="line">  getOddItem(state) &#123;</span><br><span class="line">    <span class="keyword">return</span> state.items.filter(<span class="function">(<span class="params">x</span>) =&gt;</span> x % <span class="number">2</span> == <span class="number">0</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> mutations = &#123;</span><br><span class="line">  incre(state) &#123;</span><br><span class="line">    state.items = state.items.map(<span class="function">(<span class="params">x</span>) =&gt;</span> x + <span class="number">2</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;<span class="comment">//开启了命名空间</span></span><br><span class="line">  namespaced: <span class="literal">true</span>,</span><br><span class="line">  state,</span><br><span class="line">  getters,</span><br><span class="line">  mutations,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在<code>main.js</code>中：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">"@/store"</span>;</span><br><span class="line"></span><br><span class="line">Vue.config.productionTip = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  store,</span><br><span class="line">  render: <span class="function">(<span class="params">h</span>) =&gt;</span> h(App),</span><br><span class="line">&#125;).$mount(<span class="string">"#app"</span>);</span><br></pre></td></tr></table></figure>
+<p>​        <strong>注意：</strong></p>
+<p>​        默认情况下，模块内部的 <strong>action、mutation 和 getter</strong> 是注册在<strong>全局命名空间</strong>的——这样使得多个模块能够对同一 mutation 或 action 作出响应。</p>
+<p>​        <strong>即不论是在那个模块定义的，都可以使用</strong><code>this.$store.getters.名字</code>进行调用。如果希望你的模块具有更高的封装度和复用性，你可以通过添加 <code>namespaced: true</code> 的方式使其成为带命名空间的模块。当模块被注册后，它的所有 getter、action 及 mutation 都会自动根据模块注册的路径调整命名。即：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$store.getters[<span class="string">"cart/getOddItem"</span>]</span><br><span class="line">$store.dispatch(<span class="string">'cart/login'</span>)</span><br><span class="line">$store.commit(<span class="string">'cart/incre)</span></span><br></pre></td></tr></table></figure>
+<p>​        可以看到，在vuex中，只允许mutation操作修改state，构成单向数据流。示意图如下：</p>
+<p><img src="https://vuex.vuejs.org/vuex.png" alt=""></p>
+<p><strong>补充：</strong></p>
+<p>vue中计算属性（computed）和方法（methods）的区别：</p>
+<p>计算属性以方法形式定义，使用时使用属性的方式进行调用；计算属性只会计算一次，结果缓存在内存中，当其相关联的数据发生改变时才会重新计算。而方法调用一次就会被执行一次。当有关数据处理逻辑较为复杂，或页面中需要多处使用时可以使用计算属性。</p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" data-id="ckajhr645000pzgug0mib23gf"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-ES6模块的导出和导入" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/"
+    >ES6模块的导出和导入</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" class="article-date">
+  <time datetime="2020-05-22T14:52:05.540Z" itemprop="datePublished">2020-05-22</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JS/">JS</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="ES6模块的导出和导入"><a href="#ES6模块的导出和导入" class="headerlink" title="ES6模块的导出和导入"></a>ES6模块的导出和导入</h2><p>​    es6采用export、import进行模块的导出和导入。</p>
+<p>​    假如有如下三个文件，处于相同目录下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">A.js</span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">a1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"a1 run"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">a2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"a2 run"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> a3 = <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//或者</span></span><br><span class="line"><span class="comment">// export &#123;a1,a2,a3&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">B.js</span><br><span class="line"><span class="keyword">let</span> b1 = <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"b2 run"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> b3 = <span class="number">6</span></span><br><span class="line"><span class="comment">//只可以使用一次 export default</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    b1,b2,b3</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> &#123;</span><br><span class="line">	b1,b3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">main.js</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123;a3, a2 <span class="keyword">as</span> myfunc&#125; <span class="keyword">from</span> <span class="string">"./A.js"</span></span><br><span class="line"><span class="keyword">import</span> MyB <span class="keyword">from</span> <span class="string">"./B.js"</span> </span><br><span class="line"><span class="keyword">import</span> &#123;b1,b3&#125; <span class="keyword">from</span> <span class="string">"./B.js"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(a3) <span class="comment">// 5</span></span><br><span class="line">myfunc() <span class="comment">// a2 run</span></span><br><span class="line"></span><br><span class="line">MyB.b2() <span class="comment">// b2 run</span></span><br><span class="line">MyB.b1(<span class="string">"hello world"</span>) <span class="comment">// hello world</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(b3); <span class="comment">// 6</span></span><br><span class="line">b1(<span class="string">"word"</span>) <span class="comment">// word</span></span><br></pre></td></tr></table></figure>
+<p><strong>说明：</strong></p>
+<ol>
+<li><p><code>export default</code>意味着将大括号中的函数、变量封装成default对象全部导出，且该语句在一个js文件中只可以使用一次。在另一个文件中导入时，导入名字可以随便写。</p>
+</li>
+<li><p><code>export</code> + 变量/常量/函数，部分导出；在另一个文件进行导入时，导入名称必须和模块中定义的相同，但是可以使用<code>as</code>进行重命名，注意导入时需要使用大括号（<code>ES6</code>中对象的解构赋值）。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> p = &#123;<span class="attr">name</span>:<span class="string">"bill"</span>, <span class="attr">age</span>: <span class="number">25</span>&#125;</span><br><span class="line"><span class="keyword">let</span> &#123;name,age&#125; = p <span class="comment">//变量名务必和对象属性名相同，否则会得到undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(name + <span class="string">","</span> + age) <span class="comment">// bill 25</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> &#123;log&#125; = <span class="built_in">console</span></span><br><span class="line">log(<span class="string">"hello world"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" data-id="ckajhr6340002zgugda4z3kdd"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-Pytorch学习笔记之卷积神经网络" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -237,7 +394,7 @@ c_i = \sum_{j=1}^{T_x} \alpha_{ij}h_j</script><p><strong>注意</strong>：此�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckadzup1w001umsug4qjr602b"
+      <a data-url="http://yoursite.com/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckajhr65n001xzgugenf85j5j"
         class="article-share-link">分享</a>
         
       
@@ -363,7 +520,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckadzup0w001imsugawzs6y4f"
+      <a data-url="http://yoursite.com/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckajhr65a001jzgug28i56baz"
         class="article-share-link">分享</a>
         
       
@@ -441,7 +598,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" data-id="ckadzuozg000ymsugf8og9wwr"
+      <a data-url="http://yoursite.com/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" data-id="ckajhr64o0015zguggvk72yl1"
         class="article-share-link">分享</a>
         
       
@@ -670,7 +827,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ckadzup12001kmsuge1ofaqqx"
+      <a data-url="http://yoursite.com/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ckajhr65c001kzguge3ab2hqt"
         class="article-share-link">分享</a>
         
       
@@ -752,7 +909,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/" data-id="ckadzuoz3000mmsuge05m5e5o"
+      <a data-url="http://yoursite.com/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/" data-id="ckajhr64d000uzgug2wzwh84f"
         class="article-share-link">分享</a>
         
       
@@ -858,7 +1015,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/17/Word%20Embedding/" data-id="ckadzuoyz000jmsug0i20ehde"
+      <a data-url="http://yoursite.com/2020/04/17/Word%20Embedding/" data-id="ckajhr64h000xzgug0kd071s4"
         class="article-share-link">分享</a>
         
       
@@ -964,7 +1121,7 @@ f(x+\Delta x) \approx f(x) + f^{\\'}(x)\Delta x + \frac{1}{2}\ddot{f(x)}\Delta x
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" data-id="ckadzuozk0013msug2ejyfc48"
+      <a data-url="http://yoursite.com/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" data-id="ckajhr64s001azgug9wk2bkrj"
         class="article-share-link">分享</a>
         
       
@@ -1076,237 +1233,7 @@ C - (C-k) = k</script><p>同样是k个距离。</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/20/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/" data-id="ckadzuozb000wmsugdrmlf1e2"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-EM算法" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/03/19/EM%E7%AE%97%E6%B3%95/"
-    >EM算法</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/03/19/EM%E7%AE%97%E6%B3%95/" class="article-date">
-  <time datetime="2020-03-19T08:59:43.608Z" itemprop="datePublished">2020-03-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h2><p>唉，em算法是我看过最恶心的算法。是我概率论知识太差了？…</p>
-<p>参考资料：$Andrew Ng$ $cs229-notes8$ 、统计学习方法（第二版）</p>
-<h3 id="1-极大似然估计"><a href="#1-极大似然估计" class="headerlink" title="1.极大似然估计"></a>1.极大似然估计</h3><ul>
-<li><p>似然（$likelihood$）与概率（$probability$）</p>
-<p>​        概率，用于在已知一些参数的情况下，预测接下来在观测上所得到的结果；似然性，则是用于在已知某些观测所得到的结果时，对有关事物之性质的参数进行估值，即<strong>估计参数的可能性</strong>。</p>
-<p>参见：<a href="https://zh.wikipedia.org/wiki/似然函数" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E4%BC%BC%E7%84%B6%E5%87%BD%E6%95%B0</a></p>
-</li>
-</ul>
-<p>​        <strong>其实极大似然估计就是根据样本来估计统计模型的参数，选取一个参数使得当前观测的概率最大</strong>。<strong>似然函数取得最大值表示相应的参数能够使得统计模型最为合理。</strong></p>
-<p>推荐宋浩老师的这节课。<a href="https://www.bilibili.com/video/av36206436?t=3565&amp;p=67" target="_blank" rel="noopener">https://www.bilibili.com/video/av36206436?t=3565&amp;p=67</a></p>
-<p>主要有以下步骤：</p>
-<ol>
-<li>写出总体的概率函数或概率密度函数</li>
-<li>写出似然函数（通常是概率连乘的形式）。在数理统计学中，似然函数是一种关于统计模型中的参数的函数。</li>
-<li>两边取对数，得到<strong>对数似然函数</strong></li>
-<li>求对数似然函数关于参数的导数或偏导，并求出使得导数或偏导为0的参数。该参数即为所求</li>
-</ol>
-<p><strong>注意：</strong></p>
-<ul>
-<li>Q：为什么是连乘的形式？A：所有样本之间的概率是相互独立的。</li>
-<li>通常某个函数的极值点，导数为0或不存在。</li>
-</ul>
-<p><strong>例子：</strong></p>
-<p>已知存在一批可观测样本$\{x_1,x_2,…,x_n\}$，随机变量 $X$ 满足正态分布 $N(\mu,\sigma^2)$，利用极大似然估计，求出正态分布的相关参数。</p>
-<p><strong>解：</strong></p>
-<ol>
-<li><p>先写出正态分布的概率密度函数：</p>
-<script type="math/tex; mode=display">
-f(x) = \frac{1}{\sqrt{2\pi}\sigma}\exp^{-\frac{(x - \mu)^2}{2\sigma^2}}</script></li>
-<li><p>写出似然函数</p>
-<script type="math/tex; mode=display">
-L(\mu,\sigma^2) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x_i - \mu)^2}{2\sigma^2}} = (\frac{1}{\sqrt{2\pi}})^n(\sigma^2)^{-\frac{1}{2}n}e^{-\frac{\sum_{i}^{n}(x_i-\mu)^2 }{2\sigma^2}}</script></li>
-<li><p>两边取对数，得到对数似然函数</p>
-<script type="math/tex; mode=display">
-\ln L(\mu,\sigma^2) = n\ln(\frac{1}{\sqrt{2\pi}})-\frac{1}{2}n\ln(\sigma^2)-\frac{\sum_{i=1}^n (x_i-\mu)^2}{2\sigma^2}</script></li>
-<li><p>求对数似然函数关于$\mu$ ，$\sigma^2$ 的偏导</p>
-<script type="math/tex; mode=display">
-\frac{\partial \ln(L(\mu,\sigma^2))}{\partial \mu} = \frac{\sum_{i=1}^n(x_i-\mu)}{\sigma^2} = 0</script><script type="math/tex; mode=display">
-\sum_{i=1}^n(x_i-\mu) = 0 \rightarrow x_1+x_2+...+x_n-n\mu = 0</script></li>
-</ol>
-<script type="math/tex; mode=display">
-\mu = \frac{x_1+x_2+x_3+...+x_n}{n}</script><script type="math/tex; mode=display">
-\frac{\partial \ln(L(\mu,\sigma^2))}{\partial \sigma^2} =-\frac{n}{2\sigma^2}+\frac{\sum_{i=1}^n (x_i-\mu)^2}{2\sigma^4} = 0</script><p>化简，可得：</p>
-<script type="math/tex; mode=display">
-\sigma^2 = \frac{(x_1-\mu)^2 + (x_2-\mu)^2 +...+(x_n-\mu)^2}{n}</script><p>观察上式可知:</p>
-<ul>
-<li>$\mu$ 即为样本<strong>均值</strong></li>
-<li>$\sigma^2$ 为样本的<strong>方差</strong></li>
-</ul>
-<h3 id="2-Jensen不等式"><a href="#2-Jensen不等式" class="headerlink" title="2. Jensen不等式"></a>2. Jensen不等式</h3><h3 id="3-E-M算法的导出"><a href="#3-E-M算法的导出" class="headerlink" title="3. E-M算法的导出"></a>3. E-M算法的导出</h3><script type="math/tex; mode=display">
-L(\theta) = \prod_i^n P(x_i|\theta)</script><script type="math/tex; mode=display">
-L(\theta) =  \sum_i^n \log P(x_i|\theta) =\\ \sum_i^n\log\sum_Z  P(x_i,z|\theta) = \\
-\sum_i^n\log\sum_ZQ(z)\frac{p(x_i,z|\theta)}{Q(z)}</script><p>注意：$z$为隐变量（<strong>latent variables</strong>）$Q(z)$为$z$的一个分布，是啥分布不确定。</p>
-<p>求这个似然函数的导数比较麻烦和困难，因此提出了EM算法，通过迭代的方式逐步求解。</p>
-<p>继续推导，有Jensen不等式有：</p>
-<script type="math/tex; mode=display">
-\sum_i^n\log\sum_ZQ(z)\frac{p(x_i,z|\theta)}{Q(z)} >= \sum_i^n\sum_ZQ(z)\log\frac{p(x_i,z|\theta)}{Q(z)}</script><p>当且仅当$\frac{p(x_i,z|\theta)}{Q(z)}$ 为常数时取等。即：</p>
-<script type="math/tex; mode=display">
-\frac{p(x_i,z|\theta)}{Q(z)} = c \\
-\sum_Z Q(z) = 1 \\
-Q(z) ∝ p(x_i,z;\theta)
-Q(z) = p(z|x_i;\theta)</script><p>可以看出，Q是给定观测数据、参数的条件下，隐变量的一个后验分布(条件分布)。</p>
-<p>带回到上个式子：</p>
-<script type="math/tex; mode=display">
-\theta^{j+1} = \arg\max_\theta \sum_i^n\sum_ZQ(z)\log\frac{p(x_i,z|\theta^j)}{Q(z)} = \\
-
-\arg\max_\theta \sum_i^n\sum_Z p(z|x_i;\theta^j)\log p(x_i,z;\theta^j)</script><p>(与z无关的省略掉，给定参数$\theta^j$ 、观测数据，计算出$p(z|x_i;\theta^j)$ 再带进去。然后就只需要最大化$p(x,z;\theta)$ 得到$\theta^{j+1}$)。上述就是M步；我们来看看要极大化的那个式子</p>
-<script type="math/tex; mode=display">
-Q(z)\log p(x_i,z;\theta^j) = E_{Q}[\log p(x_i,z;\theta^j)] = \\
-E_{p(z|x_i,\theta^j)}[\log p(x_i,z;\theta^j)] = \\
-E_Z[\log p(x_i,z;\theta)|x_i;\theta^j]</script><p>我们将最后一个式子称为<strong>Q函数</strong>。注意，这个Q不同于上面那个Q分布。</p>
-<p>​        <strong>Q函数是完全数据（观测数据和隐变量）的对数似然函数关于隐变量在给定观测数据和参数的情况下的条件分布的期望。E步的求期望，求的就是这个期望。</strong></p>
-<p>​        念起来真的很抽象，结合例子做的话就好多了。</p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/19/EM%E7%AE%97%E6%B3%95/" data-id="ckadzuoxa0002msugdtdo4jtq"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-PyTorch 使用GPU加速" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/03/07/PyTorch%20%E4%BD%BF%E7%94%A8GPU%E5%8A%A0%E9%80%9F/"
-    >PyTorch 使用GPU加速</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/03/07/PyTorch%20%E4%BD%BF%E7%94%A8GPU%E5%8A%A0%E9%80%9F/" class="article-date">
-  <time datetime="2020-03-07T12:22:07.172Z" itemprop="datePublished">2020-03-07</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="PyTorch-使用GPU加速"><a href="#PyTorch-使用GPU加速" class="headerlink" title="PyTorch 使用GPU加速"></a>PyTorch 使用GPU加速</h2><p><strong>注意</strong>：</p>
-<ol>
-<li><p>如果以前安装过CPU版本的PyTorch，务必先卸载，使用<code>pip</code>或<code>conda</code>命令进行卸载。</p>
-</li>
-<li><p>务必注意PyTorch和CUDA版本之间的对应，比如PyTorch 1.4 请安装CUDA 10.1。</p>
-</li>
-<li><p>获取CUDA和CuDNN和安装PyTorch GPU版本，以下操作大概率可行。</p>
-<p><a href="https://blog.csdn.net/Mind_programmonkey/article/details/99688839#commentBox" target="_blank" rel="noopener">https://blog.csdn.net/Mind_programmonkey/article/details/99688839#commentBox</a></p>
-</li>
-<li><p>检查是否正确安装CUDA，在cmd输入：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvcc -V</span><br></pre></td></tr></table></figure>
-<p>检查是否可用GPU加速，</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">print(torch.cuda.is_avaliable())</span><br><span class="line"><span class="comment">#输出True 表示成功。</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>按照以上操作还不行怎么办？</p>
-<ul>
-<li>尝试去NVIDIA官网更新自己的显卡驱动</li>
-<li>重启一下电脑？</li>
-<li>实在不行，在下也没有办法了</li>
-</ul>
-</li>
-</ol>
-<p><strong>使用CUDA加速训练模型</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义一个卷积网络对FashionMNIST数据集进行分类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Network</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.conv1 = nn.Conv2d(in_channels=<span class="number">1</span>, out_channels=<span class="number">6</span>, kernel_size=<span class="number">5</span>)</span><br><span class="line">        self.conv2 = nn.Conv2d(in_channels=<span class="number">6</span>, out_channels=<span class="number">12</span>, kernel_size=<span class="number">5</span>)</span><br><span class="line">        </span><br><span class="line">        self.fc1 = nn.Linear(in_features=<span class="number">12</span> * <span class="number">4</span> * <span class="number">4</span>, out_features=<span class="number">120</span>)</span><br><span class="line">        self.fc2 = nn.Linear(in_features=<span class="number">120</span>, out_features=<span class="number">60</span>)</span><br><span class="line">        self.out = nn.Linear(in_features=<span class="number">60</span>, out_features=<span class="number">10</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, t)</span>:</span></span><br><span class="line">        <span class="comment"># (1) input layer</span></span><br><span class="line">        t = t</span><br><span class="line">        <span class="comment"># (2) hidden conv layer</span></span><br><span class="line">        t = self.conv1(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line">        t = F.max_pool2d(t, kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (3) hidden conv layer</span></span><br><span class="line">        t = self.conv2(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line">        t = F.max_pool2d(t, kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (4) hidden linear layer</span></span><br><span class="line">        t = t.reshape(<span class="number">-1</span>, <span class="number">12</span> * <span class="number">4</span> * <span class="number">4</span>)</span><br><span class="line">        t = self.fc1(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (5) hidden linear layer</span></span><br><span class="line">        t = self.fc2(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (6) output layer</span></span><br><span class="line">        t = self.out(t)</span><br><span class="line">        <span class="comment">#t = F.softmax(t, dim=1)</span></span><br><span class="line">        <span class="keyword">return</span> t</span><br><span class="line"></span><br><span class="line"><span class="comment">#训练数据集的加载</span></span><br><span class="line">train_set = torchvision.datasets.FashionMNIST(</span><br><span class="line">    root=<span class="string">'./data'</span></span><br><span class="line">    ,train=<span class="literal">True</span></span><br><span class="line">    ,download=<span class="literal">True</span></span><br><span class="line">    ,transform=transforms.Compose([</span><br><span class="line">        transforms.ToTensor()</span><br><span class="line">    ])</span><br><span class="line">)</span><br><span class="line">train_loader = torch.utils.data.DataLoader(train_set, batch_size=<span class="number">100</span>,shuffle=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="comment">#指定gpu进行训练</span></span><br><span class="line">    device = torch.device(<span class="string">'cuda:0'</span>)</span><br><span class="line">    network = Network().to(device)</span><br><span class="line">    optimizer = optim.Adam(network.parameters(), lr=<span class="number">0.01</span>)</span><br><span class="line">    start = time.clock()</span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line"></span><br><span class="line">        total_loss = <span class="number">0</span></span><br><span class="line">        total_correct = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> batch <span class="keyword">in</span> train_loader: <span class="comment"># Get Batch</span></span><br><span class="line">            images, labels = batch </span><br><span class="line">             <span class="comment">#moving the inputs to gpu type</span></span><br><span class="line">            images,labels = images.to(device), labels.to(device)</span><br><span class="line">            network.eval()</span><br><span class="line">            preds = network(images) <span class="comment"># Pass Batch</span></span><br><span class="line">            loss = F.cross_entropy(preds, labels) <span class="comment"># Calculate Loss</span></span><br><span class="line"></span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line">            loss.backward() <span class="comment"># Calculate Gradients</span></span><br><span class="line">            optimizer.step() <span class="comment"># Update Weights</span></span><br><span class="line"></span><br><span class="line">            total_loss += loss.item()</span><br><span class="line">            total_correct += get_num_correct(preds, labels)</span><br><span class="line"></span><br><span class="line">        print(</span><br><span class="line">            <span class="string">"epoch"</span>, epoch, </span><br><span class="line">            <span class="string">"total_correct:"</span>, total_correct, </span><br><span class="line">            <span class="string">"loss:"</span>, total_loss</span><br><span class="line">        )</span><br><span class="line">elapsed = (time.clock() - start)</span><br><span class="line">print(elapsed)</span><br></pre></td></tr></table></figure>
-<p>可以发现，使用CUDA比使用CPU训练快多了。</p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/07/PyTorch%20%E4%BD%BF%E7%94%A8GPU%E5%8A%A0%E9%80%9F/" data-id="ckadzuoyv000imsug44o8f5lq"
+      <a data-url="http://yoursite.com/2020/03/20/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/" data-id="ckajhr64j000zzgugdg5c0e3h"
         class="article-share-link">分享</a>
         
       
