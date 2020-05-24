@@ -60,6 +60,113 @@
     
     
     
+    <article id="post-归一化和标准化" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/"
+    >归一化和标准化</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" class="article-date">
+  <time datetime="2020-05-23T12:29:05.107Z" itemprop="datePublished">2020-05-23</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="归一化和标准化"><a href="#归一化和标准化" class="headerlink" title="归一化和标准化"></a>归一化和标准化</h2><p>​        注：本文内容转载自:<a href="https://www.jianshu.com/p/4c3081d40ca6" target="_blank" rel="noopener">https://www.jianshu.com/p/4c3081d40ca6</a></p>
+<h2 id="1-先说是什么，再说为什么"><a href="#1-先说是什么，再说为什么" class="headerlink" title="1. 先说是什么，再说为什么"></a>1. 先说是什么，再说为什么</h2><ul>
+<li><p>归一化：</p>
+<p>就是将训练集中某一列<strong>数值</strong>特征（假设是第i列）的值缩放到<strong>0和1</strong>之间。方法如下所示：</p>
+<script type="math/tex; mode=display">
+\frac{x_i - \min(x)}{\max(x) - \min(x)}</script></li>
+<li><p>标准化：</p>
+<p>就是将训练集中某一列<strong>数值</strong>特征（假设是第i列）的值缩放成<strong>均值为0，方差为1</strong>的状态。如下所示：</p>
+<script type="math/tex; mode=display">
+\frac{x_i - \bar{x}}{std(x)}</script></li>
+</ul>
+<p>  sklearn中<code>MinmaxScaler</code>对应着归一化，<code>StandardScaler</code>对应标准化。</p>
+<p>  神经网络中Batch Normalization对应标准化，即把样本拉回到均值为0，方差为1的分布上。</p>
+<ul>
+<li><p>进一步明确二者含义：</p>
+<p>归一化和标准化的相同点都是对<strong>某个特征（column）</strong>进行缩放（scaling）而不是对某个样本的特征向量（row）进行缩放。对特征向量进行缩放是毫无意义的（<strong>暗坑1</strong>），比如三列特征：身高、体重、血压。每一条样本（row）就是三个这样的值，对这个row无论是进行标准化还是归一化都是好笑的，因为你不能将身高、体重和血压混到一起去！<br> 在线性代数中，将一个向量除以向量的长度，也被称为标准化，不过这里的标准化是将向量变为长度为1的单位向量，它和我们这里的标准化不是一回事儿，不要搞混哦（<strong>暗坑2</strong>）。</p>
+</li>
+</ul>
+<h2 id="2-标准化和归一化的对比分析"><a href="#2-标准化和归一化的对比分析" class="headerlink" title="2. 标准化和归一化的对比分析"></a>2. 标准化和归一化的对比分析</h2><p>首先明确，在机器学习中，标准化是更常用的手段，归一化的应用场景是有限的。我总结原因有两点：</p>
+<ul>
+<li>1、标准化更好保持了样本间距。当样本中有异常点时，归一化有可能将正常的样本“挤”到一起去。比如三个样本，某个特征的值为1,2,10000，假设10000这个值是异常值，用归一化的方法后，正常的1,2就会被“挤”到一起去。如果不幸的是1和2的分类标签还是相反的，那么，当我们用梯度下降来做分类模型训练时，模型会需要更长的时间收敛，因为将样本分开需要更大的努力！而标准化在这方面就做得很好，至少它不会将样本“挤到一起”。</li>
+<li>2、标准化更符合统计学假设<br> 对一个数值特征来说，很大可能它是服从正态分布的。标准化其实是基于这个隐含假设，只不过是略施小技，将这个正态分布调整为均值为0，方差为1的标准正态分布而已。</li>
+</ul>
+<h2 id="3-逻辑回归是否需要标准化"><a href="#3-逻辑回归是否需要标准化" class="headerlink" title="3. 逻辑回归是否需要标准化"></a>3. 逻辑回归是否需要标准化</h2><p>真正的答案是，这取决于我们的逻辑回归是不是用正则。</p>
+<p><strong>如果你不用正则，那么，标准化并不是必须的，如果你用正则，那么标准化是必须的。（暗坑3）</strong></p>
+<p>因为不用正则时，我们的损失函数<strong>只是仅仅</strong>在度量<strong>预测与真实的差距</strong>，加上正则后，我们的损失函数除了要度量上面的差距外，还要度量<strong>参数值</strong>是否足够小。而<strong>参数值的大小程度或者说大小的级别是与特征的数值范围</strong>相关的。举例来说，我们用体重预测身高，体重用kg衡量时，训练出的模型是：<br>身高 = 体重*x，x就是我们训练出来的参数。</p>
+<p>当我们的体重用吨来衡量时，x的值就会扩大为原来的1000倍。<br>在上面两种情况下，都用L1正则的话，显然对模型的训练影响是不同的。</p>
+<p>假如不同的特征的数值范围不一样，有的是0到0.1，有的是100到10000，那么，每个特征对应的参数大小级别也会不一样，在L1正则时，我们是简单将参数的绝对值相加，因为它们的大小级别不一样，就会导致L1最后只会对那些级别比较大的参数有作用，那些小的参数都被忽略了。</p>
+<p>如果你回答到这里，面试官应该基本满意了，但是他可能会进一步考察你，如果不用正则，那么标准化对逻辑回归有什么好处吗？</p>
+<p>答案是有好处，进行标准化后，我们得出的参数值的大小可以反应出不同特征对样本label的<strong>贡献度</strong>，方便我们进行特征筛选。如果不做标准化，是不能这样来筛选特征的。</p>
+<p>答到这里，有些厉害的面试官可能会继续问，做标准化有什么注意事项吗？</p>
+<p><strong>最大的注意事项就是先拆分出test集，不要在整个数据集上做标准化，因为那样会将test集的信息引入到训练集中，这是一个非常容易犯的错误！</strong></p>
+<h2 id="4-决策树需要标准化吗"><a href="#4-决策树需要标准化吗" class="headerlink" title="4. 决策树需要标准化吗"></a>4. 决策树需要标准化吗</h2><p>答案是不需要标准化。因为决策树中的切分依据，信息增益、信息增益比、Gini指数都是基于概率得到的，和值的大小没有关系。另外同属概率模型的朴素贝叶斯，隐马尔科夫也不需要标准化。</p>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h2><ol>
+<li><p><strong>搞清楚标准化和归一化的具体定义和区别</strong></p>
+</li>
+<li><p><strong>标准化要在train_test_split后，在训练集、测试集上分别进行标准化</strong></p>
+</li>
+<li><p><strong>决策树、朴素贝叶斯等概率模型不需要标准化</strong></p>
+</li>
+</ol>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" data-id="ckakxzvhp0014k8ug55y11xje"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-Vuex使用" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -83,6 +190,10 @@
   <time datetime="2020-05-23T09:17:03.636Z" itemprop="datePublished">2020-05-23</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JS/">JS</a>
+  </div>
+
       
       
       
@@ -98,8 +209,7 @@
       
 
       
-      <hr>
-<h2 id="categories-”JS”"><a href="#categories-”JS”" class="headerlink" title="categories:”JS”"></a>categories:”JS”</h2><h2 id="Vuex使用"><a href="#Vuex使用" class="headerlink" title="Vuex使用"></a>Vuex使用</h2><p>​        <code>Vuex</code>是一个状态管理库，使用单一状态树管理应用内的全局状态。</p>
+      <h2 id="Vuex使用"><a href="#Vuex使用" class="headerlink" title="Vuex使用"></a>Vuex使用</h2><p>​        <code>Vuex</code>是一个状态管理库，使用单一状态树管理应用内的全局状态。</p>
 <p>​        <code>index.js</code>文件如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">"vue"</span>;</span><br><span class="line"><span class="keyword">import</span> Vuex <span class="keyword">from</span> <span class="string">"vuex"</span>;</span><br><span class="line"><span class="keyword">import</span> cart <span class="keyword">from</span> <span class="string">"./cart"</span></span><br><span class="line">Vue.use(Vuex);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">  <span class="comment">//全局的state</span></span><br><span class="line">  <span class="comment">// 如何调用：this.$store.state.状态名 / this.$store.state.模块名.状态名</span></span><br><span class="line">  state: &#123;</span><br><span class="line">    isTabbarShow: <span class="literal">true</span>,</span><br><span class="line">    itemList: [],</span><br><span class="line">  &#125;,</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    <span class="comment">//修改state操作，state为第一个参数，vue会自动注入该函数</span></span><br><span class="line">    <span class="comment">//如何调用：this.$store.commit("函数名",[data])</span></span><br><span class="line">    HideTabbar(state, data) &#123;</span><br><span class="line">      state.isTabbarShow = data;</span><br><span class="line">    &#125;,</span><br><span class="line">    ShowTabbar(state, data) &#123;</span><br><span class="line">      state.isTabbarShow = data;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  actions: &#123;</span><br><span class="line">    <span class="comment">//主要执行异步操作,</span></span><br><span class="line">    <span class="comment">// 如何调用：this.$store.dispatch("模块名/函数名称",[data])</span></span><br><span class="line">    test(store, data) &#123;</span><br><span class="line">      <span class="comment">//使用commit通过mutation中方法修改state</span></span><br><span class="line">      store.commit(<span class="string">""</span>, data);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  getters: &#123;</span><br><span class="line">    <span class="comment">// store中的计算属性</span></span><br><span class="line">    <span class="comment">// 调用方式 $store.getters."函数名字"</span></span><br><span class="line">    getItemListTop3(state) &#123;</span><br><span class="line">      <span class="keyword">return</span> state.itemList.slice(<span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  modules: &#123;</span><br><span class="line">    <span class="comment">//不同模块中可以定义state、mutations、actions，然后包装成一个对象导出，在这儿进行导入，注意在子模块中不需要使用Vuex.Store构造函数。</span></span><br><span class="line">      cart,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store;</span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">cart/index.js</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> state = &#123;</span><br><span class="line">  items: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>],</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> getters = &#123;</span><br><span class="line">  getOddItem(state) &#123;</span><br><span class="line">    <span class="keyword">return</span> state.items.filter(<span class="function">(<span class="params">x</span>) =&gt;</span> x % <span class="number">2</span> == <span class="number">0</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> mutations = &#123;</span><br><span class="line">  incre(state) &#123;</span><br><span class="line">    state.items = state.items.map(<span class="function">(<span class="params">x</span>) =&gt;</span> x + <span class="number">2</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;<span class="comment">//开启了命名空间</span></span><br><span class="line">  namespaced: <span class="literal">true</span>,</span><br><span class="line">  state,</span><br><span class="line">  getters,</span><br><span class="line">  mutations,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -120,7 +230,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" data-id="ckajhr645000pzgug0mib23gf"
+      <a data-url="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" data-id="ckakxzvhi000tk8ug7gem1vyu"
         class="article-share-link">分享</a>
         
       
@@ -199,7 +309,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" data-id="ckajhr6340002zgugda4z3kdd"
+      <a data-url="http://yoursite.com/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" data-id="ckakxzvgk0003k8ug06ahbh5o"
         class="article-share-link">分享</a>
         
       
@@ -394,7 +504,7 @@ c_i = \sum_{j=1}^{T_x} \alpha_{ij}h_j</script><p><strong>注意</strong>：此�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckajhr65n001xzgugenf85j5j"
+      <a data-url="http://yoursite.com/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckakxzvj0001zk8ug9bn720hf"
         class="article-share-link">分享</a>
         
       
@@ -520,7 +630,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckajhr65a001jzgug28i56baz"
+      <a data-url="http://yoursite.com/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckakxzvie001nk8ug6wzdbv63"
         class="article-share-link">分享</a>
         
       
@@ -598,7 +708,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" data-id="ckajhr64o0015zguggvk72yl1"
+      <a data-url="http://yoursite.com/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" data-id="ckakxzvhr0019k8ugfgt5bfgl"
         class="article-share-link">分享</a>
         
       
@@ -827,7 +937,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ckajhr65c001kzguge3ab2hqt"
+      <a data-url="http://yoursite.com/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ckakxzvig001pk8ugacakgfwt"
         class="article-share-link">分享</a>
         
       
@@ -909,7 +1019,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/" data-id="ckajhr64d000uzgug2wzwh84f"
+      <a data-url="http://yoursite.com/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/" data-id="ckakxzvhe000pk8ug3g221yjw"
         class="article-share-link">分享</a>
         
       
@@ -1015,7 +1125,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/17/Word%20Embedding/" data-id="ckajhr64h000xzgug0kd071s4"
+      <a data-url="http://yoursite.com/2020/04/17/Word%20Embedding/" data-id="ckakxzvhh000rk8ug87egdigw"
         class="article-share-link">分享</a>
         
       
@@ -1121,119 +1231,7 @@ f(x+\Delta x) \approx f(x) + f^{\\'}(x)\Delta x + \frac{1}{2}\ddot{f(x)}\Delta x
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" data-id="ckajhr64s001azgug9wk2bkrj"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-寻找重复数" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/03/20/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/"
-    >寻找重复数</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/03/20/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/" class="article-date">
-  <time datetime="2020-03-20T09:31:57.085Z" itemprop="datePublished">2020-03-20</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h3 id="1-寻找重复数"><a href="#1-寻找重复数" class="headerlink" title="1. 寻找重复数"></a>1. 寻找重复数</h3><p>​        给定一个包含 <em>n</em> + 1 个整数的数组 <em>nums</em>，其数字都在 1 到 <em>n</em> 之间（包括 1 和 <em>n</em>），可知至少存在一个重复的整数。假设只有一个重复的整数，找出这个重复的数。这是<code>Leetcode 287</code>号问题。</p>
-<ul>
-<li><p>解法1：排序，然后看相邻元素是否是否相等</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">findDuplicate</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123; </span><br><span class="line">		Arrays.sort(nums);</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (nums[i] == nums[i - <span class="number">1</span>]) &#123;</span><br><span class="line">                ans = nums[i];</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>解法2：hashmap统计次数或集合判重。</p>
-</li>
-<li><p>解法3：双指针</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">     <span class="comment">// 数组中的值代表了索引，因为是1-n之间的数，数组包含n+1个数字，不会越界</span></span><br><span class="line">     <span class="comment">// nums[fast]-&gt;具体数值 以nums[fast]作为索引得到-&gt;nums[nums[fast]]</span></span><br><span class="line">     <span class="comment">// nums = [2,5,9,6,9,3,8,9,7,1] 构造成链表</span></span><br><span class="line">     <span class="comment">// 2-&gt;[9]-&gt;1-&gt;5-&gt;3-&gt;6-&gt;8-&gt;7-&gt;[9]-&gt;1-&gt;5-&gt;3...如果存在重复数字，有环存在，找到环的入口。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">findDuplicate</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123; </span><br><span class="line">		<span class="keyword">int</span> fast = <span class="number">0</span>, slow = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            fast = nums[nums[fast]];</span><br><span class="line">            slow = nums[slow];</span><br><span class="line">            <span class="comment">// System.out.println("fast=" + fast + ",slow=" + slow);</span></span><br><span class="line">            <span class="keyword">if</span> (fast == slow)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> finder = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            finder = nums[finder];</span><br><span class="line">            slow = nums[slow];</span><br><span class="line">            System.out.println(<span class="string">"finder="</span> + finder + <span class="string">",slow="</span> + slow);</span><br><span class="line">            <span class="keyword">if</span> (finder == slow)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="2-环形链表II"><a href="#2-环形链表II" class="headerlink" title="2. 环形链表II"></a>2. 环形链表II</h3><p>解法3的链表形式。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        ListNode next;</span><br><span class="line"></span><br><span class="line">        ListNode(<span class="keyword">int</span> x) &#123;</span><br><span class="line">            val = x;</span><br><span class="line">            next = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ListNode <span class="title">detectCycle</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        ListNode slow = head, fast = head;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (fast == <span class="keyword">null</span> || fast.next == <span class="keyword">null</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            slow = slow.next;</span><br><span class="line">            fast = fast.next.next;</span><br><span class="line">            <span class="keyword">if</span> (slow == fast)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (head == slow)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="comment">// System.out.println(head.val);</span></span><br><span class="line">            head = head.next;</span><br><span class="line">            slow = slow.next;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        ListNode head = <span class="keyword">new</span> ListNode(<span class="number">3</span>);</span><br><span class="line">        ListNode second = <span class="keyword">new</span> ListNode(<span class="number">2</span>);</span><br><span class="line">        ListNode third = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode fourth = <span class="keyword">new</span> ListNode(-<span class="number">4</span>);</span><br><span class="line">        head.next = second;</span><br><span class="line">        second.next = third;</span><br><span class="line">        third.next = fourth;</span><br><span class="line">        <span class="comment">// fourth.next = second;</span></span><br><span class="line">        System.out.println(detectCycle(head).val);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-关于为何会在环的入口相遇的证明："><a href="#3-关于为何会在环的入口相遇的证明：" class="headerlink" title="3. 关于为何会在环的入口相遇的证明："></a>3. 关于为何会在环的入口相遇的证明：</h3><p>程序中，<code>fast</code>每次循环移动两次，<code>slow</code>每次移动一次，也就是说<code>fast</code>的速度是<code>slow</code>的2倍。</p>
-<p>我们假设从索引为$0$元素开始，到环入口元素的距离为$k$，我们把入口元素作为环的起点。</p>
-<p>当<code>slow</code>指针刚到达入口元素时，经过了 $k$ 次移动，即：从数组第一个元素到环入口元素有 $k$ 个距离，而此时，<code>fast</code>指针已经在环上了，且领先<code>slow</code>指针 $k$ 个距离，接下来就要分情况讨论了，假设环的周长为 $C$:</p>
-<ol>
-<li><p>当<script type="math/tex">k < \frac{C}{2}</script> 时,也就是说fast当前位置在环的上半部分，<code>fast</code>在<code>slow</code>的前面（顺时针移动）。</p>
-<p>如果此时<code>slow</code>与<code>fast</code>相遇，<code>fast</code>一定会比<code>slow</code>多跑一圈，假设经过了 $t_1$ 时间，<code>fast</code>跑完一圈又回到了<code>slow</code>刚进入圆环时，<code>fast</code>的位置，由于<code>fast</code>的速度是<code>slow</code>的2倍，且<code>slow</code>从0点出发，<code>fast</code>跑完一圈，<code>slow</code>刚好在半圆位置。此时，二者距离为$\frac{C}{2} - k$，假设再经过 $t_2$ 时间，<code>fast</code>与<code>slow</code>相遇，考虑一下：</p>
-<p><code>slow</code>经过的距离：$t_2$ (<code>slow</code>每次移动一格)</p>
-<p><code>fast</code>经过的距离：$2t_2$</p>
-<p>可知有如下关系：</p>
-<script type="math/tex; mode=display">
-t_2 + \frac{C}{2}-k = 2t_2</script><script type="math/tex; mode=display">
-t_2 = \frac{C}{2} - k</script><p>此时，<code>slow</code>指针的位置为：</p>
-<script type="math/tex; mode=display">
-\frac{C}{2} + \frac{C}{2} - k</script><p>与起点距离为：</p>
-<script type="math/tex; mode=display">
-C - C + k = k</script><p>而数组第一个元素与圆环入口元素距离也为$k$。</p>
-<p>因此，另一个指针从数组第一个元素开始，slow从与fast相遇位置开始一起每次移动一格，最终会在入口元素相遇。</p>
-</li>
-<li><p>当$k &gt; \frac{C}{2}$时，fast当前位置在环的下半部分。fast在slow后面，距离为$C - k$</p>
-<p>这种情况，fast指针不必多跑一圈才能追上slow指针，假设经过$t_3$时间，fast追上了slow。</p>
-<p>期间：</p>
-<p>fast移动的距离：$2t_3$</p>
-<p>slow移动的距离：$t_3$</p>
-<p>有如下关系：</p>
-<script type="math/tex; mode=display">
-2t_3 = t_3 + C - k</script><script type="math/tex; mode=display">
-t_3 = C - k</script><p>此时slow的位置在$C-k$初，距离达圆环入口处（顺时针移动），有</p>
-<script type="math/tex; mode=display">
-C - (C-k) = k</script><p>同样是k个距离。</p>
-<p>得证。</p>
-</li>
-</ol>
-<p><img src="/images/快慢指针示意图.jpg" alt=""></p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/20/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/" data-id="ckajhr64j000zzgugdg5c0e3h"
+      <a data-url="http://yoursite.com/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" data-id="ckakxzvht001bk8ugf8qxfou8"
         class="article-share-link">分享</a>
         
       
@@ -1257,7 +1255,7 @@ C - (C-k) = k</script><p>同样是k个距离。</p>
   
   <nav class="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
   </nav>
   
 </section>

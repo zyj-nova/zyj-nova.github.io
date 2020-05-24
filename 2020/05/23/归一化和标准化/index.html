@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    JVM 垃圾回收器分类总结 |  张永剑的博客
+    归一化和标准化 |  张永剑的博客
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -30,7 +30,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-JVM 垃圾回收器分类总结" class="article article-type-post" itemscope
+  <article id="post-归一化和标准化" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -38,7 +38,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  JVM 垃圾回收器分类总结
+  归一化和标准化
 </h1>
   
 
@@ -47,12 +47,12 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" class="article-date">
-  <time datetime="2020-02-04T05:58:43.203Z" itemprop="datePublished">2020-02-04</time>
+      <a href="/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" class="article-date">
+  <time datetime="2020-05-23T12:29:05.107Z" itemprop="datePublished">2020-05-23</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
   </div>
 
       
@@ -62,7 +62,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">853字</span>
+            <span class="post-count">1.4k字</span>
         </span>
     </span>
 
@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3分钟</span>
+            <span class="post-count">4分钟</span>
         </span>
     </span>
 </div>
@@ -97,40 +97,54 @@
       
 
       
-      <h2 id="JVM-垃圾回收器分类总结"><a href="#JVM-垃圾回收器分类总结" class="headerlink" title="JVM 垃圾回收器分类总结"></a>JVM 垃圾回收器分类总结</h2><p>概览：</p>
-<p>由于垃圾回收存在多种算法：标记-复制、标记-清除、标记-整理。组合多种垃圾回收器，形成分代收集算法。</p>
-<p><strong>新生代收集器</strong>：Serial、ParNew、Parallel Scavenge</p>
-<p><strong>老年代收集器</strong>：CMS、Serial Old、Parallel Old</p>
-<p><strong>整堆收集器</strong>： G1</p>
-<h3 id="1-Serial-垃圾回收器"><a href="#1-Serial-垃圾回收器" class="headerlink" title="1. Serial 垃圾回收器"></a>1. Serial 垃圾回收器</h3><p> 串行垃圾回收器，单线程，执行垃圾回收时其他线程停止等待。</p>
-<h3 id="2-Parallel-New-垃圾回收器"><a href="#2-Parallel-New-垃圾回收器" class="headerlink" title="2. Parallel New 垃圾回收器"></a>2. Parallel New 垃圾回收器</h3><p> 并行垃圾回收器。相较于 Serial，多线程并行进行垃圾回收。其他线程也必须停止等待。</p>
-<h3 id="3-Parallel-Scavenge-收集器"><a href="#3-Parallel-Scavenge-收集器" class="headerlink" title="3. Parallel Scavenge 收集器"></a>3. Parallel Scavenge 收集器</h3><p> 与<strong>吞吐量</strong>关系密切，故也称为吞吐量优先收集器。</p>
-<p> <strong>特点</strong>：属于新生代收集器也是采用复制算法的收集器，又是并行的多线程收集器（与 ParNew 收集器类似）。</p>
-<h3 id="4-Parallel-Old-收集器"><a href="#4-Parallel-Old-收集器" class="headerlink" title="4. Parallel Old 收集器"></a>4. Parallel Old 收集器</h3><p> 是 Parallel Scavenge 收集器的老年代版本。</p>
-<p> <strong>特点</strong>：多线程，采用标记-整理算法。</p>
-<p> <strong>应用场景</strong>：注重高吞吐量以及 CPU 资源敏感的场合，都可以优先考虑 Parallel Scavenge+Parallel Old 收集器。</p>
-<h3 id="5-Serial-Old-收集器"><a href="#5-Serial-Old-收集器" class="headerlink" title="5. Serial Old 收集器"></a>5. Serial Old 收集器</h3><p> Serial Old 是 Serial 收集器的老年代版本。</p>
-<p> <strong>特点</strong>：同样是单线程收集器，采用标记-整理算法。</p>
-<h3 id="6-CMS-垃圾回收器"><a href="#6-CMS-垃圾回收器" class="headerlink" title="6. CMS 垃圾回收器"></a>6. CMS 垃圾回收器</h3><p> 并发垃圾回收器，在进行垃圾回收时，其余线程不必停止等待。</p>
-<p> <strong>CMS 收集器的运行过程分为下列 4 步：</strong></p>
-<p> <strong>初始标记</strong>：标记 GC Roots 能直接到的对象。速度很快但是仍存在 Stop The World 问题。</p>
-<p> <strong>并发标记</strong>：进行 GC Roots Tracing 的过程，找出存活对象且用户线程可并发执行。</p>
-<p> <strong>重新标记</strong>：为了修正并发标记期间因用户程序继续运行而导致标记产生变动的那一部分对象的标记记录。仍然存在 Stop The World 问题。</p>
-<p> <strong>并发清除</strong>：对标记的对象进行清除回收。</p>
-<p> CMS 收集器的内存回收过程是与用户线程一起并发执行的。</p>
-<h3 id="7-G1-垃圾回收器"><a href="#7-G1-垃圾回收器" class="headerlink" title="7. G1 垃圾回收器"></a>7. G1 垃圾回收器</h3><p>一款面向服务端应用的垃圾收集器。它把内存划分为多个不同的子区域，G1只存在逻辑上的分区，子区域可能随G1的运行在不同代期间前后切换，每个子区域大小为1-32<code>M</code>不等，最多设置<code>2048</code>个区域。</p>
-<p><strong>特点如下：</strong></p>
-<p>并行与并发：G1 能充分利用多 CPU、多核环境下的硬件优势，使用多个 CPU 来缩短 Stop-The-World 停顿时间。部分收集器原本需要停顿 Java 线程来执行 GC 动作，G1 收集器仍然可以通过并发的方式让 Java 程序继续运行。</p>
-<p>分代收集：G1 能够独自管理整个 Java 堆，并且采用不同的方式去处理新创建的对象和已经存活了一段时间、熬过多次 GC 的旧对象以获取更好的收集效果。</p>
-<p>空间整合：G1 运作期间不会产生空间碎片，收集后能提供规整的可用内存。</p>
-<p>可预测的停顿：G1 除了追求低停顿外，还能建立可预测的停顿时间模型。能让使用者明确指定在一个长度为 M 毫秒的时间段内，消耗在垃圾收集上的时间不得超过 N 毫秒。</p>
+      <h2 id="归一化和标准化"><a href="#归一化和标准化" class="headerlink" title="归一化和标准化"></a>归一化和标准化</h2><p>​        注：本文内容转载自:<a href="https://www.jianshu.com/p/4c3081d40ca6" target="_blank" rel="noopener">https://www.jianshu.com/p/4c3081d40ca6</a></p>
+<h2 id="1-先说是什么，再说为什么"><a href="#1-先说是什么，再说为什么" class="headerlink" title="1. 先说是什么，再说为什么"></a>1. 先说是什么，再说为什么</h2><ul>
+<li><p>归一化：</p>
+<p>就是将训练集中某一列<strong>数值</strong>特征（假设是第i列）的值缩放到<strong>0和1</strong>之间。方法如下所示：</p>
+<script type="math/tex; mode=display">
+\frac{x_i - \min(x)}{\max(x) - \min(x)}</script></li>
+<li><p>标准化：</p>
+<p>就是将训练集中某一列<strong>数值</strong>特征（假设是第i列）的值缩放成<strong>均值为0，方差为1</strong>的状态。如下所示：</p>
+<script type="math/tex; mode=display">
+\frac{x_i - \bar{x}}{std(x)}</script></li>
+</ul>
+<p>  sklearn中<code>MinmaxScaler</code>对应着归一化，<code>StandardScaler</code>对应标准化。</p>
+<p>  神经网络中Batch Normalization对应标准化，即把样本拉回到均值为0，方差为1的分布上。</p>
+<ul>
+<li><p>进一步明确二者含义：</p>
+<p>归一化和标准化的相同点都是对<strong>某个特征（column）</strong>进行缩放（scaling）而不是对某个样本的特征向量（row）进行缩放。对特征向量进行缩放是毫无意义的（<strong>暗坑1</strong>），比如三列特征：身高、体重、血压。每一条样本（row）就是三个这样的值，对这个row无论是进行标准化还是归一化都是好笑的，因为你不能将身高、体重和血压混到一起去！<br> 在线性代数中，将一个向量除以向量的长度，也被称为标准化，不过这里的标准化是将向量变为长度为1的单位向量，它和我们这里的标准化不是一回事儿，不要搞混哦（<strong>暗坑2</strong>）。</p>
+</li>
+</ul>
+<h2 id="2-标准化和归一化的对比分析"><a href="#2-标准化和归一化的对比分析" class="headerlink" title="2. 标准化和归一化的对比分析"></a>2. 标准化和归一化的对比分析</h2><p>首先明确，在机器学习中，标准化是更常用的手段，归一化的应用场景是有限的。我总结原因有两点：</p>
+<ul>
+<li>1、标准化更好保持了样本间距。当样本中有异常点时，归一化有可能将正常的样本“挤”到一起去。比如三个样本，某个特征的值为1,2,10000，假设10000这个值是异常值，用归一化的方法后，正常的1,2就会被“挤”到一起去。如果不幸的是1和2的分类标签还是相反的，那么，当我们用梯度下降来做分类模型训练时，模型会需要更长的时间收敛，因为将样本分开需要更大的努力！而标准化在这方面就做得很好，至少它不会将样本“挤到一起”。</li>
+<li>2、标准化更符合统计学假设<br> 对一个数值特征来说，很大可能它是服从正态分布的。标准化其实是基于这个隐含假设，只不过是略施小技，将这个正态分布调整为均值为0，方差为1的标准正态分布而已。</li>
+</ul>
+<h2 id="3-逻辑回归是否需要标准化"><a href="#3-逻辑回归是否需要标准化" class="headerlink" title="3. 逻辑回归是否需要标准化"></a>3. 逻辑回归是否需要标准化</h2><p>真正的答案是，这取决于我们的逻辑回归是不是用正则。</p>
+<p><strong>如果你不用正则，那么，标准化并不是必须的，如果你用正则，那么标准化是必须的。（暗坑3）</strong></p>
+<p>因为不用正则时，我们的损失函数<strong>只是仅仅</strong>在度量<strong>预测与真实的差距</strong>，加上正则后，我们的损失函数除了要度量上面的差距外，还要度量<strong>参数值</strong>是否足够小。而<strong>参数值的大小程度或者说大小的级别是与特征的数值范围</strong>相关的。举例来说，我们用体重预测身高，体重用kg衡量时，训练出的模型是：<br>身高 = 体重*x，x就是我们训练出来的参数。</p>
+<p>当我们的体重用吨来衡量时，x的值就会扩大为原来的1000倍。<br>在上面两种情况下，都用L1正则的话，显然对模型的训练影响是不同的。</p>
+<p>假如不同的特征的数值范围不一样，有的是0到0.1，有的是100到10000，那么，每个特征对应的参数大小级别也会不一样，在L1正则时，我们是简单将参数的绝对值相加，因为它们的大小级别不一样，就会导致L1最后只会对那些级别比较大的参数有作用，那些小的参数都被忽略了。</p>
+<p>如果你回答到这里，面试官应该基本满意了，但是他可能会进一步考察你，如果不用正则，那么标准化对逻辑回归有什么好处吗？</p>
+<p>答案是有好处，进行标准化后，我们得出的参数值的大小可以反应出不同特征对样本label的<strong>贡献度</strong>，方便我们进行特征筛选。如果不做标准化，是不能这样来筛选特征的。</p>
+<p>答到这里，有些厉害的面试官可能会继续问，做标准化有什么注意事项吗？</p>
+<p><strong>最大的注意事项就是先拆分出test集，不要在整个数据集上做标准化，因为那样会将test集的信息引入到训练集中，这是一个非常容易犯的错误！</strong></p>
+<h2 id="4-决策树需要标准化吗"><a href="#4-决策树需要标准化吗" class="headerlink" title="4. 决策树需要标准化吗"></a>4. 决策树需要标准化吗</h2><p>答案是不需要标准化。因为决策树中的切分依据，信息增益、信息增益比、Gini指数都是基于概率得到的，和值的大小没有关系。另外同属概率模型的朴素贝叶斯，隐马尔科夫也不需要标准化。</p>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h2><ol>
+<li><p><strong>搞清楚标准化和归一化的具体定义和区别</strong></p>
+</li>
+<li><p><strong>标准化要在train_test_split后，在训练集、测试集上分别进行标准化</strong></p>
+</li>
+<li><p><strong>决策树、朴素贝叶斯等概率模型不需要标准化</strong></p>
+</li>
+</ol>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ckakxzvh3000ck8ug8exi4ahm"
+      <a data-url="http://yoursite.com/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" data-id="ckakxzvhp0014k8ug55y11xje"
         class="article-share-link">分享</a>
         
       
@@ -142,19 +156,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            二分查找
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" class="article-nav-link">
+      <a href="/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">造成Java Out Of Memory原因总结</div>
+        <div class="article-nav-title">Vuex使用</div>
       </a>
     
   </nav>

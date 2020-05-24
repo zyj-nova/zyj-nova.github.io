@@ -51,6 +51,10 @@
   <time datetime="2020-05-23T09:17:03.636Z" itemprop="datePublished">2020-05-23</time>
 </a>
       
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JS/">JS</a>
+  </div>
+
       
       
 <div class="word_count">
@@ -58,7 +62,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">670字</span>
+            <span class="post-count">668字</span>
         </span>
     </span>
 
@@ -93,8 +97,7 @@
       
 
       
-      <hr>
-<h2 id="categories-”JS”"><a href="#categories-”JS”" class="headerlink" title="categories:”JS”"></a>categories:”JS”</h2><h2 id="Vuex使用"><a href="#Vuex使用" class="headerlink" title="Vuex使用"></a>Vuex使用</h2><p>​        <code>Vuex</code>是一个状态管理库，使用单一状态树管理应用内的全局状态。</p>
+      <h2 id="Vuex使用"><a href="#Vuex使用" class="headerlink" title="Vuex使用"></a>Vuex使用</h2><p>​        <code>Vuex</code>是一个状态管理库，使用单一状态树管理应用内的全局状态。</p>
 <p>​        <code>index.js</code>文件如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">"vue"</span>;</span><br><span class="line"><span class="keyword">import</span> Vuex <span class="keyword">from</span> <span class="string">"vuex"</span>;</span><br><span class="line"><span class="keyword">import</span> cart <span class="keyword">from</span> <span class="string">"./cart"</span></span><br><span class="line">Vue.use(Vuex);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">  <span class="comment">//全局的state</span></span><br><span class="line">  <span class="comment">// 如何调用：this.$store.state.状态名 / this.$store.state.模块名.状态名</span></span><br><span class="line">  state: &#123;</span><br><span class="line">    isTabbarShow: <span class="literal">true</span>,</span><br><span class="line">    itemList: [],</span><br><span class="line">  &#125;,</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    <span class="comment">//修改state操作，state为第一个参数，vue会自动注入该函数</span></span><br><span class="line">    <span class="comment">//如何调用：this.$store.commit("函数名",[data])</span></span><br><span class="line">    HideTabbar(state, data) &#123;</span><br><span class="line">      state.isTabbarShow = data;</span><br><span class="line">    &#125;,</span><br><span class="line">    ShowTabbar(state, data) &#123;</span><br><span class="line">      state.isTabbarShow = data;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  actions: &#123;</span><br><span class="line">    <span class="comment">//主要执行异步操作,</span></span><br><span class="line">    <span class="comment">// 如何调用：this.$store.dispatch("模块名/函数名称",[data])</span></span><br><span class="line">    test(store, data) &#123;</span><br><span class="line">      <span class="comment">//使用commit通过mutation中方法修改state</span></span><br><span class="line">      store.commit(<span class="string">""</span>, data);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  getters: &#123;</span><br><span class="line">    <span class="comment">// store中的计算属性</span></span><br><span class="line">    <span class="comment">// 调用方式 $store.getters."函数名字"</span></span><br><span class="line">    getItemListTop3(state) &#123;</span><br><span class="line">      <span class="keyword">return</span> state.itemList.slice(<span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  modules: &#123;</span><br><span class="line">    <span class="comment">//不同模块中可以定义state、mutations、actions，然后包装成一个对象导出，在这儿进行导入，注意在子模块中不需要使用Vuex.Store构造函数。</span></span><br><span class="line">      cart,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store;</span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">cart/index.js</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> state = &#123;</span><br><span class="line">  items: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>],</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> getters = &#123;</span><br><span class="line">  getOddItem(state) &#123;</span><br><span class="line">    <span class="keyword">return</span> state.items.filter(<span class="function">(<span class="params">x</span>) =&gt;</span> x % <span class="number">2</span> == <span class="number">0</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> mutations = &#123;</span><br><span class="line">  incre(state) &#123;</span><br><span class="line">    state.items = state.items.map(<span class="function">(<span class="params">x</span>) =&gt;</span> x + <span class="number">2</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;<span class="comment">//开启了命名空间</span></span><br><span class="line">  namespaced: <span class="literal">true</span>,</span><br><span class="line">  state,</span><br><span class="line">  getters,</span><br><span class="line">  mutations,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -115,7 +118,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" data-id="ckajhr645000pzgug0mib23gf"
+      <a data-url="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" data-id="ckakxzvhi000tk8ug7gem1vyu"
         class="article-share-link">分享</a>
         
       
@@ -126,6 +129,15 @@
   
   
   <nav class="article-nav">
+    
+      <a href="/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            归一化和标准化
+          
+        </div>
+      </a>
     
     
       <a href="/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" class="article-nav-link">

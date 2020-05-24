@@ -1,10 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>归一化和标准化</title>
+    <url>/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/</url>
+    <content><![CDATA[<h2 id="归一化和标准化"><a href="#归一化和标准化" class="headerlink" title="归一化和标准化"></a>归一化和标准化</h2><p>​        注：本文内容转载自:<a href="https://www.jianshu.com/p/4c3081d40ca6" target="_blank" rel="noopener">https://www.jianshu.com/p/4c3081d40ca6</a></p>
+<h2 id="1-先说是什么，再说为什么"><a href="#1-先说是什么，再说为什么" class="headerlink" title="1. 先说是什么，再说为什么"></a>1. 先说是什么，再说为什么</h2><ul>
+<li><p>归一化：</p>
+<p>就是将训练集中某一列<strong>数值</strong>特征（假设是第i列）的值缩放到<strong>0和1</strong>之间。方法如下所示：</p>
+<script type="math/tex; mode=display">
+\frac{x_i - \min(x)}{\max(x) - \min(x)}</script></li>
+<li><p>标准化：</p>
+<p>就是将训练集中某一列<strong>数值</strong>特征（假设是第i列）的值缩放成<strong>均值为0，方差为1</strong>的状态。如下所示：</p>
+<script type="math/tex; mode=display">
+\frac{x_i - \bar{x}}{std(x)}</script></li>
+</ul>
+<p>  sklearn中<code>MinmaxScaler</code>对应着归一化，<code>StandardScaler</code>对应标准化。</p>
+<p>  神经网络中Batch Normalization对应标准化，即把样本拉回到均值为0，方差为1的分布上。</p>
+<ul>
+<li><p>进一步明确二者含义：</p>
+<p>归一化和标准化的相同点都是对<strong>某个特征（column）</strong>进行缩放（scaling）而不是对某个样本的特征向量（row）进行缩放。对特征向量进行缩放是毫无意义的（<strong>暗坑1</strong>），比如三列特征：身高、体重、血压。每一条样本（row）就是三个这样的值，对这个row无论是进行标准化还是归一化都是好笑的，因为你不能将身高、体重和血压混到一起去！<br> 在线性代数中，将一个向量除以向量的长度，也被称为标准化，不过这里的标准化是将向量变为长度为1的单位向量，它和我们这里的标准化不是一回事儿，不要搞混哦（<strong>暗坑2</strong>）。</p>
+</li>
+</ul>
+<h2 id="2-标准化和归一化的对比分析"><a href="#2-标准化和归一化的对比分析" class="headerlink" title="2. 标准化和归一化的对比分析"></a>2. 标准化和归一化的对比分析</h2><p>首先明确，在机器学习中，标准化是更常用的手段，归一化的应用场景是有限的。我总结原因有两点：</p>
+<ul>
+<li>1、标准化更好保持了样本间距。当样本中有异常点时，归一化有可能将正常的样本“挤”到一起去。比如三个样本，某个特征的值为1,2,10000，假设10000这个值是异常值，用归一化的方法后，正常的1,2就会被“挤”到一起去。如果不幸的是1和2的分类标签还是相反的，那么，当我们用梯度下降来做分类模型训练时，模型会需要更长的时间收敛，因为将样本分开需要更大的努力！而标准化在这方面就做得很好，至少它不会将样本“挤到一起”。</li>
+<li>2、标准化更符合统计学假设<br> 对一个数值特征来说，很大可能它是服从正态分布的。标准化其实是基于这个隐含假设，只不过是略施小技，将这个正态分布调整为均值为0，方差为1的标准正态分布而已。</li>
+</ul>
+<h2 id="3-逻辑回归是否需要标准化"><a href="#3-逻辑回归是否需要标准化" class="headerlink" title="3. 逻辑回归是否需要标准化"></a>3. 逻辑回归是否需要标准化</h2><p>真正的答案是，这取决于我们的逻辑回归是不是用正则。</p>
+<p><strong>如果你不用正则，那么，标准化并不是必须的，如果你用正则，那么标准化是必须的。（暗坑3）</strong></p>
+<p>因为不用正则时，我们的损失函数<strong>只是仅仅</strong>在度量<strong>预测与真实的差距</strong>，加上正则后，我们的损失函数除了要度量上面的差距外，还要度量<strong>参数值</strong>是否足够小。而<strong>参数值的大小程度或者说大小的级别是与特征的数值范围</strong>相关的。举例来说，我们用体重预测身高，体重用kg衡量时，训练出的模型是：<br>身高 = 体重*x，x就是我们训练出来的参数。</p>
+<p>当我们的体重用吨来衡量时，x的值就会扩大为原来的1000倍。<br>在上面两种情况下，都用L1正则的话，显然对模型的训练影响是不同的。</p>
+<p>假如不同的特征的数值范围不一样，有的是0到0.1，有的是100到10000，那么，每个特征对应的参数大小级别也会不一样，在L1正则时，我们是简单将参数的绝对值相加，因为它们的大小级别不一样，就会导致L1最后只会对那些级别比较大的参数有作用，那些小的参数都被忽略了。</p>
+<p>如果你回答到这里，面试官应该基本满意了，但是他可能会进一步考察你，如果不用正则，那么标准化对逻辑回归有什么好处吗？</p>
+<p>答案是有好处，进行标准化后，我们得出的参数值的大小可以反应出不同特征对样本label的<strong>贡献度</strong>，方便我们进行特征筛选。如果不做标准化，是不能这样来筛选特征的。</p>
+<p>答到这里，有些厉害的面试官可能会继续问，做标准化有什么注意事项吗？</p>
+<p><strong>最大的注意事项就是先拆分出test集，不要在整个数据集上做标准化，因为那样会将test集的信息引入到训练集中，这是一个非常容易犯的错误！</strong></p>
+<h2 id="4-决策树需要标准化吗"><a href="#4-决策树需要标准化吗" class="headerlink" title="4. 决策树需要标准化吗"></a>4. 决策树需要标准化吗</h2><p>答案是不需要标准化。因为决策树中的切分依据，信息增益、信息增益比、Gini指数都是基于概率得到的，和值的大小没有关系。另外同属概率模型的朴素贝叶斯，隐马尔科夫也不需要标准化。</p>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h2><ol>
+<li><p><strong>搞清楚标准化和归一化的具体定义和区别</strong></p>
+</li>
+<li><p><strong>标准化要在train_test_split后，在训练集、测试集上分别进行标准化</strong></p>
+</li>
+<li><p><strong>决策树、朴素贝叶斯等概率模型不需要标准化</strong></p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Vuex使用</title>
     <url>/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<hr>
-<h2 id="categories-”JS”"><a href="#categories-”JS”" class="headerlink" title="categories:”JS”"></a>categories:”JS”</h2><h2 id="Vuex使用"><a href="#Vuex使用" class="headerlink" title="Vuex使用"></a>Vuex使用</h2><p>​        <code>Vuex</code>是一个状态管理库，使用单一状态树管理应用内的全局状态。</p>
+    <content><![CDATA[<h2 id="Vuex使用"><a href="#Vuex使用" class="headerlink" title="Vuex使用"></a>Vuex使用</h2><p>​        <code>Vuex</code>是一个状态管理库，使用单一状态树管理应用内的全局状态。</p>
 <p>​        <code>index.js</code>文件如下：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">"vue"</span>;</span><br><span class="line"><span class="keyword">import</span> Vuex <span class="keyword">from</span> <span class="string">"vuex"</span>;</span><br><span class="line"><span class="keyword">import</span> cart <span class="keyword">from</span> <span class="string">"./cart"</span></span><br><span class="line">Vue.use(Vuex);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">  <span class="comment">//全局的state</span></span><br><span class="line">  <span class="comment">// 如何调用：this.$store.state.状态名 / this.$store.state.模块名.状态名</span></span><br><span class="line">  state: &#123;</span><br><span class="line">    isTabbarShow: <span class="literal">true</span>,</span><br><span class="line">    itemList: [],</span><br><span class="line">  &#125;,</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    <span class="comment">//修改state操作，state为第一个参数，vue会自动注入该函数</span></span><br><span class="line">    <span class="comment">//如何调用：this.$store.commit("函数名",[data])</span></span><br><span class="line">    HideTabbar(state, data) &#123;</span><br><span class="line">      state.isTabbarShow = data;</span><br><span class="line">    &#125;,</span><br><span class="line">    ShowTabbar(state, data) &#123;</span><br><span class="line">      state.isTabbarShow = data;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  actions: &#123;</span><br><span class="line">    <span class="comment">//主要执行异步操作,</span></span><br><span class="line">    <span class="comment">// 如何调用：this.$store.dispatch("模块名/函数名称",[data])</span></span><br><span class="line">    test(store, data) &#123;</span><br><span class="line">      <span class="comment">//使用commit通过mutation中方法修改state</span></span><br><span class="line">      store.commit(<span class="string">""</span>, data);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  getters: &#123;</span><br><span class="line">    <span class="comment">// store中的计算属性</span></span><br><span class="line">    <span class="comment">// 调用方式 $store.getters."函数名字"</span></span><br><span class="line">    getItemListTop3(state) &#123;</span><br><span class="line">      <span class="keyword">return</span> state.itemList.slice(<span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  modules: &#123;</span><br><span class="line">    <span class="comment">//不同模块中可以定义state、mutations、actions，然后包装成一个对象导出，在这儿进行导入，注意在子模块中不需要使用Vuex.Store构造函数。</span></span><br><span class="line">      cart,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store;</span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">cart/index.js</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> state = &#123;</span><br><span class="line">  items: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>],</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> getters = &#123;</span><br><span class="line">  getOddItem(state) &#123;</span><br><span class="line">    <span class="keyword">return</span> state.items.filter(<span class="function">(<span class="params">x</span>) =&gt;</span> x % <span class="number">2</span> == <span class="number">0</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> mutations = &#123;</span><br><span class="line">  incre(state) &#123;</span><br><span class="line">    state.items = state.items.map(<span class="function">(<span class="params">x</span>) =&gt;</span> x + <span class="number">2</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;<span class="comment">//开启了命名空间</span></span><br><span class="line">  namespaced: <span class="literal">true</span>,</span><br><span class="line">  state,</span><br><span class="line">  getters,</span><br><span class="line">  mutations,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -20,6 +68,9 @@
 <p>vue中计算属性（computed）和方法（methods）的区别：</p>
 <p>计算属性以方法形式定义，使用时使用属性的方式进行调用；计算属性只会计算一次，结果缓存在内存中，当其相关联的数据发生改变时才会重新计算。而方法调用一次就会被执行一次。当有关数据处理逻辑较为复杂，或页面中需要多处使用时可以使用计算属性。</p>
 ]]></content>
+      <categories>
+        <category>JS</category>
+      </categories>
   </entry>
   <entry>
     <title>ES6模块的导出和导入</title>
@@ -1097,37 +1148,37 @@ v_t = \gamma v_{t-1} + \alpha \nabla J(\theta)</script><script type="math/tex; m
 <script type="math/tex; mode=display">
 P(A|B) = \frac{P(AB)}{P(B)}</script><p>$P(AB)$是变量$A$和$B$的联合概率分布，$P(B)$是变量 B 的边缘概率分布。</p>
 <p><strong>全概率公式</strong>：</p>
-<p>若事件<code>A1，A2，…</code>构成一个<strong>完备事件组</strong>且都有正概率，则对任意一个事件 B，有如下公式成立：</p>
+<p>若事件$Y_1，Y_2，…$构成一个<strong>完备事件组</strong>且都有正概率，则对任意一个事件$X$，有如下公式成立：</p>
 <script type="math/tex; mode=display">
-P(R) = \sum_{i}P(R|E_i)P(E_i)</script><p>解释：一件事$A$由多个事件引发，问$A$发生的概率是多少。</p>
+P(X) = \sum_{i}P(X|Y_i)P(Y_i)</script><p>解释：全概率公式的意义在于，当某一事件的概率难以求得时，可转化为在一系列条件下发生概率的和。</p>
 <p><strong>乘法定理</strong>：</p>
 <script type="math/tex; mode=display">
-P(A_1,A_2,A_3,...,A_n) = P(A_1)P(A_2|A_1)P(A_3|A_1,A_2)···P(A_n|A_1,A_2,...A_{n-1})</script><h3 id="2-贝叶斯公式（执果索因）"><a href="#2-贝叶斯公式（执果索因）" class="headerlink" title="2. 贝叶斯公式（执果索因）"></a>2. 贝叶斯公式（执果索因）</h3><p>贝叶斯公式就是当已知结果，问导致这个结果的第<code>i</code>原因的概率是多少。</p>
+P(A_1,A_2,A_3,...,A_n) = P(A_1)P(A_2|A_1)P(A_3|A_1,A_2)···P(A_n|A_1,A_2,...A_{n-1})</script><h3 id="2-贝叶斯公式（执果索因）"><a href="#2-贝叶斯公式（执果索因）" class="headerlink" title="2. 贝叶斯公式（执果索因）"></a>2. 贝叶斯公式（执果索因）</h3><p>贝叶斯公式就是当已知结果，问导致这个结果的第<code>i</code>原因的概率是多少。(转化到分类问题上，“结果”就是样本，“第i个原因”即属于哪个类别)。</p>
 <p>由条件概率公式，可以写成：</p>
 <script type="math/tex; mode=display">
-P(E_i|R) = \frac{P(RE_i)}{P(R)}</script><p>结合条件概率，有:</p>
+P(Y_i|X) = \frac{P(XY_i)}{P(X)} = \frac{P(X|Y_i)P(Y_i)}{P(X)}</script><p>结合<strong>全概率公式</strong>，有:</p>
 <script type="math/tex; mode=display">
-P(E_i|R) = \frac{P(R|E_i)P(E_i)}{\sum_{j}P(R|E_j)P(E_j)}</script><p>解释：事件$R$已经发生了，问由$E_2$引发的概率是多少？特别的，我们把$P(E_i)$叫做<strong>先验概率</strong>，$P(E_i|R)$称为<strong>后验概率</strong>。</p>
+P(Y_i|X) = \frac{P(X|Y_i)P(Y_i)}{\sum_{j}P(X|Y_j)P(Y_j)}</script><p>解释：我们把$P(Y_i)$叫做$Y$的<strong>先验概率</strong>，$P(Y_i|X)$称为<strong>后验概率</strong>。</p>
 <p>下面介绍一个例子实际计算一下。</p>
 <p><img src="/images/bayes.png" alt=""></p>
 <h3 id="3-朴素贝叶斯"><a href="#3-朴素贝叶斯" class="headerlink" title="3. 朴素贝叶斯"></a>3. 朴素贝叶斯</h3><p><strong>朴素贝叶斯法是基于贝叶斯定理与特征条件独立假设的分类方法</strong>。朴素贝叶斯算法假设了给定样本情况下，数据集属性之间是相互<strong>条件独立</strong>这一<strong>朴素假设</strong> ，因此算法的逻辑性十分简单，并且算法较为稳定，当数据呈现不同的特点时，朴素贝叶斯的分类性能不会有太大的差异。换句话说就是朴素贝叶斯算法的健壮性比较好，对于不同类型的数据集不会呈现出太大的差异性。当数据集属性之间的关系相对比较独立时，朴素贝叶斯分类算法会有较好的效果。</p>
 <p> 下面给出朴素贝叶斯的推导和数学定义。</p>
-<p> 设有样本数据集$D=\{d_1,d_2,···,d_n\}$，每个样本特征属性集$X=\{x_1,x_2,···，x_d\}$，这$n$个样本共存在$m$个分类 $Y=\{y_1,y_2,···,y_m\}$，其中$x_1,x_2,···,x_d$x 相互独立且随机。则先验概率$P(Y)$，后验概率$P(Y|X)$有：</p>
-<script type="math/tex; mode=display">
-P(Y|X) = \frac{P(XY)}{P(X)} = \frac{P(X|Y)P(Y)}{P(X)}</script><p> 由于各个特征之间相互独立，在给定类别 $y$ 情况下，$P(X|Y)$进一步可以表示为：</p>
+<p> 设有样本数据集$D=\{d_1,d_2,···,d_n\}$，每个样本特征属性集$X=\{x_1,x_2,···，x_d\}$，这$n$个样本共存在$m$个分类 $Y=\{y_1,y_2,···,y_m\}$，其中$x_1,x_2,···,x_d$x 相互独立且随机。则先验概率$P(Y)$，后验概率$P(Y|X)$.</p>
+<p> 由于各个特征之间相互独立，在给定类别 $y$ 情况下，$P(X|Y)$进一步可以表示为：</p>
 <script type="math/tex; mode=display">
 P(X|Y =y_j) = \prod_{i = 1}^{d} P(x_i|Y = y_j)</script><p> 实际上是乘法定理和条件独立的应用。</p>
-<p> 因此，有：</p>
+<p> 结合贝叶斯公式，有：</p>
 <script type="math/tex; mode=display">
-P(y_i|x_1,x_2,···,x_d) = \frac{P(y_i)\prod_{j = 1}^{d}P(x_j|y_i)}{P(x_1,x_2,···,x_d)}</script><p> 在给定样本的情况下，$P(x_1,x_2,…,x_n)$是一个常数，其实相当于一个归一化因子。</p>
-<p> 从而，有：</p>
+P(y_i|x_1,x_2,···,x_d) = \frac{P(y_i)\prod_{j = 1}^{d}P(x_j|y_i)}{\sum_k^{m}P(y_k)\prod_j^{d}P(x_j|y_k)}</script><p> 在给定样本的情况下，计算样本属于各个类别的概率时，分母都相等。</p>
+<p> 从而，只需最大化分子。有：</p>
 <script type="math/tex; mode=display">
 P(y_i|x_1,x_2,···,x_d) ∝ P(y_i)\prod_{j = 1}^{d}P(x_j|y_i)</script><p>从而</p>
 <script type="math/tex; mode=display">
 \hat{y} = arg \max_{y_i}P(y_i)\prod_{j = 1}^{d}P(x_j|y_i),y_i \in Y</script><p>，这就是朴素贝叶斯定理。可能结果需要归一化，即各个类别概率加起来和为$1$。</p>
-<p>给定样本$X$，类别为 y $y_i$ 的概率即：</p>
+<p>给定样本$X$，类别为  $y_i$ 的概率（m为类别个数）即：</p>
 <script type="math/tex; mode=display">
-P(y_i|x_1,x_2,...,x_d) = \frac{P(y_i)\prod_{j = 1}^{d}P(x_j|y_i)}{\sum_{i = 1}^{m}[P(y_i)\prod_{j = 1}^{d}P(x_j|y_i)]}</script><p><strong>“朴素在哪里？”</strong></p>
+P(y_i|x_1,x_2,...,x_d) = \frac{P(y_i)\prod_{j = 1}^{d}P(x_j|y_i)}{\sum_{i = 1}^{m}[P(y_i)\prod_{j = 1}^{d}P(x_j|y_i)]}</script><p>最大的概率即为预测类别。这就是朴素贝叶斯。</p>
+<p><strong>“朴素在哪里？”</strong></p>
 <p> 事实上，朴素贝叶斯做了如下假设：</p>
 <ul>
 <li>一个特征出现的概率，与其他特征独立</li>
@@ -1136,6 +1187,7 @@ P(y_i|x_1,x_2,...,x_d) = \frac{P(y_i)\prod_{j = 1}^{d}P(x_j|y_i)}{\sum_{i = 1}^{
 <p>因此，这样做出的假设是很“天真”，很”朴素“的。</p>
 </li>
 </ul>
+<p><img src="/images/朴素贝叶斯.jpg" alt=""></p>
 <h3 id="4-垃圾邮件识别"><a href="#4-垃圾邮件识别" class="headerlink" title="4. 垃圾邮件识别"></a>4. 垃圾邮件识别</h3><p> 现在有已经分好类别的垃圾邮件和非垃圾邮件，希望训练一个垃圾邮件过滤器。有一个想法是分别统计垃圾邮件和非垃圾邮件中所包含的单词，在测试时，只要分析给定邮件中的单词，来计算这封邮件是垃圾邮件还是正常的邮件（其他算法分析单词顺序更加有效，这里不做介绍）。下面给出更加形象化定义。</p>
 <p> 垃圾邮件：$spam$，正常邮件：$ham$。在训练时，我们计算$P(W_1|spam)$、$P(W_2|spam)$、$P(W_3|ham)$…。现在有一封邮件，分析其单词组成，计算$P(spam|W_1,W_2,W_3…)$和$P(ham|W_1,W_2,W_3…)$概率分别是多少。</p>
 <p><strong>“朴素”</strong>：因为一封邮件中可能既包含$W_1$、又包含$W_2$，朴素就是假设$W_1$、$W_2$…相互独立。</p>
@@ -1152,7 +1204,7 @@ P(ham|W_1,W_2,...) = \frac{P(W_1|ham)P(W_2|ham)...P(ham)}{P(W_1|ham)P(W_2|ham)..
 <p>通过求解<strong>条件概率分布</strong> $P(y|x)$ 或者直接计算 $y$ 的值来预测 $y$。如：线性回归（Linear Regression）,逻辑回归（Logistic Regression）,支持向量机（<code>SVM</code>）, 传统神经网络（Traditional Neural Networks）,线性判别分析（Linear Discriminative Analysis），条件随机场（Conditional Random Field）。</p>
 </li>
 <li><p><strong>生成模型(generative model)</strong></p>
-<p>通过对观测值和标注数据计算<strong>联合概率分布</strong> $P(x,y)$ 来达到判定估算 $y$ 的目的。朴素贝叶斯（Naive Bayes）, 隐马尔科夫模型（<code>HMM</code>）,贝叶斯网络（Bayesian Networks）和隐含狄利克雷分布（Latent Dirichlet Allocation）、混合高斯模型（<code>GMM</code>）。</p>
+<p>通过对观测值和标注数据计算<strong>联合概率分布</strong> $P(x,y)$ ，再计算$P(y|x)$来达到判定估算 $y$ 的目的。朴素贝叶斯（Naive Bayes）, 隐马尔科夫模型（<code>HMM</code>）,贝叶斯网络（Bayesian Networks）和隐含狄利克雷分布（Latent Dirichlet Allocation）、混合高斯模型（<code>GMM</code>）。</p>
 </li>
 </ul>
 <h3 id="6-贝叶斯网络"><a href="#6-贝叶斯网络" class="headerlink" title="6 贝叶斯网络"></a>6 贝叶斯网络</h3><p> 贝叶斯网络(Bayesian network)，又称信念网络(Belief Network)，或有向无环图模型(directed acyclic graphical model)，是一种概率图模型，于 1985 年由 Judea Pearl 首先提出。它是一种模拟人类推理过程中因果关系的不确定性处理模型，其网络拓朴结构是一个有向无环图(DAG)。</p>

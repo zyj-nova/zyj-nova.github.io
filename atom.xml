@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-23T10:25:58.937Z</updated>
+  <updated>2020-05-24T10:51:35.734Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Vuex使用</title>
-    <link href="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/"/>
-    <id>http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/</id>
-    <published>2020-05-23T09:17:03.636Z</published>
-    <updated>2020-05-23T10:25:58.937Z</updated>
+    <title>归一化和标准化</title>
+    <link href="http://yoursite.com/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/"/>
+    <id>http://yoursite.com/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/</id>
+    <published>2020-05-23T12:29:05.107Z</published>
+    <updated>2020-05-24T10:51:35.734Z</updated>
     
     <summary type="html">
     
@@ -29,13 +29,39 @@
       
         
         
-          &lt;hr&gt;
-&lt;h2 id=&quot;categories-”JS”&quot;&gt;&lt;a href=&quot;#categories-”JS”&quot; class=&quot;headerlink&quot; title=&quot;categories:”JS”&quot;&gt;&lt;/a&gt;categories:”JS”&lt;/h2&gt;&lt;h2
+          &lt;h2 id=&quot;归一化和标准化&quot;&gt;&lt;a href=&quot;#归一化和标准化&quot; class=&quot;headerlink&quot; title=&quot;归一化和标准化&quot;&gt;&lt;/a&gt;归一化和标准化&lt;/h2&gt;&lt;p&gt;​        注：本文内容转载自:&lt;a
         
       
     
     </summary>
     
+    
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Vuex使用</title>
+    <link href="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/"/>
+    <id>http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/</id>
+    <published>2020-05-23T09:17:03.636Z</published>
+    <updated>2020-05-24T10:51:58.802Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Vuex使用&quot;&gt;&lt;a href=&quot;#Vuex使用&quot; class=&quot;headerlink&quot; title=&quot;Vuex使用&quot;&gt;&lt;/a&gt;Vuex使用&lt;/h2&gt;&lt;p&gt;​       
+        
+      
+    
+    </summary>
+    
+    
+      <category term="JS" scheme="http://yoursite.com/categories/JS/"/>
     
     
   </entry>
@@ -471,7 +497,7 @@
     <link href="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/"/>
     <id>http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/</id>
     <published>2020-02-09T12:18:14.664Z</published>
-    <updated>2020-03-20T09:38:13.296Z</updated>
+    <updated>2020-05-24T10:49:36.826Z</updated>
     
     <summary type="html">
     
@@ -487,31 +513,6 @@
     
     
       <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>JAVA 并发编程</title>
-    <link href="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    <id>http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</id>
-    <published>2020-02-07T12:38:43.999Z</published>
-    <updated>2020-02-08T04:05:21.913Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;JAVA-并发编程&quot;&gt;&lt;a href=&quot;#JAVA-并发编程&quot; class=&quot;headerlink&quot; title=&quot;JAVA 并发编程&quot;&gt;&lt;/a&gt;JAVA 并发编程&lt;/h2&gt;&lt;h3 id=&quot;1-锁&quot;&gt;&lt;a href=&quot;#1-锁&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
   </entry>

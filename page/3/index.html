@@ -60,6 +60,280 @@
     
     
     
+    <article id="post-JAVA 并发编程" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"
+    >JAVA 并发编程</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="article-date">
+  <time datetime="2020-02-07T12:38:43.999Z" itemprop="datePublished">2020-02-07</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="JAVA-并发编程"><a href="#JAVA-并发编程" class="headerlink" title="JAVA 并发编程"></a>JAVA 并发编程</h2><h3 id="1-锁"><a href="#1-锁" class="headerlink" title="1. 锁"></a>1. 锁</h3><h4 id="1-1-锁的类别"><a href="#1-1-锁的类别" class="headerlink" title="1.1 锁的类别"></a>1.1 锁的类别</h4><ul>
+<li><p><strong>公平锁与非公平锁</strong></p>
+<p><strong>公平锁</strong>：线程严格申请锁的顺序争抢锁，这些线程会被加入一个等待队列中</p>
+<p><strong>非公平锁</strong>：线程并非严格按照先到先得的规则来争抢锁，即，有可能晚到的线程先拿到锁。</p>
+<p><code>ReentrantLock</code>默认是非公平锁。</p>
+<p><code>synchronized</code>是非公平锁。</p>
+</li>
+<li><p><strong>可重入锁（递归锁）</strong></p>
+<p>​        这里要提到一点：如果一个对象存在多个<code>synchronized</code>修饰的方法，当一个线程访问其中一个同步方法时，其他线程访问不了这个对象的其他同步方法。根据<code>synchronized</code>的原理很好理解。</p>
+<p>​        可重入锁，某个对象存在多个同步方法，当线程已经获得锁的情况下，该线程可以继续访问其他同步方法，而不必等待，这样做是为了<strong>避免死锁</strong>。</p>
+<p> <code>ReentrantLock</code>和 <code>synchronized</code>都是可重入锁。</p>
+</li>
+<li><p><strong>自旋锁（spin lock）</strong></p>
+<p>​        如果锁被其他线程占有，这个请求锁的线程便会被加入等待队列，此时<code>CPU</code>会继续调度其他线程，由于频繁切换线程的开销比较大，而且争抢锁不是很频繁。自旋锁就是当没有获取到锁，<code>CPU</code>不会挂起该线程，而是一直轮询（仍然占有<code>cpu</code>），直到该线程争抢到锁。这样做减轻了频繁切换线程，但是轮询增加了<code>CPU</code>负担。</p>
+</li>
+<li><p><strong>读写锁</strong></p>
+<p>​        相对于独占锁，每个锁只能被一个线程占有，读写锁对于读请求，读锁可以由多个线程共享；写操作，写锁，只允许一个线程独占，以此来提高并发性。即读读可以并存，读写、写写不可以共存。 能保证<strong>读写</strong>、<strong>写读</strong>和<strong>写写</strong>的过程是互斥，<strong>读读</strong>的时候是共享的。 <code>java.util.concurrent</code>包中<code>ReentrantReadWriteLock</code>就是读写锁。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读的时候加锁，共享锁</span></span><br><span class="line">  lock.readLock().lock();</span><br><span class="line">...</span><br><span class="line">  lock.readLock().unlock();</span><br><span class="line">        </span><br><span class="line">  <span class="comment">//写的时候加锁，独占锁</span></span><br><span class="line">  lock.writeLock().lock();</span><br><span class="line">  ...</span><br><span class="line">  lock.writeLock().unlock();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyCache</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> Map&lt;String, Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ReentrantReadWriteLock lock = <span class="keyword">new</span> ReentrantReadWriteLock();</span><br><span class="line">    WriteLock writeLock = lock.writeLock();</span><br><span class="line">    ReadLock readLock = lock.readLock();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(String key, Object value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            writeLock.lock();</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">" 正在写入..."</span>);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            map.put(key, value);</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">" 写入完成，写入结果是 "</span> + value);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            writeLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">get</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            readLock.lock();</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">" 正在读..."</span>);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            Object res = map.get(key);</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">" 读取完成，读取结果是 "</span> + res);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            readLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadWriteLockDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        MyCache cache = <span class="keyword">new</span> MyCache();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> temp = i;</span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                cache.put(temp + <span class="string">""</span>, temp + <span class="string">""</span>);</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> temp = i;</span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                cache.get(temp + <span class="string">""</span>);</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p><strong>死锁的四个必要条件</strong></p>
+<ul>
+<li><p>互斥：资源在某一时刻只允许被一个线程所访问</p>
+</li>
+<li><p>不可抢占：进程所获得的资源在未使用完毕之前，不能被其他进程强行夺走，即只能由获得该资源的进程自己来释放（只能是主动释放)。 </p>
+</li>
+<li><p>循环等待：</p>
+</li>
+<li><p>占有且等待：进程已经保持了至少一个资源，但又提出了新的资源请求，而该资源已被其他进程占有，此时请求进程被阻塞，但对自己已获得的资源保持不放。 </p>
+<p><strong>本质原因</strong>：系统资源有限、进程推进顺不当。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-2-synchronized-的原理"><a href="#1-2-synchronized-的原理" class="headerlink" title="1.2 synchronized 的原理"></a>1.2 synchronized 的原理</h4><p>普通方法：锁是当前实例对象</p>
+<p>静态方法：所示当前实例对象的Class对象</p>
+<p>方法块：括号内的对象</p>
+<p><strong>monitor机制</strong></p>
+<p>​        每一个线程都有一个可用的<code>mointor record</code>列表，每一个被锁住的对象都会和一个<code>monitor record</code>关联（存放在对象头信息中）。当一个对象的<code>monitor</code>被持有后，该对象即处于锁定状态。</p>
+<p>​        同步代码块开始之前，<code>monitor enter</code>指令插入，线程获取<code>monitor</code>所有权，方法块结束，<code>monitor exit</code>指令插入，释放锁。</p>
+<p><strong>Java对象在内存中的结构</strong></p>
+<p><img src="/images/Java对象结构.png" alt=""></p>
+<h4 id="1-3-volatile-关键字"><a href="#1-3-volatile-关键字" class="headerlink" title="1.3 volatile 关键字"></a>1.3 volatile 关键字</h4><p><strong>Java Memory Model</strong></p>
+<p>​        在Java内存模型中，每个线程执行时，都会拷贝主内存中数据到自己的栈内存（工作内存）中，当程序结束后，再把数据写回主内存。由此，当多个线程共同访问这个值，各个线程是相互独立的，其中一个修改，其他的并不知情，当多个线程协作修改数据，就会造成数据不一致。</p>
+<p>​        <code>volatile</code>的作用就是，被其修饰的变量，一旦值发生改变，其他线程就会放弃自己栈内存中的值，重新向内存中取值，从而保证了数据的内存可见性。</p>
+<p><img src="/images/JMM.png" style="zoom:80%;" /></p>
+<p><strong>特性</strong>：禁止指令重排、不保证原子性、内存可见性</p>
+<h4 id="1-4-synchronized-和-Lock-有什么区别？"><a href="#1-4-synchronized-和-Lock-有什么区别？" class="headerlink" title="1.4 synchronized 和 Lock 有什么区别？"></a>1.4 synchronized 和 Lock 有什么区别？</h4><ul>
+<li>原始结构<ul>
+<li>synchronized 是关键字属于 JVM 层面，反应在字节码上是 <code>monitorenter</code> 和 <code>monitorexit</code>，其底层是通过 <code>monito</code>r 对象来完成，其实 wait/notify 等方法也是依赖 monitor 对象只有在同步快或方法中才能调用 <code>wait/notify</code> 等方法。</li>
+<li>Lock 是具体类（<code>java.util.concurrent.locks.Lock</code>）是 api 层面的锁。</li>
+</ul>
+</li>
+<li>使用方法<ul>
+<li><code>synchronized</code> 不需要用户手动去释放锁，当 <code>synchronized</code> 代码执行完后系统会自动让线程释放对锁的占用。</li>
+<li><code>ReentrantLock</code> 则需要用户手动的释放锁，若没有主动释放锁，可能导致出现死锁的现象，lock() 和 unlock() 方法需要配合 try/finally 语句来完成。</li>
+</ul>
+</li>
+<li>等待是否可中断<ul>
+<li><code>synchronized</code> 不可中断，除非抛出异常或者正常运行完成。</li>
+<li><code>ReentrantLock</code> 可中断，设置超时方法 <code>tryLock(long timeout, TimeUnit unit)，lockInterruptibly()</code> 放代码块中，调用 interrupt() 方法可中断。</li>
+</ul>
+</li>
+<li>加锁是否公平<ul>
+<li><code>synchronized</code> 非公平锁</li>
+<li><code>ReentrantLock</code> 默认非公平锁，构造方法中可以传入 boolean 值，true 为公平锁，false 为非公平锁。</li>
+</ul>
+</li>
+<li>锁可以绑定多个 Condition<ul>
+<li><code>synchronized</code> 没有 <code>Condition</code>。</li>
+<li><code>ReentrantLock</code>用来实现分组唤醒需要唤醒的线程们，可以精确唤醒，而不是像 <code>synchronized</code> 要么随机唤醒一个线程要么唤醒全部线程。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-线程池"><a href="#2-线程池" class="headerlink" title="2. 线程池"></a>2. 线程池</h3><p>​        为什么要用线程池？答：它预先创建好一部分线程，使用完后放回池中，避免了创建与销毁线程的昂贵开销，使得性能大大提升 。</p>
+<p>主要特点为：</p>
+<ul>
+<li>线程复用</li>
+<li>控制最大并发数量</li>
+<li>管理线程</li>
+</ul>
+<h4 id="2-1-线程的状态"><a href="#2-1-线程的状态" class="headerlink" title="2.1 线程的状态"></a>2.1 线程的状态</h4><p>​        在Java中，线程共有以下几种状态</p>
+<ul>
+<li><p><strong>创建</strong>。</p>
+<p>Java中有三种方法创建线程。</p>
+<p>(1). 继承<code>Thread</code>类。重写<code>run</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Mythreas</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">        ...</span><br><span class="line">   	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(2). 实现<code>Runnable</code>接口中的<code>run</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Mythread2</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">        ...</span><br><span class="line">   	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(3). 实现<code>Callable</code>接口中的<code>call</code>方法，注意，该方法是有返回值的，并且含有泛型。执行<code>Callable</code>方式，需要<code>FutureTask</code>实现类的支持，用于接受运算结果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ThreadDemo</span> <span class="keyword">implements</span> <span class="title">Callable</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">100</span>; i++) &#123;</span><br><span class="line">            sum += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadPoolDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Mythread t1 = <span class="keyword">new</span> Mythread();</span><br><span class="line">        <span class="comment">//1.执行Callable方式，需要FutureTask实现类的支持，用于接受运算结果。</span></span><br><span class="line">        FutureTask&lt;Integer&gt; result = <span class="keyword">new</span> FutureTask&lt;Integer&gt;(t1);</span><br><span class="line">        <span class="keyword">new</span> Thread(result).start();</span><br><span class="line">        </span><br><span class="line">        ThreadPoolExecutor poolExecutor = <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">1</span>,<span class="number">1</span>,<span class="number">0L</span>,</span><br><span class="line">                TimeUnit.MILLISECONDS,</span><br><span class="line">                <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(),</span><br><span class="line">                <span class="keyword">new</span> ThreadPoolExecutor.CallerRunsPolicy());</span><br><span class="line">        <span class="comment">// 通过线程池提交，Future类接受运算结果</span></span><br><span class="line">        Future&lt;Integer&gt; submit = poolExecutor.submit(t1);</span><br><span class="line">        Integer sum = <span class="keyword">null</span>;<span class="comment">//FutureTask也可用闭锁的操作</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            sum = result.get();</span><br><span class="line">            Integer res = submit.get();</span><br><span class="line">            System.out.println(res);</span><br><span class="line">            System.out.println(sum);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>就绪</strong>。线程已经<code>start</code>，只是没有得到<code>CPU</code>时间片。执行<code>yield</code>方法。</p>
+</li>
+<li><p><strong>运行</strong>。线程得到时间片执行。</p>
+</li>
+<li><p><strong>阻塞</strong>。线程执行<code>sleep/join</code>方法，或<code>wait</code>方法。注意执行两个方法线程状态的区别，<code>sleep</code>方法不会释放所持有的锁，时间结束后转到<code>就绪</code>态；<code>wait</code>方法会释放持有的锁，线程进入<strong>等待队列</strong>，直到有线程执行<code>notify/notifyAll</code>方法，该线程被唤醒，进入<strong>锁池</strong>中，争抢锁。拿到锁就可以转为<strong>就绪</strong>态。</p>
+</li>
+<li><p><strong>销毁</strong></p>
+</li>
+</ul>
+<h4 id="2-2-线程池参数详解"><a href="#2-2-线程池参数详解" class="headerlink" title="2.2 线程池参数详解"></a>2.2 线程池参数详解</h4><p>首先给出<code>java</code>中线程池的构造函数（其中之一），有几个参数，然后解释他的工作流程。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                          <span class="keyword">int</span> maximumPoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                          <span class="keyword">long</span> keepAliveTime,</span></span></span><br><span class="line"><span class="function"><span class="params">                          TimeUnit unit,</span></span></span><br><span class="line"><span class="function"><span class="params">                          BlockingQueue&lt;Runnable&gt; workQueue,</span></span></span><br><span class="line"><span class="function"><span class="params">                          RejectedExecutionHandler handler)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,</span><br><span class="line">             Executors.defaultThreadFactory(), handler);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>corePoolSize</code> 核心线程数</p>
+</li>
+<li><p><code>maximumPoolSize 最大线程数</code></p>
+</li>
+<li><p><code>keepAliveTime</code>  保活时间</p>
+</li>
+<li><p><code>TimeUnit unit</code> 时间单位</p>
+</li>
+<li><p><code>BlockingQueue&lt;Runnable&gt; workQueue</code></p>
+</li>
+<li><p><code>RejectedExecutionHandler handler</code>  <strong>拒绝策略</strong></p>
+<p><code>ThreadPoolExecutor.AbortPolicy</code>: 丢弃任务并抛出<code>RejectedExecutionException</code>异常。 (默认)<br><code>ThreadPoolExecutor.DiscardPolicy</code>：也是丢弃任务，但是不抛出异常。<br><code>ThreadPoolExecutor.DiscardOldestPolicy</code>：丢弃队列最前面的任务，然后重新尝试执行任务（重复此过程）<br><code>ThreadPoolExecutor.CallerRunsPolicy</code>：由调用线程处理该任务</p>
+<p><strong>工作流程</strong></p>
+<ol>
+<li>当有任务到达时，如果已经创建的线程数小于<code>corePoolSize</code>，那么创建一个线程来执行这个任务。</li>
+<li>如果已经创建的线程数等于<code>corePoolSize</code>，并且存在空闲的线程，那么空闲的线程来执行这个任务。</li>
+<li>如果没有空闲线程，那么那这个任务加入到阻塞队列中。</li>
+<li>如果阻塞队列也满了，判断<code>corePoolSize &lt; maximumPoolSize</code>，比如<code>maximumPoolSize = 5,corePoolSize = 3</code>，那么创建一个线程来执行这个任务。否则，执行拒绝策略，或者存活线程数目达到最大线程数目，也会执行拒绝策略。（即：当最大线程数与队列均满了以后，才会执行拒绝策略。 ）</li>
+<li>当大于<code>corePoolSize</code>并且空闲的线程（余下线程），在超过<code>keepAliveTime</code>后，会被回收。</li>
+</ol>
+</li>
+</ul>
+<p><strong>tips</strong>：阿里开发规范中强调：【强制】线程池不允许使用 Executors 去创建，而是通过 <code>ThreadPoolExecutor</code> 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险。 </p>
+<p><img src="/images/ThreadPoolExecutor.png" alt=""></p>
+<p><center>ThreadPoolExecutor类图</center></p>
+<h4 id="2-3-阻塞队列"><a href="#2-3-阻塞队列" class="headerlink" title="2.3 阻塞队列"></a>2.3 阻塞队列</h4><p>当阻塞队列是空时，从队列中获取元素的操作将会被阻塞。</p>
+<p>当阻塞队列是满时，往队列里添加元素的操作将会被阻塞。</p>
+<p><code>ArrayBlockingQueue</code> ：一个由数组结构组成的有界阻塞队列。<br><code>LinkedBlockingQueue</code>：一个由链表结构组成的有界阻塞队列。<br><code>PriorityBlockingQueue</code> ：一个支持优先级排序的无界阻塞队列。<br><code>DelayQueue</code>： 一个使用优先级队列实现的无界阻塞队列。<br><code>SynchronousQueue</code>： 一个不存储元素的阻塞队列，每个插入操作必须等到另一个线程调用移除操作，否则插入操作一直处于阻塞状态 。<br><code>LinkedTransferQueue</code>： 一个由链表结构组成的无界阻塞队列。<br><code>LinkedBlockingDeque</code>： 一个由链表结构组成的双向阻塞队列。 </p>
+<ul>
+<li>核心方法API</li>
+</ul>
+<p><img src="/images/image-20200208113359243.png" alt="image-20200208113359243"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">抛出异常</td>
+<td>当阻塞队列满时,再往队列里面add插入元素会抛<code>IllegalStateException: Queue full</code><br/>当阻塞队列空时,再往队列Remove元素时候回抛出<code>NoSuchElementException</code></td>
+</tr>
+<tr>
+<td style="text-align:left">特殊值</td>
+<td>插入方法,成功返回<code>true</code> 失败返回<code>false</code><br/>移除方法,成功返回元素,队列里面没有就返回<code>null</code></td>
+</tr>
+<tr>
+<td style="text-align:left">一直阻塞</td>
+<td>当阻塞队列满时,生产者继续往队列里面<code>put</code>元素,队列会一直阻塞直到put数据or响应中断退出<br/>当阻塞队列空时,消费者试图从队列<code>take</code>元素,队列会一直阻塞消费者线程直到队列可用.</td>
+</tr>
+<tr>
+<td style="text-align:left">超时退出</td>
+<td>当阻塞队列满时,队列会阻塞生产者线程一定时间,超过后限时后生产者线程就会退出</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="2-4-线程池的种类"><a href="#2-4-线程池的种类" class="headerlink" title="2.4 线程池的种类"></a>2.4 线程池的种类</h4><p><code>Executors</code>类在创建线程池时，底层还是采用<code>ThreadPoolExecutor</code>的构造方法。</p>
+<ul>
+<li><p><code>Executors.newFixedThreadPool</code> 定长线程池</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newFixedThreadPool</span><span class="params">(<span class="keyword">int</span> nThreads)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(nThreads, nThreads,</span><br><span class="line">                                      <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                      <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>  <strong>作用</strong>：创建一个可重用固定线程数量的线程池，以共享的无界队列方式来运行这些线程。</p>
+<p>  <strong>特征</strong>：<br>  （1）线程池中的线程处于一定的量，可以很好的控制线程的并发量<br>  （2）线程可以重复被使用，在显示关闭之前，都将一直存在<br>  （3）超出一定量的线程被提交时候需在队列中等待</p>
+<ul>
+<li><p><code>newCachedThreadPool</code> 缓存线程池</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Executors</span> </span>&#123;</span><br><span class="line">	....</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newCachedThreadPool</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">0</span>, Integer.MAX_VALUE,</span><br><span class="line">                                      <span class="number">60L</span>, TimeUnit.SECONDS,</span><br><span class="line">                                      <span class="keyword">new</span> SynchronousQueue&lt;Runnable&gt;());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据需要创建线程，可以看到，<code>corePoolSize = 0 maximumPoolSize = Integer.MAX_VALUE</code>即没有核心线程，当60s内没有任务时，将会回收存活的线程，60s内有任务时，他可以重用已有的线程 。就是来一个任务创建一个线程，最多创建21亿个线程。</p>
+</li>
+<li><p><code>newScheduledThreadPool</code> 定时线程池</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ScheduledExecutorService <span class="title">newScheduledThreadPool</span><span class="params">(<span class="keyword">int</span> corePoolSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ScheduledThreadPoolExecutor(corePoolSize);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ScheduledThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(corePoolSize, Integer.MAX_VALUE, <span class="number">0</span>, NANOSECONDS,</span><br><span class="line">              <span class="keyword">new</span> DelayedWorkQueue());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 该线程池适合执行延时任务。 </p>
+</li>
+</ul>
+<ul>
+<li><p><code>newSingleThreadExecutor</code> 只有一个线程的线程池 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newSingleThreadExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> FinalizableDelegatedExecutorService</span><br><span class="line">            (<span class="keyword">new</span> ThreadPoolExecutor(<span class="number">1</span>, <span class="number">1</span>,</span><br><span class="line">                                    <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                    <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>总结</strong>：实际开发用哪个？哪个都不用，上面的阿里规范提到，用<code>ThreadPoolExecutor</code>来初始化一个线程池，参数自己指定。</p>
+<h3 id="3-Compare-and-Swap"><a href="#3-Compare-and-Swap" class="headerlink" title="3. Compare and Swap"></a>3. Compare and Swap</h3><h4 id="3-1-原理"><a href="#3-1-原理" class="headerlink" title="3.1 原理"></a>3.1 原理</h4><p>​        <code>compare and swap</code> 简称<code>CAS</code>，本质上一条原子指令，即要么执行，要么不执行，利用<code>CPU</code>底层来实现并发过程中数据不一致问题。<code>java.util.concurrent.atmoic.AtomicInteger</code>等类底层实现就采用了<code>CAS</code>，来解决并发过程中<code>i++</code>导致的数据不一致问题。实际上<code>i++</code>在被虚拟机编译后，并非一条语句，而被划分为三条指令，因此在多线程环境下会造成数据不一致。</p>
+<h4 id="3-2-带来的问题"><a href="#3-2-带来的问题" class="headerlink" title="3.2 带来的问题"></a>3.2 带来的问题</h4><p>典型的<code>ABA</code>问题。即<code>CAS</code>关注了结果正确，而忽视了过程是否正确。</p>
+<p>解决方案：原子引用。类似于<code>MySQL</code>中的时间戳。</p>
+<h3 id="4-线程不安全类"><a href="#4-线程不安全类" class="headerlink" title="4. 线程不安全类"></a>4. 线程不安全类</h3><h4 id="4-1-ArrayList"><a href="#4-1-ArrayList" class="headerlink" title="4.1  ArrayList"></a>4.1  ArrayList</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContainerDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                list.add(random.nextInt(<span class="number">10</span>));</span><br><span class="line">                System.out.println(list);</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>会报： <code>java.util.ConcurrentModificationException</code></p>
+<ul>
+<li>解决方案<ul>
+<li><code>new Vector();</code></li>
+<li><code>Collections.synchronizedList(new ArrayList&lt;&gt;());</code></li>
+<li><code>new CopyOnWriteArrayList&lt;&gt;();</code></li>
+</ul>
+</li>
+<li>优化建议<ul>
+<li>在读多写少的时候推荐使用 <code>CopeOnWriteArrayList</code> 这个类。底层采用了<code>ReentrantLock</code>，读不加锁，<code>set/add</code>加锁处理。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContainerDemo2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String []args)</span></span>&#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        CopyOnWriteArrayList&lt;Integer&gt; list2 = <span class="keyword">new</span> CopyOnWriteArrayList&lt;&gt;();</span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                list2.add(random.nextInt(<span class="number">10</span>));</span><br><span class="line">                System.out.println(list2);</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ckakxzviz001yk8ugb3774xbb"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-HMM模型笔记" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -154,7 +428,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ckajhr63c0008zgugftg01l1t"
+      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ckakxzvgr0007k8ug97xscm28"
         class="article-share-link">分享</a>
         
       
@@ -271,7 +545,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ckajhr65o001yzgug3py22hff"
+      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ckakxzvj10020k8ugez12ab76"
         class="article-share-link">分享</a>
         
       
@@ -357,7 +631,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ckajhr65d001lzgug34175j3p"
+      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ckakxzvil001rk8ug7dr52d5y"
         class="article-share-link">分享</a>
         
       
@@ -450,7 +724,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ckajhr63l000dzgugc9yr0l4i"
+      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ckakxzvh3000ck8ug8exi4ahm"
         class="article-share-link">分享</a>
         
       
@@ -532,7 +806,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="ckajhr65h001rzgug62yl9yhz"
+      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="ckakxzvhu001dk8ug1u5m8v6v"
         class="article-share-link">分享</a>
         
       
@@ -604,7 +878,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" data-id="ckajhr62u0000zgugh0a0cbn7"
+      <a data-url="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" data-id="ckakxzvgt0008k8ug2es97dg6"
         class="article-share-link">分享</a>
         
       
@@ -676,7 +950,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/10/PCA-StepByStep/" data-id="ckajhr63q000ezgugblyo8rql"
+      <a data-url="http://yoursite.com/2019/11/10/PCA-StepByStep/" data-id="ckakxzvhc000lk8ugck7vhjnf"
         class="article-share-link">分享</a>
         
       
@@ -741,7 +1015,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/09/Hashap-LoadFactor/" data-id="ckajhr642000mzgug3fjubodm"
+      <a data-url="http://yoursite.com/2019/11/09/Hashap-LoadFactor/" data-id="ckakxzvgx000ak8ug0qqh0r58"
         class="article-share-link">分享</a>
         
       
@@ -824,76 +1098,11 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" data-id="ckajhr64m0011zgug9zfya7oe"
+      <a data-url="http://yoursite.com/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" data-id="ckakxzvhl000xk8ugd1j8fkwc"
         class="article-share-link">分享</a>
         
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CNN-NET/" rel="tag">CNN NET</a></li></ul>
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-canny" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/11/07/canny/"
-    >Canny Edge Detection Step By Step</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/11/07/canny/" class="article-date">
-  <time datetime="2019-11-07T12:16:20.000Z" itemprop="datePublished">2019-11-07</time>
-</a>
-      
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> ndimage</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gaussian_kernel</span><span class="params">(size, sigma=<span class="number">1</span>)</span>:</span></span><br><span class="line">    size = int(size) // <span class="number">2</span></span><br><span class="line">    x, y = np.mgrid[-size:size+<span class="number">1</span>, -size:size+<span class="number">1</span>]</span><br><span class="line">    normal = <span class="number">1</span> / (<span class="number">2.0</span> * np.pi * sigma**<span class="number">2</span>)</span><br><span class="line">    g =  np.exp(-((x**<span class="number">2</span> + y**<span class="number">2</span>) / (<span class="number">2.0</span>*sigma**<span class="number">2</span>))) * normal</span><br><span class="line">    <span class="keyword">return</span> g</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sobel_filters</span><span class="params">(img)</span>:</span></span><br><span class="line">    Kx = np.array([[<span class="number">-1</span>, <span class="number">0</span>, <span class="number">1</span>], [<span class="number">-2</span>, <span class="number">0</span>, <span class="number">2</span>], [<span class="number">-1</span>, <span class="number">0</span>, <span class="number">1</span>]], np.float32)</span><br><span class="line">    Ky = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">-1</span>, <span class="number">-2</span>, <span class="number">-1</span>]], np.float32)</span><br><span class="line">    </span><br><span class="line">    Ix = ndimage.filters.convolve(img, Kx)</span><br><span class="line">    Iy = ndimage.filters.convolve(img, Ky)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#print(Ix[0:100,0:100])</span></span><br><span class="line">    </span><br><span class="line">    G = np.hypot(Ix, Iy)</span><br><span class="line">    G = G / G.max() * <span class="number">255</span></span><br><span class="line">    theta = np.arctan2(Iy, Ix)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> (G, theta)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">non_max_suppression</span><span class="params">(img, D)</span>:</span></span><br><span class="line">    M, N = img.shape</span><br><span class="line">    Z = np.zeros((M,N), dtype=np.int32)</span><br><span class="line">    angle = D * <span class="number">180.</span> / np.pi</span><br><span class="line">    angle[angle &lt; <span class="number">0</span>] += <span class="number">180</span></span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,M<span class="number">-1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,N<span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                q = <span class="number">255</span></span><br><span class="line">                r = <span class="number">255</span></span><br><span class="line">                </span><br><span class="line">               <span class="comment">#angle 0</span></span><br><span class="line">                <span class="keyword">if</span> (<span class="number">0</span> &lt;= angle[i,j] &lt; <span class="number">22.5</span>) <span class="keyword">or</span> (<span class="number">157.5</span> &lt;= angle[i,j] &lt;= <span class="number">180</span>):</span><br><span class="line">                    q = img[i, j+<span class="number">1</span>]</span><br><span class="line">                    r = img[i, j<span class="number">-1</span>]</span><br><span class="line">                <span class="comment">#angle 45</span></span><br><span class="line">                <span class="keyword">elif</span> (<span class="number">22.5</span> &lt;= angle[i,j] &lt; <span class="number">67.5</span>):</span><br><span class="line">                    q = img[i+<span class="number">1</span>, j<span class="number">-1</span>]</span><br><span class="line">                    r = img[i<span class="number">-1</span>, j+<span class="number">1</span>]</span><br><span class="line">                <span class="comment">#angle 90</span></span><br><span class="line">                <span class="keyword">elif</span> (<span class="number">67.5</span> &lt;= angle[i,j] &lt; <span class="number">112.5</span>):</span><br><span class="line">                    q = img[i+<span class="number">1</span>, j]</span><br><span class="line">                    r = img[i<span class="number">-1</span>, j]</span><br><span class="line">                <span class="comment">#angle 135</span></span><br><span class="line">                <span class="keyword">elif</span> (<span class="number">112.5</span> &lt;= angle[i,j] &lt; <span class="number">157.5</span>):</span><br><span class="line">                    q = img[i<span class="number">-1</span>, j<span class="number">-1</span>]</span><br><span class="line">                    r = img[i+<span class="number">1</span>, j+<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (img[i,j] &gt;= q) <span class="keyword">and</span> (img[i,j] &gt;= r):</span><br><span class="line">                    Z[i,j] = img[i,j]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    Z[i,j] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">except</span> IndexError <span class="keyword">as</span> e:</span><br><span class="line">                <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> Z</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">threshold</span><span class="params">(img, lowThresholdRatio=<span class="number">0.05</span>, highThresholdRatio=<span class="number">0.09</span>)</span>:</span></span><br><span class="line">    </span><br><span class="line">    highThreshold = img.max() * highThresholdRatio;</span><br><span class="line">    lowThreshold = highThreshold * lowThresholdRatio;</span><br><span class="line">    </span><br><span class="line">    M, N = img.shape</span><br><span class="line">    res = np.zeros((M,N), dtype=np.int32)</span><br><span class="line">    </span><br><span class="line">    weak = np.int32(<span class="number">25</span>)</span><br><span class="line">    strong = np.int32(<span class="number">255</span>)</span><br><span class="line">    </span><br><span class="line">    strong_i, strong_j = np.where(img &gt;= highThreshold)</span><br><span class="line">    zeros_i, zeros_j = np.where(img &lt; lowThreshold)</span><br><span class="line">    </span><br><span class="line">    weak_i, weak_j = np.where((img &lt;= highThreshold) &amp; (img &gt;= lowThreshold))</span><br><span class="line">    </span><br><span class="line">    res[strong_i, strong_j] = strong</span><br><span class="line">    res[weak_i, weak_j] = weak</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> (res, weak, strong)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hysteresis</span><span class="params">(img, weak, strong=<span class="number">255</span>)</span>:</span></span><br><span class="line">    M, N = img.shape  </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, M<span class="number">-1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, N<span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> (img[i,j] == weak):</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    <span class="keyword">if</span> ((img[i+<span class="number">1</span>, j<span class="number">-1</span>] == strong) <span class="keyword">or</span> (img[i+<span class="number">1</span>, j] == strong) <span class="keyword">or</span> (img[i+<span class="number">1</span>, j+<span class="number">1</span>] == strong)</span><br><span class="line">                        <span class="keyword">or</span> (img[i, j<span class="number">-1</span>] == strong) <span class="keyword">or</span> (img[i, j+<span class="number">1</span>] == strong)</span><br><span class="line">                        <span class="keyword">or</span> (img[i<span class="number">-1</span>, j<span class="number">-1</span>] == strong) <span class="keyword">or</span> (img[i<span class="number">-1</span>, j] == strong) <span class="keyword">or</span> (img[i<span class="number">-1</span>, j+<span class="number">1</span>] == strong)):</span><br><span class="line">                        img[i, j] = strong</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        img[i, j] = <span class="number">0</span></span><br><span class="line">                <span class="keyword">except</span> IndexError <span class="keyword">as</span> e:</span><br><span class="line">                    <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">return</span> img</span><br></pre></td></tr></table></figure>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/07/canny/" data-id="ckajhr64a000rzgug04sv5wv5"
-        class="article-share-link">分享</a>
-        
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a></li></ul>
 
     </footer>
 
@@ -915,7 +1124,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
   
   <nav class="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
   </nav>
   
 </section>
