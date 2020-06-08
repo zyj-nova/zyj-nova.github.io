@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    GitHub的骚操作 |  张永剑的博客
+    Java中多态和方法的重载和重写 |  张永剑的博客
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -30,7 +30,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-GitHub的骚操作" class="article article-type-post" itemscope
+  <article id="post-Java中多态和方法的重载和重写" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -38,7 +38,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  GitHub的骚操作
+  Java中多态和方法的重载和重写
 </h1>
   
 
@@ -47,8 +47,8 @@
 
     
     <div class="article-meta">
-      <a href="/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/" class="article-date">
-  <time datetime="2020-02-27T04:57:10.082Z" itemprop="datePublished">2020-02-27</time>
+      <a href="/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" class="article-date">
+  <time datetime="2020-06-06T02:45:23.060Z" itemprop="datePublished">2020-06-06</time>
 </a>
       
   <div class="article-category">
@@ -62,7 +62,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">505字</span>
+            <span class="post-count">660字</span>
         </span>
     </span>
 
@@ -97,49 +97,71 @@
       
 
       
-      <h2 id="GitHub的骚操作"><a href="#GitHub的骚操作" class="headerlink" title="GitHub的骚操作"></a>GitHub的骚操作</h2><h3 id="1-in-限制搜索"><a href="#1-in-限制搜索" class="headerlink" title="1. in 限制搜索"></a>1. in 限制搜索</h3><p><strong>用法</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gnn <span class="keyword">in</span>:name</span><br><span class="line">spring <span class="keyword">in</span>:readme,name,description</span><br></pre></td></tr></table></figure>
-<h3 id="2-starts-forks范围搜索"><a href="#2-starts-forks范围搜索" class="headerlink" title="2. starts/forks范围搜索"></a>2. starts/forks范围搜索</h3><p><strong>用法</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name stars/forks:&gt;500</span><br><span class="line">name stars/forks:500..600</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">组合命令</span></span><br><span class="line">redis starts:&gt;5000 forks:6000..10000 in:name</span><br></pre></td></tr></table></figure>
-<h3 id="3-awesome搜索"><a href="#3-awesome搜索" class="headerlink" title="3. awesome搜索"></a>3. awesome搜索</h3><p><strong>用法</strong>：展示站点上较好的项目</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awesome gan</span><br></pre></td></tr></table></figure>
-<h3 id="4-高亮显示代码"><a href="#4-高亮显示代码" class="headerlink" title="4.高亮显示代码"></a>4.高亮显示代码</h3><p><strong>用法</strong>：在代码链接后加<code>#Lnum</code>，将高亮该行代码；<code>#L5-L50</code>高亮<code>5-50</code>行的代码。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/JeffLi1993/springboot-learning-example/blob/master/chapter-2-spring-boot-config/src/main/java/demo/springboot/web/HelloBookController.java#L1</span><br><span class="line"></span><br><span class="line">https://github.com/JeffLi1993/springboot-learning-example/blob/master/chapter-2-spring-boot-config/src/main/java/demo/springboot/web/HelloBookController.java#L1-L15</span><br></pre></td></tr></table></figure>
-<h3 id="5-t搜索"><a href="#5-t搜索" class="headerlink" title="5. t搜索"></a>5. t搜索</h3><p>在某个项目首页下，<code>t</code>键可以查看该项目所有代码文件。</p>
-<p>还有其他快捷键，可参考官方文档。</p>
-<p><img src="/images/image-20200227130114291.png" alt="image-20200227130114291"></p>
-<p><img src="/images/image-20200227130247176.png" alt="image-20200227130247176"></p>
-<h3 id="6-关于git的一些知识"><a href="#6-关于git的一些知识" class="headerlink" title="6. 关于git的一些知识"></a>6. 关于git的一些知识</h3><ul>
-<li><p><code>git</code>分为工作区、暂存区、版本库。将工作区的文件<code>add</code>到暂存区，<code>git</code>才可以对改文件进行版本管理，<code>add</code>之后就可以<code>commit</code>到版本库</p>
-</li>
-<li><p>已经<code>add</code>到暂存区的文件，又对其进行了修改，务必再次执行<code>add</code>操作，否则<code>commit</code>时，这个修改不会被提交到版本库。第一次修改 -&gt; <code>git add</code> -&gt; 第二次修改 -&gt; <code>git add</code> -&gt; <code>git commit</code>，两次修改合并为一次<code>commit</code></p>
-</li>
-<li><p>撤销修改：</p>
-<ul>
-<li><p>已经执行<code>add</code>的文件，现在在工作区区又进行了一次修改（这次修改还没<code>add</code>），<code>git checkout -- filename</code>可放弃工作区的这次修改</p>
-</li>
-<li><p>做了修改，并且已经<code>add</code>到暂存区，现在不想要这次修改了，先</p>
-<p><code>git reset HEAD filename</code>，从暂存区中拉回到工作区，然后<code>git checkout -- filename</code>放弃这次修改。</p>
-</li>
-</ul>
-</li>
-<li><p>版本回退</p>
-<ul>
-<li><code>git reset --hard commitId</code>，可回退到之前的版本。可采用<code>git log</code>来查看每次<code>commit</code>的详细情况</li>
-<li>要重新返回到最新版本，用<code>git reflog</code>查看命令历史，获取<code>commitId</code>，以便确定要回到未来的哪个版本。然后采用<code>reset</code>命令。</li>
-</ul>
-</li>
-<li><p>分支管理</p>
-<p>参考<a href="https://www.liaoxuefeng.com/wiki/896043488029600/900003767775424" target="_blank" rel="noopener">https://www.liaoxuefeng.com/wiki/896043488029600/900003767775424</a></p>
-</li>
-</ul>
+      <h2 id="Java中多态和方法的重载和重写"><a href="#Java中多态和方法的重载和重写" class="headerlink" title="Java中多态和方法的重载和重写"></a>Java中多态和方法的重载和重写</h2><p>重载（Overload）：指在同一个类中，方法名相同，而<strong>参数列表</strong>不同，参数列表指参数的<strong>顺序、类型、个数</strong>。重载与方法的返回类型、可见类型无关（例1）。</p>
+<p>具体例子：</p>
+<p><img src="/images/ex1.png" alt="例1"></p>
+<p><img src="/images/ex1-1.png" alt="image-20200608221031279"></p>
+<center>
+    例1 重载与方法返回类型无关
+</center>
+
+
+
+<p>重写（Overwrite）：指的是在继承关系中，子类定义了与父类的同名方法且参数列表与父类方法完全一致。注意：子类的方法名、参数列表必须与父类（接口）定义的完全一致，否则不能称为覆写（例7）；确认重写关系后，当返回类型为基本类型时（<code>int、double、char、short、byte、float、bool、long、String</code>）子类覆写时<strong>不可以改变</strong>返回类型，当返回类型为引用型，子类返回的引用型只能为，父类返回类型的子类或相同类型，不可以为无关的引用类型。覆写不可以缩小父类方法的可见性！（例5）。</p>
+<p>总结起来就是，首先确认子类方法名和参数列表是否与父方法<strong>完全一致</strong>，如果是，那么就是重写，语法要求方法返回类型务必和父类方法相同，且不可以减小该方法可见性；如果不是，则不是重写。</p>
+<p>具体例子</p>
+<p><img src="/images/ex2.png" alt="例2-1"></p>
+<p><img src="/images/ex2-2.png" alt="例2-2"></p>
+ <center> 
+     例2 重写时，返回类型务必相同<center>
+ </center>
+
+
+
+<p><img src="/images/ex3.png" alt="image-20200608221852911"></p>
+<center>
+    例3 重写时，子类返回类型为父类方法返回类型的子类或实现类，参数列务必表完全相同
+</center>
+
+
+
+<p><img src="/images/ex4.png" alt="image-20200608221930946"></p>
+<center>
+    例4 重写时，子类返回类型不允许为与父类方法返回类型毫无关系的类型
+</center>
+
+
+
+<p><img src="/images/ex5.png" alt="image-20200608222225893"></p>
+<center>
+    例5 重写时，子类不允许减小父方法可见性
+</center>
+
+
+
+<p><img src="/images/ex6.png" alt="image-20200608223224765"></p>
+<center>
+    例6 重写时，子类重写的方法返回类型不能为
+</center>
+
+
+
+<p><img src="/images/ex7-1.png" alt="image-20200608223631425"></p>
+<p><img src="/images/ex7-2.png" alt="image-20200608223608764"></p>
+<center>
+    例7 当参数列表不同时，这两个方法不存在覆写关系，加上注解就会报错
+</center>
+
+<p>顺便提一下，多态指的是动态绑定方法，而非类内变量。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i + <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Father son = <span class="keyword">new</span> Son();</span><br><span class="line">		System.out.println(son.test()); <span class="comment">// 10 子类没有定义test，找到父类方法，由于多态不动态绑定变量，因此i取得是父类的</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> getI() + <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getI</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getI</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Father son = <span class="keyword">new</span> Son();</span><br><span class="line">		Son son2 = <span class="keyword">new</span> Son();</span><br><span class="line">		</span><br><span class="line">		System.out.println(son.test()); <span class="comment">// 20</span></span><br><span class="line">		System.out.println(son2.test());<span class="comment">// 20</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/" data-id="ckb6milfh0007e8ug56lsd2jx"
+      <a data-url="http://yoursite.com/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" data-id="ckb6milfp000ce8ug9nojatk6"
         class="article-share-link">分享</a>
         
       
@@ -151,19 +173,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            实现梯度下降（线性回归为例）
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" class="article-nav-link">
+      <a href="/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Java 反射和动态代理</div>
+        <div class="article-nav-title">归一化和标准化</div>
       </a>
     
   </nav>

@@ -117,10 +117,14 @@ a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \
 </ol>
 <h3 id="2-LSTM-和-GRU"><a href="#2-LSTM-和-GRU" class="headerlink" title="2 LSTM 和 GRU"></a>2 LSTM 和 GRU</h3><h4 id="2-1-LSTM"><a href="#2-1-LSTM" class="headerlink" title="2.1 LSTM"></a>2.1 LSTM</h4><p><img src="/images/LSTM.png" alt=""></p>
 <p><img src="/images/LSTM2.png" alt=""></p>
+<p><img src="/images/lstm-simple.jpg" alt=""></p>
+<p><img src="/images/lstm-normal.jpg" alt=""></p>
+<p><img src="/images/lstm-peephole.jpg" alt=""></p>
 <center>基本LSTM结构</center>
 
 <p><strong>提出原因</strong>：</p>
 <p>$RNN$ 在处理长期依赖（时间序列上距离较远的节点）时会遇到巨大的困难，因为计算距离较远的节点之间的联系时会涉及雅可比矩阵的多次相乘，会造成梯度消失或者梯度膨胀的现象。为了解决该问题，研究人员提出了许多解决办法，例如 ESN（Echo State Network），增加有漏单元（Leaky Units）等等。其中最成功应用最广泛的就是门限 RNN（Gated RNN），而 LSTM 就是门限 RNN 中最著名的一种。有漏单元通过设计连接间的权重系数，从而允许 RNN 累积距离较远节点间的长期联系；而门限 RNN 则泛化了这样的思想，允许在不同时刻改变该系数，且允许网络忘记当前已经累积的信息。</p>
+<p>在<code>torch.nn.LSTM</code>中，返回两个值，一个是<code>cell</code>，一个是<code>hidden</code>。cell即记忆值，hidden即隐藏态。</p>
 <h4 id="2-2-GRU"><a href="#2-2-GRU" class="headerlink" title="2.2 GRU"></a>2.2 GRU</h4><p><code>torch.nn.GRU</code> 具体参数和<code>nn.RNN</code>类似</p>
 <h3 id="3-Pytorch-构建-RNN"><a href="#3-Pytorch-构建-RNN" class="headerlink" title="3 Pytorch 构建 RNN"></a>3 Pytorch 构建 RNN</h3><script type="math/tex; mode=display">
 a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)</script><p>根据计算公式，为了提高运算速度，在具体实现经常采用矩阵相乘的形式。一般来说，可以分解为如下形式：</p>
@@ -163,7 +167,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckakxzvie001nk8ug6wzdbv63"
+      <a data-url="http://yoursite.com/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckb6milgl001qe8ug9o6u7x1l"
         class="article-share-link">分享</a>
         
       

@@ -60,6 +60,91 @@
     
     
     
+    <article id="post-卷积操作的线性性质" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/"
+    >卷积操作的线性性质</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" class="article-date">
+  <time datetime="2019-11-08T02:47:10.000Z" itemprop="datePublished">2019-11-08</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="卷积操作的线性性质"><a href="#卷积操作的线性性质" class="headerlink" title="卷积操作的线性性质"></a>卷积操作的线性性质</h2><h3 id="卷积"><a href="#卷积" class="headerlink" title="卷积"></a>卷积</h3><p>我们假设有一幅大小为<strong>4 ×4</strong> 的图像 <strong>_x_</strong>，卷积核大小为 <strong>3×3</strong> <strong>_A_</strong></p>
+<p>卷积核滑动步长为 1 ，没有 padding；那么经过卷积以后图像大小即为 <strong>2×2</strong></p>
+<p>如何将其写为矩阵相乘形式？</p>
+<p>我们将卷积核拓展为 一个 <strong>4 × 16</strong> 的矩阵 <strong>=&gt;</strong> <strong>_T_</strong>，将图像<strong>_x_</strong> 压缩(flatten)为 <strong>16 × 1</strong> <strong>=&gt;</strong> <strong>_X_</strong></p>
+<p>卷积操作即可表示为:</p>
+<center>T*x = C</center>
+
+<p>其中，结果 <strong>_C_</strong> 为<strong>4×1</strong>的矩阵。很显然，上面的这个式子是<strong>线性</strong>的；</p>
+<p>这是矩阵和一个列向量相乘，可以理解为这个列向量经过矩阵变化之后，最终成了<strong>_C_</strong></p>
+<p>那么，这么矩阵就可以理解为列向量的一个<strong>函数</strong>。</p>
+<p>也就是说，图像经过了卷积核这个函数，变成了最后的结果。</p>
+<h3 id="转置卷积"><a href="#转置卷积" class="headerlink" title="转置卷积"></a>转置卷积</h3><p>现在我们有<strong>2 × 2</strong> 的图像 <strong>_x_</strong>，想让他变成 <strong>4 × 4</strong>的，我们该如何操作？</p>
+<p>我们仍然可以利用上文提到的那个卷积矩阵 <strong>_T_</strong>，</p>
+<p>即：</p>
+<center>T^T(16*4) * x(4*1) = R(16*1)</center>
+
+<p>转置卷积通常用来做上采样(up sample)。</p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" data-id="ckb6milg70015e8ugcs6j0afj"
+        class="article-share-link">分享</a>
+        
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CNN-NET/" rel="tag">CNN NET</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-canny" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -105,7 +190,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/07/canny/" data-id="ckakxzvhk000vk8ugdkazhcyh"
+      <a data-url="http://yoursite.com/2019/11/07/canny/" data-id="ckb6milg1000te8ug67kl1o5c"
         class="article-share-link">分享</a>
         
       

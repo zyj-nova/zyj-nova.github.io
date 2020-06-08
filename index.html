@@ -60,6 +60,130 @@
     
     
     
+    <article id="post-Java中多态和方法的重载和重写" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/"
+    >Java中多态和方法的重载和重写</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" class="article-date">
+  <time datetime="2020-06-06T02:45:23.060Z" itemprop="datePublished">2020-06-06</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="Java中多态和方法的重载和重写"><a href="#Java中多态和方法的重载和重写" class="headerlink" title="Java中多态和方法的重载和重写"></a>Java中多态和方法的重载和重写</h2><p>重载（Overload）：指在同一个类中，方法名相同，而<strong>参数列表</strong>不同，参数列表指参数的<strong>顺序、类型、个数</strong>。重载与方法的返回类型、可见类型无关（例1）。</p>
+<p>具体例子：</p>
+<p><img src="/images/ex1.png" alt="例1"></p>
+<p><img src="/images/ex1-1.png" alt="image-20200608221031279"></p>
+<center>
+    例1 重载与方法返回类型无关
+</center>
+
+
+
+<p>重写（Overwrite）：指的是在继承关系中，子类定义了与父类的同名方法且参数列表与父类方法完全一致。注意：子类的方法名、参数列表必须与父类（接口）定义的完全一致，否则不能称为覆写（例7）；确认重写关系后，当返回类型为基本类型时（<code>int、double、char、short、byte、float、bool、long、String</code>）子类覆写时<strong>不可以改变</strong>返回类型，当返回类型为引用型，子类返回的引用型只能为，父类返回类型的子类或相同类型，不可以为无关的引用类型。覆写不可以缩小父类方法的可见性！（例5）。</p>
+<p>总结起来就是，首先确认子类方法名和参数列表是否与父方法<strong>完全一致</strong>，如果是，那么就是重写，语法要求方法返回类型务必和父类方法相同，且不可以减小该方法可见性；如果不是，则不是重写。</p>
+<p>具体例子</p>
+<p><img src="/images/ex2.png" alt="例2-1"></p>
+<p><img src="/images/ex2-2.png" alt="例2-2"></p>
+ <center> 
+     例2 重写时，返回类型务必相同<center>
+ </center>
+
+
+
+<p><img src="/images/ex3.png" alt="image-20200608221852911"></p>
+<center>
+    例3 重写时，子类返回类型为父类方法返回类型的子类或实现类，参数列务必表完全相同
+</center>
+
+
+
+<p><img src="/images/ex4.png" alt="image-20200608221930946"></p>
+<center>
+    例4 重写时，子类返回类型不允许为与父类方法返回类型毫无关系的类型
+</center>
+
+
+
+<p><img src="/images/ex5.png" alt="image-20200608222225893"></p>
+<center>
+    例5 重写时，子类不允许减小父方法可见性
+</center>
+
+
+
+<p><img src="/images/ex6.png" alt="image-20200608223224765"></p>
+<center>
+    例6 重写时，子类重写的方法返回类型不能为
+</center>
+
+
+
+<p><img src="/images/ex7-1.png" alt="image-20200608223631425"></p>
+<p><img src="/images/ex7-2.png" alt="image-20200608223608764"></p>
+<center>
+    例7 当参数列表不同时，这两个方法不存在覆写关系，加上注解就会报错
+</center>
+
+<p>顺便提一下，多态指的是动态绑定方法，而非类内变量。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i + <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Father son = <span class="keyword">new</span> Son();</span><br><span class="line">		System.out.println(son.test()); <span class="comment">// 10 子类没有定义test，找到父类方法，由于多态不动态绑定变量，因此i取得是父类的</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> getI() + <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getI</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getI</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Father son = <span class="keyword">new</span> Son();</span><br><span class="line">		Son son2 = <span class="keyword">new</span> Son();</span><br><span class="line">		</span><br><span class="line">		System.out.println(son.test()); <span class="comment">// 20</span></span><br><span class="line">		System.out.println(son2.test());<span class="comment">// 20</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" data-id="ckb6milfp000ce8ug9nojatk6"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-归一化和标准化" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -149,7 +273,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" data-id="ckakxzvhp0014k8ug55y11xje"
+      <a data-url="http://yoursite.com/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" data-id="ckb6milga001be8ugdketb63j"
         class="article-share-link">分享</a>
         
       
@@ -230,7 +354,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" data-id="ckakxzvhi000tk8ug7gem1vyu"
+      <a data-url="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" data-id="ckb6milfz000qe8ug3i75ead3"
         class="article-share-link">分享</a>
         
       
@@ -309,7 +433,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" data-id="ckakxzvgk0003k8ug06ahbh5o"
+      <a data-url="http://yoursite.com/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" data-id="ckb6milfb0002e8ug859y7ccp"
         class="article-share-link">分享</a>
         
       
@@ -504,7 +628,7 @@ c_i = \sum_{j=1}^{T_x} \alpha_{ij}h_j</script><p><strong>注意</strong>：此�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckakxzvj0001zk8ug9bn720hf"
+      <a data-url="http://yoursite.com/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckb6milgx0021e8ugbf0j2w9d"
         class="article-share-link">分享</a>
         
       
@@ -584,10 +708,14 @@ a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \
 </ol>
 <h3 id="2-LSTM-和-GRU"><a href="#2-LSTM-和-GRU" class="headerlink" title="2 LSTM 和 GRU"></a>2 LSTM 和 GRU</h3><h4 id="2-1-LSTM"><a href="#2-1-LSTM" class="headerlink" title="2.1 LSTM"></a>2.1 LSTM</h4><p><img src="/images/LSTM.png" alt=""></p>
 <p><img src="/images/LSTM2.png" alt=""></p>
+<p><img src="/images/lstm-simple.jpg" alt=""></p>
+<p><img src="/images/lstm-normal.jpg" alt=""></p>
+<p><img src="/images/lstm-peephole.jpg" alt=""></p>
 <center>基本LSTM结构</center>
 
 <p><strong>提出原因</strong>：</p>
 <p>$RNN$ 在处理长期依赖（时间序列上距离较远的节点）时会遇到巨大的困难，因为计算距离较远的节点之间的联系时会涉及雅可比矩阵的多次相乘，会造成梯度消失或者梯度膨胀的现象。为了解决该问题，研究人员提出了许多解决办法，例如 ESN（Echo State Network），增加有漏单元（Leaky Units）等等。其中最成功应用最广泛的就是门限 RNN（Gated RNN），而 LSTM 就是门限 RNN 中最著名的一种。有漏单元通过设计连接间的权重系数，从而允许 RNN 累积距离较远节点间的长期联系；而门限 RNN 则泛化了这样的思想，允许在不同时刻改变该系数，且允许网络忘记当前已经累积的信息。</p>
+<p>在<code>torch.nn.LSTM</code>中，返回两个值，一个是<code>cell</code>，一个是<code>hidden</code>。cell即记忆值，hidden即隐藏态。</p>
 <h4 id="2-2-GRU"><a href="#2-2-GRU" class="headerlink" title="2.2 GRU"></a>2.2 GRU</h4><p><code>torch.nn.GRU</code> 具体参数和<code>nn.RNN</code>类似</p>
 <h3 id="3-Pytorch-构建-RNN"><a href="#3-Pytorch-构建-RNN" class="headerlink" title="3 Pytorch 构建 RNN"></a>3 Pytorch 构建 RNN</h3><script type="math/tex; mode=display">
 a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)</script><p>根据计算公式，为了提高运算速度，在具体实现经常采用矩阵相乘的形式。一般来说，可以分解为如下形式：</p>
@@ -630,7 +758,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckakxzvie001nk8ug6wzdbv63"
+      <a data-url="http://yoursite.com/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckb6milgl001qe8ug9o6u7x1l"
         class="article-share-link">分享</a>
         
       
@@ -708,7 +836,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" data-id="ckakxzvhr0019k8ugfgt5bfgl"
+      <a data-url="http://yoursite.com/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" data-id="ckb6milg80018e8ug9wkf1bzd"
         class="article-share-link">分享</a>
         
       
@@ -937,7 +1065,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ckakxzvig001pk8ugacakgfwt"
+      <a data-url="http://yoursite.com/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ckb6milgo001se8ug90w27kzx"
         class="article-share-link">分享</a>
         
       
@@ -1019,7 +1147,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/" data-id="ckakxzvhe000pk8ug3g221yjw"
+      <a data-url="http://yoursite.com/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/" data-id="ckb6milfx000pe8ug2vije96u"
         class="article-share-link">分享</a>
         
       
@@ -1125,113 +1253,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/17/Word%20Embedding/" data-id="ckakxzvhh000rk8ug87egdigw"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-提升树和梯度提升树" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/"
-    >提升树和梯度提升树</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" class="article-date">
-  <time datetime="2020-04-12T12:21:03.660Z" itemprop="datePublished">2020-04-12</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="提升树和梯度提升树"><a href="#提升树和梯度提升树" class="headerlink" title="提升树和梯度提升树"></a>提升树和梯度提升树</h2><p>​        集成学习主要分为<strong>boosting</strong>、<strong>bagging</strong>、<strong>stacking</strong>，随机森林属于<strong>bagging</strong>，而本文介绍的提升算法属于<strong>boosting</strong>，同为该类的还有<strong>Adaboost</strong>。提升方法实际采用加法模型（基函数的线性组合）与前向分布算法。</p>
-<p>​        注：阅读前请熟悉<strong>CART</strong>回归树的构建过程。</p>
-<h3 id="1-提升树"><a href="#1-提升树" class="headerlink" title="1. 提升树"></a>1. 提升树</h3><p>​        根据《统计学习方法》中提升树的定义，提升树是以分类树或回归树为基本分类器的提升方法。以决策树为基函数的提升方法称为提升树。提升树可以表示为决策树的加法模型。即</p>
-<script type="math/tex; mode=display">
-f_M(x) = \sum_{m=1}^{M} T(x;\Theta_m)</script><p>，其中$M$为决策树的个数，$\Theta$为决策树的参数（若是回归树，参数就是在哪个维度哪个点进行分裂）。</p>
-<p>首先确定初始的提升树$f_0(x) = 0$，第$m$步的模型表达式是：</p>
-<script type="math/tex; mode=display">
-f_m(x) = f_{m-1}(x) + T(x;\Theta_m)</script><p>意思就是前一次的模型的值与第$m$步训练出来的决策树的和。</p>
-<p>在第$m$步，</p>
-<script type="math/tex; mode=display">
-\hat \Theta_m = arg\min_{\Theta_m} \sum_{i=1}^{N}L(y_i,f_{m-1}(x) + T(x;\Theta_m))</script><p>$L$为损失函数，在第$m$步时，$f_{m-1}(x) + T(x;\Theta_m)$即为$x$的预测值。$f_{m-1}(x)$的值已经确定（常数）。</p>
-<p>在回归问题中，$L$为二次函数，</p>
-<script type="math/tex; mode=display">
-L(y_i,f_{m-1}(x) + T(x;\Theta_m)) = [y -f_{m-1}(x) - T(x;\Theta_m ]^2 
-=[r -  T(x;\Theta_m)]^2</script><p>$r = y - f_{m-1}(x)$，为<strong>残差</strong>（真实值-预测值）。当$L$最小即$L = 0$，$r = T$，即这一棵树在拟合残差。在第$m$步，训练的这棵树是在拟合$f_{m-1}(x)$与$y$的差值即残差，以此不停的迭代。</p>
-<p>​        个人想法：当在构建回归树时，采用了贪心的构建算法，因此，针对相同的$y$值，构建无数次都是同一棵树。因此，在提升树算法中，我们通过损失函数看到了，回归树是在拟合残差，即每一步输入到回归树中的y值是$y - f_{m-1}(x)$。</p>
-<h3 id="2-梯度提升算法"><a href="#2-梯度提升算法" class="headerlink" title="2. 梯度提升算法"></a>2. 梯度提升算法</h3><p>​        针对提升树的优化问题，当损失函数是二次函数时，可以看到很好优化，但当损失函数为其他形式时，没有更好的优化方法，或者说优化比较困难。因此，$Fridemam$提出了梯度提升算法来优化提升树。回归问题和分类问题的区别是损失函数定义的不同。</p>
-<p>针对回归问题的梯度提升算法，介绍如下：</p>
-<p>（1）初始化</p>
-<script type="math/tex; mode=display">
-f_0(x) = arg\min_c \sum_{i=1}^N L(y_i,c)</script><p>（2）对$m = 1,2,…M$</p>
-<p>​        1）对$i = 1,2,3,…,N$ 计算</p>
-<script type="math/tex; mode=display">
-r_{mi} = - [\frac{\partial L(y_i,f(x_i))}{\partial f(x_i)}]_{f(x) = f_{m-1}(x)}</script><p>​        2）针对$r_{mi}$拟合一个回归树，得到第$m$棵树的叶子结点$R_{mj},j = 1,2,…,J$</p>
-<p>​        3）对每个叶子结点$j = 1,2,…,J$，根据损失函数计算该叶子节点的权值（和1一样的问题，只有一个根节点的树）</p>
-<script type="math/tex; mode=display">
-c_{mj} =arg\min_c \sum_{x_i\in R_{mj}} L(y_i,c + f_{m-1}(x_i))</script><p>​        4）更新$f_m(x) = f_{m-1}(x) + \sum_{j=1}^J c_{mj}I(x\in R_{mj})$</p>
-<p>​    （3）得到最终的梯度提升树。</p>
-<h3 id="3-梯度提升树（GBDT）"><a href="#3-梯度提升树（GBDT）" class="headerlink" title="3. 梯度提升树（GBDT）"></a>3. 梯度提升树（GBDT）</h3><p>​        当梯度提升的损失函数为二次函数时，恰好，损失函数负梯度 == 伪残差。</p>
-<script type="math/tex; mode=display">
-r_{mi} = - [\frac{\partial L(y_i,f(x_i))}{\partial f(x_i)}]_{f(x) = f_{m-1}(x)}\\
-\frac{\partial \frac{1}{2}(y_i-f(x_i)^2}{\partial f(x_i)} = -(y-f(x_i)) \\
-\frac{\partial \frac{1}{2}(y_i-f(x_i)^2}{\partial^2 f(x_i)} = 1</script><p>还有就是，当损失函数为二次函数，第一步初始化的值是所有$y$值的均值。原因如下：</p>
-<script type="math/tex; mode=display">
-f_0(x) = arg\min_c \sum_{i=1}^N L(y_i,c) \\=  arg\min_c\sum_{i=1}^N (y_i-c)^2</script><p>令$p(c) = \sum_{i=1}^N (y_i-c)^2$，$\partial p/ \partial c = -2\sum_{i=1}^N(y_i-c) = 0$，$c = (y_1 + y_2 + … + y_N) / N$。即初始化时，</p>
-<script type="math/tex; mode=display">
-f_0(x) = \frac{y_1+y_2 + ... + y_N}{N}</script><p>与<strong>梯度下降</strong>不同的是，梯度提升是在<strong>函数空间</strong>求梯度，把函数作为参数来看待。而梯度下降是在<strong>参数空间</strong>求梯度。</p>
-<p>当损失函数为二次函数，每个<strong>叶子结点最后的权值</strong>是划到该叶子结点所有y值的均值。(和初始化问题一样)。</p>
-<h3 id="4-XGBoost"><a href="#4-XGBoost" class="headerlink" title="4. XGBoost"></a>4. XGBoost</h3><p>​        xgboost与梯度提升树不同的是目标函数中加入了正则项，以及使用了二阶导数（目标函数泰勒展开式中用到了），结果更为精确，同时支持分布式并行计算（特征维度），在大规模机器学习中速度很快。本章介绍xgboost的推导，以及xgboost框架中是如何构建一棵xgboost树的。二阶泰勒展开：</p>
-<script type="math/tex; mode=display">
-f(x+\Delta x) \approx f(x) + f^{\\'}(x)\Delta x + \frac{1}{2}\ddot{f(x)}\Delta x^2</script>
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" data-id="ckakxzvht001bk8ugf8qxfou8"
+      <a data-url="http://yoursite.com/2020/04/17/Word%20Embedding/" data-id="ckb6milg3000ve8ughyct9vne"
         class="article-share-link">分享</a>
         
       

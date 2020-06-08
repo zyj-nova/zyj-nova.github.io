@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Java中多态和方法的重载和重写</title>
+    <url>/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/</url>
+    <content><![CDATA[<h2 id="Java中多态和方法的重载和重写"><a href="#Java中多态和方法的重载和重写" class="headerlink" title="Java中多态和方法的重载和重写"></a>Java中多态和方法的重载和重写</h2><p>重载（Overload）：指在同一个类中，方法名相同，而<strong>参数列表</strong>不同，参数列表指参数的<strong>顺序、类型、个数</strong>。重载与方法的返回类型、可见类型无关（例1）。</p>
+<p>具体例子：</p>
+<p><img src="/images/ex1.png" alt="例1"></p>
+<p><img src="/images/ex1-1.png" alt="image-20200608221031279"></p>
+<center>
+    例1 重载与方法返回类型无关
+</center>
+
+
+
+<p>重写（Overwrite）：指的是在继承关系中，子类定义了与父类的同名方法且参数列表与父类方法完全一致。注意：子类的方法名、参数列表必须与父类（接口）定义的完全一致，否则不能称为覆写（例7）；确认重写关系后，当返回类型为基本类型时（<code>int、double、char、short、byte、float、bool、long、String</code>）子类覆写时<strong>不可以改变</strong>返回类型，当返回类型为引用型，子类返回的引用型只能为，父类返回类型的子类或相同类型，不可以为无关的引用类型。覆写不可以缩小父类方法的可见性！（例5）。</p>
+<p>总结起来就是，首先确认子类方法名和参数列表是否与父方法<strong>完全一致</strong>，如果是，那么就是重写，语法要求方法返回类型务必和父类方法相同，且不可以减小该方法可见性；如果不是，则不是重写。</p>
+<p>具体例子</p>
+<p><img src="/images/ex2.png" alt="例2-1"></p>
+<p><img src="/images/ex2-2.png" alt="例2-2"></p>
+ <center> 
+     例2 重写时，返回类型务必相同<center>
+ </center>
+
+
+
+<p><img src="/images/ex3.png" alt="image-20200608221852911"></p>
+<center>
+    例3 重写时，子类返回类型为父类方法返回类型的子类或实现类，参数列务必表完全相同
+</center>
+
+
+
+<p><img src="/images/ex4.png" alt="image-20200608221930946"></p>
+<center>
+    例4 重写时，子类返回类型不允许为与父类方法返回类型毫无关系的类型
+</center>
+
+
+
+<p><img src="/images/ex5.png" alt="image-20200608222225893"></p>
+<center>
+    例5 重写时，子类不允许减小父方法可见性
+</center>
+
+
+
+<p><img src="/images/ex6.png" alt="image-20200608223224765"></p>
+<center>
+    例6 重写时，子类重写的方法返回类型不能为
+</center>
+
+
+
+<p><img src="/images/ex7-1.png" alt="image-20200608223631425"></p>
+<p><img src="/images/ex7-2.png" alt="image-20200608223608764"></p>
+<center>
+    例7 当参数列表不同时，这两个方法不存在覆写关系，加上注解就会报错
+</center>
+
+<p>顺便提一下，多态指的是动态绑定方法，而非类内变量。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i + <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Father son = <span class="keyword">new</span> Son();</span><br><span class="line">		System.out.println(son.test()); <span class="comment">// 10 子类没有定义test，找到父类方法，由于多态不动态绑定变量，因此i取得是父类的</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> getI() + <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getI</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getI</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Father son = <span class="keyword">new</span> Son();</span><br><span class="line">		Son son2 = <span class="keyword">new</span> Son();</span><br><span class="line">		</span><br><span class="line">		System.out.println(son.test()); <span class="comment">// 20</span></span><br><span class="line">		System.out.println(son2.test());<span class="comment">// 20</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+  </entry>
+  <entry>
     <title>归一化和标准化</title>
     <url>/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/</url>
     <content><![CDATA[<h2 id="归一化和标准化"><a href="#归一化和标准化" class="headerlink" title="归一化和标准化"></a>归一化和标准化</h2><p>​        注：本文内容转载自:<a href="https://www.jianshu.com/p/4c3081d40ca6" target="_blank" rel="noopener">https://www.jianshu.com/p/4c3081d40ca6</a></p>
@@ -253,10 +319,14 @@ a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \
 </ol>
 <h3 id="2-LSTM-和-GRU"><a href="#2-LSTM-和-GRU" class="headerlink" title="2 LSTM 和 GRU"></a>2 LSTM 和 GRU</h3><h4 id="2-1-LSTM"><a href="#2-1-LSTM" class="headerlink" title="2.1 LSTM"></a>2.1 LSTM</h4><p><img src="/images/LSTM.png" alt=""></p>
 <p><img src="/images/LSTM2.png" alt=""></p>
+<p><img src="/images/lstm-simple.jpg" alt=""></p>
+<p><img src="/images/lstm-normal.jpg" alt=""></p>
+<p><img src="/images/lstm-peephole.jpg" alt=""></p>
 <center>基本LSTM结构</center>
 
 <p><strong>提出原因</strong>：</p>
 <p>$RNN$ 在处理长期依赖（时间序列上距离较远的节点）时会遇到巨大的困难，因为计算距离较远的节点之间的联系时会涉及雅可比矩阵的多次相乘，会造成梯度消失或者梯度膨胀的现象。为了解决该问题，研究人员提出了许多解决办法，例如 ESN（Echo State Network），增加有漏单元（Leaky Units）等等。其中最成功应用最广泛的就是门限 RNN（Gated RNN），而 LSTM 就是门限 RNN 中最著名的一种。有漏单元通过设计连接间的权重系数，从而允许 RNN 累积距离较远节点间的长期联系；而门限 RNN 则泛化了这样的思想，允许在不同时刻改变该系数，且允许网络忘记当前已经累积的信息。</p>
+<p>在<code>torch.nn.LSTM</code>中，返回两个值，一个是<code>cell</code>，一个是<code>hidden</code>。cell即记忆值，hidden即隐藏态。</p>
 <h4 id="2-2-GRU"><a href="#2-2-GRU" class="headerlink" title="2.2 GRU"></a>2.2 GRU</h4><p><code>torch.nn.GRU</code> 具体参数和<code>nn.RNN</code>类似</p>
 <h3 id="3-Pytorch-构建-RNN"><a href="#3-Pytorch-构建-RNN" class="headerlink" title="3 Pytorch 构建 RNN"></a>3 Pytorch 构建 RNN</h3><script type="math/tex; mode=display">
 a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)</script><p>根据计算公式，为了提高运算速度，在具体实现经常采用矩阵相乘的形式。一般来说，可以分解为如下形式：</p>
