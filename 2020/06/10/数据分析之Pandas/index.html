@@ -12,7 +12,7 @@
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
-  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="shortcut icon" href="/favicon.svg" />
   
   <link rel="stylesheet" href="/css/style.css">
   <script src="/js/pace.min.js"></script>
@@ -62,7 +62,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">981字</span>
+            <span class="post-count">1.5k字</span>
         </span>
     </span>
 
@@ -71,7 +71,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">4分钟</span>
+            <span class="post-count">6分钟</span>
         </span>
     </span>
 </div>
@@ -141,13 +141,44 @@
 </li>
 </ol>
 <p>   <img src="/images/content-rating.png" alt=""></p>
+<ol>
+<li><p>groupby的应用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看不同题材的电影的平均时长</span></span><br><span class="line">df.groupby(<span class="string">'genre'</span>).duration.mean()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>apply、map、applymap</p>
+<p>apply传入一个函数，会将该函数应用于选中的列</p>
+<p>applymap是指将函数应用于DataFrame的所有元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">df[<span class="string">'int_rating'</span>] = df.star_rating.apply(np.ceil) <span class="comment"># 默认为 0</span></span><br><span class="line">df.loc[:<span class="number">5</span>,[<span class="string">'int_rating'</span>,<span class="string">'star_rating'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment">#Output</span></span><br><span class="line">	int_rating	star_rating</span><br><span class="line"><span class="number">0</span>			<span class="number">10.0</span> 		<span class="number">9.3</span></span><br><span class="line"><span class="number">1</span>			<span class="number">10.0</span>		<span class="number">9.2</span></span><br><span class="line"><span class="number">2</span>			<span class="number">10.0</span>		<span class="number">9.1</span></span><br><span class="line"><span class="number">3</span>			<span class="number">9.0</span>			<span class="number">9.0</span></span><br><span class="line"><span class="number">4</span>			<span class="number">9.0</span>			<span class="number">8.9</span></span><br><span class="line"><span class="number">5</span>			<span class="number">9.0</span>			<span class="number">8.9</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#获取电影主演的第一个演员的名字</span></span><br><span class="line">df.actors_list.apply(<span class="keyword">lambda</span> x:eval(x)[<span class="number">0</span>])</span><br><span class="line"><span class="comment">#Outputs</span></span><br><span class="line"><span class="number">0</span>          Tim Robbins</span><br><span class="line"><span class="number">1</span>        Marlon Brando</span><br><span class="line"><span class="number">2</span>            Al Pacino</span><br><span class="line"><span class="number">3</span>       Christian Bale</span><br><span class="line"><span class="number">4</span>        John Travolta</span><br></pre></td></tr></table></figure>
+<p>下面引入一个新的数据集</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">drinks = pd.read_csv(<span class="string">'http://bit.ly/drinksbycountry'</span>)</span><br><span class="line">drinks.head()</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pandas-2.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在DataFrame中，可通过axis指定appply作用在行或者列上</span></span><br><span class="line">res = drinks.loc[:,<span class="string">'beer_servings'</span>:<span class="string">'wine_servings'</span>].apply(np.argmax,axis=<span class="number">0</span>)</span><br><span class="line">res</span><br><span class="line"><span class="comment"># Outputs</span></span><br><span class="line">beer_servings      <span class="number">117</span></span><br><span class="line">spirit_servings     <span class="number">68</span></span><br><span class="line">wine_servings       <span class="number">61</span></span><br><span class="line">dtype: int64</span><br><span class="line">    </span><br><span class="line">drinks.loc[res,<span class="string">'country'</span>]</span><br><span class="line"><span class="number">117</span>    Namibia</span><br><span class="line"><span class="number">68</span>     Grenada</span><br><span class="line"><span class="number">61</span>      France</span><br><span class="line"><span class="comment"># 即beer_servings 最大的国家是Namibia，spirit_servings最大的国家Grenada等等</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在DataFrame中删除行或者列</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除一列或多列</span></span><br><span class="line">df.drop([<span class="string">'int_rating'</span>],axis=<span class="number">1</span>,inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除一行或多行</span></span><br><span class="line">df.drop([<span class="number">0</span>,<span class="number">1</span>], axis = <span class="number">0</span>, inplace = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol>
+<li><p>在DataFrame中给某一列重命名</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取所有列名</span></span><br><span class="line">df.columns</span><br><span class="line"><span class="comment"># 替换全部列名</span></span><br><span class="line">df_cols = [<span class="string">'Star rating'</span>,<span class="string">'Title'</span>, <span class="string">'Content rating'</span>,<span class="string">'Genre'</span>, <span class="string">'Duration'</span>, <span class="string">'Actors list'</span>]</span><br><span class="line">df.columns = df_cols</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改指定列名</span></span><br><span class="line">df.rename(columns = &#123;<span class="string">'star_rating'</span>:<span class="string">'star rating'</span>&#125;)</span><br></pre></td></tr></table></figure>
+<p>也可以通过在read数据时，指定names参数来指定列名（<code>names = df_cols</code>）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 也可以.str来使用Series中封装的字符串方法</span></span><br><span class="line">df.columns.str.[replace(<span class="string">'_'</span>,<span class="string">' '</span>)/lower()/upper()]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>给某一列进行排序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pandas.Series.sort_values(ascending=True, inplace=False) 默认升序,且不改变原Series结果</span></span><br><span class="line"><span class="comment"># 按照电影时长从大倒小排序</span></span><br><span class="line">df.duration.sort_values(ascending=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># pandas.DataFrame.sort_values(by='columns_name')</span></span><br><span class="line">df.sort_values(by=<span class="string">'duration'</span>,ascending=<span class="literal">False</span>,inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按照电影评分从大到小排列，若评分相同，则时长长的在前</span></span><br><span class="line">df.sort_values([<span class="string">'star_rating'</span>,<span class="string">'duration'</span>],ascending=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>发现并删除重复行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pandas.Series.duplicated() 返回bool的series</span></span><br><span class="line">df.title.duplicated().sum()</span><br><span class="line"></span><br><span class="line">df.duplicated()</span><br><span class="line"></span><br><span class="line">df.drop_duplicates(keep=<span class="string">'first'</span>)</span><br><span class="line"><span class="comment"># keep = first即保存第一个重复的元素，keep = False，不保留重复元素</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckb9518cu001948uga1lm4c50"
+      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckbbjo79k001x0oug27pz3piu"
         class="article-share-link">分享</a>
         
       
@@ -158,6 +189,15 @@
   
   
   <nav class="article-nav">
+    
+      <a href="/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            LRU缓存机制
+          
+        </div>
+      </a>
     
     
       <a href="/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" class="article-nav-link">

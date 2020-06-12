@@ -12,7 +12,7 @@
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
-  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="shortcut icon" href="/favicon.svg" />
   
   <link rel="stylesheet" href="/css/style.css">
   <script src="/js/pace.min.js"></script>
@@ -59,6 +59,74 @@
     
     
     
+    
+    <article id="post-LRU缓存机制" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/"
+    >LRU缓存机制</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" class="article-date">
+  <time datetime="2020-06-10T16:17:54.353Z" itemprop="datePublished">2020-06-11</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="LRU缓存机制"><a href="#LRU缓存机制" class="headerlink" title="LRU缓存机制"></a>LRU缓存机制</h2><p>LRU即最近最久未使用。这是Leetcode 147号问题，主要采用了双向链表和哈希表这两种数据结构。双向链表相比单向链表，插入和删除的时间复杂度为O(1)，而哈希表在获取key的时间复杂度为O(1)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> key, val;</span><br><span class="line">    <span class="keyword">public</span> Node prev, next;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">        <span class="keyword">this</span>.val = val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 双向链表</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DoubleList</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Node head, tail;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> length = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DoubleList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        head = <span class="keyword">new</span> Node(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        tail = <span class="keyword">new</span> Node(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        head.next = tail;</span><br><span class="line">        tail.prev = head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addFirst</span><span class="params">(Node n)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 双向链表头部添加节点</span></span><br><span class="line">        n.next = head.next;</span><br><span class="line">        n.prev = head;</span><br><span class="line"></span><br><span class="line">        head.next.prev = n;</span><br><span class="line">        head.next = n;</span><br><span class="line">        length++;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Node x)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 删除链表中的结点</span></span><br><span class="line">        x.prev.next = x.next;</span><br><span class="line">        x.next.prev = x.prev;</span><br><span class="line">        length--;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Node <span class="title">removeLast</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 首先判断链表是否为空</span></span><br><span class="line">        <span class="keyword">if</span> (head.next == tail) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Node res = tail.prev;</span><br><span class="line">        remove(res);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;Integer, Node&gt; map;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> DoubleList cache;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> capacity;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LRUCache</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">        map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        cache = <span class="keyword">new</span> DoubleList();</span><br><span class="line">        <span class="keyword">this</span>.capacity = capacity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!map.containsKey(key)) &#123;</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> val = map.get(key).val;</span><br><span class="line">        put(key, val);</span><br><span class="line">        <span class="keyword">return</span> val;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Node x = <span class="keyword">new</span> Node(key, value);</span><br><span class="line">        <span class="keyword">if</span> (map.containsKey(key)) &#123;</span><br><span class="line">            <span class="comment">// map中存在key，更新值</span></span><br><span class="line">            cache.remove(map.get(key));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.capacity == cache.size()) &#123;</span><br><span class="line">                <span class="comment">// 删除最久未使用的结点 -- 最后一个结点</span></span><br><span class="line">                Node last = cache.removeLast();</span><br><span class="line">                map.remove(last.key);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        cache.addFirst(x);</span><br><span class="line">        map.put(key, x);<span class="comment">// if else 中都有的逻辑，提取出来</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" data-id="ckbbjo77w00090oug2vd70vb3"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
     
     <article id="post-数据分析之Pandas" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
@@ -146,13 +214,44 @@
 </li>
 </ol>
 <p>   <img src="/images/content-rating.png" alt=""></p>
+<ol>
+<li><p>groupby的应用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看不同题材的电影的平均时长</span></span><br><span class="line">df.groupby(<span class="string">'genre'</span>).duration.mean()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>apply、map、applymap</p>
+<p>apply传入一个函数，会将该函数应用于选中的列</p>
+<p>applymap是指将函数应用于DataFrame的所有元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">df[<span class="string">'int_rating'</span>] = df.star_rating.apply(np.ceil) <span class="comment"># 默认为 0</span></span><br><span class="line">df.loc[:<span class="number">5</span>,[<span class="string">'int_rating'</span>,<span class="string">'star_rating'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment">#Output</span></span><br><span class="line">	int_rating	star_rating</span><br><span class="line"><span class="number">0</span>			<span class="number">10.0</span> 		<span class="number">9.3</span></span><br><span class="line"><span class="number">1</span>			<span class="number">10.0</span>		<span class="number">9.2</span></span><br><span class="line"><span class="number">2</span>			<span class="number">10.0</span>		<span class="number">9.1</span></span><br><span class="line"><span class="number">3</span>			<span class="number">9.0</span>			<span class="number">9.0</span></span><br><span class="line"><span class="number">4</span>			<span class="number">9.0</span>			<span class="number">8.9</span></span><br><span class="line"><span class="number">5</span>			<span class="number">9.0</span>			<span class="number">8.9</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#获取电影主演的第一个演员的名字</span></span><br><span class="line">df.actors_list.apply(<span class="keyword">lambda</span> x:eval(x)[<span class="number">0</span>])</span><br><span class="line"><span class="comment">#Outputs</span></span><br><span class="line"><span class="number">0</span>          Tim Robbins</span><br><span class="line"><span class="number">1</span>        Marlon Brando</span><br><span class="line"><span class="number">2</span>            Al Pacino</span><br><span class="line"><span class="number">3</span>       Christian Bale</span><br><span class="line"><span class="number">4</span>        John Travolta</span><br></pre></td></tr></table></figure>
+<p>下面引入一个新的数据集</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">drinks = pd.read_csv(<span class="string">'http://bit.ly/drinksbycountry'</span>)</span><br><span class="line">drinks.head()</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pandas-2.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在DataFrame中，可通过axis指定appply作用在行或者列上</span></span><br><span class="line">res = drinks.loc[:,<span class="string">'beer_servings'</span>:<span class="string">'wine_servings'</span>].apply(np.argmax,axis=<span class="number">0</span>)</span><br><span class="line">res</span><br><span class="line"><span class="comment"># Outputs</span></span><br><span class="line">beer_servings      <span class="number">117</span></span><br><span class="line">spirit_servings     <span class="number">68</span></span><br><span class="line">wine_servings       <span class="number">61</span></span><br><span class="line">dtype: int64</span><br><span class="line">    </span><br><span class="line">drinks.loc[res,<span class="string">'country'</span>]</span><br><span class="line"><span class="number">117</span>    Namibia</span><br><span class="line"><span class="number">68</span>     Grenada</span><br><span class="line"><span class="number">61</span>      France</span><br><span class="line"><span class="comment"># 即beer_servings 最大的国家是Namibia，spirit_servings最大的国家Grenada等等</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在DataFrame中删除行或者列</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除一列或多列</span></span><br><span class="line">df.drop([<span class="string">'int_rating'</span>],axis=<span class="number">1</span>,inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除一行或多行</span></span><br><span class="line">df.drop([<span class="number">0</span>,<span class="number">1</span>], axis = <span class="number">0</span>, inplace = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol>
+<li><p>在DataFrame中给某一列重命名</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取所有列名</span></span><br><span class="line">df.columns</span><br><span class="line"><span class="comment"># 替换全部列名</span></span><br><span class="line">df_cols = [<span class="string">'Star rating'</span>,<span class="string">'Title'</span>, <span class="string">'Content rating'</span>,<span class="string">'Genre'</span>, <span class="string">'Duration'</span>, <span class="string">'Actors list'</span>]</span><br><span class="line">df.columns = df_cols</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改指定列名</span></span><br><span class="line">df.rename(columns = &#123;<span class="string">'star_rating'</span>:<span class="string">'star rating'</span>&#125;)</span><br></pre></td></tr></table></figure>
+<p>也可以通过在read数据时，指定names参数来指定列名（<code>names = df_cols</code>）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 也可以.str来使用Series中封装的字符串方法</span></span><br><span class="line">df.columns.str.[replace(<span class="string">'_'</span>,<span class="string">' '</span>)/lower()/upper()]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>给某一列进行排序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pandas.Series.sort_values(ascending=True, inplace=False) 默认升序,且不改变原Series结果</span></span><br><span class="line"><span class="comment"># 按照电影时长从大倒小排序</span></span><br><span class="line">df.duration.sort_values(ascending=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># pandas.DataFrame.sort_values(by='columns_name')</span></span><br><span class="line">df.sort_values(by=<span class="string">'duration'</span>,ascending=<span class="literal">False</span>,inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按照电影评分从大到小排列，若评分相同，则时长长的在前</span></span><br><span class="line">df.sort_values([<span class="string">'star_rating'</span>,<span class="string">'duration'</span>],ascending=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>发现并删除重复行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pandas.Series.duplicated() 返回bool的series</span></span><br><span class="line">df.title.duplicated().sum()</span><br><span class="line"></span><br><span class="line">df.duplicated()</span><br><span class="line"></span><br><span class="line">df.drop_duplicates(keep=<span class="string">'first'</span>)</span><br><span class="line"><span class="comment"># keep = first即保存第一个重复的元素，keep = False，不保留重复元素</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckb9518cu001948uga1lm4c50"
+      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckbbjo79k001x0oug27pz3piu"
         class="article-share-link">分享</a>
         
       
@@ -276,7 +375,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" data-id="ckb9518c2000948ugfqt12av9"
+      <a data-url="http://yoursite.com/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" data-id="ckbbjo77y000d0ouga3ucdq1e"
         class="article-share-link">分享</a>
         
       
@@ -383,7 +482,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" data-id="ckb9518ct001748ug44o6g2wd"
+      <a data-url="http://yoursite.com/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" data-id="ckbbjo795001g0ougaq3u48fw"
         class="article-share-link">分享</a>
         
       
@@ -464,7 +563,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" data-id="ckb9518cj000r48ug7r3a3jo3"
+      <a data-url="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" data-id="ckbbjo79m00210oug3f98etru"
         class="article-share-link">分享</a>
         
       
@@ -543,7 +642,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" data-id="ckb9518c3000b48ug3uy0f7s8"
+      <a data-url="http://yoursite.com/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" data-id="ckbbjo77h00000ouggnlh6lmo"
         class="article-share-link">分享</a>
         
       
@@ -738,7 +837,7 @@ c_i = \sum_{j=1}^{T_x} \alpha_{ij}h_j</script><p><strong>注意</strong>：此�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckb9518ec002248ug3vw57apz"
+      <a data-url="http://yoursite.com/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckbbjo79r00280ouge4ly3a5h"
         class="article-share-link">分享</a>
         
       
@@ -868,7 +967,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckb9518df001q48ug8lkcd8pm"
+      <a data-url="http://yoursite.com/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckbbjo79h001t0ougc6hg5s2z"
         class="article-share-link">分享</a>
         
       
@@ -946,7 +1045,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" data-id="ckb9518cv001b48uggdh25il7"
+      <a data-url="http://yoursite.com/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" data-id="ckbbjo796001i0ouggrei2y7c"
         class="article-share-link">分享</a>
         
       
@@ -1175,89 +1274,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ckb9518dj001t48ugcc4s84t9"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-Spring Boot配置文件的加载位置" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/"
-    >Spring Boot配置文件的加载位置</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/" class="article-date">
-  <time datetime="2020-04-29T10:22:39.477Z" itemprop="datePublished">2020-04-29</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="Spring-Boot配置文件的加载位置"><a href="#Spring-Boot配置文件的加载位置" class="headerlink" title="Spring Boot配置文件的加载位置"></a>Spring Boot配置文件的加载位置</h2><p>整个项目路径如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">project</span><br><span class="line">|----config</span><br><span class="line">|--------application.properties(优先级<span class="number">1</span>)</span><br><span class="line">|----src</span><br><span class="line">|--------main</span><br><span class="line">|------------java</span><br><span class="line">|------------resources</span><br><span class="line">|----------------config</span><br><span class="line">|--------------------application.properties(优先级<span class="number">3</span>)</span><br><span class="line">|----------------application.properties(优先级<span class="number">4</span>)</span><br><span class="line">|--------test</span><br><span class="line">|----application.properties(优先级<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-<p>从配置文件的位置来看，配置文件的优先级从高到低如下：</p>
-<ol>
-<li><code>file:/config</code></li>
-<li><code>file:/</code></li>
-<li><code>classpath:/config</code></li>
-<li><code>classpath:/</code></li>
-</ol>
-<p><strong>注意</strong>：</p>
-<ul>
-<li><p>Spring Boot会从以上四个位置全部加载配置文件，且在高优先级配置文件中配置的内容会覆盖低优先级配置文件中的。</p>
-</li>
-<li><p>支持互补配置</p>
-</li>
-</ul>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/" data-id="ckb9518cg000n48uggaua45xp"
+      <a data-url="http://yoursite.com/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ckbbjo79i001v0ouggiujaeh9"
         class="article-share-link">分享</a>
         
       

@@ -12,7 +12,7 @@
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
-  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="shortcut icon" href="/favicon.svg" />
   
   <link rel="stylesheet" href="/css/style.css">
   <script src="/js/pace.min.js"></script>
@@ -59,6 +59,88 @@
     
     
     
+    
+    <article id="post-Spring Boot配置文件的加载位置" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/"
+    >Spring Boot配置文件的加载位置</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2020-04-29T10:22:39.477Z" itemprop="datePublished">2020-04-29</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="Spring-Boot配置文件的加载位置"><a href="#Spring-Boot配置文件的加载位置" class="headerlink" title="Spring Boot配置文件的加载位置"></a>Spring Boot配置文件的加载位置</h2><p>整个项目路径如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">project</span><br><span class="line">|----config</span><br><span class="line">|--------application.properties(优先级<span class="number">1</span>)</span><br><span class="line">|----src</span><br><span class="line">|--------main</span><br><span class="line">|------------java</span><br><span class="line">|------------resources</span><br><span class="line">|----------------config</span><br><span class="line">|--------------------application.properties(优先级<span class="number">3</span>)</span><br><span class="line">|----------------application.properties(优先级<span class="number">4</span>)</span><br><span class="line">|--------test</span><br><span class="line">|----application.properties(优先级<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>从配置文件的位置来看，配置文件的优先级从高到低如下：</p>
+<ol>
+<li><code>file:/config</code></li>
+<li><code>file:/</code></li>
+<li><code>classpath:/config</code></li>
+<li><code>classpath:/</code></li>
+</ol>
+<p><strong>注意</strong>：</p>
+<ul>
+<li><p>Spring Boot会从以上四个位置全部加载配置文件，且在高优先级配置文件中配置的内容会覆盖低优先级配置文件中的。</p>
+</li>
+<li><p>支持互补配置</p>
+</li>
+</ul>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/" data-id="ckbbjo78u000y0oug9e0k5g70"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
     
     <article id="post-Word Embedding" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
@@ -148,7 +230,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/17/Word%20Embedding/" data-id="ckb9518cn000v48ughjdd4z9t"
+      <a data-url="http://yoursite.com/2020/04/17/Word%20Embedding/" data-id="ckbbjo78w000z0oug1jy859g6"
         class="article-share-link">分享</a>
         
       
@@ -254,7 +336,7 @@ f(x+\Delta x) \approx f(x) + f^{\\'}(x)\Delta x + \frac{1}{2}\ddot{f(x)}\Delta x
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" data-id="ckb9518cx001e48ug676q7rj1"
+      <a data-url="http://yoursite.com/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" data-id="ckbbjo79100190oug2z18dq4x"
         class="article-share-link">分享</a>
         
       
@@ -366,7 +448,7 @@ C - (C-k) = k</script><p>同样是k个距离。</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/20/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/" data-id="ckb9518co000y48ugcsfaeiyf"
+      <a data-url="http://yoursite.com/2020/03/20/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/" data-id="ckbbjo79000170oug8emih1rl"
         class="article-share-link">分享</a>
         
       
@@ -505,7 +587,7 @@ E_Z[\log p(x_i,z;\theta)|x_i;\theta^j]</script><p>我们将最后一个式子称
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/19/EM%E7%AE%97%E6%B3%95/" data-id="ckb9518bc000048ugca5x2a6z"
+      <a data-url="http://yoursite.com/2020/03/19/EM%E7%AE%97%E6%B3%95/" data-id="ckbbjo77o00010oug7qlq764v"
         class="article-share-link">分享</a>
         
       
@@ -596,7 +678,7 @@ E_Z[\log p(x_i,z;\theta)|x_i;\theta^j]</script><p>我们将最后一个式子称
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/07/PyTorch%20%E4%BD%BF%E7%94%A8GPU%E5%8A%A0%E9%80%9F/" data-id="ckb9518ci000p48ug55r0emm4"
+      <a data-url="http://yoursite.com/2020/03/07/PyTorch%20%E4%BD%BF%E7%94%A8GPU%E5%8A%A0%E9%80%9F/" data-id="ckbbjo78n000u0ouga1n5786f"
         class="article-share-link">分享</a>
         
       
@@ -706,7 +788,7 @@ v_t = \gamma v_{t-1} + \alpha \nabla J(\theta)</script><script type="math/tex; m
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/" data-id="ckb9518cr001348ug2hod7n8o"
+      <a data-url="http://yoursite.com/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/" data-id="ckbbjo792001a0ougaqqkgwok"
         class="article-share-link">分享</a>
         
       
@@ -808,7 +890,7 @@ v_t = \gamma v_{t-1} + \alpha \nabla J(\theta)</script><script type="math/tex; m
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/" data-id="ckb9518bz000748ug756cb1yl"
+      <a data-url="http://yoursite.com/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/" data-id="ckbbjo78x00110ougbebx58nr"
         class="article-share-link">分享</a>
         
       
@@ -911,7 +993,7 @@ v_t = \gamma v_{t-1} + \alpha \nabla J(\theta)</script><script type="math/tex; m
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" data-id="ckb9518cb000j48ug30wzf7rg"
+      <a data-url="http://yoursite.com/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" data-id="ckbbjo77u00060oughkhv8wcx"
         class="article-share-link">分享</a>
         
       
@@ -985,96 +1067,7 @@ v_t = \gamma v_{t-1} + \alpha \nabla J(\theta)</script><script type="math/tex; m
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/15/%E9%93%BE%E8%A1%A8/" data-id="ckb9518dd001o48ughvjx0ctj"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-Java虚拟机内存结构" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/"
-    >Java虚拟机内存结构</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" class="article-date">
-  <time datetime="2020-02-13T10:08:12.676Z" itemprop="datePublished">2020-02-13</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="Java虚拟机栈内存结构"><a href="#Java虚拟机栈内存结构" class="headerlink" title="Java虚拟机栈内存结构"></a>Java虚拟机栈内存结构</h2><p>​        主要介绍虚拟机栈的内存结构。</p>
-<h3 id="1-构成"><a href="#1-构成" class="headerlink" title="1. 构成"></a>1. 构成</h3><p>​        Java虚拟机主要由<strong>堆区、方法区、虚拟机栈、本地方法栈、程序寄存器</strong>五部分组成。其中<strong>堆区、方法区是所有线程共享</strong>的，其余区域都是线程不共享的。</p>
-<h3 id="2-虚拟机栈"><a href="#2-虚拟机栈" class="headerlink" title="2. 虚拟机栈"></a>2. 虚拟机栈</h3><p>​         虚拟机为每个新创建的线程都分配一个栈。栈以<strong>帧</strong>为单位保存线程的状态。虚拟机对栈只进行两种操作：以帧为单位的压栈和出栈操作。  </p>
-<p>​        一个线程中的方法调用链可能会很长，很多方法都同时处理执行状态。对于执行引擎来讲，活动线程中，只有虚拟机栈顶的栈帧才是有效的，称为当前栈帧 (Current Stack Frame)，这个栈帧所关联的方法称为当前方法(Current Method)。执行引用所运行的所有字节码指令都只针对当前栈帧进行操作。</p>
-<p>​        虚拟机栈主要存储<strong>栈帧</strong>（Stack Frame）这种数据结构，在栈帧内部，存储了<strong>局部变量表、操作数栈、动态链接、方法返回地址、其他附加信息</strong>等。  线程每调用一个方法就对应着 Stack 中 Stack Frame 的入栈，方法执行完毕或者异常终止对应着出栈（销毁）。 </p>
-<ul>
-<li><p>局部变量表：</p>
-<p>​        定义为一个数字数组，主要用于存储方法参数和定义在方法体内的局部变量。局部变量表中的变量是<strong>重要的<code>GC Root</code>结点</strong>，只要被局部变量表中变量直接或间接引用的对象都不会被回收。 <strong>在编译程序代码的时候就可以确定栈帧中需要多大的局部变量表，具体大小可在编译后的 Class 文件中看到</strong>。局部变量表的容量以 Variable Slot（变量槽）为最小单位，每个变量槽都可以存储 32 位长度的内存空间。 </p>
-<pre><code>     在方法执行时，虚拟机是使用局部变量表完成参数变量列表的传递过程，如果是实例方法，那么局部变量表中的0位索引的Slot默认是用于传递方法所属对象实例的引用，在方法中可以通过关键字“this”来访问这个隐含的参数，其余参数则按照参数列表的顺序来排列，占用从1开始的局部变量Slot，参数表分配 完毕后，再根据方法体内部定义的变量顺序和作用域来分配其余的Slot。
-</code></pre><p>​        局部变量表中的Slot是可重用的，方法体中定义的变量，其作用域并不一定会覆盖整个方法，如果当前字节码PC计算器的值已经超出了某个变量的作用域，那么这个变量对应的Slot就可以交给其它变量使用。 </p>
-</li>
-<li><p>操作数栈</p>
-</li>
-<li><p>动态链接</p>
-<p>​        每个栈帧都包含一个指向运行时常量池中该栈帧所属性方法的引用，持有这个引用是为了支持方法调用过程中的动态连接。在Class文件的常量池中存有大量的符号引用，字节码中的方法调用指令就以常量池中指向方法的符号引用为参数。这些符号引用一部分会在类加载阶段或第一次使用的时候转化为直接引用，这种转化 称为静态解析。另外一部分将在每一次的运行期期间转化为直接引用，这部分称为动态连接。 </p>
-</li>
-<li><p>方法返回地址</p>
-<p>​        当一个方法被执行后，有两种方式退出这个方法。第一种方式是<strong>执行引擎</strong>遇到任意一个方法返回的字节码指令，这时候可能会有返回值传递给上层的方法调用者(调用当前方法的的方法称为调用者)，是否有返回值和返回值的类型将根据遇到何种方法返回指令来决定，这种退出方法方式称为正常完成出口(Normal Method Invocation Completion)。</p>
-<p>​        另外一种退出方式是，在方法执行过程中遇到了异常，并且这个异常没有在方法体内得到处理，无论是Java虚拟机内部产生的异常，还是代码中使用 <code>throw</code>字节码指令产生的异常，只要在本方法的异常表中没有搜索到匹配的异常处理器，就会导致方法退出，这种退出方式称为异常完成出口(Abrupt Method Invocation Completion)。一个方法使用异常完成出口的方式退出，是不会给它的调用都产生任何返回值的。</p>
-<p>​        无论采用何种方式退出，在方法退出之前，都需要返回到方法被调用的位置，程序才能继续执行，方法返回时可能需要在栈帧中保存一些信息，用来帮助恢复它的上层方法的执行状态。一般来说，方法正常退出时，调用者PC计数器的值就可以作为返回地址，栈帧中很可能会保存这个计数器值。而方法异常退出时，返回地址是要通过异常处理器来确定的，栈帧中一般不会保存这部分信息。</p>
-<p>​         <strong>方法退出的过程实际上等同于把当前栈帧出栈</strong>，因此退出时可能执行的操作有：恢复上层方法的局部变量表和操作数栈，把返回值(如果有的话)压入调用都栈帧的操作数栈中，调用PC计数器的值以指向方法调用指令后面的一条指令等。 </p>
-</li>
-</ul>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" data-id="ckb9518c5000e48ug1iim6s0t"
+      <a data-url="http://yoursite.com/2020/02/15/%E9%93%BE%E8%A1%A8/" data-id="ckbbjo798001l0ouggb7o4ojo"
         class="article-share-link">分享</a>
         
       
