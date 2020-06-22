@@ -1,6 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ZooKeeper基础教程</title>
+    <url>/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<h2 id="ZooKeeper基础教程"><a href="#ZooKeeper基础教程" class="headerlink" title="ZooKeeper基础教程"></a><code>ZooKeeper</code>基础教程</h2><h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h3><h4 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h4><p>​        <code>Zookeeper</code> 是一个基于Java的分布式协调服务的开源框架。主要用来解决分布式集群中应用系统的一致性问题，例如怎样避免同时操作同一数据造成脏读的问题。<code>ZooKeeper</code>本质上是一个分布式的<strong>小文件存储系统</strong>。提供基于类似于文件系统的目录树方式的数据存储，并且可以对树中的节点进行有效管理。从而用来维护和监控你存储的数据的状态变化。通过监控这些数据状态的变化，从而可以达到基于数据的集群管理。诸如:统一命名服务、分布式配置管理、分布式消息队列、分布式锁、分布式协调等功能。</p>
+<h4 id="1-2-集群"><a href="#1-2-集群" class="headerlink" title="1.2 集群"></a>1.2 集群</h4><p>​        <code>ZooKeeper</code>集群包含两种角色，Leader和Follower。</p>
+<ul>
+<li><p>Leader</p>
+<p><code>Zookeeper</code>集群工作的核心，事务请求（写操作）的唯一调度和处理者，保证集群事务处理的顺序性；</p>
+<p>集群内部各个服务器的调度者。 对于 <code>create，setData，delete</code> 等有写操作的请求，则需要统一转发给 leader处理，leader需要决定编号、执行操作，这个过程称为一个事务。</p>
+</li>
+<li><p>Follower</p>
+<p>处理客户端非事务（读操作）请求，转发事务请求给 Leader； 参与集群 Leader 选举投票。 此外，针对访问量比较大的 <code>ZooKeeper</code> 集群，还可新增观察者角色。</p>
+</li>
+</ul>
+<ul>
+<li><p>Observer: </p>
+<p>观察者角色，观察<code>Zookeeper</code> 集群的最新状态变化并将这些状态同步过 来，其对于非事务请求可以进行独立处理，对于事务请求，则会转发给Leader服务器进行处理。 </p>
+<p>不会参与任何形式的投票只提供非事务服务，通常用于在不影响集群事务处理能力的前提下提升集群的非事务处理能力。</p>
+</li>
+</ul>
+<h4 id="1-3-集群搭建"><a href="#1-3-集群搭建" class="headerlink" title="1.3 集群搭建"></a>1.3 集群搭建</h4><p>​        集群通常由<strong>2n+1</strong>台 servers 组成。这是因为为了保证 Leader 选举（基于<code>Paxos</code>算法的实现）能过得到多数的支持，所以<code>ZooKeeper</code>集群的数量一般为奇数。</p>
+<p>​        <code>Zookeeper</code>运行需要<code>java</code>环境，所以需要提前安装 。对于安装 leader+follower 模式的集群，大致过程如下</p>
+<ul>
+<li><p>配置主机名称到IP地址映射配置</p>
+</li>
+<li><p>修改 <code>ZooKeeper</code> 配置文件（<code>/conf/zoo.cfg</code>文件）</p>
+<p>配置data暂存目录，各个服务器地址ip</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">dataDir=/usr/local/zookeeper-3.4.14/zkData</span><br><span class="line"></span><br><span class="line">clientPort=2181</span><br><span class="line"></span><br><span class="line">server.0=192.168.10.1:2888:3888</span><br><span class="line">server.1=192.168.10.2:2888:3888</span><br><span class="line">server.2=192.168.10.3:2888:3888</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p><code>server.A=B:C:D</code>解释：</p>
+<p>A：其中 A 是一个数字，表示这个是服务器的编号；</p>
+<p>B：是这个服务器的IP地址；</p>
+<p>C：<code>Leader</code>选举的端口；</p>
+<p>D：<code>Zookeeper</code>服务器之间的通信端口。</p>
+</li>
+<li><p>远程复制分发安装文件</p>
+</li>
+<li><p>设置<code>myid</code></p>
+<p>在 上一步<code>dataDir</code> 指定的目录下，创建<code>myid</code>文件。在对应的服务器上写入对应序号。</p>
+<p>比如<code>192.168.10.1</code>对应<code>server.0</code>，那么在<code>myid</code>中写入0即可。</p>
+</li>
+<li><p>启动集群</p>
+<p>启动命令：<code>zkServer.sh start</code></p>
+<p>停止命令：<code>zkServer.sh stop</code></p>
+<p>重启命令：<code>zkServer.sh restart</code></p>
+<p>查看集群结点状态：<code>zkServer.sh status</code></p>
+</li>
+</ul>
+<h3 id="2-Shell操作"><a href="#2-Shell操作" class="headerlink" title="2 Shell操作"></a>2 Shell操作</h3><p><code>bin/zkCli.sh</code>命令进入命令行界面。</p>
+<h4 id="2-1-创建结点"><a href="#2-1-创建结点" class="headerlink" title="2.1 创建结点"></a>2.1 创建结点</h4><p><code>ZooKeeper</code>中的结点类型分为<strong>永久节点和临时结点(-e)</strong>。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">create [-s] [-e] path data acl</span><br></pre></td></tr></table></figure>
+<p>其中，-s 或-e 分别指定节点特性，顺序或临时节点，若不指定，则表示持 久节点；<code>acl</code>用来进行权限控制。</p>
+<p>例子：</p>
+<p>创建顺序节点，结点值为123：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">create -s /test 123</span><br></pre></td></tr></table></figure>
+<p>创建临时结点</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">create -e /test-tmp 123</span><br></pre></td></tr></table></figure>
+<p>创建永久节点：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">create /test-per 123p</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-读取节点"><a href="#2-2-读取节点" class="headerlink" title="2.2 读取节点"></a>2.2 读取节点</h4><pre><code>     与读取相关的命令有`ls`命令和 `get` 命令，`ls` 命令可以列出 `Zookeeper `指 定节点下的所有子节点，只能查看指定节点下的第一级的所有子节点；`get` 命令 可以获取 `Zookeeper` 指定节点的数据内容和属性信息。
+</code></pre><p>查看根目录下所有结点：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[zk: localhost:2181(CONNECTED) 0] ls /</span><br><span class="line">[cluster, brokers, zookeeper, admin, isr_change_notification, log_dir_event_notification, node1, controller_epoch, servers, nefu, test0000000015, consumers, latest_producer_id_block, config]</span><br></pre></td></tr></table></figure>
+<p>获取<code>/nefu</code>结点的信息</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[zk: localhost:2181(CONNECTED) 3] get /nefu</span><br><span class="line">ssss  #属性值</span><br><span class="line">cZxid = 0x12</span><br><span class="line">ctime = Thu Jun 04 16:51:44 CST 2020</span><br><span class="line">mZxid = 0x12</span><br><span class="line">mtime = Thu Jun 04 16:51:44 CST 2020</span><br><span class="line">pZxid = 0x12</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 0</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 4</span><br><span class="line">numChildren = 0</span><br></pre></td></tr></table></figure>
+<h4 id="2-3-更新与删除结点"><a href="#2-3-更新与删除结点" class="headerlink" title="2.3 更新与删除结点"></a>2.3 更新与删除结点</h4><h5 id="2-3-1-更新结点"><a href="#2-3-1-更新结点" class="headerlink" title="2.3.1 更新结点"></a>2.3.1 更新结点</h5><p><code>set path data [version]</code> data 就是要更新的新内容，version 表示数据版本。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[zk: localhost:2181(CONNECTED) 5] set /nefu ilovenefu     </span><br><span class="line">cZxid = 0x12</span><br><span class="line">ctime = Thu Jun 04 16:51:44 CST 2020</span><br><span class="line">mZxid = 0xd7</span><br><span class="line">mtime = Mon Jun 22 11:37:18 CST 2020</span><br><span class="line">pZxid = 0x12</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 1 #注意这儿的版本号</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 9</span><br><span class="line">numChildren = 0</span><br></pre></td></tr></table></figure>
+<h5 id="2-3-2-删除节点"><a href="#2-3-2-删除节点" class="headerlink" title="2.3.2 删除节点"></a>2.3.2 删除节点</h5><p><code>delete path [version]</code></p>
+<p>注意：若删除节点存在子节点，那么无法删除该节点，必须先删除子节点，再删除父节点。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Rmr path</span><br></pre></td></tr></table></figure>
+<h3 id="3-ZooKeeper数据模型"><a href="#3-ZooKeeper数据模型" class="headerlink" title="3. ZooKeeper数据模型"></a>3. <code>ZooKeeper</code>数据模型</h3><p>​        <code>ZooKeeper</code>的数据模型，在结构上和标准文件系统的非常相似，拥有一个层次的命名空间，都是采用树形层次结构，<code>ZooKeeper</code>树中的每个节点被称为一个<code>Znode</code>。和文件系统的目录树一样，<code>ZooKeeper</code>树中的每个节点可以拥有子节点。</p>
+<p><img src="/images/zookeeper.png" alt=""></p>
+<p>​        图中的每个节点称为一个<code>Znode</code> 。每个<code>Znode</code>由 3 部分组成:</p>
+<p> ① stat：此为状态信息, 描述该 <code>Znode</code> 的版本, 权限等信息</p>
+<p> ② data：与该 <code>Znode</code> 关联的数据 </p>
+<p> ③ children：该<code>Znode</code>下的子节点</p>
+<p>​        <code>Znode</code>有两种，分别为临时节点和永久节点。 </p>
+<p>​        节点的类型在创建时即被确定，并且不能改变。 </p>
+<p>​        <strong>临时节点</strong>：该节点的生命周期依赖于创建它们的会话。一旦<strong>会话结束</strong>，临时节点将被自动删除，当然可以也可以手动删除。临时节点不允许拥有子节点。 </p>
+<p>​        <strong>永久节点</strong>：该节点的生命周期不依赖于会话，并且只有在客户端显示执行删 除操作的时候，他们才能被删除。 </p>
+<p>​        <code>Znode</code>还有一个序列化的特性，如果创建的时候指定的话，该<code>Znode</code>的名字 后面会自动追加一个不断增加的序列号。序列号对于此节点的父节点来说是唯一 的，这样便会记录每个子节点创建的先后顺序。它的格式为“%10d”(10 位数字， 没有数值的数位用 0 补充，例如“0000000001”)。</p>
+<h3 id="4-Watcher"><a href="#4-Watcher" class="headerlink" title="4. Watcher"></a>4. Watcher</h3><p>​        ZooKeeper 提供了分布式数据发布/订阅功能，一个典型的发布/订阅模型系统定义了一种一对多的订阅关系，能让多个订阅者同时监听某一个主题对象，当 这个主题对象自身状态变化时，会通知所有订阅者，使他们能够做出相应的处理。 </p>
+<p>​        ZooKeeper 中，引入了 Watcher 机制来实现这种分布式的通知功能。 ZooKeeper 允许客户端向服务端注册一个 Watcher 监听，当服务端的一些事件触 发了这个 Watcher，那么就会向指定客户端发送一个事件通知来实现分布式的通知功能。</p>
+<p>​         触发事件种类很多，如：节点创建，节点删除，节点改变，子节点改变等。 </p>
+<p>​        总的来说可以概括 Watcher 为以下三个过程：客户端向服务端注册 Watcher、 服务端事件发生触发 Watcher、客户端回调 Watcher 得到触发事件情况。</p>
+<h3 id="5-Java-API编程"><a href="#5-Java-API编程" class="headerlink" title="5. Java API编程"></a>5. Java API编程</h3><p>首先导入<code>pom</code>依赖</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.nefu<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zookeeper-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.zookeeper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zookeeper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.4.10<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.8.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- https://mvnrepository.com/artifact/junit/junit --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>简单的连接集群和结点操作</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.zookeeper.*;</span><br><span class="line"><span class="keyword">import</span> org.apache.zookeeper.data.Stat;</span><br><span class="line"><span class="keyword">import</span> org.junit.Before;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestZookeeper</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String connectionString = <span class="string">"139.129.100.28:2181"</span>;</span><br><span class="line">    <span class="keyword">private</span> ZooKeeper zkClient;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        zkClient = <span class="keyword">new</span> ZooKeeper(connectionString,<span class="number">2000</span>, <span class="keyword">new</span> Watcher() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(WatchedEvent event)</span> </span>&#123;</span><br><span class="line">                List&lt;String&gt; children ;</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    System.out.println(<span class="string">"------------start----------------"</span>);</span><br><span class="line">                    children = zkClient.getChildren(<span class="string">"/"</span>, <span class="keyword">true</span>);</span><br><span class="line">                    System.out.println(children);</span><br><span class="line">                    System.out.println(<span class="string">"-------------end------------------"</span>);</span><br><span class="line">                &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCreateNode</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line">        String path = zkClient.create(<span class="string">"/nefu"</span>,<span class="string">"i wanna go back"</span>.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);</span><br><span class="line">        System.out.println(path);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getChildren</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        zkClient.getChildren(<span class="string">"/"</span>, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        Thread.sleep(Long.MAX_VALUE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exist</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        Stat stat = zkClient.exists(<span class="string">"/nefu"</span>, <span class="keyword">false</span>);</span><br><span class="line">        System.out.println(stat);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-ZooKeeper典型应用"><a href="#6-ZooKeeper典型应用" class="headerlink" title="6. ZooKeeper典型应用"></a>6. ZooKeeper典型应用</h3><h4 id="6-1-数据发布与订阅（配置中心）"><a href="#6-1-数据发布与订阅（配置中心）" class="headerlink" title="6.1 数据发布与订阅（配置中心）"></a>6.1 数据发布与订阅（配置中心）</h4><p>​        发布与订阅模型，即所谓的配置中心，顾名思义就是发布者将数据发布到ZK节点上，供订阅者动态获取数据，实现配置信息的集中式管理和动态更新。</p>
+<p>​         应用在启动的时候会主动来获取一次配置，同时，在节点上注册一个 Watcher， 这样一来，以后每次配置有更新的时候，都会实时通知到订阅的客户端，从来达 到获取最新配置信息的目的。</p>
+<p>​        比如： 分布式搜索服务中，索引的元信息和服务器集群机器的节点状态存放在 ZK 的一些指定节点，供各个客户端订阅使用。 </p>
+<p>​        注意：适合数据量很小的场景，这样数据更新可能会比较快。</p>
+<h4 id="6-2-命名服务-Naming-Service"><a href="#6-2-命名服务-Naming-Service" class="headerlink" title="6.2 命名服务(Naming Service)"></a>6.2 命名服务(Naming Service)</h4><p>​        在分布式系统中，通过使用命名服务，客户端应用能够根据指定名字来获取 资源或服务的地址，提供者等信息。被命名的实体通常可以是集群中的机器，提 供的服务地址，远程对象等等——这些我们都可以统称他们为名字（Name）。其 中较为常见的就是一些分布式服务框架中的服务地址列表。通过调用 ZK 提供的 创建节点的 API，能够很容易创建一个全局唯一的 path，这个 path 就可以作为 一个名称。</p>
+<p>​        阿里巴巴集团开源的分布式服务框架 <code>Dubbo</code> 中使用 <code>ZooKeeper</code>来作为其命 名服务，维护全局的服务地址列表。</p>
+<h4 id="6-3-分布式锁"><a href="#6-3-分布式锁" class="headerlink" title="6.3 分布式锁"></a>6.3 分布式锁</h4><p>​        分布式锁，这个主要得益于 ZooKeeper 保证了数据的强一致性。锁服务可以 分为两类，一个是保持独占，另一个是控制时序。</p>
+<p>​        所谓保持独占，就是所有试图来获取这个锁的客户端，最终只有一个可以成 功获得这把锁。通常的做法是把 zk 上的一个 znode 看作是一把锁，通过 create znode 的方式来实现。所有客户端都去创建 /distribute_lock 节点，最终成功 创建的那个客户端也即拥有了这把锁。</p>
+<p>​        控制时序，就是所有试图来获取这个锁的客户端，最终都是会被安排执行， 只是有个全局时序了。做法和上面基本类似，只是这里 /distribute_lock 已经 预先存在，客户端在它下面创建临时有序节点（这个可以通过节点的属性控制： CreateMode.EPHEMERAL_SEQUENTIAL 来指定）。Zk 的父节点（/distribute_lock） 维持一份 sequence,保证子节点创建的时序性，从而也形成了每个客户端的全局 时序。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+  </entry>
+  <entry>
     <title>LRU缓存机制</title>
     <url>/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</url>
     <content><![CDATA[<h2 id="LRU缓存机制"><a href="#LRU缓存机制" class="headerlink" title="LRU缓存机制"></a>LRU缓存机制</h2><p>LRU即最近最久未使用。这是Leetcode 147号问题，主要采用了双向链表和哈希表这两种数据结构。双向链表相比单向链表，插入和删除的时间复杂度为O(1)，而哈希表在获取key的时间复杂度为O(1)。</p>
@@ -19,9 +120,12 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">df = pd.read_csv(<span class="string">'https://bitly.com/imdbratings'</span>)</span><br></pre></td></tr></table></figure>
 <p>具体可以指定的参数有：</p>
 <ul>
-<li>encoding，文件编码方式，如：<code>GBK/ANSI/UTF-8</code></li>
-<li>names，指定数据文件的各个列的名称，传入的是list类型</li>
-<li>seq，指定文件的分隔符</li>
+<li><p>encoding，文件编码方式，如：<code>GBK/ANSI/UTF-8</code></p>
+</li>
+<li><p>names，指定数据文件的各个列的名称，传入的是list类型</p>
+</li>
+<li><p>seq，指定文件的分隔符</p>
+</li>
 </ul>
 </li>
 <li><p>查看数据相关信息</p>
@@ -54,10 +158,8 @@
 </li>
 <li><p>查看不同分级的电影数量</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 获取电影具体的分级级别</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].unique()</span><br><span class="line"><span class="comment"># Output</span></span><br><span class="line">array([<span class="string">'R'</span>, <span class="string">'PG-13'</span>, <span class="string">'NOT RATED'</span>, <span class="string">'PG'</span>, <span class="string">'UNRATED'</span>, <span class="string">'APPROVED'</span>, <span class="string">'PASSED'</span>,</span><br><span class="line">       <span class="string">'G'</span>, <span class="string">'X'</span>, nan, <span class="string">'TV-MA'</span>, <span class="string">'GP'</span>, <span class="string">'NC-17'</span>], dtype=object)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看不同分级类别的电影数量</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].value_counts()</span><br><span class="line"><span class="comment"># Output</span></span><br><span class="line">R            <span class="number">460</span></span><br><span class="line">PG<span class="number">-13</span>        <span class="number">189</span></span><br><span class="line">PG           <span class="number">123</span></span><br><span class="line">NOT RATED     <span class="number">65</span></span><br><span class="line">APPROVED      <span class="number">47</span></span><br><span class="line">UNRATED       <span class="number">38</span></span><br><span class="line">G             <span class="number">32</span></span><br><span class="line">PASSED         <span class="number">7</span></span><br><span class="line">NC<span class="number">-17</span>          <span class="number">7</span></span><br><span class="line">X              <span class="number">4</span></span><br><span class="line">GP             <span class="number">3</span></span><br><span class="line">TV-MA          <span class="number">1</span></span><br><span class="line">Name: content_rating, dtype: int64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以柱状图形式展示</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].value_counts().plot(kind=<span class="string">'bar'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/content-rating.png" alt=""></p>
 </li>
-</ol>
-<p>   <img src="/images/content-rating.png" alt=""></p>
-<ol>
 <li><p>groupby的应用</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看不同题材的电影的平均时长</span></span><br><span class="line">df.groupby(<span class="string">'genre'</span>).duration.mean()</span><br></pre></td></tr></table></figure>
 </li>
@@ -69,7 +171,7 @@
 <p>下面引入一个新的数据集</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">drinks = pd.read_csv(<span class="string">'http://bit.ly/drinksbycountry'</span>)</span><br><span class="line">drinks.head()</span><br></pre></td></tr></table></figure>
 <p><img src="/images/pandas-2.png" alt=""></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在DataFrame中，可通过axis指定appply作用在行或者列上</span></span><br><span class="line">res = drinks.loc[:,<span class="string">'beer_servings'</span>:<span class="string">'wine_servings'</span>].apply(np.argmax,axis=<span class="number">0</span>)</span><br><span class="line">res</span><br><span class="line"><span class="comment"># Outputs</span></span><br><span class="line">beer_servings      <span class="number">117</span></span><br><span class="line">spirit_servings     <span class="number">68</span></span><br><span class="line">wine_servings       <span class="number">61</span></span><br><span class="line">dtype: int64</span><br><span class="line">    </span><br><span class="line">drinks.loc[res,<span class="string">'country'</span>]</span><br><span class="line"><span class="number">117</span>    Namibia</span><br><span class="line"><span class="number">68</span>     Grenada</span><br><span class="line"><span class="number">61</span>      France</span><br><span class="line"><span class="comment"># 即beer_servings 最大的国家是Namibia，spirit_servings最大的国家Grenada等等</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在DataFrame中，可通过axis指定appply作用在行或者列上</span></span><br><span class="line">res = drinks.loc[:,<span class="string">'beer_servings'</span>:<span class="string">'wine_servings'</span>].apply(np.argmax,axis=<span class="number">0</span>)</span><br><span class="line">res</span><br><span class="line"><span class="comment"># Outputs</span></span><br><span class="line">beer_servings      <span class="number">117</span></span><br><span class="line">spirit_servings     <span class="number">68</span></span><br><span class="line">wine_servings       <span class="number">61</span></span><br><span class="line">dtype: int64</span><br><span class="line">    </span><br><span class="line">drinks.loc[res,<span class="string">'country'</span>]</span><br><span class="line"><span class="number">117</span>    Namibia</span><br><span class="line"><span class="number">68</span>     Grenada</span><br><span class="line"><span class="number">61</span>      France</span><br><span class="line"><span class="comment"># 即beer_servings 最大的国家是Namibia，spirit_servings大的国家Grenada等等</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>在DataFrame中删除行或者列</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 删除一列或多列</span></span><br><span class="line">df.drop([<span class="string">'int_rating'</span>],axis=<span class="number">1</span>,inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除一行或多行</span></span><br><span class="line">df.drop([<span class="number">0</span>,<span class="number">1</span>], axis = <span class="number">0</span>, inplace = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>

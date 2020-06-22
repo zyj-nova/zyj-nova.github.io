@@ -60,6 +60,165 @@
     
     
     
+    <article id="post-ZooKeeper基础教程" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/"
+    >ZooKeeper基础教程</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" class="article-date">
+  <time datetime="2020-06-22T03:09:01.189Z" itemprop="datePublished">2020-06-22</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="ZooKeeper基础教程"><a href="#ZooKeeper基础教程" class="headerlink" title="ZooKeeper基础教程"></a><code>ZooKeeper</code>基础教程</h2><h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h3><h4 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h4><p>​        <code>Zookeeper</code> 是一个基于Java的分布式协调服务的开源框架。主要用来解决分布式集群中应用系统的一致性问题，例如怎样避免同时操作同一数据造成脏读的问题。<code>ZooKeeper</code>本质上是一个分布式的<strong>小文件存储系统</strong>。提供基于类似于文件系统的目录树方式的数据存储，并且可以对树中的节点进行有效管理。从而用来维护和监控你存储的数据的状态变化。通过监控这些数据状态的变化，从而可以达到基于数据的集群管理。诸如:统一命名服务、分布式配置管理、分布式消息队列、分布式锁、分布式协调等功能。</p>
+<h4 id="1-2-集群"><a href="#1-2-集群" class="headerlink" title="1.2 集群"></a>1.2 集群</h4><p>​        <code>ZooKeeper</code>集群包含两种角色，Leader和Follower。</p>
+<ul>
+<li><p>Leader</p>
+<p><code>Zookeeper</code>集群工作的核心，事务请求（写操作）的唯一调度和处理者，保证集群事务处理的顺序性；</p>
+<p>集群内部各个服务器的调度者。 对于 <code>create，setData，delete</code> 等有写操作的请求，则需要统一转发给 leader处理，leader需要决定编号、执行操作，这个过程称为一个事务。</p>
+</li>
+<li><p>Follower</p>
+<p>处理客户端非事务（读操作）请求，转发事务请求给 Leader； 参与集群 Leader 选举投票。 此外，针对访问量比较大的 <code>ZooKeeper</code> 集群，还可新增观察者角色。</p>
+</li>
+</ul>
+<ul>
+<li><p>Observer: </p>
+<p>观察者角色，观察<code>Zookeeper</code> 集群的最新状态变化并将这些状态同步过 来，其对于非事务请求可以进行独立处理，对于事务请求，则会转发给Leader服务器进行处理。 </p>
+<p>不会参与任何形式的投票只提供非事务服务，通常用于在不影响集群事务处理能力的前提下提升集群的非事务处理能力。</p>
+</li>
+</ul>
+<h4 id="1-3-集群搭建"><a href="#1-3-集群搭建" class="headerlink" title="1.3 集群搭建"></a>1.3 集群搭建</h4><p>​        集群通常由<strong>2n+1</strong>台 servers 组成。这是因为为了保证 Leader 选举（基于<code>Paxos</code>算法的实现）能过得到多数的支持，所以<code>ZooKeeper</code>集群的数量一般为奇数。</p>
+<p>​        <code>Zookeeper</code>运行需要<code>java</code>环境，所以需要提前安装 。对于安装 leader+follower 模式的集群，大致过程如下</p>
+<ul>
+<li><p>配置主机名称到IP地址映射配置</p>
+</li>
+<li><p>修改 <code>ZooKeeper</code> 配置文件（<code>/conf/zoo.cfg</code>文件）</p>
+<p>配置data暂存目录，各个服务器地址ip</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">dataDir=/usr/local/zookeeper-3.4.14/zkData</span><br><span class="line"></span><br><span class="line">clientPort=2181</span><br><span class="line"></span><br><span class="line">server.0=192.168.10.1:2888:3888</span><br><span class="line">server.1=192.168.10.2:2888:3888</span><br><span class="line">server.2=192.168.10.3:2888:3888</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p><code>server.A=B:C:D</code>解释：</p>
+<p>A：其中 A 是一个数字，表示这个是服务器的编号；</p>
+<p>B：是这个服务器的IP地址；</p>
+<p>C：<code>Leader</code>选举的端口；</p>
+<p>D：<code>Zookeeper</code>服务器之间的通信端口。</p>
+</li>
+<li><p>远程复制分发安装文件</p>
+</li>
+<li><p>设置<code>myid</code></p>
+<p>在 上一步<code>dataDir</code> 指定的目录下，创建<code>myid</code>文件。在对应的服务器上写入对应序号。</p>
+<p>比如<code>192.168.10.1</code>对应<code>server.0</code>，那么在<code>myid</code>中写入0即可。</p>
+</li>
+<li><p>启动集群</p>
+<p>启动命令：<code>zkServer.sh start</code></p>
+<p>停止命令：<code>zkServer.sh stop</code></p>
+<p>重启命令：<code>zkServer.sh restart</code></p>
+<p>查看集群结点状态：<code>zkServer.sh status</code></p>
+</li>
+</ul>
+<h3 id="2-Shell操作"><a href="#2-Shell操作" class="headerlink" title="2 Shell操作"></a>2 Shell操作</h3><p><code>bin/zkCli.sh</code>命令进入命令行界面。</p>
+<h4 id="2-1-创建结点"><a href="#2-1-创建结点" class="headerlink" title="2.1 创建结点"></a>2.1 创建结点</h4><p><code>ZooKeeper</code>中的结点类型分为<strong>永久节点和临时结点(-e)</strong>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create [-s] [-e] path data acl</span><br></pre></td></tr></table></figure>
+<p>其中，-s 或-e 分别指定节点特性，顺序或临时节点，若不指定，则表示持 久节点；<code>acl</code>用来进行权限控制。</p>
+<p>例子：</p>
+<p>创建顺序节点，结点值为123：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create -s /test 123</span><br></pre></td></tr></table></figure>
+<p>创建临时结点</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create -e /test-tmp 123</span><br></pre></td></tr></table></figure>
+<p>创建永久节点：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create /test-per 123p</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-读取节点"><a href="#2-2-读取节点" class="headerlink" title="2.2 读取节点"></a>2.2 读取节点</h4><pre><code>     与读取相关的命令有`ls`命令和 `get` 命令，`ls` 命令可以列出 `Zookeeper `指 定节点下的所有子节点，只能查看指定节点下的第一级的所有子节点；`get` 命令 可以获取 `Zookeeper` 指定节点的数据内容和属性信息。
+</code></pre><p>查看根目录下所有结点：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[zk: localhost:2181(CONNECTED) 0] ls /</span><br><span class="line">[cluster, brokers, zookeeper, admin, isr_change_notification, log_dir_event_notification, node1, controller_epoch, servers, nefu, test0000000015, consumers, latest_producer_id_block, config]</span><br></pre></td></tr></table></figure>
+<p>获取<code>/nefu</code>结点的信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[zk: localhost:2181(CONNECTED) 3] get /nefu</span><br><span class="line">ssss  #属性值</span><br><span class="line">cZxid = 0x12</span><br><span class="line">ctime = Thu Jun 04 16:51:44 CST 2020</span><br><span class="line">mZxid = 0x12</span><br><span class="line">mtime = Thu Jun 04 16:51:44 CST 2020</span><br><span class="line">pZxid = 0x12</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 0</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 4</span><br><span class="line">numChildren = 0</span><br></pre></td></tr></table></figure>
+<h4 id="2-3-更新与删除结点"><a href="#2-3-更新与删除结点" class="headerlink" title="2.3 更新与删除结点"></a>2.3 更新与删除结点</h4><h5 id="2-3-1-更新结点"><a href="#2-3-1-更新结点" class="headerlink" title="2.3.1 更新结点"></a>2.3.1 更新结点</h5><p><code>set path data [version]</code> data 就是要更新的新内容，version 表示数据版本。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[zk: localhost:2181(CONNECTED) 5] set /nefu ilovenefu     </span><br><span class="line">cZxid = 0x12</span><br><span class="line">ctime = Thu Jun 04 16:51:44 CST 2020</span><br><span class="line">mZxid = 0xd7</span><br><span class="line">mtime = Mon Jun 22 11:37:18 CST 2020</span><br><span class="line">pZxid = 0x12</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 1 #注意这儿的版本号</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 9</span><br><span class="line">numChildren = 0</span><br></pre></td></tr></table></figure>
+<h5 id="2-3-2-删除节点"><a href="#2-3-2-删除节点" class="headerlink" title="2.3.2 删除节点"></a>2.3.2 删除节点</h5><p><code>delete path [version]</code></p>
+<p>注意：若删除节点存在子节点，那么无法删除该节点，必须先删除子节点，再删除父节点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Rmr path</span><br></pre></td></tr></table></figure>
+<h3 id="3-ZooKeeper数据模型"><a href="#3-ZooKeeper数据模型" class="headerlink" title="3. ZooKeeper数据模型"></a>3. <code>ZooKeeper</code>数据模型</h3><p>​        <code>ZooKeeper</code>的数据模型，在结构上和标准文件系统的非常相似，拥有一个层次的命名空间，都是采用树形层次结构，<code>ZooKeeper</code>树中的每个节点被称为一个<code>Znode</code>。和文件系统的目录树一样，<code>ZooKeeper</code>树中的每个节点可以拥有子节点。</p>
+<p><img src="/images/zookeeper.png" alt=""></p>
+<p>​        图中的每个节点称为一个<code>Znode</code> 。每个<code>Znode</code>由 3 部分组成:</p>
+<p> ① stat：此为状态信息, 描述该 <code>Znode</code> 的版本, 权限等信息</p>
+<p> ② data：与该 <code>Znode</code> 关联的数据 </p>
+<p> ③ children：该<code>Znode</code>下的子节点</p>
+<p>​        <code>Znode</code>有两种，分别为临时节点和永久节点。 </p>
+<p>​        节点的类型在创建时即被确定，并且不能改变。 </p>
+<p>​        <strong>临时节点</strong>：该节点的生命周期依赖于创建它们的会话。一旦<strong>会话结束</strong>，临时节点将被自动删除，当然可以也可以手动删除。临时节点不允许拥有子节点。 </p>
+<p>​        <strong>永久节点</strong>：该节点的生命周期不依赖于会话，并且只有在客户端显示执行删 除操作的时候，他们才能被删除。 </p>
+<p>​        <code>Znode</code>还有一个序列化的特性，如果创建的时候指定的话，该<code>Znode</code>的名字 后面会自动追加一个不断增加的序列号。序列号对于此节点的父节点来说是唯一 的，这样便会记录每个子节点创建的先后顺序。它的格式为“%10d”(10 位数字， 没有数值的数位用 0 补充，例如“0000000001”)。</p>
+<h3 id="4-Watcher"><a href="#4-Watcher" class="headerlink" title="4. Watcher"></a>4. Watcher</h3><p>​        ZooKeeper 提供了分布式数据发布/订阅功能，一个典型的发布/订阅模型系统定义了一种一对多的订阅关系，能让多个订阅者同时监听某一个主题对象，当 这个主题对象自身状态变化时，会通知所有订阅者，使他们能够做出相应的处理。 </p>
+<p>​        ZooKeeper 中，引入了 Watcher 机制来实现这种分布式的通知功能。 ZooKeeper 允许客户端向服务端注册一个 Watcher 监听，当服务端的一些事件触 发了这个 Watcher，那么就会向指定客户端发送一个事件通知来实现分布式的通知功能。</p>
+<p>​         触发事件种类很多，如：节点创建，节点删除，节点改变，子节点改变等。 </p>
+<p>​        总的来说可以概括 Watcher 为以下三个过程：客户端向服务端注册 Watcher、 服务端事件发生触发 Watcher、客户端回调 Watcher 得到触发事件情况。</p>
+<h3 id="5-Java-API编程"><a href="#5-Java-API编程" class="headerlink" title="5. Java API编程"></a>5. Java API编程</h3><p>首先导入<code>pom</code>依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.nefu<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zookeeper-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.zookeeper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zookeeper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.4.10<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.8.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- https://mvnrepository.com/artifact/junit/junit --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>简单的连接集群和结点操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.zookeeper.*;</span><br><span class="line"><span class="keyword">import</span> org.apache.zookeeper.data.Stat;</span><br><span class="line"><span class="keyword">import</span> org.junit.Before;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestZookeeper</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String connectionString = <span class="string">"139.129.100.28:2181"</span>;</span><br><span class="line">    <span class="keyword">private</span> ZooKeeper zkClient;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        zkClient = <span class="keyword">new</span> ZooKeeper(connectionString,<span class="number">2000</span>, <span class="keyword">new</span> Watcher() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(WatchedEvent event)</span> </span>&#123;</span><br><span class="line">                List&lt;String&gt; children ;</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    System.out.println(<span class="string">"------------start----------------"</span>);</span><br><span class="line">                    children = zkClient.getChildren(<span class="string">"/"</span>, <span class="keyword">true</span>);</span><br><span class="line">                    System.out.println(children);</span><br><span class="line">                    System.out.println(<span class="string">"-------------end------------------"</span>);</span><br><span class="line">                &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCreateNode</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line">        String path = zkClient.create(<span class="string">"/nefu"</span>,<span class="string">"i wanna go back"</span>.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);</span><br><span class="line">        System.out.println(path);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getChildren</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        zkClient.getChildren(<span class="string">"/"</span>, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        Thread.sleep(Long.MAX_VALUE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exist</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        Stat stat = zkClient.exists(<span class="string">"/nefu"</span>, <span class="keyword">false</span>);</span><br><span class="line">        System.out.println(stat);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-ZooKeeper典型应用"><a href="#6-ZooKeeper典型应用" class="headerlink" title="6. ZooKeeper典型应用"></a>6. ZooKeeper典型应用</h3><h4 id="6-1-数据发布与订阅（配置中心）"><a href="#6-1-数据发布与订阅（配置中心）" class="headerlink" title="6.1 数据发布与订阅（配置中心）"></a>6.1 数据发布与订阅（配置中心）</h4><p>​        发布与订阅模型，即所谓的配置中心，顾名思义就是发布者将数据发布到ZK节点上，供订阅者动态获取数据，实现配置信息的集中式管理和动态更新。</p>
+<p>​         应用在启动的时候会主动来获取一次配置，同时，在节点上注册一个 Watcher， 这样一来，以后每次配置有更新的时候，都会实时通知到订阅的客户端，从来达 到获取最新配置信息的目的。</p>
+<p>​        比如： 分布式搜索服务中，索引的元信息和服务器集群机器的节点状态存放在 ZK 的一些指定节点，供各个客户端订阅使用。 </p>
+<p>​        注意：适合数据量很小的场景，这样数据更新可能会比较快。</p>
+<h4 id="6-2-命名服务-Naming-Service"><a href="#6-2-命名服务-Naming-Service" class="headerlink" title="6.2 命名服务(Naming Service)"></a>6.2 命名服务(Naming Service)</h4><p>​        在分布式系统中，通过使用命名服务，客户端应用能够根据指定名字来获取 资源或服务的地址，提供者等信息。被命名的实体通常可以是集群中的机器，提 供的服务地址，远程对象等等——这些我们都可以统称他们为名字（Name）。其 中较为常见的就是一些分布式服务框架中的服务地址列表。通过调用 ZK 提供的 创建节点的 API，能够很容易创建一个全局唯一的 path，这个 path 就可以作为 一个名称。</p>
+<p>​        阿里巴巴集团开源的分布式服务框架 <code>Dubbo</code> 中使用 <code>ZooKeeper</code>来作为其命 名服务，维护全局的服务地址列表。</p>
+<h4 id="6-3-分布式锁"><a href="#6-3-分布式锁" class="headerlink" title="6.3 分布式锁"></a>6.3 分布式锁</h4><p>​        分布式锁，这个主要得益于 ZooKeeper 保证了数据的强一致性。锁服务可以 分为两类，一个是保持独占，另一个是控制时序。</p>
+<p>​        所谓保持独占，就是所有试图来获取这个锁的客户端，最终只有一个可以成 功获得这把锁。通常的做法是把 zk 上的一个 znode 看作是一把锁，通过 create znode 的方式来实现。所有客户端都去创建 /distribute_lock 节点，最终成功 创建的那个客户端也即拥有了这把锁。</p>
+<p>​        控制时序，就是所有试图来获取这个锁的客户端，最终都是会被安排执行， 只是有个全局时序了。做法和上面基本类似，只是这里 /distribute_lock 已经 预先存在，客户端在它下面创建临时有序节点（这个可以通过节点的属性控制： CreateMode.EPHEMERAL_SEQUENTIAL 来指定）。Zk 的父节点（/distribute_lock） 维持一份 sequence,保证子节点创建的时序性，从而也形成了每个客户端的全局 时序。</p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" data-id="ckbq1u7c8001qa4ug368c4siv"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-LRU缓存机制" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -110,7 +269,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" data-id="ckbjhlebe000f6cug6tssbeht"
+      <a data-url="http://yoursite.com/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" data-id="ckbq1u7bj000ha4ugasv8e9dx"
         class="article-share-link">分享</a>
         
       
@@ -176,9 +335,12 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">df = pd.read_csv(<span class="string">'https://bitly.com/imdbratings'</span>)</span><br></pre></td></tr></table></figure>
 <p>具体可以指定的参数有：</p>
 <ul>
-<li>encoding，文件编码方式，如：<code>GBK/ANSI/UTF-8</code></li>
-<li>names，指定数据文件的各个列的名称，传入的是list类型</li>
-<li>seq，指定文件的分隔符</li>
+<li><p>encoding，文件编码方式，如：<code>GBK/ANSI/UTF-8</code></p>
+</li>
+<li><p>names，指定数据文件的各个列的名称，传入的是list类型</p>
+</li>
+<li><p>seq，指定文件的分隔符</p>
+</li>
 </ul>
 </li>
 <li><p>查看数据相关信息</p>
@@ -211,10 +373,8 @@
 </li>
 <li><p>查看不同分级的电影数量</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取电影具体的分级级别</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].unique()</span><br><span class="line"><span class="comment"># Output</span></span><br><span class="line">array([<span class="string">'R'</span>, <span class="string">'PG-13'</span>, <span class="string">'NOT RATED'</span>, <span class="string">'PG'</span>, <span class="string">'UNRATED'</span>, <span class="string">'APPROVED'</span>, <span class="string">'PASSED'</span>,</span><br><span class="line">       <span class="string">'G'</span>, <span class="string">'X'</span>, nan, <span class="string">'TV-MA'</span>, <span class="string">'GP'</span>, <span class="string">'NC-17'</span>], dtype=object)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看不同分级类别的电影数量</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].value_counts()</span><br><span class="line"><span class="comment"># Output</span></span><br><span class="line">R            <span class="number">460</span></span><br><span class="line">PG<span class="number">-13</span>        <span class="number">189</span></span><br><span class="line">PG           <span class="number">123</span></span><br><span class="line">NOT RATED     <span class="number">65</span></span><br><span class="line">APPROVED      <span class="number">47</span></span><br><span class="line">UNRATED       <span class="number">38</span></span><br><span class="line">G             <span class="number">32</span></span><br><span class="line">PASSED         <span class="number">7</span></span><br><span class="line">NC<span class="number">-17</span>          <span class="number">7</span></span><br><span class="line">X              <span class="number">4</span></span><br><span class="line">GP             <span class="number">3</span></span><br><span class="line">TV-MA          <span class="number">1</span></span><br><span class="line">Name: content_rating, dtype: int64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以柱状图形式展示</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].value_counts().plot(kind=<span class="string">'bar'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/content-rating.png" alt=""></p>
 </li>
-</ol>
-<p>   <img src="/images/content-rating.png" alt=""></p>
-<ol>
 <li><p>groupby的应用</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看不同题材的电影的平均时长</span></span><br><span class="line">df.groupby(<span class="string">'genre'</span>).duration.mean()</span><br></pre></td></tr></table></figure>
 </li>
@@ -226,7 +386,7 @@
 <p>下面引入一个新的数据集</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">drinks = pd.read_csv(<span class="string">'http://bit.ly/drinksbycountry'</span>)</span><br><span class="line">drinks.head()</span><br></pre></td></tr></table></figure>
 <p><img src="/images/pandas-2.png" alt=""></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在DataFrame中，可通过axis指定appply作用在行或者列上</span></span><br><span class="line">res = drinks.loc[:,<span class="string">'beer_servings'</span>:<span class="string">'wine_servings'</span>].apply(np.argmax,axis=<span class="number">0</span>)</span><br><span class="line">res</span><br><span class="line"><span class="comment"># Outputs</span></span><br><span class="line">beer_servings      <span class="number">117</span></span><br><span class="line">spirit_servings     <span class="number">68</span></span><br><span class="line">wine_servings       <span class="number">61</span></span><br><span class="line">dtype: int64</span><br><span class="line">    </span><br><span class="line">drinks.loc[res,<span class="string">'country'</span>]</span><br><span class="line"><span class="number">117</span>    Namibia</span><br><span class="line"><span class="number">68</span>     Grenada</span><br><span class="line"><span class="number">61</span>      France</span><br><span class="line"><span class="comment"># 即beer_servings 最大的国家是Namibia，spirit_servings最大的国家Grenada等等</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在DataFrame中，可通过axis指定appply作用在行或者列上</span></span><br><span class="line">res = drinks.loc[:,<span class="string">'beer_servings'</span>:<span class="string">'wine_servings'</span>].apply(np.argmax,axis=<span class="number">0</span>)</span><br><span class="line">res</span><br><span class="line"><span class="comment"># Outputs</span></span><br><span class="line">beer_servings      <span class="number">117</span></span><br><span class="line">spirit_servings     <span class="number">68</span></span><br><span class="line">wine_servings       <span class="number">61</span></span><br><span class="line">dtype: int64</span><br><span class="line">    </span><br><span class="line">drinks.loc[res,<span class="string">'country'</span>]</span><br><span class="line"><span class="number">117</span>    Namibia</span><br><span class="line"><span class="number">68</span>     Grenada</span><br><span class="line"><span class="number">61</span>      France</span><br><span class="line"><span class="comment"># 即beer_servings 最大的国家是Namibia，spirit_servings大的国家Grenada等等</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>在DataFrame中删除行或者列</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除一列或多列</span></span><br><span class="line">df.drop([<span class="string">'int_rating'</span>],axis=<span class="number">1</span>,inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除一行或多行</span></span><br><span class="line">df.drop([<span class="number">0</span>,<span class="number">1</span>], axis = <span class="number">0</span>, inplace = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
@@ -251,7 +411,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckbjhlecr001v6cug2far62uy"
+      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckbq1u7cm0028a4ugg47eg0ry"
         class="article-share-link">分享</a>
         
       
@@ -375,7 +535,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" data-id="ckbjhlebf000g6cug1ozv2atr"
+      <a data-url="http://yoursite.com/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" data-id="ckbq1u7bl000ka4ug9r9dbaqe"
         class="article-share-link">分享</a>
         
       
@@ -482,7 +642,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" data-id="ckbjhlebt00126cug5ylscnwm"
+      <a data-url="http://yoursite.com/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" data-id="ckbq1u7by001ea4ug3qlienjj"
         class="article-share-link">分享</a>
         
       
@@ -563,7 +723,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" data-id="ckbjhled9002b6cug8ozuhuxm"
+      <a data-url="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" data-id="ckbq1u7bo000pa4ugcf5v7uyz"
         class="article-share-link">分享</a>
         
       
@@ -642,7 +802,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" data-id="ckbjhlebi000j6cug443rdp5b"
+      <a data-url="http://yoursite.com/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" data-id="ckbq1u7bn000oa4ughh20gb7k"
         class="article-share-link">分享</a>
         
       
@@ -837,7 +997,7 @@ c_i = \sum_{j=1}^{T_x} \alpha_{ij}h_j</script><p><strong>注意</strong>：此�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckbjhled500296cug8rmz362f"
+      <a data-url="http://yoursite.com/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckbq1u7cl0026a4ug6v1v1n33"
         class="article-share-link">分享</a>
         
       
@@ -967,7 +1127,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckbjhlecn001t6cugeedg9oov"
+      <a data-url="http://yoursite.com/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckbq1u7c6001oa4ugg6gj9xjr"
         class="article-share-link">分享</a>
         
       
@@ -1045,236 +1205,7 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" data-id="ckbjhlebz001a6cuggnljau7n"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-Spark学习笔记" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"
-    >Spark学习笔记</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="article-date">
-  <time datetime="2020-05-13T12:30:01.261Z" itemprop="datePublished">2020-05-13</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="Spark学习笔记"><a href="#Spark学习笔记" class="headerlink" title="Spark学习笔记"></a>Spark学习笔记</h2><h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h3><p>​        Spark是一个计算框架，可以整合Hadoop的HDFS和其他资源调度器s（YARN、Mesos、K8s）。</p>
-<h3 id="2-Spark安装"><a href="#2-Spark安装" class="headerlink" title="2. Spark安装"></a>2. Spark安装</h3><h4 id="2-1-Local模式"><a href="#2-1-Local模式" class="headerlink" title="2.1 Local模式"></a>2.1 Local模式</h4><h4 id="2-2-Standalone模式"><a href="#2-2-Standalone模式" class="headerlink" title="2.2 Standalone模式"></a>2.2 Standalone模式</h4><h4 id="2-3-Yarn模式"><a href="#2-3-Yarn模式" class="headerlink" title="2.3 Yarn模式"></a>2.3 Yarn模式</h4><h3 id="3-Spark设计与运行流程"><a href="#3-Spark设计与运行流程" class="headerlink" title="3. Spark设计与运行流程"></a>3. Spark设计与运行流程</h3><h4 id="3-1-Spark基本概念"><a href="#3-1-Spark基本概念" class="headerlink" title="3.1 Spark基本概念"></a>3.1 Spark基本概念</h4><p>Driver、Master、Worker、Executor、RDD、DAG、Application、Job、Stage、Tasks、Partition</p>
-<p><strong>一个Application可以划分为多个Job，当遇到一个Action操作后就会触发一个Job的计算；一个Job可划分为多个Stage，出现shuffle就划分一个阶段（ShuffleMapStage）；一个Stage包含多个Partition，一个Partition对应一个Task，因此一个Stage就是一个TaskSet</strong>。</p>
-<p>划分Job依据：</p>
-<p>注：有的Transformation算子也会被划分为一个Job。</p>
-<p>application -&gt; jobs -&gt; stage -&gt; tasks。</p>
-<h4 id="3-2-Spark架构"><a href="#3-2-Spark架构" class="headerlink" title="3.2 Spark架构"></a>3.2 Spark架构</h4><p><img src="C:\Users\ASUS\Pictures\spark.jpg" alt=""></p>
-<h4 id="3-3-Spark运行流程"><a href="#3-3-Spark运行流程" class="headerlink" title="3.3 Spark运行流程"></a>3.3 Spark运行流程</h4><p>宽依赖：发生了Shuffle，就是宽依赖（不可以并行处理）一个父RDD对应多个儿子RDD分区，这些所有儿子RDD在没有得到父RDD分区数据时，不能干别的，只能等待。比如groupByKey操作。Shuffle会引发写磁盘操作(spill to disk)。</p>
-<p>窄依赖： 一个父RDD对应一个儿子RDD，或多个父RDD对应一个儿子RDD。可以进行流水线优化（不发生磁盘写操作），对其中一个父RDD传过来的数据就可以处理，儿子RDD无需等待所有父RDD数据到达。filter、map操作。</p>
-<p>Spark的DAGScheduler会根据程序生成的DAG确定宽依赖、窄依赖，进而划分作业到不同的阶段。</p>
-<h4 id="3-4-Scheduler模块源码分析"><a href="#3-4-Scheduler模块源码分析" class="headerlink" title="3.4 Scheduler模块源码分析"></a>3.4 Scheduler模块源码分析</h4><p>​        Spark的任务调度是从DAG切割开始，主要是由DAGScheduler来完成。当遇到一个Action操作后就会触发一个Job的计算，并交给DAGScheduler来提交，下图是涉及到Job提交的相关方法调用流程图。</p>
-<p>Stage的调度</p>
-<p><img src="/images/spark-scheduler-dag-process.png" alt=""></p>
-<p>Task级的调度</p>
-<p><img src="/images/spark-scheduler-task-process.png" alt=""></p>
-<p>​        DAGScheduler将Stage打包到TaskSet交给TaskScheduler，TaskScheduler会将其封装为TaskSetManager加入到调度队列中，TaskSetManager负责监控管理同一个Stage中的Tasks，TaskScheduler就是以TaskSetManager为单元来调度任务。</p>
-<p>​        TaskScheduler支持两种调度策略，一种是FIFO，也是默认的调度策略，另一种是FAIR。</p>
-<p>​        从调度队列中拿到TaskSetManager后，那么接下来的工作就是TaskSetManager按照一定的规则一个个取出Task给TaskScheduler，TaskScheduler再交给SchedulerBackend去发到Executor上执行。前面也提到，TaskSetManager封装了一个Stage的所有Task，并负责管理调度这些Task。(<a href="http://sharkdtu.com/posts/spark-scheduler.htm" target="_blank" rel="noopener">http://sharkdtu.com/posts/spark-scheduler.htm</a>)</p>
-<h4 id="3-5-1-单机模式"><a href="#3-5-1-单机模式" class="headerlink" title="3.5.1 单机模式"></a>3.5.1 单机模式</h4><p>独立集群（stand alone）模式：该模式，Spark既负责计算，也负责资源的调度。有Master结点和Slaves结点，Master负责资源调度，Slaves负责执行计算（Executor）。</p>
-<p>Yarn模式：Yarn负责资源调度，Spark负责计算。</p>
-<p>yarn-client：driver位于提交job的机器上，实时展示job运行情况</p>
-<p><img src="C:\Users\ASUS\Pictures\yarn-client.png" alt=""></p>
-<p><strong>执行流程：</strong></p>
-<p>1.客户端提交一个Application，在客户端启动一个Driver进程。</p>
-<p>2.Driver进程会向RS(ResourceManager)发送请求，启动AM(ApplicationMaster)。</p>
-<p>3.RS收到请求，随机选择一台NM(NodeManager)启动AM。这里的NM相当于Standalone中的Worker节点。</p>
-<p>4.AM启动后，会向RS请求一批container资源，用于启动Executor。</p>
-<p>5.RS会找到一批NM返回给AM,用于启动Executor。AM会向NM发送命令启动Executor。</p>
-<p>6.Executor启动后，会反向注册给Driver，Driver发送task到Executor,执行情况和结果返回给Driver端。</p>
-<p>yarn-cluster：driver位于集群中某个结点。</p>
-<p><img src="/images/spark-submit-time.png" alt=""></p>
-<p><strong>执行流程：</strong></p>
-<p>1.客户机提交Application应用程序，发送请求到RS(ResourceManager),请求启动AM(ApplicationMaster)。</p>
-<p>2.RS收到请求后随机在一台NM(NodeManager)上启动AM，</p>
-<p>3.AM启动，AM拿到客户机提交的程序的代码，运行Driver进程；AM发送请求到RS，请求一批container用于启动Executor。</p>
-<p>3.RS返回一批NM节点给AM，。</p>
-<p>4.AM连接到NM,发送请求到NM在Container启动Executor。</p>
-<p>5.Executor反向注册到AM所在的节点的Driver。Driver发送task到Executor。</p>
-<p>NodeManager会向AM报告container资源情况，而Executor会向Driver报告计算情况。AM一个负责资源调度、一个负责计算，在cluster模式时。</p>
-<h4 id="3-6-RDD编程"><a href="#3-6-RDD编程" class="headerlink" title="3.6 RDD编程"></a>3.6 RDD编程</h4><p>​        Resilient Distributed Dataset（弹性分布式数据集）是多个分区（Partition）的集合。一个RDD对象包含一个或多个Partition。</p>
-<p>​        RDD操作（算子）类型：transformations和actions，前者不会进行计算（只生成新的RDD对象），后者会引起真正的计算（runJob进而划分阶段提交task，driver分发task给Executor去计算）。</p>
-<p>RDD创建：</p>
-<p>1.集合中创建：<code>parallelize</code>/<code>makeRDD</code></p>
-<p>2.外部存储：<code>textFile</code></p>
-<p>3.其他RDD转换</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="keyword">val</span> rdd = sc.makeRDD(<span class="type">List</span>(<span class="string">"a_b"</span>,<span class="string">"c_d"</span>,<span class="string">"e_f"</span>))</span><br><span class="line">&gt;rdd.flatMap(_.split(<span class="string">"_"</span>)).foreach(println)</span><br><span class="line">a</span><br><span class="line">b</span><br><span class="line">c</span><br><span class="line">d</span><br><span class="line">e</span><br><span class="line">f</span><br><span class="line">&gt;rdd.map(_.split(<span class="string">"_"</span>)).foreach(println)</span><br><span class="line">a,b</span><br><span class="line">c,d</span><br><span class="line">e,f</span><br></pre></td></tr></table></figure>
-<p><code>mapPartition</code>、<code>foreachPartiton</code> 容易造成内存溢出（OOM）。</p>
-<p><code>collect</code>会把所有数据拉取到Driver结点上。</p>
-<p><strong>广播变量</strong></p>
-<p>​        广播变量用来高效分发较大的对象。向所有工作节点发送一个较大的只读值，以供一个或多个Spark操作使用，减少网络传输开销，优化性能。比如，如果你的应用需要向所有节点发送一个较大的只读查询表，甚至是机器学习算法中的一个很大的特征向量，广播变量用起来都很顺手。 在多个并行操作中使用同一个变量，但是 Spark会为每个任务分别发送。</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> broadcastVar = sc.broadcast(<span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>))</span><br><span class="line">broadcastVar: org.apache.spark.broadcast.<span class="type">Broadcast</span>[<span class="type">Array</span>[<span class="type">Int</span>]] = <span class="type">Broadcast</span>(<span class="number">35</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; broadcastVar.value</span><br><span class="line">res33: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
-<p>​        使用广播变量的过程如下：</p>
-<p>​        (1) 通过对一个类型 T 的对象调用 SparkContext.broadcast 创建出一个 Broadcast[T] 对象。 任何可序列化的类型都可以这么实现。 </p>
-<p>​        (2) 通过 value 属性访问该对象的值(在 Java 中为 value() 方法)。 </p>
-<p>​        (3) 变量只会被发到各个节点一次，应作为只读值处理(修改这个值不会影响到别的节点)。</p>
-<p><strong>多文件排序</strong></p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.&#123;<span class="type">HashPartitioner</span>, <span class="type">SparkConf</span>, <span class="type">SparkContext</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Spark03</span> </span>&#123;</span><br><span class="line">  <span class="comment">//实现多文件排序</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setAppName(<span class="string">"demo"</span>).setMaster(<span class="string">"local"</span>)</span><br><span class="line">    <span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> files = sc.textFile(<span class="string">"data/input2/*"</span>)</span><br><span class="line">    <span class="comment">//有多少个文件就会有多少个分区</span></span><br><span class="line">    println(<span class="string">"分区数量："</span>+files.partitions.size)</span><br><span class="line">    <span class="keyword">val</span> result = files.filter(_.trim.length &gt; <span class="number">0</span>)</span><br><span class="line">      .map(x =&gt; (x.toInt,<span class="number">1</span>))</span><br><span class="line">      .partitionBy(<span class="keyword">new</span> <span class="type">HashPartitioner</span>(<span class="number">1</span>))<span class="comment">//转化为一个分区,没有的话就会各个文件分开排序</span></span><br><span class="line">      .sortBy(x=&gt;x)</span><br><span class="line">      .map(_._1)</span><br><span class="line"></span><br><span class="line">    result.saveAsTextFile(<span class="string">"result"</span>)</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>找出多个文件中的最大值和最小值</strong></p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.&#123;<span class="type">SparkConf</span>, <span class="type">SparkContext</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Spark02</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setAppName(<span class="string">"demo"</span>).setMaster(<span class="string">"local"</span>)</span><br><span class="line">    <span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> files = sc.textFile(<span class="string">"data/input2/*"</span>)</span><br><span class="line"></span><br><span class="line">    files.map(x=&gt; (<span class="string">"key"</span>,x.toInt))</span><br><span class="line">      .groupByKey()<span class="comment">//转到一个分区上</span></span><br><span class="line">      .map(x =&gt; &#123;</span><br><span class="line">        <span class="keyword">var</span> min = <span class="type">Integer</span>.<span class="type">MAX_VALUE</span></span><br><span class="line">        <span class="keyword">var</span> max = <span class="type">Integer</span>.<span class="type">MIN_VALUE</span></span><br><span class="line">        <span class="keyword">for</span>(num &lt;- x._2)&#123;</span><br><span class="line">          <span class="keyword">if</span> (num &gt; max)&#123;</span><br><span class="line">            max = num</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">if</span> (num &lt; min)&#123;</span><br><span class="line">            min = num</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        (min,max)</span><br><span class="line">      &#125;)</span><br><span class="line">      .foreach(println)</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Transformation</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>map</strong>(<em>func</em>)</td>
-<td>Return a new distributed dataset formed by passing each element of the source through a function <em>func</em>.</td>
-</tr>
-<tr>
-<td><strong>filter</strong>(<em>func</em>)</td>
-<td>Return a new dataset formed by selecting those elements of the source on which <em>func</em> returns true.</td>
-</tr>
-<tr>
-<td><strong>flatMap</strong>(<em>func</em>)</td>
-<td>Similar to map, but each input item can be mapped to 0 or more output items (so <em>func</em> should return a Seq rather than a single item).</td>
-</tr>
-<tr>
-<td><strong>mapPartitions</strong>(<em>func</em>)</td>
-<td>Similar to map, but runs separately on each partition (block) of the RDD, so <em>func</em> must be of type Iterator<T> =&gt; Iterator<U> when running on an RDD of type T.</td>
-</tr>
-<tr>
-<td><strong>mapPartitionsWithIndex</strong>(<em>func</em>)</td>
-<td>Similar to mapPartitions, but also provides <em>func</em> with an integer value representing the index of the partition, so <em>func</em> must be of type (Int, Iterator<T>) =&gt; Iterator<U> when running on an RDD of type T.</td>
-</tr>
-<tr>
-<td><strong>sample</strong>(<em>withReplacement</em>, <em>fraction</em>, <em>seed</em>)</td>
-<td>Sample a fraction <em>fraction</em> of the data, with or without replacement, using a given random number generator seed.</td>
-</tr>
-<tr>
-<td><strong>distinct</strong>([<em>numPartitions</em>]))</td>
-<td>Return a new dataset that contains the distinct elements of the source dataset.</td>
-</tr>
-<tr>
-<td><strong>groupByKey</strong>([<em>numPartitions</em>])</td>
-<td>When called on a dataset of (K, V) pairs, returns a dataset of (K, Iterable<V>) pairs. <strong>Note:</strong> If you are grouping in order to perform an aggregation (such as a sum or average) over each key, using <code>reduceByKey</code> or <code>aggregateByKey</code> will yield much better performance. <strong>Note:</strong> By default, the level of parallelism in the output depends on the number of partitions of the parent RDD. You can pass an optional <code>numPartitions</code> argument to set a different number of tasks.</td>
-</tr>
-<tr>
-<td><strong>reduceByKey</strong>(<em>func</em>, [<em>numPartitions</em>])</td>
-<td>When called on a dataset of (K, V) pairs, returns a dataset of (K, V) pairs where the values for each key are aggregated using the given reduce function <em>func</em>, which must be of type (V,V) =&gt; V. Like in <code>groupByKey</code>, the number of reduce tasks is configurable through an optional second argument.</td>
-</tr>
-<tr>
-<td><strong>sortByKey</strong>([<em>ascending</em>], [<em>numPartitions</em>])</td>
-<td>When called on a dataset of (K, V) pairs where K implements Ordered, returns a dataset of (K, V) pairs sorted by keys in ascending or descending order, as specified in the boolean <code>ascending</code> argument.</td>
-</tr>
-<tr>
-<td><strong>join</strong>(<em>otherDataset</em>, [<em>numPartitions</em>])</td>
-<td>When called on datasets of type (K, V) and (K, W), returns a dataset of (K, (V, W)) pairs with all pairs of elements for each key. Outer joins are supported through <code>leftOuterJoin</code>, <code>rightOuterJoin</code>, and <code>fullOuterJoin</code>.</td>
-</tr>
-<tr>
-<td><strong>repartition</strong>(<em>numPartitions</em>)</td>
-<td>Reshuffle the data in the RDD randomly to create either more or fewer partitions and balance it across them. This always shuffles all data over the network.</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Action</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>reduce</strong>(<em>func</em>)</td>
-<td>Aggregate the elements of the dataset using a function <em>func</em> (which takes two arguments and returns one). The function should be commutative and associative so that it can be computed correctly in parallel.</td>
-</tr>
-<tr>
-<td><strong>collect</strong>()</td>
-<td>Return all the elements of the dataset as an array at the driver program. This is usually useful after a filter or other operation that returns a sufficiently small subset of the data.</td>
-</tr>
-<tr>
-<td><strong>first</strong>()</td>
-<td>Return the first element of the dataset (similar to take(1)).</td>
-</tr>
-<tr>
-<td><strong>take</strong>(<em>n</em>)</td>
-<td>Return an array with the first <em>n</em> elements of the dataset.</td>
-</tr>
-<tr>
-<td><strong>saveAsTextFile</strong>(<em>path</em>)</td>
-<td>Write the elements of the dataset as a text file (or set of text files) in a given directory in the local filesystem, HDFS or any other Hadoop-supported file system. Spark will call toString on each element to convert it to a line of text in the file.</td>
-</tr>
-<tr>
-<td><strong>countByKey</strong>()</td>
-<td>Only available on RDDs of type (K, V). Returns a hashmap of (K, Int) pairs with the count of each key.</td>
-</tr>
-<tr>
-<td><strong>foreach</strong>(<em>func</em>)</td>
-<td>Run a function <em>func</em> on each element of the dataset. This is usually done for side effects such as updating an <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#accumulators" target="_blank" rel="noopener">Accumulator</a> or interacting with external storage systems. <strong>Note</strong>: modifying variables other than Accumulators outside of the <code>foreach()</code> may result in undefined behavior. See <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#understanding-closures-a-nameclosureslinka" target="_blank" rel="noopener">Understanding closures </a>for more details.</td>
-</tr>
-<tr>
-<td><strong>count</strong>()</td>
-<td>Return the number of elements in the dataset.</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ckbjhlecp001u6cug264dd15i"
+      <a data-url="http://yoursite.com/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" data-id="ckbq1u7bv0016a4ug5l8646s5"
         class="article-share-link">分享</a>
         
       
@@ -1407,16 +1338,6 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
   <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
   <div class="reward-box">
     
-    <div class="reward-item">
-      <img class="reward-img" src="/images/alipay.jpg">
-      <span class="reward-type">支付宝</span>
-    </div>
-    
-    
-    <div class="reward-item">
-      <img class="reward-img" src="/images/wechat.jpg">
-      <span class="reward-type">微信</span>
-    </div>
     
   </div>
 </div>

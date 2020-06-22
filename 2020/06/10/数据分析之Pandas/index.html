@@ -103,9 +103,12 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">df = pd.read_csv(<span class="string">'https://bitly.com/imdbratings'</span>)</span><br></pre></td></tr></table></figure>
 <p>具体可以指定的参数有：</p>
 <ul>
-<li>encoding，文件编码方式，如：<code>GBK/ANSI/UTF-8</code></li>
-<li>names，指定数据文件的各个列的名称，传入的是list类型</li>
-<li>seq，指定文件的分隔符</li>
+<li><p>encoding，文件编码方式，如：<code>GBK/ANSI/UTF-8</code></p>
+</li>
+<li><p>names，指定数据文件的各个列的名称，传入的是list类型</p>
+</li>
+<li><p>seq，指定文件的分隔符</p>
+</li>
 </ul>
 </li>
 <li><p>查看数据相关信息</p>
@@ -138,10 +141,8 @@
 </li>
 <li><p>查看不同分级的电影数量</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取电影具体的分级级别</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].unique()</span><br><span class="line"><span class="comment"># Output</span></span><br><span class="line">array([<span class="string">'R'</span>, <span class="string">'PG-13'</span>, <span class="string">'NOT RATED'</span>, <span class="string">'PG'</span>, <span class="string">'UNRATED'</span>, <span class="string">'APPROVED'</span>, <span class="string">'PASSED'</span>,</span><br><span class="line">       <span class="string">'G'</span>, <span class="string">'X'</span>, nan, <span class="string">'TV-MA'</span>, <span class="string">'GP'</span>, <span class="string">'NC-17'</span>], dtype=object)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看不同分级类别的电影数量</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].value_counts()</span><br><span class="line"><span class="comment"># Output</span></span><br><span class="line">R            <span class="number">460</span></span><br><span class="line">PG<span class="number">-13</span>        <span class="number">189</span></span><br><span class="line">PG           <span class="number">123</span></span><br><span class="line">NOT RATED     <span class="number">65</span></span><br><span class="line">APPROVED      <span class="number">47</span></span><br><span class="line">UNRATED       <span class="number">38</span></span><br><span class="line">G             <span class="number">32</span></span><br><span class="line">PASSED         <span class="number">7</span></span><br><span class="line">NC<span class="number">-17</span>          <span class="number">7</span></span><br><span class="line">X              <span class="number">4</span></span><br><span class="line">GP             <span class="number">3</span></span><br><span class="line">TV-MA          <span class="number">1</span></span><br><span class="line">Name: content_rating, dtype: int64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以柱状图形式展示</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].value_counts().plot(kind=<span class="string">'bar'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/content-rating.png" alt=""></p>
 </li>
-</ol>
-<p>   <img src="/images/content-rating.png" alt=""></p>
-<ol>
 <li><p>groupby的应用</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看不同题材的电影的平均时长</span></span><br><span class="line">df.groupby(<span class="string">'genre'</span>).duration.mean()</span><br></pre></td></tr></table></figure>
 </li>
@@ -153,7 +154,7 @@
 <p>下面引入一个新的数据集</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">drinks = pd.read_csv(<span class="string">'http://bit.ly/drinksbycountry'</span>)</span><br><span class="line">drinks.head()</span><br></pre></td></tr></table></figure>
 <p><img src="/images/pandas-2.png" alt=""></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在DataFrame中，可通过axis指定appply作用在行或者列上</span></span><br><span class="line">res = drinks.loc[:,<span class="string">'beer_servings'</span>:<span class="string">'wine_servings'</span>].apply(np.argmax,axis=<span class="number">0</span>)</span><br><span class="line">res</span><br><span class="line"><span class="comment"># Outputs</span></span><br><span class="line">beer_servings      <span class="number">117</span></span><br><span class="line">spirit_servings     <span class="number">68</span></span><br><span class="line">wine_servings       <span class="number">61</span></span><br><span class="line">dtype: int64</span><br><span class="line">    </span><br><span class="line">drinks.loc[res,<span class="string">'country'</span>]</span><br><span class="line"><span class="number">117</span>    Namibia</span><br><span class="line"><span class="number">68</span>     Grenada</span><br><span class="line"><span class="number">61</span>      France</span><br><span class="line"><span class="comment"># 即beer_servings 最大的国家是Namibia，spirit_servings最大的国家Grenada等等</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在DataFrame中，可通过axis指定appply作用在行或者列上</span></span><br><span class="line">res = drinks.loc[:,<span class="string">'beer_servings'</span>:<span class="string">'wine_servings'</span>].apply(np.argmax,axis=<span class="number">0</span>)</span><br><span class="line">res</span><br><span class="line"><span class="comment"># Outputs</span></span><br><span class="line">beer_servings      <span class="number">117</span></span><br><span class="line">spirit_servings     <span class="number">68</span></span><br><span class="line">wine_servings       <span class="number">61</span></span><br><span class="line">dtype: int64</span><br><span class="line">    </span><br><span class="line">drinks.loc[res,<span class="string">'country'</span>]</span><br><span class="line"><span class="number">117</span>    Namibia</span><br><span class="line"><span class="number">68</span>     Grenada</span><br><span class="line"><span class="number">61</span>      France</span><br><span class="line"><span class="comment"># 即beer_servings 最大的国家是Namibia，spirit_servings大的国家Grenada等等</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>在DataFrame中删除行或者列</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除一列或多列</span></span><br><span class="line">df.drop([<span class="string">'int_rating'</span>],axis=<span class="number">1</span>,inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除一行或多行</span></span><br><span class="line">df.drop([<span class="number">0</span>,<span class="number">1</span>], axis = <span class="number">0</span>, inplace = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
@@ -178,7 +179,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckbjhlecr001v6cug2far62uy"
+      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckbq1u7cm0028a4ugg47eg0ry"
         class="article-share-link">分享</a>
         
       
@@ -373,16 +374,6 @@
   <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
   <div class="reward-box">
     
-    <div class="reward-item">
-      <img class="reward-img" src="/images/alipay.jpg">
-      <span class="reward-type">支付宝</span>
-    </div>
-    
-    
-    <div class="reward-item">
-      <img class="reward-img" src="/images/wechat.jpg">
-      <span class="reward-type">微信</span>
-    </div>
     
   </div>
 </div>
