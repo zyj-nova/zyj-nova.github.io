@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-22T05:16:29.678Z</updated>
+  <updated>2020-06-23T15:20:10.286Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>生成对抗网络</title>
+    <link href="http://yoursite.com/2020/06/22/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/"/>
+    <id>http://yoursite.com/2020/06/22/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/</id>
+    <published>2020-06-22T05:22:08.407Z</published>
+    <updated>2020-06-23T15:20:10.286Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;生成对抗网络（GAN）&quot;&gt;&lt;a href=&quot;#生成对抗网络（GAN）&quot; class=&quot;headerlink&quot; title=&quot;生成对抗网络（GAN）&quot;&gt;&lt;/a&gt;生成对抗网络（GAN）&lt;/h2&gt;&lt;h3 id=&quot;1-入门简介&quot;&gt;&lt;a href=&quot;#1-入门简介&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>ZooKeeper基础教程</title>
@@ -481,31 +506,6 @@
         
         
           &lt;h2 id=&quot;GitHub的骚操作&quot;&gt;&lt;a href=&quot;#GitHub的骚操作&quot; class=&quot;headerlink&quot; title=&quot;GitHub的骚操作&quot;&gt;&lt;/a&gt;GitHub的骚操作&lt;/h2&gt;&lt;h3 id=&quot;1-in-限制搜索&quot;&gt;&lt;a href=&quot;#1-in-限制搜索&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Java 反射和动态代理</title>
-    <link href="http://yoursite.com/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"/>
-    <id>http://yoursite.com/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/</id>
-    <published>2020-02-23T03:34:51.877Z</published>
-    <updated>2020-02-23T06:29:02.237Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;Java-反射和动态代理&quot;&gt;&lt;a href=&quot;#Java-反射和动态代理&quot; class=&quot;headerlink&quot; title=&quot;Java 反射和动态代理&quot;&gt;&lt;/a&gt;Java 反射和动态代理&lt;/h2&gt;&lt;h3 id=&quot;1-类加载机制&quot;&gt;&lt;a
         
       
     

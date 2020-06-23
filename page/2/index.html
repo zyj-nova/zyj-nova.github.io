@@ -60,6 +60,84 @@
     
     
     
+    <article id="post-微信小程序开发入门指南" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/"
+    >微信小程序开发入门指南</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" class="article-date">
+  <time datetime="2020-05-13T12:37:33.779Z" itemprop="datePublished">2020-05-13</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/">小程序开发</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="微信小程序开发入门指南"><a href="#微信小程序开发入门指南" class="headerlink" title="微信小程序开发入门指南"></a>微信小程序开发入门指南</h2><h3 id="0-概述"><a href="#0-概述" class="headerlink" title="0. 概述"></a>0. 概述</h3><p>​        小程序是典型的前后端分离开发的架构，前端界面使用微信官方推出的<code>wxml</code>、<code>wxss</code>、<code>js</code>进行开发，发布时这些代码被微信官方托管，而后端开发可以使用任意语言，如：<code>Node.js</code>、<code>Python</code>、<code>PHP</code>、<code>Java</code>等，只需提供数据交互的<code>api</code>接口即可。需要注意的是，后端服务器必须有合法的域名才可以与前端界面提供数据交（微信强制要求），具体配置在微信公众平台 （小程序）=&gt; 开发 =&gt; 开发设置 =&gt; 服务器域名中，进行配置。</p>
+<h3 id="1-入门"><a href="#1-入门" class="headerlink" title="1. 入门"></a>1. 入门</h3><p>​        小程序的项目架构大致如下：</p>
+<p><img src="/images/project-structure.png" alt="image-20200517000550738"></p>
+<p>pages主要存放各个页面的<code>wxss/wxml/js/json</code>文件，pages下一个文件夹即代表一个具体页面，文件命名应和页面文件夹名称相同（如：<code>login-&gt;login.wxml,login.js,login.json,login.wxss</code>）。</p>
+<p>images存放系统所需图片资源。</p>
+<p><code>app.js/app.json/app.wxss</code>都是创建项目时自动生成的，<code>app.json</code>用于配置前端路由，小程序整体设置等信息（例如tab bar、导航栏颜色和标题等），<code>app.wxss</code>用于配置全局样式。</p>
+<p><strong>前端组件</strong>：详情参见微信官方文档</p>
+<p><strong>数据绑定</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">index.js:</span><br><span class="line"></span><br><span class="line">Page(&#123;</span><br><span class="line">    data:&#123;</span><br><span class="line">        msg:<span class="string">"hello world"</span>,</span><br><span class="line">        number: <span class="number">5</span>,</span><br><span class="line">        person:&#123;</span><br><span class="line">            name:<span class="string">'bill'</span>,</span><br><span class="line">            age:<span class="string">'25'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    func1()&#123;&#125;,</span><br><span class="line">    func2()&#123;&#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">index.wxml:</span><br><span class="line">&lt;!--编译后页面显示 hello world--&gt;</span><br><span class="line">&lt;text&gt;&#123;&#123;msg&#125;&#125;&lt;<span class="regexp">/text&gt;</span></span><br><span class="line"><span class="regexp">&lt;!--属性绑定--&gt;</span></span><br><span class="line"><span class="regexp">&lt;view class="num-&#123;&#123;number&#125;&#125;"&gt;&lt;/</span>view&gt;</span><br><span class="line">&lt;view&gt;</span><br><span class="line">	姓名：&lt;text&gt;&#123;&#123;person.name&#125;&#125;&lt;<span class="regexp">/text&gt;</span></span><br><span class="line"><span class="regexp">	年龄：&lt;text&gt;&#123;&#123;person.age&#125;&#125;&lt;/</span>text&gt;</span><br><span class="line">&lt;<span class="regexp">/view&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>网络请求</strong>：</p>
+<p><code>wx.request</code>可以实现异步请求，具体格式如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">wx.request(&#123;</span><br><span class="line">    url:<span class="string">'http://www.xxx.com'</span>,</span><br><span class="line">    data:&#123;<span class="comment">//请求提交的具体参数</span></span><br><span class="line">        </span><br><span class="line">    &#125;,</span><br><span class="line">    method:<span class="string">'post'</span>,</span><br><span class="line">    header: &#123;</span><br><span class="line">    	<span class="string">'content-type'</span>: <span class="string">'application/json'</span> <span class="comment">// 默认值</span></span><br><span class="line">  	&#125;,</span><br><span class="line">    success()&#123;<span class="comment">//请求成功的回调函数</span></span><br><span class="line">        </span><br><span class="line">    &#125;,</span><br><span class="line">    fail()&#123;<span class="comment">//请求失败的回调函数</span></span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" data-id="ckbs2tdrd0015s0ug2ts0c06t"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-Spark学习笔记" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -271,7 +349,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ckbq1u7ca001ta4ug9qshb8db"
+      <a data-url="http://yoursite.com/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ckbs2tdrz001ss0ug1iby0ewc"
         class="article-share-link">分享</a>
         
       
@@ -353,7 +431,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/" data-id="ckbq1u7ci0022a4ug1v0ugaa9"
+      <a data-url="http://yoursite.com/2020/04/29/Spring%20Boot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E4%BD%8D%E7%BD%AE/" data-id="ckbs2tdr4000ss0ugde93givh"
         class="article-share-link">分享</a>
         
       
@@ -459,7 +537,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/17/Word%20Embedding/" data-id="ckbq1u7ci0021a4ug5xkac0jg"
+      <a data-url="http://yoursite.com/2020/04/17/Word%20Embedding/" data-id="ckbs2tdr8000xs0ug35lo3f14"
         class="article-share-link">分享</a>
         
       
@@ -565,7 +643,7 @@ f(x+\Delta x) \approx f(x) + f^{\\'}(x)\Delta x + \frac{1}{2}\ddot{f(x)}\Delta x
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" data-id="ckbq1u7bw0019a4ughyhu6wyb"
+      <a data-url="http://yoursite.com/2020/04/12/%E6%8F%90%E5%8D%87%E6%A0%91%E5%92%8C%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87%E6%A0%91/" data-id="ckbs2tdrf0018s0ugfaim4ws9"
         class="article-share-link">分享</a>
         
       
@@ -677,7 +755,7 @@ C - (C-k) = k</script><p>同样是k个距离。</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/20/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/" data-id="ckbq1u7bt0010a4ug1q5r29o3"
+      <a data-url="http://yoursite.com/2020/03/20/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/" data-id="ckbs2tdr9000zs0ug96sxc2vz"
         class="article-share-link">分享</a>
         
       
@@ -816,7 +894,7 @@ E_Z[\log p(x_i,z;\theta)|x_i;\theta^j]</script><p>我们将最后一个式子称
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/19/EM%E7%AE%97%E6%B3%95/" data-id="ckbq1u7as0000a4ug8zzz5fwr"
+      <a data-url="http://yoursite.com/2020/03/19/EM%E7%AE%97%E6%B3%95/" data-id="ckbs2tdps0000s0ug48ig6spr"
         class="article-share-link">分享</a>
         
       
@@ -907,7 +985,7 @@ E_Z[\log p(x_i,z;\theta)|x_i;\theta^j]</script><p>我们将最后一个式子称
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/07/PyTorch%20%E4%BD%BF%E7%94%A8GPU%E5%8A%A0%E9%80%9F/" data-id="ckbq1u7bm000la4uga8pebvik"
+      <a data-url="http://yoursite.com/2020/03/07/PyTorch%20%E4%BD%BF%E7%94%A8GPU%E5%8A%A0%E9%80%9F/" data-id="ckbs2tdqy000os0ug386ke5kb"
         class="article-share-link">分享</a>
         
       
@@ -1017,7 +1095,7 @@ v_t = \gamma v_{t-1} + \alpha \nabla J(\theta)</script><script type="math/tex; m
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/" data-id="ckbq1u7bs000ya4ug3hy84rx8"
+      <a data-url="http://yoursite.com/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/" data-id="ckbs2tdra0011s0ugas6c9b48"
         class="article-share-link">分享</a>
         
       
@@ -1119,110 +1197,7 @@ v_t = \gamma v_{t-1} + \alpha \nabla J(\theta)</script><script type="math/tex; m
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/" data-id="ckbq1u7bd000ba4ug6r626s4k"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-Java 反射和动态代理" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"
-    >Java 反射和动态代理</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" class="article-date">
-  <time datetime="2020-02-23T03:34:51.877Z" itemprop="datePublished">2020-02-23</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="Java-反射和动态代理"><a href="#Java-反射和动态代理" class="headerlink" title="Java 反射和动态代理"></a>Java 反射和动态代理</h2><h3 id="1-类加载机制"><a href="#1-类加载机制" class="headerlink" title="1. 类加载机制"></a>1. 类加载机制</h3><h4 id="1-1-类加载过程"><a href="#1-1-类加载过程" class="headerlink" title="1.1 类加载过程"></a>1.1 类加载过程</h4><p>大体来说，可以分为三个阶段：<strong>加载 $\rightarrow$ 链接 $\rightarrow$ 初始化</strong>。具体过程如图：1</p>
-<p><img src="/images/loader.png" alt=""></p>
-<p><strong>类加载时机</strong>:</p>
-<p>1.创建类的实例，也就是new一个对象</p>
-<p>2.访问某个类或接口的静态变量，或者对该静态变量赋值</p>
-<p>3.调用类的静态方法</p>
-<p>4.反射</p>
-<p>5.初始化一个类的子类（会首先初始化子类的父类）</p>
-<p>6.虚拟机启动时标明的启动类，即文件名和类名相同的那个类</p>
-<h4 id="1-2-加载"><a href="#1-2-加载" class="headerlink" title="1.2 加载"></a>1.2 加载</h4><p>​        将<code>class</code>字节码文件内容加载到内存中，并将这些静态数据转换为方法区的运行时数据结构，然后在堆中生成一个代表这个类的<code>java.lang.Class</code>对象，作为方法区中<strong>类数据（Class Metadata）</strong>的返回入口。</p>
-<p><strong><code>Class</code></strong>对象代表啥：</p>
-<p>​        每当一个类加载到内存中后，这个类便成为运行时类，虚拟机会在<strong>堆区</strong>创建一个有关这个类的<code>Class</code>对象。</p>
-<h4 id="1-1-类加载过程-1"><a href="#1-1-类加载过程-1" class="headerlink" title="1.1 类加载过程"></a>1.1 类加载过程</h4><h4 id="1-3-类加载器"><a href="#1-3-类加载器" class="headerlink" title="1.3 类加载器"></a>1.3 类加载器</h4><ul>
-<li><code>Bootstrap  Class loader</code></li>
-<li><code>Extension Class loader</code></li>
-<li><code>Application Class loader</code></li>
-</ul>
-<p><strong>双亲委托模型</strong>：</p>
-<p>​         如果一个类加载器收到了类加载请求，它并不会自己先去加载，而是把这个请求委托给父类的加载器去执行，如果父类加载器还存在其父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的启动类加载器，如果父类加载器可以完成类加载任务，就成功返回，倘若父类加载器无法完成此加载任务，子加载器才会尝试自己去加载，这就是双亲委派模式。</p>
-<p>​        即每个儿子都很懒，每次有活就丢给父亲去干，直到父亲说这件事我也干不了时，儿子自己才想办法去完成。 </p>
-<p><strong>为什么采用这种模式</strong>：</p>
-<ul>
-<li>避免类的重复加载 </li>
-<li>保证安全， Java中定义的核心类不会被随意替换 </li>
-</ul>
-<p><img src="/images/classloder.jpg" alt=""></p>
-<h3 id="2-反射"><a href="#2-反射" class="headerlink" title="2. 反射"></a>2. 反射</h3><p>​        反射到底是干啥的？答：不用new也可以获取到一个对象的实例。可以在运行时构造任意一个类的对象，可以在运行时处理注解、获取泛型信息等。</p>
-<p>​        反射相关的<code>api</code>在<code>java.lang.reflect</code>包下。以下是通过反射调用<code>show</code>方法的代码清单。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.nefu.reflect;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException </span>&#123;</span><br><span class="line">        <span class="comment">//1. 获取Class对象实例</span></span><br><span class="line">		Class&lt;?&gt; clazz = Class.forName(<span class="string">"com.nefu.reflect.Main"</span>);</span><br><span class="line">        <span class="comment">//2. 创建一个Main类的实例对象</span></span><br><span class="line">		Object obj = clazz.getDeclaredConstructor().newInstance();</span><br><span class="line">		Method show = clazz.getDeclaredMethod(<span class="string">"show"</span>);</span><br><span class="line">        <span class="comment">//3. 避免权限不够</span></span><br><span class="line">		show.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">		System.out.println(show.getReturnType());</span><br><span class="line">        <span class="comment">//4. 调用obj的show方法</span></span><br><span class="line">		show.invoke(obj);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"hello world"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-动态代理"><a href="#3-动态代理" class="headerlink" title="3. 动态代理"></a>3. 动态代理</h3><p>​        代理类可以增强被代理类对象方法。</p>
-<h4 id="3-1-静态代理"><a href="#3-1-静态代理" class="headerlink" title="3.1 静态代理"></a>3.1 静态代理</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test01</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		NikeClothFactory nikeClothFactory = <span class="keyword">new</span> NikeClothFactory();</span><br><span class="line">		NikeClothFactoryProxy proxy = <span class="keyword">new</span> NikeClothFactoryProxy(nikeClothFactory);</span><br><span class="line">		proxy.invoke();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ClothFactory</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">product</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">///被代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NikeClothFactory</span> <span class="keyword">implements</span> <span class="title">ClothFactory</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">product</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"Nike 开始生产...."</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NikeClothFactoryProxy</span></span>&#123;</span><br><span class="line">	ClothFactory clothFactory;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">NikeClothFactoryProxy</span><span class="params">(ClothFactory clothFactory)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">this</span>.clothFactory = clothFactory;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">invoke</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"前置处理"</span>);</span><br><span class="line">		clothFactory.product();</span><br><span class="line">		System.out.println(<span class="string">"后置处理"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>​        以上代码可以看出，当再有一个类实现<code>ClothFactory</code>接口，我们得继续编写一个对应的代理类进行增强处理。<strong>静态代理在编译期就确定了代理对象</strong>。</p>
-<h4 id="3-2-动态代理"><a href="#3-2-动态代理" class="headerlink" title="3.2 动态代理"></a>3.2 动态代理</h4><p>​        在Java中，动态代理实现有<code>JDK</code>自带的动态代理，<code>CGLib</code>动态代理。 通过动态代理，可以无需声明代理类。是使用反射和字节码的技术，在运行期创建指定接口或类的子类（即动态代理类）以及其实例对象的技术。通过动态代理技术可以无侵入地对代码进行增强。 </p>
-<p>​        两种动态代理的最大的区别是：<code>JDK</code>动态代理要求被代理对象必须基于接口来实现。动态代理类和被代理类必须实现同一个接口。动态代理只能对接口中声明的方法进行代理。对那些没有实现接口的bean。<code>JDK</code>动态代理无法代理。而<code>CGLib</code>通过继承被代理类的方式实现代理。</p>
-<p>​        在<code>JDK</code>动态代理中，主要调用<code>java.lang.reflect.Proxy</code>类和<code>java.lang.reflect.InvocationHandler</code>接口。依然以静态代理中的<code>ClothFactory</code>为例，编写动态代理。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Proxy;</span><br><span class="line"></span><br><span class="line"><span class="comment">//被代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PumaClothFactory</span> <span class="keyword">implements</span> <span class="title">ClothFactory</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">product</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"Puma 源自南美！"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//测试类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test02</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		PumaClothFactory obj = <span class="keyword">new</span> PumaClothFactory();</span><br><span class="line">		ClothFactory proxy = (ClothFactory)Proxy</span><br><span class="line">				.newProxyInstance(obj.getClass().getClassLoader(), </span><br><span class="line">						obj.getClass().getInterfaces(),</span><br><span class="line">						<span class="keyword">new</span> PumaInvocationHandler(obj));</span><br><span class="line">		proxy.product();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//每一个动态代理实例都有一个关联的InvocationHandler</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PumaInvocationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span></span>&#123;</span><br><span class="line">	ClothFactory obj;</span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="title">PumaInvocationHandler</span><span class="params">(ClothFactory clothFactory)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">		 <span class="keyword">this</span>.obj = clothFactory;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		System.out.println(<span class="string">"前置处理"</span>);</span><br><span class="line">		<span class="comment">//真正调用被代理类的方法</span></span><br><span class="line">		method.invoke(obj, args);</span><br><span class="line">		System.out.println(<span class="string">"后置处理"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>​        可以看出，上述代码中并没有显示的编写代理类，而是调用了<code>Proxy.newProxyInstance</code>方法来动态创建代理类。</p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" data-id="ckbq1u7bq000ua4ugfzrfa0ff"
+      <a data-url="http://yoursite.com/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/" data-id="ckbs2tdqh0009s0ug5c8yfm7r"
         class="article-share-link">分享</a>
         
       
