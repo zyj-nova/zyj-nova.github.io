@@ -60,6 +60,72 @@
     
     
     
+    <article id="post-SpringMVC源码浅析" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/06/24/SpringMVC%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/"
+    >SpringMVC源码浅析</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/06/24/SpringMVC%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" class="article-date">
+  <time datetime="2020-06-24T01:47:29.672Z" itemprop="datePublished">2020-06-24</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="SpringMVC源码浅析"><a href="#SpringMVC源码浅析" class="headerlink" title="SpringMVC源码浅析"></a>SpringMVC源码浅析</h2>
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/24/SpringMVC%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" data-id="ckbuupvns001b68uggte52974"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-生成对抗网络" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -113,15 +179,33 @@
 \max_D \log [D(x)] + \log [1 - D(G(z))]</script><p>​        Generator的损失函数</p>
 <script type="math/tex; mode=display">
 \min_G \log[1-D(G(z))]</script><p>​        <strong>在（近似）最优判别器下，最小化生成器的loss等价于最小化$P_r$与$P_g$之间的JS散度</strong>。</p>
+<p>​        下图中可以发现，所有的loss都是由判别器产生的。如果没有D，G不知道自己生成的结果如何，便得不到权重更新。</p>
+<p>​    <img src="E:\hexo\themes\ayer\source\images\gan-train.png" alt="image-20200625214641466"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> datasets,transforms</span><br><span class="line"><span class="keyword">from</span> torchvision.utils <span class="keyword">import</span> save_image</span><br><span class="line"></span><br><span class="line">device = torch.device(<span class="string">'cuda'</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">'cpu'</span>)</span><br><span class="line"><span class="comment">#数据集的加载</span></span><br><span class="line">batch_size = <span class="number">100</span></span><br><span class="line">transform = transforms.Compose([</span><br><span class="line">    transforms.ToTensor(),</span><br><span class="line">    transforms.Lambda(<span class="keyword">lambda</span> x: x.repeat(<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>)),</span><br><span class="line">    transforms.Normalize(mean=(<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>), std=(<span class="number">0.5</span>, <span class="number">0.5</span>, <span class="number">0.5</span>))])</span><br><span class="line">train_dataset = datasets.MNIST(root=<span class="string">'./MNIST_data/'</span>, train=<span class="literal">True</span>, transform=transform, download=<span class="literal">False</span>)</span><br><span class="line">test_dataset = datasets.MNIST(root=<span class="string">'./MNIST_data/'</span>, train=<span class="literal">False</span>, transform=transform, download=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">train_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=<span class="literal">True</span>)</span><br><span class="line">test_loader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Generator</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,input_dims, output_dims)</span>:</span></span><br><span class="line">        super(Generator,self).__init__()</span><br><span class="line">        self.fc1 = nn.Linear(input_dims,<span class="number">256</span>)</span><br><span class="line">        self.fc2 = nn.Linear(self.fc1.out_features, self.fc1.out_features*<span class="number">2</span>)</span><br><span class="line">        self.fc3 = nn.Linear(self.fc2.out_features, self.fc2.out_features*<span class="number">2</span>)</span><br><span class="line">        self.fc4 = nn.Linear(self.fc3.out_features, output_dims)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        x = F.leaky_relu(self.fc1(x),<span class="number">0.2</span>)</span><br><span class="line">        x = F.leaky_relu(self.fc2(x),<span class="number">0.3</span>)</span><br><span class="line">        x = F.leaky_relu(self.fc3(x),<span class="number">0.4</span>)</span><br><span class="line">        <span class="keyword">return</span> torch.tanh(self.fc4(x))</span><br><span class="line">    </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Discriminator</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,input_dim)</span>:</span></span><br><span class="line">        super(Discriminator,self).__init__()</span><br><span class="line">        self.fc1 = nn.Linear(input_dim, <span class="number">1024</span>)</span><br><span class="line">        self.fc2 = nn.Linear(self.fc1.out_features, self.fc1.out_features//<span class="number">2</span>)</span><br><span class="line">        self.fc3 = nn.Linear(self.fc2.out_features, self.fc2.out_features//<span class="number">2</span>)</span><br><span class="line">        self.fc4 = nn.Linear(self.fc3.out_features, <span class="number">1</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        x = F.leaky_relu(self.fc1(x), <span class="number">0.2</span>)</span><br><span class="line">        x = F.dropout(x, <span class="number">0.3</span>)</span><br><span class="line">        x = F.leaky_relu(self.fc2(x), <span class="number">0.2</span>)</span><br><span class="line">        x = F.dropout(x, <span class="number">0.3</span>)</span><br><span class="line">        x = F.leaky_relu(self.fc3(x), <span class="number">0.2</span>)</span><br><span class="line">        x = F.dropout(x, <span class="number">0.3</span>)</span><br><span class="line">        <span class="keyword">return</span> torch.sigmoid(self.fc4(x))</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 二分类交叉熵损失函数</span></span><br><span class="line">criterion = nn.BCELoss()</span><br><span class="line"></span><br><span class="line">lr = <span class="number">0.0002</span></span><br><span class="line">D_optimizer = optim.Adam(D.parameters(), lr = lr)</span><br><span class="line">G_optimizer = optim.Adam(G.parameters(), lr = lr)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">G_train</span><span class="params">(x)</span>:</span></span><br><span class="line">    G.zero_grad()</span><br><span class="line">    z = Variable(torch.randn(batch_size,z_dim).to(device))</span><br><span class="line">    <span class="comment"># label全为1</span></span><br><span class="line">    y = Variable(torch.ones(batch_size,<span class="number">1</span>).to(device))</span><br><span class="line">    </span><br><span class="line">    G_output = G(z)</span><br><span class="line">    D_output = D(G_output)</span><br><span class="line">    </span><br><span class="line">    G_loss = criterion(D_output, y)</span><br><span class="line">    G_loss.backward()</span><br><span class="line">    </span><br><span class="line">    G_optimizer.step()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> G_loss.data.item()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">D_train</span><span class="params">(x)</span>:</span></span><br><span class="line">    D.zero_grad()</span><br><span class="line">    <span class="comment"># x原来的shape [batch_size,3,28,28]</span></span><br><span class="line">    <span class="comment"># 3个通道都是一样的，取一个通道就行</span></span><br><span class="line">    x = x[:,<span class="number">0</span>,:,:]</span><br><span class="line">    x_real, y_real = x.view(<span class="number">-1</span>, mnist_dim), torch.ones(batch_size, <span class="number">1</span>)</span><br><span class="line">    x_real, y_real = Variable(x_real.to(device)), Variable(y_real.to(device))</span><br><span class="line">    </span><br><span class="line">    D_output = D(x_real)</span><br><span class="line">    D_real_loss = criterion(D_output, y_real)</span><br><span class="line">    <span class="comment">#D_real_score = D_output</span></span><br><span class="line">    </span><br><span class="line">    z = Variable(torch.randn(batch_size, z_dim).to(device))</span><br><span class="line">    x_fake, y_fake = G(z), Variable(torch.zeros(batch_size, <span class="number">1</span>).to(device))</span><br><span class="line"></span><br><span class="line">    D_output = D(x_fake)</span><br><span class="line">    D_fake_loss = criterion(D_output, y_fake)</span><br><span class="line">    <span class="comment">#D_fake_score = D_output</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># gradient backprop &amp; optimize ONLY D's parameters</span></span><br><span class="line">    D_loss = D_real_loss + D_fake_loss</span><br><span class="line">    D_loss.backward()</span><br><span class="line">    D_optimizer.step()</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">return</span>  D_loss.data.item()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">n_epoch = <span class="number">200</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(n_epoch):</span><br><span class="line">    D_losses, G_losses = [], []</span><br><span class="line">    <span class="keyword">for</span> index,(x,_) <span class="keyword">in</span> enumerate(train_loader):</span><br><span class="line">        D_losses.append(D_train(x))</span><br><span class="line">        G_losses.append(G_train(x))</span><br><span class="line">    print(<span class="string">'[%d/%d]: loss_d: %.3f, loss_g: %.3f'</span> % (</span><br><span class="line">            (epoch), n_epoch, torch.mean(torch.FloatTensor(D_losses)), torch.mean(torch.FloatTensor(G_losses))))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用训练好的GAN生成图片</span></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    test_z = Variable(torch.randn(batch_size, z_dim).to(device))</span><br><span class="line">    generated = G(test_z)</span><br><span class="line">    save_image(generated.view(generated.size(<span class="number">0</span>), <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>), <span class="string">'./samples/sample_'</span> + <span class="string">'.png'</span>)</span><br></pre></td></tr></table></figure>
 <h3 id="2-各式各样的GAN"><a href="#2-各式各样的GAN" class="headerlink" title="2. 各式各样的GAN"></a>2. 各式各样的GAN</h3><h4 id="2-1DCGAN"><a href="#2-1DCGAN" class="headerlink" title="2.1DCGAN"></a>2.1DCGAN</h4><p>​        深度卷积生成对抗网络，在生成器中，对输入的一维向量不断进行转置卷积（上采样）最终生成对应的图像。在判别器中，则将输入的图像经过多层卷积最后经过sigmod函数进行二分类，判断这是原始数据图片还是生成器产生的图片。</p>
 <p><img src="/images/dcgan.jpg" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">weights_init</span><span class="params">(m)</span>:</span></span><br><span class="line">    classname = m.__class__.__name__</span><br><span class="line">    <span class="keyword">if</span> classname.find(<span class="string">'Conv'</span>) != <span class="number">-1</span>:</span><br><span class="line">        m.weight.data.normal_(<span class="number">0.0</span>, <span class="number">0.02</span>)</span><br><span class="line">    <span class="keyword">elif</span> classname.find(<span class="string">'BatchNorm'</span>) != <span class="number">-1</span>:</span><br><span class="line">        m.weight.data.normal_(<span class="number">1.0</span>, <span class="number">0.02</span>)</span><br><span class="line">        m.bias.data.fill_(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Generator</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    input (N, in_dim)</span></span><br><span class="line"><span class="string">    output (N, 3, 64, 64)</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_dim, dim=<span class="number">64</span>)</span>:</span></span><br><span class="line">        super(Generator, self).__init__()</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dconv_bn_relu</span><span class="params">(in_dim, out_dim)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> nn.Sequential(</span><br><span class="line">                nn.ConvTranspose2d(in_dim, out_dim, <span class="number">5</span>, <span class="number">2</span>,</span><br><span class="line">                                   padding=<span class="number">2</span>, output_padding=<span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">                nn.BatchNorm2d(out_dim),</span><br><span class="line">                nn.ReLU())</span><br><span class="line">        self.l1 = nn.Sequential(</span><br><span class="line">            nn.Linear(in_dim, dim * <span class="number">8</span> * <span class="number">4</span> * <span class="number">4</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm1d(dim * <span class="number">8</span> * <span class="number">4</span> * <span class="number">4</span>),</span><br><span class="line">            nn.ReLU())</span><br><span class="line">        self.l2_5 = nn.Sequential(</span><br><span class="line">            dconv_bn_relu(dim * <span class="number">8</span>, dim * <span class="number">4</span>),</span><br><span class="line">            dconv_bn_relu(dim * <span class="number">4</span>, dim * <span class="number">2</span>),</span><br><span class="line">            dconv_bn_relu(dim * <span class="number">2</span>, dim),</span><br><span class="line">            nn.ConvTranspose2d(dim, <span class="number">3</span>, <span class="number">5</span>, <span class="number">2</span>, padding=<span class="number">2</span>, output_padding=<span class="number">1</span>),</span><br><span class="line">            nn.Tanh())</span><br><span class="line">        self.apply(weights_init)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        y = self.l1(x)</span><br><span class="line">        y = y.view(y.size(<span class="number">0</span>), <span class="number">-1</span>, <span class="number">4</span>, <span class="number">4</span>)</span><br><span class="line">        y = self.l2_5(y)</span><br><span class="line">        <span class="keyword">return</span> y</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Discriminator</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    input (N, 3, 64, 64)</span></span><br><span class="line"><span class="string">    output (N, )</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_dim, dim=<span class="number">64</span>)</span>:</span></span><br><span class="line">        super(Discriminator, self).__init__()</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">conv_bn_lrelu</span><span class="params">(in_dim, out_dim)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> nn.Sequential(</span><br><span class="line">                nn.Conv2d(in_dim, out_dim, <span class="number">5</span>, <span class="number">2</span>, <span class="number">2</span>),</span><br><span class="line">                nn.BatchNorm2d(out_dim),</span><br><span class="line">                nn.LeakyReLU(<span class="number">0.2</span>))</span><br><span class="line">        self.ls = nn.Sequential(</span><br><span class="line">            nn.Conv2d(in_dim, dim, <span class="number">5</span>, <span class="number">2</span>, <span class="number">2</span>), nn.LeakyReLU(<span class="number">0.2</span>),</span><br><span class="line">            conv_bn_lrelu(dim, dim * <span class="number">2</span>),</span><br><span class="line">            conv_bn_lrelu(dim * <span class="number">2</span>, dim * <span class="number">4</span>),</span><br><span class="line">            conv_bn_lrelu(dim * <span class="number">4</span>, dim * <span class="number">8</span>),</span><br><span class="line">            nn.Conv2d(dim * <span class="number">8</span>, <span class="number">1</span>, <span class="number">4</span>),</span><br><span class="line">            nn.Sigmoid())</span><br><span class="line">        self.apply(weights_init)        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        y = self.ls(x)</span><br><span class="line">        y = y.view(<span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">return</span> y</span><br></pre></td></tr></table></figure>
 <h4 id="2-2-Conditional-GAN"><a href="#2-2-Conditional-GAN" class="headerlink" title="2.2 Conditional GAN"></a>2.2 Conditional GAN</h4><p>CGAN的目标函数与原始的并无太大不同，只不过加了一个限定条件。</p>
 <script type="math/tex; mode=display">
 \min_G \max_D V(D,G) = E_{x-p_{data}}[\log(D(x|y))] + E_{z-p_z}[\log[1 - D(G(z|y))]]</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># G(z)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Generator</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="comment"># initializers</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(generator, self).__init__()</span><br><span class="line">        self.fc1_1 = nn.Linear(<span class="number">100</span>, <span class="number">256</span>)</span><br><span class="line">        self.fc1_1_bn = nn.BatchNorm1d(<span class="number">256</span>)</span><br><span class="line">        <span class="comment"># 处理label one-hot向量的</span></span><br><span class="line">        self.fc1_2 = nn.Linear(<span class="number">10</span>, <span class="number">256</span>)</span><br><span class="line">        self.fc1_2_bn = nn.BatchNorm1d(<span class="number">256</span>)</span><br><span class="line">        </span><br><span class="line">        self.fc2 = nn.Linear(<span class="number">512</span>, <span class="number">512</span>)</span><br><span class="line">        self.fc2_bn = nn.BatchNorm1d(<span class="number">512</span>)</span><br><span class="line">        self.fc3 = nn.Linear(<span class="number">512</span>, <span class="number">1024</span>)</span><br><span class="line">        self.fc3_bn = nn.BatchNorm1d(<span class="number">1024</span>)</span><br><span class="line">        self.fc4 = nn.Linear(<span class="number">1024</span>, <span class="number">784</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># weight_init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">weight_init</span><span class="params">(self, mean, std)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self._modules:</span><br><span class="line">            normal_init(self._modules[m], mean, std)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># forward method</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input, label)</span>:</span></span><br><span class="line">        x = F.relu(self.fc1_1_bn(self.fc1_1(input)))</span><br><span class="line">        y = F.relu(self.fc1_2_bn(self.fc1_2(label)))</span><br><span class="line">        <span class="comment"># 把两个向量进行合并</span></span><br><span class="line">        x = torch.cat([x, y], <span class="number">1</span>)</span><br><span class="line">        x = F.relu(self.fc2_bn(self.fc2(x)))</span><br><span class="line">        x = F.relu(self.fc3_bn(self.fc3(x)))</span><br><span class="line">        x = F.tanh(self.fc4(x))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Discriminator</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="comment"># initializers</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(discriminator, self).__init__()</span><br><span class="line">        self.fc1_1 = nn.Linear(<span class="number">784</span>, <span class="number">1024</span>)</span><br><span class="line">        <span class="comment"># 处理label one-hot向量 batch_size * 10</span></span><br><span class="line">        self.fc1_2 = nn.Linear(<span class="number">10</span>, <span class="number">1024</span>)</span><br><span class="line">        self.fc2 = nn.Linear(<span class="number">2048</span>, <span class="number">512</span>)</span><br><span class="line">        self.fc2_bn = nn.BatchNorm1d(<span class="number">512</span>)</span><br><span class="line">        self.fc3 = nn.Linear(<span class="number">512</span>, <span class="number">256</span>)</span><br><span class="line">        self.fc3_bn = nn.BatchNorm1d(<span class="number">256</span>)</span><br><span class="line">        self.fc4 = nn.Linear(<span class="number">256</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># weight_init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">weight_init</span><span class="params">(self, mean, std)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self._modules:</span><br><span class="line">            normal_init(self._modules[m], mean, std)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># forward method</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input, label)</span>:</span></span><br><span class="line">        x = F.leaky_relu(self.fc1_1(input), <span class="number">0.2</span>)</span><br><span class="line">        y = F.leaky_relu(self.fc1_2(label), <span class="number">0.2</span>)</span><br><span class="line">        </span><br><span class="line">        x = torch.cat([x, y], <span class="number">1</span>)</span><br><span class="line">        x = F.leaky_relu(self.fc2_bn(self.fc2(x)), <span class="number">0.2</span>)</span><br><span class="line">        x = F.leaky_relu(self.fc3_bn(self.fc3(x)), <span class="number">0.2</span>)</span><br><span class="line">        x = F.sigmoid(self.fc4(x))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">normal_init</span><span class="params">(m, mean, std)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(m, nn.Linear):</span><br><span class="line">        m.weight.data.normal_(mean, std)</span><br><span class="line">        m.bias.data.zero_()</span><br></pre></td></tr></table></figure>
 <p>结合介绍的两种，可以定义<code>cDCNGAN</code>模型（就是把Linear全连接层换为了ConvTranspose2d或Conv2d卷积层）。</p>
-<h4 id="2-3-WGAN"><a href="#2-3-WGAN" class="headerlink" title="2.3 WGAN"></a>2.3 WGAN</h4><p>​        参考：<a href="https://zhuanlan.zhihu.com/p/25071913（令人拍案叫绝的WGAN）。" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25071913（令人拍案叫绝的WGAN）。</a></p>
+<h4 id="2-3-Bidirectional-GAN"><a href="#2-3-Bidirectional-GAN" class="headerlink" title="2.3 Bidirectional GAN"></a>2.3 Bidirectional GAN</h4><p>讲述$BiGAN$的两篇论文分别为：</p>
+<p>Donahue, Jeff, Philipp Krähenbühl, and Trevor Darrell. “Adversarial feature learning.” <em>arXiv preprint arXiv:1605.09782</em> (2016).</p>
+<p>Dumoulin, Vincent, et al. “Adversarially learned inference.” <em>arXiv preprint arXiv:1606.00704</em> (2016).</p>
+<ul>
+<li><p>网络架构</p>
+<p><img src="/images/bigan.png" alt="image-20200625104051977"></p>
+</li>
+</ul>
+<ul>
+<li>目标函数<script type="math/tex; mode=display">
+\min_{G,E}\max_D V(D,E,G)</script><img src="/images/image-20200625104357166.png" alt="image-20200625104357166"></li>
+</ul>
+<p>代码参考：<a href="https://github.com/fmu2/Wasserstein-BiGAN" target="_blank" rel="noopener">https://github.com/fmu2/Wasserstein-BiGAN</a></p>
+<h4 id="2-4-WGAN"><a href="#2-4-WGAN" class="headerlink" title="2.4 WGAN"></a>2.4 WGAN</h4><p>Arjovsky, M., Chintala, S., &amp; Bottou, L. (2017). Wasserstein gan. <em>arXiv preprint arXiv:1701.07875</em>.（gradient clipping）</p>
+<p>Gulrajani, I., Ahmed, F., Arjovsky, M., Dumoulin, V., &amp; Courville, A. C. (2017). Improved training of wasserstein gans. In <em>Advances in neural information processing systems</em> (pp. 5767-5777).（gradient penalty）</p>
+<p>​        参考：<a href="https://zhuanlan.zhihu.com/p/25071913（令人拍案叫绝的WGAN）。" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25071913（令人拍案叫绝的WGAN）。</a></p>
 <p>​        $Wasserstein$距离也被称为$Earth  mover’s$距离（推土机距离）。<strong>Wasserstein距离相比KL散度、JS散度的优越性在于，即便两个分布没有重叠，Wasserstein距离仍然能够反映它们的远近。</strong></p>
 <p>​        <strong>我们可以构造一个含参数$w$、最后一层不是非线性激活层的判别器网络$f_w$，在限制$w$不超过某个范围的条件下，使得</strong></p>
 <script type="math/tex; mode=display">
@@ -135,14 +219,15 @@ L = E_{x-P_r}[f_w(x)] - E_{x-P_G}[f_w(x)]</script><p><strong>尽可能取到最�
 <li>G和D的损失函数不用对数</li>
 <li>不要用基于动量的优化算法（包括momentum和Adam），推荐RMSProp，SGD也行</li>
 <li>D最后一层去掉$sigmod$二分类函数</li>
-<li>采用gradient clipping和gradient penalty</li>
+<li>采用gradient clipping和gradient penalty（改进）</li>
 </ol>
 <p>原始GAN存在的问题：</p>
 <ul>
 <li>判别器越好，生成器越容易产生梯度消失。</li>
 <li>训练不稳定，容易导致$collapse mode$。</li>
 </ul>
-<h4 id="2-4-StackGAN高分辨率图像生成"><a href="#2-4-StackGAN高分辨率图像生成" class="headerlink" title="2.4 StackGAN高分辨率图像生成"></a>2.4 StackGAN高分辨率图像生成</h4><h4 id="2-5-GANomaly异常检测"><a href="#2-5-GANomaly异常检测" class="headerlink" title="2.5 GANomaly异常检测"></a>2.5 GANomaly异常检测</h4><ul>
+<h4 id="2-5-StackGAN由文本生成高分辨率图像"><a href="#2-5-StackGAN由文本生成高分辨率图像" class="headerlink" title="2.5 StackGAN由文本生成高分辨率图像"></a>2.5 StackGAN由文本生成高分辨率图像</h4><p>Zhang, Han, et al. “Stackgan: Text to photo-realistic image synthesis with stacked generative adversarial networks.” <em>Proceedings of the IEEE international conference on computer vision</em>. 2017.</p>
+<h4 id="2-6-GANomaly异常检测"><a href="#2-6-GANomaly异常检测" class="headerlink" title="2.6 GANomaly异常检测"></a>2.6 GANomaly异常检测</h4><ul>
 <li>网络架构：</li>
 </ul>
 <p><img src="/images/ganomaly.png" alt="image-20200623103433011"></p>
@@ -160,7 +245,7 @@ L = E_{x-P_r}[f_w(x)] - E_{x-P_G}[f_w(x)]</script><p><strong>尽可能取到最�
 <p>​        原理：由于训练输入的都是正常数据，第一个encoder学习到的是正常数据的分布，经过生成器的重建后再经过encoder编码差异不会很大，当输入异常数据时，encoder编码后会损失部分信息，经过生成器重建后再编码会与原来的数据差异很大，从而进行异常检测。</p>
 <script type="math/tex; mode=display">
 A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得分$A$大于某一阈值时，模型就会判定该数据为异常数据。（异常检测并没有用到判别器）。</p>
-<h4 id="2-6-DiscoGAN关联分析"><a href="#2-6-DiscoGAN关联分析" class="headerlink" title="2.6 DiscoGAN关联分析"></a>2.6 DiscoGAN关联分析</h4><p><img src="/images/discogan.png" alt="image-20200623120348746"></p>
+<h4 id="2-7-DiscoGAN关联分析"><a href="#2-7-DiscoGAN关联分析" class="headerlink" title="2.7 DiscoGAN关联分析"></a>2.7 DiscoGAN关联分析</h4><p><img src="/images/discogan.png" alt="image-20200623120348746"></p>
 <p>​        模型主要由两个生成器和两个判别器构成。</p>
 <ul>
 <li><p>$G_{AB}$：输入A领域（domain）图片，生成B领域图片</p>
@@ -181,7 +266,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/22/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/" data-id="ckbs2tds40020s0ugd3cc9vle"
+      <a data-url="http://yoursite.com/2020/06/22/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/" data-id="ckbuupvrg002d68ug6dyye1ar"
         class="article-share-link">分享</a>
         
       
@@ -340,7 +425,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" data-id="ckbs2tds0001us0ug5saq598x"
+      <a data-url="http://yoursite.com/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" data-id="ckbuupvqa001z68ugbryj7h11"
         class="article-share-link">分享</a>
         
       
@@ -408,7 +493,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" data-id="ckbs2tdr1000ps0ug9lk310t4"
+      <a data-url="http://yoursite.com/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" data-id="ckbuupvmm000l68uggb3u49rh"
         class="article-share-link">分享</a>
         
       
@@ -550,7 +635,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckbs2tdsj002ds0ug9ut58sc7"
+      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckbuupvqe002368ug6dhvhdrt"
         class="article-share-link">分享</a>
         
       
@@ -674,7 +759,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" data-id="ckbs2tdqw000ls0uggc68fwjc"
+      <a data-url="http://yoursite.com/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" data-id="ckbuupvlx000d68ug29ze6jq5"
         class="article-share-link">分享</a>
         
       
@@ -781,7 +866,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" data-id="ckbs2tdrg001bs0ug15ywdoav"
+      <a data-url="http://yoursite.com/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" data-id="ckbuupvnn001668ugcon63zhw"
         class="article-share-link">分享</a>
         
       
@@ -862,7 +947,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" data-id="ckbs2tdr5000us0ug5ve46xge"
+      <a data-url="http://yoursite.com/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" data-id="ckbuupvms000p68ugfbyodwki"
         class="article-share-link">分享</a>
         
       
@@ -941,7 +1026,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" data-id="ckbs2tdq40002s0ug8goo69s3"
+      <a data-url="http://yoursite.com/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" data-id="ckbuupvld000468ugbibx8cs0"
         class="article-share-link">分享</a>
         
       
@@ -1136,137 +1221,7 @@ c_i = \sum_{j=1}^{T_x} \alpha_{ij}h_j</script><p><strong>注意</strong>：此�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckbs2tdse0028s0ug3nnm87ji"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-PyTorch学习笔记之循环神经网络" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"
-    >PyTorch学习笔记之循环神经网络</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="article-date">
-  <time datetime="2020-05-18T02:52:24.487Z" itemprop="datePublished">2020-05-18</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="PyTorch学习笔记之循环神经网络"><a href="#PyTorch学习笔记之循环神经网络" class="headerlink" title="PyTorch学习笔记之循环神经网络"></a>PyTorch学习笔记之循环神经网络</h2><p>循环神经网络的提出是为了解决序列数据。如：翻译、语言识别、时间序列问题等。</p>
-<h3 id="1-基本结构"><a href="#1-基本结构" class="headerlink" title="1 基本结构"></a>1 基本结构</h3><p>循环神经网络（Recurrent Neutral Network）不同于卷积网络，刚开始接触时个人感觉比较抽象。</p>
-<p>在每个 cell 中，激活函数输入的不仅包含这个时序内输入的数据$x^{<t>}$，而且还包括上个时序的输出 $a^{t-1}$(隐藏态)。因此，可以表示为：</p>
-<script type="math/tex; mode=display">
-a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)</script><p>其中，$W_{aa}$表示 $t-1$ 时段输出的权重，$W_{ax}$表示 $t$ 时段输入的权重。之后，$a^{\langle t \rangle}$再向 $t+1$ 时段传播，或者经过$soft\max$函数，作为 $t$ 时段的输出。</p>
-<p><img src="/images/RNN.png" alt=""></p>
-<p><img src="/images/LSTM1.png" alt=""></p>
-<center>基本RNN结构</center>
-
-<p><strong>多层 RNN 结构</strong>：</p>
-<p><img src="/images/multi_rnn.png" alt=""></p>
-<p><strong>RNN 的特点</strong>：</p>
-<ol>
-<li>RNNs 主要用于处理序列数据。对于传统神经网络模型，从输入层到隐含层再到输出层，层与层之间一般为全连接，每层之间神经元是无连接的。但是传统神经网络无法处理数据间的前后关联问题。例如，为了预测句子的下一个单词，一般需要该词之前的语义信息。这是因为一个句子中前后单词是存在语义联系的。</li>
-<li>RNNs 中当前单元的输出与之前步骤输出也有关，因此称之为循环神经网络。具体的表现形式为当前单元会对之前步骤信息进行储存并应用于当前输出的计算中。隐藏层之间的节点连接起来，隐藏层当前输出由当前时刻输入向量和之前时刻隐藏层状态共同决定。</li>
-<li>标准的 RNNs 结构图，图中每个箭头代表做一次变换，也就是说箭头连接带有权值。</li>
-<li>在标准的 RNN 结构中，隐层的神经元之间也是带有权值的，且权值共享。</li>
-</ol>
-<h3 id="2-LSTM-和-GRU"><a href="#2-LSTM-和-GRU" class="headerlink" title="2 LSTM 和 GRU"></a>2 LSTM 和 GRU</h3><h4 id="2-1-LSTM"><a href="#2-1-LSTM" class="headerlink" title="2.1 LSTM"></a>2.1 LSTM</h4><p><img src="/images/LSTM.png" alt=""></p>
-<p><img src="/images/LSTM2.png" alt=""></p>
-<p><img src="/images/lstm-simple.jpg" alt=""></p>
-<p><img src="/images/lstm-normal.jpg" alt=""></p>
-<p><img src="/images/lstm-peephole.jpg" alt=""></p>
-<center>基本LSTM结构</center>
-
-<p><strong>提出原因</strong>：</p>
-<p>$RNN$ 在处理长期依赖（时间序列上距离较远的节点）时会遇到巨大的困难，因为计算距离较远的节点之间的联系时会涉及雅可比矩阵的多次相乘，会造成梯度消失或者梯度膨胀的现象。为了解决该问题，研究人员提出了许多解决办法，例如 ESN（Echo State Network），增加有漏单元（Leaky Units）等等。其中最成功应用最广泛的就是门限 RNN（Gated RNN），而 LSTM 就是门限 RNN 中最著名的一种。有漏单元通过设计连接间的权重系数，从而允许 RNN 累积距离较远节点间的长期联系；而门限 RNN 则泛化了这样的思想，允许在不同时刻改变该系数，且允许网络忘记当前已经累积的信息。</p>
-<p>在<code>torch.nn.LSTM</code>中，返回两个值，一个是<code>cell</code>，一个是<code>hidden</code>。cell即记忆值，hidden即隐藏态。</p>
-<h4 id="2-2-GRU"><a href="#2-2-GRU" class="headerlink" title="2.2 GRU"></a>2.2 GRU</h4><p><code>torch.nn.GRU</code> 具体参数和<code>nn.RNN</code>类似</p>
-<h3 id="3-Pytorch-构建-RNN"><a href="#3-Pytorch-构建-RNN" class="headerlink" title="3 Pytorch 构建 RNN"></a>3 Pytorch 构建 RNN</h3><script type="math/tex; mode=display">
-a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)</script><p>根据计算公式，为了提高运算速度，在具体实现经常采用矩阵相乘的形式。一般来说，可以分解为如下形式：</p>
-<script type="math/tex; mode=display">
-\left[
- \begin{matrix}
- a^{\langle t-1 \rangle} & x^{\langle t \rangle}
-  \end{matrix}
-\right]*
-\left[
- \begin{matrix}
-  W_{aa} \\
-  W_{ax}
-  \end{matrix}
-\right]</script><p>即，将$W_{aa},W_{ax}$按照<strong>列</strong>进行拼接，将$a^{\langle t-1 \rangle},x^{\langle t \rangle}$ 按照<strong>行</strong>进行拼接。下面确定两个权重矩阵的维度。</p>
-<p>如果假设输入($input$)的维度为 $x_m$，$hidden$ 的维度为$h_n$。可知$W_{aa},W_{ax}$ 的列维度一定是相同的，否则不能按$1*D$的大小，经过激活函数成为隐藏态，那么$D$的大小必然要和$hidden$的维度相同。因此$W_{aa},W_{ax}$的维度分别为：</p>
-<script type="math/tex; mode=display">
-W_{aa} \rightarrow \left[h_n, h_n\right],W_{ax} \rightarrow [x_m, h_n]</script><p>在<code>Pytorch</code>中，使用<code>torch.nn.RNN</code>来完成<code>RNN</code>的设计。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line">&gt; rnn = nn.RNN(input_size=<span class="number">5</span>,hidden_size=<span class="number">10</span>,num_layers=<span class="number">1</span>)</span><br><span class="line">&gt; rnn.weight_hh_l0.shape <span class="comment">#hidden to hidden 即W_aa</span></span><br><span class="line">torch.Size([<span class="number">10</span>, <span class="number">10</span>])</span><br><span class="line">&gt; rnn.weight_ih_l0.shape <span class="comment"># input to hidden 即W_ax</span></span><br><span class="line">torch.Size([<span class="number">10</span>, <span class="number">5</span>])</span><br><span class="line">&gt; input = torch.randn(<span class="number">6</span>,<span class="number">12</span>,<span class="number">5</span>) <span class="comment"># 构造一个批次为10，input_dim为5,序列长度为6的矩阵，即每个序列长6，共有12个这样的序列，序列中每个时间步的dim为5</span></span><br><span class="line"><span class="comment"># input [src_len, batch, dim]</span></span><br><span class="line">&gt; output,hidden = rnn(input)</span><br><span class="line">&gt; output.shape</span><br><span class="line">(torch.Size([<span class="number">6</span>, <span class="number">12</span>, <span class="number">10</span>])</span><br><span class="line"> <span class="comment">#[src_len, batch, num_directions * hidden_size]</span></span><br></pre></td></tr></table></figure>
-<p><strong>注意：</strong>在循环神经网络中，</p>
-<script type="math/tex; mode=display">
-h_t = \tanh(w_{ih}x_t + b_{ih} + w_{hh}h_{t-1}+b_{hh})</script><p>每个时间步都会输出一个<code>hid</code>向量，<code>output</code>就是所有<code>hid</code>向量形成的矩阵，而<code>hidden</code>向量是最后一个时间步产生的<code>hid</code>向量。将<code>hid</code>向量经过全连接或<code>tanh</code>等函数就会得到这个时间步的输出。</p>
-<p>要构建双向循环神经网络，将<code>bidirectional</code>参数设为<code>True</code>即可。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; input = torch.randn(<span class="number">20</span>,<span class="number">128</span>,<span class="number">12</span>) <span class="comment">#[src_len, batch_size, embedded_dim]</span></span><br><span class="line">&gt; gru = nn.GRU(<span class="number">12</span>, <span class="number">512</span>, bidirectional = <span class="literal">True</span>)</span><br><span class="line">&gt; outputs,hidden = gru(input)</span><br><span class="line">&gt; outputs.shape,hidden.shape</span><br><span class="line">torch.Size([<span class="number">20</span>, <span class="number">128</span>, <span class="number">1024</span>]),torch.Size([<span class="number">2</span>, <span class="number">128</span>, <span class="number">512</span>])</span><br></pre></td></tr></table></figure>
-<p><strong>输出维度解释</strong>：</p>
-<p><code>output</code>：<code>[src len, batch size, hid dim * num directions]</code>，注意第三个维度，因为是双向，因此从前向后会产生hidden，而从后向前也会产生hidden，即一个时间步由两个hidden产生，第三个维度就是<code>[hid*2]</code>。单向的话就是<code>[hid*1]</code>。</p>
-<p><code>output[:,:,0]</code>代表前向产生的hidden，<code>output[:,:,1]代表后向产生的hidden</code>。</p>
-<p><code>hidden</code>：<code>[n layers * num directions, batch size, hid dim]</code>。</p>
-<p><code>hidden[0,:,:]</code>所有前向产生的最后一个hidden向量，即到了序列的最后一个state，<code>hidden[1,:,:]</code>所有后向产生的第一个hidden向量，即到了序列的第一个state。</p>
-<p>同<code>nn.Conv2d</code>不同的是，<code>rnn</code>的<code>batch_size</code>是第2个维度。</p>
-<p>下面实际看一下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt; a = torch.randint(<span class="number">10</span>,(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))<span class="comment"># 假设这是hidden hid dim = 4, batch = 3, 前向3个hidden </span></span><br><span class="line">&gt; a</span><br><span class="line">tensor([[[<span class="number">0</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">5</span>],</span><br><span class="line">         [<span class="number">8</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">1</span>],</span><br><span class="line">         [<span class="number">5</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">6</span>]],</span><br><span class="line"></span><br><span class="line">        [[<span class="number">2</span>, <span class="number">7</span>, <span class="number">7</span>, <span class="number">1</span>],</span><br><span class="line">         [<span class="number">1</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">9</span>],</span><br><span class="line">         [<span class="number">7</span>, <span class="number">9</span>, <span class="number">4</span>, <span class="number">6</span>]]])</span><br><span class="line">&gt; a[<span class="number">0</span>,:,:] <span class="comment"># 前向产生的hidden</span></span><br><span class="line">tensor([[<span class="number">0</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">5</span>],</span><br><span class="line">        [<span class="number">8</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">1</span>],</span><br><span class="line">        [<span class="number">5</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">6</span>]])</span><br><span class="line">&gt; torch.cat((a[<span class="number">-2</span>,:,:], a[<span class="number">-1</span>,:,:]), dim = <span class="number">1</span>).shape</span><br><span class="line">torch.Size([<span class="number">3</span>, <span class="number">8</span>])</span><br><span class="line">&gt; torch.cat((a[<span class="number">-2</span>,:,:], a[<span class="number">-1</span>,:,:]), dim = <span class="number">1</span>)</span><br><span class="line"><span class="comment"># 即将每个句子的前向和后向合并成一个vector，经过合并后的hidden经过线性变换和激活函数可以传入decoder作为context向量或计算attention权重</span></span><br><span class="line">tensor([[<span class="number">0</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">7</span>, <span class="number">1</span>],</span><br><span class="line">        [<span class="number">8</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">9</span>],</span><br><span class="line">        [<span class="number">5</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">4</span>, <span class="number">6</span>]])</span><br></pre></td></tr></table></figure>
-<p>attention权重生成的一种方式：</p>
-<script type="math/tex; mode=display">
-weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</script><p>$W_1$、$W_2$可以是全连接层得到（<code>nn.Linear</code>）。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Attention</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, enc_hid_dim, dec_hid_dim)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        </span><br><span class="line">        self.attn = nn.Linear((enc_hid_dim * <span class="number">2</span>) + dec_hid_dim, dec_hid_dim)</span><br><span class="line">        self.v = nn.Linear(dec_hid_dim, <span class="number">1</span>, bias = <span class="literal">False</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, hidden, encoder_outputs)</span>:</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">#hidden = [batch size, dec hid dim]</span></span><br><span class="line">        <span class="comment">#encoder_outputs = [src len, batch size, enc hid dim * 2]</span></span><br><span class="line">        </span><br><span class="line">        batch_size = encoder_outputs.shape[<span class="number">1</span>]</span><br><span class="line">        src_len = encoder_outputs.shape[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#repeat decoder hidden state src_len times</span></span><br><span class="line">        hidden = hidden.unsqueeze(<span class="number">1</span>).repeat(<span class="number">1</span>, src_len, <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        encoder_outputs = encoder_outputs.permute(<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#hidden = [batch size, src len, dec hid dim]</span></span><br><span class="line">        <span class="comment">#encoder_outputs = [batch size, src len, enc hid dim * 2]</span></span><br><span class="line">        </span><br><span class="line">        energy = torch.tanh(self.attn(torch.cat((hidden, encoder_outputs), dim = <span class="number">2</span>))) </span><br><span class="line">        </span><br><span class="line">        <span class="comment">#energy = [batch size, src len, dec hid dim]</span></span><br><span class="line"></span><br><span class="line">        attention = self.v(energy).squeeze(<span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#attention= [batch size, src len]</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> F.softmax(attention, dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment">#在每一行上进行softmax，即每一个单词的权重</span></span><br></pre></td></tr></table></figure>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckbs2tdry001rs0ugacz67wry"
+      <a data-url="http://yoursite.com/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckbuupvre002c68ug0da9gg11"
         class="article-share-link">分享</a>
         
       
