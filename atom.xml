@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-24T01:47:29.672Z</updated>
+  <updated>2020-07-01T15:21:59.751Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,109 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>交叉熵</title>
+    <link href="http://yoursite.com/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/"/>
+    <id>http://yoursite.com/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/</id>
+    <published>2020-07-01T14:23:46.523Z</published>
+    <updated>2020-07-01T15:21:59.751Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;交叉熵&quot;&gt;&lt;a href=&quot;#交叉熵&quot; class=&quot;headerlink&quot; title=&quot;交叉熵&quot;&gt;&lt;/a&gt;交叉熵&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;熵与交叉熵的定义：&lt;/p&gt;
+&lt;p&gt;信息论中熵的定义：&lt;/p&gt;
+&lt;script type=&quot;math/tex;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Dropout理解与实现</title>
+    <link href="http://yoursite.com/2020/06/30/Dropout%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/"/>
+    <id>http://yoursite.com/2020/06/30/Dropout%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/</id>
+    <published>2020-06-30T12:34:33.033Z</published>
+    <updated>2020-06-30T14:56:30.225Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Dropout理解与实现&quot;&gt;&lt;a href=&quot;#Dropout理解与实现&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Flink流式处理框架学习</title>
+    <link href="http://yoursite.com/2020/06/29/Flink%E6%B5%81%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"/>
+    <id>http://yoursite.com/2020/06/29/Flink%E6%B5%81%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/</id>
+    <published>2020-06-29T14:46:15.156Z</published>
+    <updated>2020-06-29T14:46:15.156Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Flink流式处理框架学习&quot;&gt;&lt;a href=&quot;#Flink流式处理框架学习&quot; class=&quot;headerlink&quot; title=&quot;Flink流式处理框架学习&quot;&gt;&lt;/a&gt;Flink流式处理框架学习&lt;/h2&gt;&lt;h3 id=&quot;1-概述&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="大数据" scheme="http://yoursite.com/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Kafka入门教程</title>
+    <link href="http://yoursite.com/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/"/>
+    <id>http://yoursite.com/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</id>
+    <published>2020-06-25T14:56:20.418Z</published>
+    <updated>2020-06-25T14:56:20.418Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Kafka入门教程&quot;&gt;&lt;a href=&quot;#Kafka入门教程&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="大数据" scheme="http://yoursite.com/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>SpringMVC源码浅析</title>
@@ -405,107 +508,6 @@
         
         
           &lt;h2 id=&quot;提升树和梯度提升树&quot;&gt;&lt;a href=&quot;#提升树和梯度提升树&quot; class=&quot;headerlink&quot; title=&quot;提升树和梯度提升树&quot;&gt;&lt;/a&gt;提升树和梯度提升树&lt;/h2&gt;&lt;p&gt;​       
-        
-      
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>寻找重复数</title>
-    <link href="http://yoursite.com/2020/03/20/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/"/>
-    <id>http://yoursite.com/2020/03/20/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/</id>
-    <published>2020-03-20T09:31:57.085Z</published>
-    <updated>2020-03-20T09:46:07.248Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h3 id=&quot;1-寻找重复数&quot;&gt;&lt;a href=&quot;#1-寻找重复数&quot; class=&quot;headerlink&quot; title=&quot;1. 寻找重复数&quot;&gt;&lt;/a&gt;1. 寻找重复数&lt;/h3&gt;&lt;p&gt;​        给定一个包含 &lt;em&gt;n&lt;/em&gt; + 1 个整数的数组
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Leetcode" scheme="http://yoursite.com/categories/Leetcode/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>EM算法</title>
-    <link href="http://yoursite.com/2020/03/19/EM%E7%AE%97%E6%B3%95/"/>
-    <id>http://yoursite.com/2020/03/19/EM%E7%AE%97%E6%B3%95/</id>
-    <published>2020-03-19T08:59:43.608Z</published>
-    <updated>2020-03-20T11:01:13.127Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;EM算法&quot;&gt;&lt;a href=&quot;#EM算法&quot; class=&quot;headerlink&quot; title=&quot;EM算法&quot;&gt;&lt;/a&gt;EM算法&lt;/h2&gt;&lt;p&gt;唉，em算法是我看过最恶心的算法。是我概率论知识太差了？…&lt;/p&gt;
-&lt;p&gt;参考资料：$Andrew Ng$
-        
-      
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>PyTorch 使用GPU加速</title>
-    <link href="http://yoursite.com/2020/03/07/PyTorch%20%E4%BD%BF%E7%94%A8GPU%E5%8A%A0%E9%80%9F/"/>
-    <id>http://yoursite.com/2020/03/07/PyTorch%20%E4%BD%BF%E7%94%A8GPU%E5%8A%A0%E9%80%9F/</id>
-    <published>2020-03-07T12:22:07.172Z</published>
-    <updated>2020-03-08T06:25:22.933Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;PyTorch-使用GPU加速&quot;&gt;&lt;a href=&quot;#PyTorch-使用GPU加速&quot; class=&quot;headerlink&quot; title=&quot;PyTorch 使用GPU加速&quot;&gt;&lt;/a&gt;PyTorch
-        
-      
-    
-    </summary>
-    
-    
-      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>实现梯度下降（线性回归为例）</title>
-    <link href="http://yoursite.com/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/"/>
-    <id>http://yoursite.com/2020/03/01/%E5%AE%9E%E7%8E%B0%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B%EF%BC%89/</id>
-    <published>2020-03-01T02:51:25.748Z</published>
-    <updated>2020-03-01T14:16:24.681Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;梯度下降（线性回归为例）&quot;&gt;&lt;a href=&quot;#梯度下降（线性回归为例）&quot; class=&quot;headerlink&quot; title=&quot;梯度下降（线性回归为例）&quot;&gt;&lt;/a&gt;梯度下降（线性回归为例）&lt;/h2&gt;&lt;h3 id=&quot;0-相关工作&quot;&gt;&lt;a
         
       
     

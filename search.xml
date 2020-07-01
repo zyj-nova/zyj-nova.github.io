@@ -1,6 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>交叉熵</title>
+    <url>/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/</url>
+    <content><![CDATA[<h2 id="交叉熵"><a href="#交叉熵" class="headerlink" title="交叉熵"></a>交叉熵</h2><ul>
+<li><p>熵与交叉熵的定义：</p>
+<p>信息论中熵的定义：</p>
+<script type="math/tex; mode=display">
+H(X) = -\sum_i p(x_i)\log p(x_i)</script><p>，其中$X$表示一个分布，$x_i$为该分布中的样本，$p(x_i)$即该样本的概率。</p>
+<p><strong>在信息论中，熵是表示信息不确定性的度量。熵越大，表明信息的不确定性越大。</strong></p>
+<p>两个分布$p$、$q$的交叉熵定义如下：</p>
+<script type="math/tex; mode=display">
+H(p,q) = -\sum_i p_i\log(q_i)</script></li>
+<li><p>多分类问题中的交叉熵损失函数</p>
+<p>在神经网路多分类任务时，最后一层采用$soft\max$层输出预测概率。</p>
+<script type="math/tex; mode=display">
+soft\max(x_i) = \frac{e^{x_i}}{\sum_j e^{x_j}}</script><p>输出概率向量表示为$p$，训练$ont-hot$标签向量为$L$，交叉熵定义为$H(L,p)$。</p>
+<p>则分类的损失函数定义为</p>
+<script type="math/tex; mode=display">
+J = \frac{1}{N}\sum_{i=1}^N H(L_i,p_i)</script><p>因为$L_i$、$q_i$表示一个样本，所以计算交叉熵即计算$-L_ilog(q_i)$。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">p = np.array([<span class="number">0.2</span>,<span class="number">0.5</span>,<span class="number">0.3</span>])</span><br><span class="line">target = np.array([<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>])</span><br><span class="line">H = <span class="number">-1</span> * np.sum(target * np.log(p)) / <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>当分类为<strong>二分类时</strong>，最后一层通常采用$sigmod$函数（逻辑斯蒂”回归”）。</p>
+<script type="math/tex; mode=display">
+sigmod(x) = \frac{1}{1 + e^{-x}}</script><script type="math/tex; mode=display">
+J = -\frac{1}{N}\sum_{i=1}^N [y_i\log(\hat y_i) +(1-y_i)\log(1-\hat y_i)]</script><script type="math/tex; mode=display">
+\hat y(x) = \frac{1}{1 + e^{-W*x}}</script><p>即为交叉熵损失函数的一个特殊形式。</p>
+<p>采用交叉熵损失函数的原因是该损失函数为凸函数，从而可以进行凸优化。</p>
+</li>
+<li><p>KL（Kullback–Leibler）散度（Divergence）和JS（Jensen–Shannon）散度</p>
+<p>KL散度用来衡量两个概率分布$P$、$Q$的距离。</p>
+<script type="math/tex; mode=display">
+D_{KL}(P||Q)= \sum P\log(\frac{P}{Q})</script><p>注意：$D_{KL}(P||Q) \not= D_{KL}(Q||P)$。</p>
+<p>JSD定义如下：</p>
+<script type="math/tex; mode=display">
+JSD(P||Q) = \frac{1}{2}D_{KL}(P||M) + \frac{1}{2}D_{KL}(Q||M)</script><script type="math/tex; mode=display">
+M = \frac{1}{2}(P + Q)</script></li>
+</ul>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Dropout理解与实现</title>
+    <url>/2020/06/30/Dropout%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h2 id="Dropout理解与实现"><a href="#Dropout理解与实现" class="headerlink" title="Dropout理解与实现"></a>Dropout理解与实现</h2><ul>
+<li><p>作用：</p>
+<p>正则化的一种手段，训练过程中避免神经网络的过拟合。</p>
+<p>在某一层中，随机使一部分神经元失活（输出为0），<strong>导致这部分神经元对下一层输入的贡献为0</strong>。</p>
+<p>数学表达如下：</p>
+<p>第$l + 1$层的输入：</p>
+<script type="math/tex; mode=display">
+z_i^{(l+1)} = w_i^{(l+1)}y^l + b_i^{(l+1)}</script><script type="math/tex; mode=display">
+y_i^{(l+1)} = f(z_i^{(l+1)})</script><p>$f$为激活函数。</p>
+<p>若在该层使用dropout，则：</p>
+<script type="math/tex; mode=display">
+r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
+\hat y^{(l+1)} = r^{(l+1)} * y_i^{(l+1)}</script><p>$r^{(l+1)}$是一个mask向量，只包含0、1，其中为0表示该神经元失活了。$\hat y^{(l+1)}$即作为下一层的输入。</p>
+<p><img src="/images/dropout.png" alt=""></p>
+<p>即等价于：</p>
+<p><img src="https://pic2.zhimg.com/v2-64930dc0337f42bcdbec488fd5337e95_r.jpg" alt=""></p>
+</li>
+<li><p>实现：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">	x: 输入</span></span><br><span class="line"><span class="string">	keep_prob: 留存概率</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dropout</span><span class="params">(x, keep_prob)</span>:</span></span><br><span class="line">    mask = np.random.binomial(<span class="number">1</span>, keep_prob, size=x.shape)</span><br><span class="line">    x *= mask</span><br><span class="line">    x = x / keep_prob <span class="comment"># 对余下的神经元进行rescale</span></span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(x, W1, W2, W3, training=False)</span>:</span></span><br><span class="line">    z1 = np.dot(x, W1)</span><br><span class="line">    y1 = np.tanh(z1)</span><br><span class="line">    z2 = np.dot(y1, W2)</span><br><span class="line">    y2 = np.tanh(z2)</span><br><span class="line">    <span class="comment"># Dropout in layer 2 </span></span><br><span class="line">    <span class="keyword">if</span> training:</span><br><span class="line">        m2 = np.random.binomial(<span class="number">1</span>, <span class="number">0.5</span>, size=z2.shape) <span class="comment"># 生成mask</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        m2 = <span class="number">0.5</span> <span class="comment"># 训练中没有rescale，测试时需要平衡训练中失活的神经元数量</span></span><br><span class="line">    y2 *= m2 <span class="comment"># 乘以mask，为0即代表失活</span></span><br><span class="line">    z3 = np.dot(y2, W3)</span><br><span class="line">    y3 = z3 <span class="comment"># linear output</span></span><br><span class="line">    <span class="keyword">return</span> y1, y2, y3, m2</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(x, W1, W2, W3, training=False)</span>:</span></span><br><span class="line">    z1 = np.dot(x, W1)</span><br><span class="line">    y1 = np.tanh(z1)</span><br><span class="line">    z2 = np.dot(y1, W2)</span><br><span class="line">    y2 = np.tanh(z2)</span><br><span class="line">    <span class="comment"># Dropout in layer 2</span></span><br><span class="line">    <span class="keyword">if</span> training:</span><br><span class="line">   		y2 = dropout(y2,<span class="number">0.5</span>) <span class="comment"># 训练阶段已经进行了rescale</span></span><br><span class="line">    z3 = np.dot(y2, W3)</span><br><span class="line">    y3 = z3 <span class="comment"># linear output</span></span><br><span class="line">    <span class="keyword">return</span> y1, y2, y3, m2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注意：</p>
+<p>测试中不需要dropout。dropout一般用于全连接层之前，对卷积层的效果一般。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Flink流式处理框架学习</title>
+    <url>/2020/06/29/Flink%E6%B5%81%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<h2 id="Flink流式处理框架学习"><a href="#Flink流式处理框架学习" class="headerlink" title="Flink流式处理框架学习"></a>Flink流式处理框架学习</h2><h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h3><h3 id="2-安装与部署"><a href="#2-安装与部署" class="headerlink" title="2. 安装与部署"></a>2. 安装与部署</h3><h3 id="3-Source与Sink"><a href="#3-Source与Sink" class="headerlink" title="3. Source与Sink"></a>3. Source与Sink</h3><h3 id="4-DataStream编程模型API"><a href="#4-DataStream编程模型API" class="headerlink" title="4. DataStream编程模型API"></a>4. DataStream编程模型API</h3><h3 id="5-Checkpoint与State状态管理"><a href="#5-Checkpoint与State状态管理" class="headerlink" title="5. Checkpoint与State状态管理"></a>5. Checkpoint与State状态管理</h3><h3 id="6-Flink中的Windows"><a href="#6-Flink中的Windows" class="headerlink" title="6. Flink中的Windows"></a>6. Flink中的Windows</h3><h3 id="7-Flink中的Time"><a href="#7-Flink中的Time" class="headerlink" title="7.  Flink中的Time"></a>7.  Flink中的Time</h3>]]></content>
+      <categories>
+        <category>大数据</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Kafka入门教程</title>
+    <url>/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<h2 id="Kafka入门教程"><a href="#Kafka入门教程" class="headerlink" title="Kafka入门教程"></a>Kafka入门教程</h2>]]></content>
+      <categories>
+        <category>大数据</category>
+      </categories>
+  </entry>
+  <entry>
     <title>SpringMVC源码浅析</title>
     <url>/2020/06/24/SpringMVC%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/</url>
     <content><![CDATA[<h2 id="SpringMVC源码浅析"><a href="#SpringMVC源码浅析" class="headerlink" title="SpringMVC源码浅析"></a>SpringMVC源码浅析</h2>]]></content>
