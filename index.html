@@ -141,7 +141,7 @@ M = \frac{1}{2}(P + Q)</script></li>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/" data-id="ckc3ief3d001bvsughpn18l0p"
+      <a data-url="http://yoursite.com/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/" data-id="ckc7nj189001a78ugfetd6phh"
         class="article-share-link">分享</a>
         
       
@@ -233,7 +233,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/30/Dropout%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/" data-id="ckc3ief2f0006vsug9fdaacbk"
+      <a data-url="http://yoursite.com/2020/06/30/Dropout%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/" data-id="ckc7nj173000c78ugbcq6amd3"
         class="article-share-link">分享</a>
         
       
@@ -299,7 +299,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/29/Flink%E6%B5%81%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" data-id="ckc3ief290003vsug0ubgezxl"
+      <a data-url="http://yoursite.com/2020/06/29/Flink%E6%B5%81%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" data-id="ckc7nj16r000278ugg97daa03"
         class="article-share-link">分享</a>
         
       
@@ -359,13 +359,59 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
 
       
-      <h2 id="Kafka入门教程"><a href="#Kafka入门教程" class="headerlink" title="Kafka入门教程"></a>Kafka入门教程</h2>
+      <h2 id="Kafka入门教程"><a href="#Kafka入门教程" class="headerlink" title="Kafka入门教程"></a>Kafka入门教程</h2><h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h3><h4 id="1-1-消息队列"><a href="#1-1-消息队列" class="headerlink" title="1.1 消息队列"></a>1.1 消息队列</h4><p>​        总的来说，消息队列可以分为点对点模式、发布订阅模式</p>
+<p>​        （1）点对点模式（一对一，消费者主动拉取数据，消息收到后消息清除）</p>
+<p>​        点对点模型通常是一个基于拉取或者轮询的消息传送模型，这种模型从队列中请求信息， 而不是将消息推送到客户端。这个模型的特点是发送到队列的消息被一个且只有一个接收者 接收处理，即使有多个消息监听者也是如此。</p>
+<p>​        （2）发布订阅模式（一对多，数据生产后，推送给所有订阅者）</p>
+<p>​        发布订阅模型则是一个基于推送的消息传送模型。发布订阅模型可以有多种不同的订阅 者，临时订阅者只在主动监听主题时才接收消息，而持久订阅者则监听主题的所有消息，即 使当前订阅者不可用，处于离线状态。</p>
+<h4 id="1-2-什么是Kafka"><a href="#1-2-什么是Kafka" class="headerlink" title="1.2 什么是Kafka"></a>1.2 什么是Kafka</h4><p>​        在流式计算中，Kafka 一般用来缓存数据，作为大数据处理系统中的一个中间件。</p>
+<p>​        （1）Apache Kafka 是一个开源消息系统，由 Scala 写成。是由 Apache 软件基金会开发的 一个开源消息系统项目。</p>
+<p>​        （2）Kafka 最初是由 LinkedIn 公司开发，并于 2011 年初开源。2012 年 10 月从 Apache Incubator 毕业。该项目的目标是为处理实时数据提供一个统一、高通量、低等待的平台。</p>
+<p>​        （3））Kafka 是一个分布式消息队列。Kafka 对消息保存时根据 Topic 进行归类，发送消息 者称为 Producer，消息接受者称为 Consumer，此外 Kafka 集群有多个 Kafka 实例组成，每个实例(server)称为 broker。</p>
+<p>​        （4）无论是 Kafka 集群，还是 consumer 都依赖于 zookeeper 集群保存一些 meta 信息， 来保证系统可用性。</p>
+<h4 id="1-3-Kafka架构"><a href="#1-3-Kafka架构" class="headerlink" title="1.3 Kafka架构"></a>1.3 Kafka架构</h4><p>​        （1）Producer ：消息生产者，就是向 Kafka broker 发消息的客户端；</p>
+<p>​        （2）Consumer ：消息消费者，向 Kafka broker 取消息的客户端； </p>
+<p>​        （3）Topic ：可以理解为一个队列；</p>
+<p>​        （4）Consumer Group：这是Kafka用来实现一个topic消息的广播（发给所有的consumer） 和单播（发给任意一个 consumer）的手段。一个 topic 可以有多个 CG。topic 的消息会复制 （不是真的复制，是概念上的）到所有的 CG，但每个 partition 只会把消息发给该 CG 中的一 个 consumer。如果需要实现广播，只要每个 consumer 有一个独立的 CG 就可以了。要实现 单播只要所有的 consumer 在同一个 CG。用 CG 还可以将 consumer 进行自由的分组而不需 要多次发送消息到不同的 topic；</p>
+<p>​        （5）Broker ：一台 Kafka 服务器就是一个 broker。一个集群由多个 broker 组成。一个 broker 可以容纳多个 topic；</p>
+<p>​        （6）Partition：为了实现扩展性，一个非常大的 topic 可以分布到多个 broker（即服务器）上，一个 topic 可以分为多个 partition，每个 partition 是一个有序的队列。partition 中的每条消息 都会被分配一个有序的 id（offset）。Kafka 只保证按一个 partition 中的顺序将消息发给 consumer，不保证一个 topic 的整体（多个 partition 间）的顺序； </p>
+<p>​        （7）Offset：Kafka 的存储文件都是按照 offset.kafka 来命名，用 offset 做名字的好处是方便查 找。例如你想找位于 2049 的位置，只要找到 2048.kafka 的文件即可。当然 the first offset 就 是 00000000000.kafka。</p>
+<p>​    <img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20200702161839173.png" alt="image-20200702161839173"></p>
+<h3 id="2-Kafka集群部署"><a href="#2-Kafka集群部署" class="headerlink" title="2. Kafka集群部署"></a>2. Kafka集群部署</h3><p>​        Kafka集群依赖ZooKeeper，因此，启动Kafka集群前，应启动zookeeper集群。否则会报错。</p>
+<h4 id="2-1-集群部署"><a href="#2-1-集群部署" class="headerlink" title="2.1 集群部署"></a>2.1 集群部署</h4><p>​        （1）修改配置文件</p>
+<p>​        下载好对应的tar包并解压后，找到<code>config</code>目录下的<code>server.propertites</code>文件，修改<code>log.dirs</code>配置项，即配置Kafka运行日志的存放路径。</p>
+<p>​        （2）启动</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-server-start.sh config/server.properties &amp;</span><br></pre></td></tr></table></figure>
+<p><code>&amp;</code>指后台启动。        </p>
+<p>​        （3）关闭</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-server-stop.sh stop</span><br></pre></td></tr></table></figure>
+<p>​        （4）发生错误日志检查</p>
+<p>​        当启动或运行时发生故障后，可以检查<code>logs/server.log</code>文件进行故障排查。</p>
+<h4 id="2-2-Kafka命令行操作"><a href="#2-2-Kafka命令行操作" class="headerlink" title="2.2 Kafka命令行操作"></a>2.2 Kafka命令行操作</h4><p>​        （1）查看当前服务器中所有topic</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --zookeeper localhost:2181 --list</span><br></pre></td></tr></table></figure>
+<p>​        （2）创建topic</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --zookeeper localhost:2181 \</span><br><span class="line">--create --replication-factor 3 --partitions 1 --topic first</span><br></pre></td></tr></table></figure>
+<p>选项说明：</p>
+<p>​        —topic 定义 topic 名 </p>
+<p>​        —replication-factor 定义副本数</p>
+<p>​        —partitions 定义分区数</p>
+<p>​        （3）删除topic</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic first</span><br></pre></td></tr></table></figure>
+<p>注意：需要<code>server.properties</code>中设置<code>delete.topic.enable=true</code>否则只是标记删除或者直接重启。</p>
+<p>​        （4）发送（生产）消息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> bin/kafka-console-producer.sh \</span><br><span class="line">--broker-list localhost:9092 --topic first</span><br></pre></td></tr></table></figure>
+<p>​        （5）消费消息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> bin/kafka-console-consumer.sh \</span><br><span class="line">--bootstrap-server localhost:2181 --from-beginning --topic first</span><br></pre></td></tr></table></figure>
+<p>​        （6）查看某个topic的详情</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --zookeeper localhost:2181 --describe --topic first</span><br></pre></td></tr></table></figure>
+<h3 id="3-Kafka工作流程分析"><a href="#3-Kafka工作流程分析" class="headerlink" title="3. Kafka工作流程分析"></a>3. Kafka工作流程分析</h3><p>​        </p>
+
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" data-id="ckc3ief2r000jvsugh5z02iqj"
+      <a data-url="http://yoursite.com/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" data-id="ckc7nj178000g78ug1t1sa88t"
         class="article-share-link">分享</a>
         
       
@@ -431,7 +477,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/24/SpringMVC%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" data-id="ckc3ief33000xvsugdnxmfgtr"
+      <a data-url="http://yoursite.com/2020/06/24/SpringMVC%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" data-id="ckc7nj17p000v78ugc3bn9ait"
         class="article-share-link">分享</a>
         
       
@@ -589,7 +635,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/22/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/" data-id="ckc3ief59002mvsug5cdk8jb6"
+      <a data-url="http://yoursite.com/2020/06/22/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/" data-id="ckc7nj19c002k78ugb3o7h5qm"
         class="article-share-link">分享</a>
         
       
@@ -748,7 +794,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" data-id="ckc3ief4i0026vsughvwxgyfs"
+      <a data-url="http://yoursite.com/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" data-id="ckc7nj18u001z78ug512l7d5q"
         class="article-share-link">分享</a>
         
       
@@ -816,7 +862,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" data-id="ckc3ief350011vsug3e3sby4s"
+      <a data-url="http://yoursite.com/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" data-id="ckc7nj17g000m78ugdacc5ots"
         class="article-share-link">分享</a>
         
       
@@ -958,7 +1004,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckc3ief4m002cvsuggiqw2a4b"
+      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckc7nj18y002678ugcxdscao6"
         class="article-share-link">分享</a>
         
       
@@ -1082,7 +1128,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" data-id="ckc3ief2t000lvsug5u6165ct"
+      <a data-url="http://yoursite.com/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" data-id="ckc7nj180001578ug867y3ual"
         class="article-share-link">分享</a>
         
       
