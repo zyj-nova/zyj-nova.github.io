@@ -14,8 +14,12 @@
   
   <link rel="shortcut icon" href="/favicon.svg" />
   
-  <link rel="stylesheet" href="/css/style.css">
-  <script src="/js/pace.min.js"></script>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<script src="/js/pace.min.js"></script>
+
 
   
 
@@ -49,7 +53,7 @@
     </div>
   </div>
   <div class="cover-learn-more">
-    <a href="javascript:void(0)" target="_blank" rel="noopener" class="anchor"><i class="ri-arrow-down-line"></i></a>
+    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
   </div>
 </section>
 
@@ -59,6 +63,159 @@
     
     
     
+    
+    <article id="post-朴素贝叶斯（Naive Bayes）" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/"
+    >朴素贝叶斯（Naive Bayes）</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" class="article-date">
+  <time datetime="2020-02-09T12:18:14.664Z" itemprop="datePublished">2020-02-09</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="朴素贝叶斯（Naive-Bayes）"><a href="#朴素贝叶斯（Naive-Bayes）" class="headerlink" title="朴素贝叶斯（Naive Bayes）"></a>朴素贝叶斯（Naive Bayes）</h2><h3 id="1-条件概率和全概率公式（由因到果）"><a href="#1-条件概率和全概率公式（由因到果）" class="headerlink" title="1. 条件概率和全概率公式（由因到果）"></a>1. 条件概率和全概率公式（由因到果）</h3><p>首先给出条件概率公式：</p>
+<script type="math/tex; mode=display">
+P(A|B) = \frac{P(AB)}{P(B)}</script><p>$P(AB)$是变量$A$和$B$的联合概率分布，$P(B)$是变量 B 的边缘概率分布。</p>
+<p><strong>全概率公式</strong>：</p>
+<p>若事件$Y_1，Y_2，…$构成一个<strong>完备事件组</strong>且都有正概率，则对任意一个事件$X$，有如下公式成立：</p>
+<script type="math/tex; mode=display">
+P(X) = \sum_{i}P(X|Y_i)P(Y_i)</script><p>解释：全概率公式的意义在于，当某一事件的概率难以求得时，可转化为在一系列条件下发生概率的和。</p>
+<p><strong>乘法定理</strong>：</p>
+<script type="math/tex; mode=display">
+P(A_1,A_2,A_3,...,A_n) = P(A_1)P(A_2|A_1)P(A_3|A_1,A_2)···P(A_n|A_1,A_2,...A_{n-1})</script><h3 id="2-贝叶斯公式（执果索因）"><a href="#2-贝叶斯公式（执果索因）" class="headerlink" title="2. 贝叶斯公式（执果索因）"></a>2. 贝叶斯公式（执果索因）</h3><p>贝叶斯公式就是当已知结果，问导致这个结果的第<code>i</code>原因的概率是多少。(转化到分类问题上，“结果”就是样本，“第i个原因”即属于哪个类别)。</p>
+<p>由条件概率公式，可以写成：</p>
+<script type="math/tex; mode=display">
+P(Y_i|X) = \frac{P(XY_i)}{P(X)} = \frac{P(X|Y_i)P(Y_i)}{P(X)}</script><p>结合<strong>全概率公式</strong>，有:</p>
+<script type="math/tex; mode=display">
+P(Y_i|X) = \frac{P(X|Y_i)P(Y_i)}{\sum_{j}P(X|Y_j)P(Y_j)}</script><p>解释：我们把$P(Y_i)$叫做$Y$的<strong>先验概率</strong>，$P(Y_i|X)$称为<strong>后验概率</strong>。</p>
+<p>下面介绍一个例子实际计算一下。</p>
+<p><img src="/images/bayes.png" alt=""></p>
+<h3 id="3-朴素贝叶斯"><a href="#3-朴素贝叶斯" class="headerlink" title="3. 朴素贝叶斯"></a>3. 朴素贝叶斯</h3><p><strong>朴素贝叶斯法是基于贝叶斯定理与特征条件独立假设的分类方法</strong>。朴素贝叶斯算法假设了给定样本情况下，数据集属性之间是相互<strong>条件独立</strong>这一<strong>朴素假设</strong> ，因此算法的逻辑性十分简单，并且算法较为稳定，当数据呈现不同的特点时，朴素贝叶斯的分类性能不会有太大的差异。换句话说就是朴素贝叶斯算法的健壮性比较好，对于不同类型的数据集不会呈现出太大的差异性。当数据集属性之间的关系相对比较独立时，朴素贝叶斯分类算法会有较好的效果。</p>
+<p> 下面给出朴素贝叶斯的推导和数学定义。</p>
+<p> 设有样本数据集$D=\{d_1,d_2,···,d_n\}$，每个样本特征属性集$X=\{x_1,x_2,···，x_d\}$，这$n$个样本共存在$m$个分类 $Y=\{y_1,y_2,···,y_m\}$，其中$x_1,x_2,···,x_d$x 相互独立且随机。则先验概率$P(Y)$，后验概率$P(Y|X)$.</p>
+<p> 由于各个特征之间相互独立，在给定类别 $y$ 情况下，$P(X|Y)$进一步可以表示为：</p>
+<script type="math/tex; mode=display">
+P(X|Y =y_j) = \prod_{i = 1}^{d} P(x_i|Y = y_j)</script><p> 实际上是乘法定理和条件独立的应用。</p>
+<p> 结合贝叶斯公式，有：</p>
+<script type="math/tex; mode=display">
+P(y_i|x_1,x_2,···,x_d) = \frac{P(y_i)\prod_{j = 1}^{d}P(x_j|y_i)}{\sum_k^{m}P(y_k)\prod_j^{d}P(x_j|y_k)}</script><p> 在给定样本的情况下，计算样本属于各个类别的概率时，分母都相等。</p>
+<p> 从而，只需最大化分子。有：</p>
+<script type="math/tex; mode=display">
+P(y_i|x_1,x_2,···,x_d) ∝ P(y_i)\prod_{j = 1}^{d}P(x_j|y_i)</script><p>从而</p>
+<script type="math/tex; mode=display">
+\hat{y} = arg \max_{y_i}P(y_i)\prod_{j = 1}^{d}P(x_j|y_i),y_i \in Y</script><p>，这就是朴素贝叶斯定理。可能结果需要归一化，即各个类别概率加起来和为$1$。</p>
+<p>给定样本$X$，类别为  $y_i$ 的概率（m为类别个数）即：</p>
+<script type="math/tex; mode=display">
+P(y_i|x_1,x_2,...,x_d) = \frac{P(y_i)\prod_{j = 1}^{d}P(x_j|y_i)}{\sum_{i = 1}^{m}[P(y_i)\prod_{j = 1}^{d}P(x_j|y_i)]}</script><p>最大的概率即为预测类别。这就是朴素贝叶斯。</p>
+<p><strong>“朴素在哪里？”</strong></p>
+<p> 事实上，朴素贝叶斯做了如下假设：</p>
+<ul>
+<li>一个特征出现的概率，与其他特征独立</li>
+<li><p>每个特征同等重要</p>
+<p>在真实的数据中，这个假设有可能并不会成立，如果一本书中出现了“机器学习”这个词，那么有很大概率会出现“数据挖掘”“特征工程”等词语，而出现“少林功夫”的概率是很低的。由此看来，词之间的概率并不独立，而且词对于分类的概率影响很大，每个词的重要性也是不同的。</p>
+<p>因此，这样做出的假设是很“天真”，很”朴素“的。</p>
+</li>
+</ul>
+<p><img src="/images/朴素贝叶斯.jpg" alt=""></p>
+<h3 id="4-垃圾邮件识别"><a href="#4-垃圾邮件识别" class="headerlink" title="4. 垃圾邮件识别"></a>4. 垃圾邮件识别</h3><p> 现在有已经分好类别的垃圾邮件和非垃圾邮件，希望训练一个垃圾邮件过滤器。有一个想法是分别统计垃圾邮件和非垃圾邮件中所包含的单词，在测试时，只要分析给定邮件中的单词，来计算这封邮件是垃圾邮件还是正常的邮件（其他算法分析单词顺序更加有效，这里不做介绍）。下面给出更加形象化定义。</p>
+<p> 垃圾邮件：$spam$，正常邮件：$ham$。在训练时，我们计算$P(W_1|spam)$、$P(W_2|spam)$、$P(W_3|ham)$…。现在有一封邮件，分析其单词组成，计算$P(spam|W_1,W_2,W_3…)$和$P(ham|W_1,W_2,W_3…)$概率分别是多少。</p>
+<p><strong>“朴素”</strong>：因为一封邮件中可能既包含$W_1$、又包含$W_2$，朴素就是假设$W_1$、$W_2$…相互独立。</p>
+<script type="math/tex; mode=display">
+P(AB) = P(A|B)P(B) = P(B|A)P(A)</script><script type="math/tex; mode=display">
+P(A|B) ∝ P(B|A)P(A)</script><script type="math/tex; mode=display">
+P(spam|W_1,W_2,...) ∝ P(W_1,W_2,...|spam)P(spam)</script><script type="math/tex; mode=display">
+P(spam|W_1,W_2,...) ∝ P(W_1|spam)P(W_2|spam)...P(spam)</script><p>同理可以计算</p>
+<script type="math/tex; mode=display">
+P(ham|W_1,W_2,...) ∝ P(W_1|ham)P(W_2|ham)...P(ham)</script><p>最后将二者概率进行归一化，就可得出是垃圾邮件还是正常邮件的概率。</p>
+<script type="math/tex; mode=display">
+P(ham|W_1,W_2,...) = \frac{P(W_1|ham)P(W_2|ham)...P(ham)}{P(W_1|ham)P(W_2|ham)...P(ham)+P(W_1|spam)P(W_2|spam)...P(spam)}</script><h3 id="5-生成模型和判别模型"><a href="#5-生成模型和判别模型" class="headerlink" title="5 生成模型和判别模型"></a>5 生成模型和判别模型</h3><ul>
+<li><p><strong>判别模型(discriminative model)</strong></p>
+<p>通过求解<strong>条件概率分布</strong> $P(y|x)$ 或者直接计算 $y$ 的值来预测 $y$。如：线性回归（Linear Regression）,逻辑回归（Logistic Regression）,支持向量机（<code>SVM</code>）, 传统神经网络（Traditional Neural Networks）,线性判别分析（Linear Discriminative Analysis），条件随机场（Conditional Random Field）。</p>
+</li>
+<li><p><strong>生成模型(generative model)</strong></p>
+<p>通过对观测值和标注数据计算<strong>联合概率分布</strong> $P(x,y)$ ，再计算$P(y|x)$来达到判定估算 $y$ 的目的。朴素贝叶斯（Naive Bayes）, 隐马尔科夫模型（<code>HMM</code>）,贝叶斯网络（Bayesian Networks）和隐含狄利克雷分布（Latent Dirichlet Allocation）、混合高斯模型（<code>GMM</code>）。</p>
+</li>
+</ul>
+<h3 id="6-贝叶斯网络"><a href="#6-贝叶斯网络" class="headerlink" title="6 贝叶斯网络"></a>6 贝叶斯网络</h3><p> 贝叶斯网络(Bayesian network)，又称信念网络(Belief Network)，或有向无环图模型(directed acyclic graphical model)，是一种概率图模型，于 1985 年由 Judea Pearl 首先提出。它是一种模拟人类推理过程中因果关系的不确定性处理模型，其网络拓朴结构是一个有向无环图(DAG)。</p>
+<p> 贝叶斯网络的有向无环图中的节点表示随机变量<code>{X1,X2,...,Xn}{X1,X2,...,Xn}</code>。它们可以是可观察到的变量，或隐变量、未知参数等。认为有因果关系（或非条件独立）的变量或命题则用箭头来连接。若两个节点间以一个单箭头连接在一起，表示其中一个节点是“因(parents)”，另一个是“果(children)”，两节点就会产生一个条件概率值。一个简单的贝叶斯网络如下图：</p>
+<p><img src="/images/bayesNetwork.jpg" alt=""></p>
+<p>例如，假设节点 E 直接影响到节点 H，即$E→H$，则用从$E$指向$H$的箭头建立结点$E$到结点$H$的有向弧(E,H)，权值(即连接强度)用条件概率$P(H|E)$来表示，如下图所示：</p>
+<p> <img src="/images/dag.png" alt=""></p>
+<p> 贝叶斯网络中，全部随机变量的联合分布如下：</p>
+<script type="math/tex; mode=display">
+P(x_1,x_2,···,x_n) = \prod_{i = 1}^{n} P(x_i|parent(x_i))</script><p> 比如上图的贝叶斯网络中，$x_1,x_2,x_3,…,x_7$的联合概率分布是：</p>
+<script type="math/tex; mode=display">
+P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4)p(x_7|x_4,x_5)</script><p>下面介绍贝叶斯网络的结构形式：</p>
+<ul>
+<li><p>head-to-head</p>
+<p><img src="/images/head-to-head.png" style="zoom:50%;" /></p>
+<p><strong>在 $c$ 未知的情况下，$a$ ，$b$ 被阻断（blocked），是独立的。</strong></p>
+</li>
+<li><p>tail-to-tail</p>
+<p><img src="/images/tail-to-tail.png" style="zoom:50%;" /></p>
+<p><strong>在 $c$ 给定的情况下，$a$ ，$b$ 是独立的。</strong></p>
+</li>
+<li><p>head-to-tail</p>
+<p><img src="/images/head-to-tail.png" style="zoom:50%;" /></p>
+<p><strong>在 $c$ 给定的情况下，$a$ ，$b$ 被阻断（blocked），是独立的。</strong>其实这就是马尔可夫链，当前状态只与前一个状态相关。</p>
+</li>
+</ul>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ckckeb77a002pjguedw4perr0"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
     
     <article id="post-JAVA 并发编程" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
@@ -316,7 +473,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ckc7nj199002f78ug5jq68txs"
+      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ckckeb773002kjguebb70cjwu"
         class="article-share-link">分享</a>
         
       
@@ -428,7 +585,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ckc7nj16y000678ug1r7g7cbp"
+      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ckckeb74q0006jgue3f7v0n2x"
         class="article-share-link">分享</a>
         
       
@@ -545,7 +702,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ckc7nj19b002i78ugeffo8k0u"
+      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ckckeb776002mjgue99h6e6l5"
         class="article-share-link">分享</a>
         
       
@@ -631,7 +788,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ckc7nj18v002078ug480544g8"
+      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ckckeb76e0027jgue88q15052"
         class="article-share-link">分享</a>
         
       
@@ -724,7 +881,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ckc7nj171000978ug9rrp1yi4"
+      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ckckeb750000hjgue53dj6l4n"
         class="article-share-link">分享</a>
         
       
@@ -806,7 +963,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="ckc7nj18i001n78ugbkplbtz8"
+      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="ckckeb75s001rjguefav9alil"
         class="article-share-link">分享</a>
         
       
@@ -878,7 +1035,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" data-id="ckc7nj16j000078ug6qr4fq9d"
+      <a data-url="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" data-id="ckckeb753000ljgue9kll83hp"
         class="article-share-link">分享</a>
         
       
@@ -938,7 +1095,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
       <h3 id="How-to-Implements-PCA"><a href="#How-to-Implements-PCA" class="headerlink" title="How to Implements PCA"></a>How to Implements PCA</h3><p>Step by Step​​<br>​​<img src="https://img-blog.csdnimg.cn/20191109182949751.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
 <p><img src="https://img-blog.csdnimg.cn/20191109191048929.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def my_pca(X, k):</span><br><span class="line">    #X 行：样本量，列：样本维度</span><br><span class="line">    #函数默认对每一列进行demean处理</span><br><span class="line">    cov = np.cov(X,rowvar=0)</span><br><span class="line">    mean = np.mean(X,axis = 0)</span><br><span class="line">    X_ = X - mean</span><br><span class="line">    #求协方差矩阵的特征向量</span><br><span class="line">    eigenvalue, eigenfuture = np.linalg.eig(cov)</span><br><span class="line">    #选取前k个特征向量 n * k</span><br><span class="line">    eigenselect = eigenfuture[:,:k]</span><br><span class="line">    return np.dot(X_, eigenselect), eigenfuture</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def my_pca(X, k):</span><br><span class="line">    #X 行：样本量，列：样本维度</span><br><span class="line">    #函数默认对每一列进行demean处理</span><br><span class="line">    cov &#x3D; np.cov(X,rowvar&#x3D;0)</span><br><span class="line">    mean &#x3D; np.mean(X,axis &#x3D; 0)</span><br><span class="line">    X_ &#x3D; X - mean</span><br><span class="line">    #求协方差矩阵的特征向量</span><br><span class="line">    eigenvalue, eigenfuture &#x3D; np.linalg.eig(cov)</span><br><span class="line">    #选取前k个特征向量 n * k</span><br><span class="line">    eigenselect &#x3D; eigenfuture[:,:k]</span><br><span class="line">    return np.dot(X_, eigenselect), eigenfuture</span><br></pre></td></tr></table></figure>
 <h3 id="The-relationship-between-PCA-and-SVD"><a href="#The-relationship-between-PCA-and-SVD" class="headerlink" title="The relationship between PCA and SVD"></a>The relationship between PCA and SVD</h3><p>We can use <strong>SVD</strong> to perform <strong>PCA</strong>.</p>
 <ol>
 <li>sklearn 中的 PCA 在大规模运算时采用了 SVD 的方式进行降维处理</li>
@@ -950,7 +1107,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/10/PCA-StepByStep/" data-id="ckc7nj17f000k78ug773598gj"
+      <a data-url="http://yoursite.com/2019/11/10/PCA-StepByStep/" data-id="ckckeb75b000vjgued8vz2f11"
         class="article-share-link">分享</a>
         
       
@@ -1015,95 +1172,10 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/09/Hashap-LoadFactor/" data-id="ckc7nj170000878ugc2a58paq"
+      <a data-url="http://yoursite.com/2019/11/09/Hashap-LoadFactor/" data-id="ckckeb74n0005jguefnyqaabe"
         class="article-share-link">分享</a>
         
       
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-卷积操作的线性性质" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/"
-    >卷积操作的线性性质</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" class="article-date">
-  <time datetime="2019-11-08T02:47:10.000Z" itemprop="datePublished">2019-11-08</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="卷积操作的线性性质"><a href="#卷积操作的线性性质" class="headerlink" title="卷积操作的线性性质"></a>卷积操作的线性性质</h2><h3 id="卷积"><a href="#卷积" class="headerlink" title="卷积"></a>卷积</h3><p>我们假设有一幅大小为<strong>4 ×4</strong> 的图像 <strong>_x_</strong>，卷积核大小为 <strong>3×3</strong> <strong>_A_</strong></p>
-<p>卷积核滑动步长为 1 ，没有 padding；那么经过卷积以后图像大小即为 <strong>2×2</strong></p>
-<p>如何将其写为矩阵相乘形式？</p>
-<p>我们将卷积核拓展为 一个 <strong>4 × 16</strong> 的矩阵 <strong>=&gt;</strong> <strong>_T_</strong>，将图像<strong>_x_</strong> 压缩(flatten)为 <strong>16 × 1</strong> <strong>=&gt;</strong> <strong>_X_</strong></p>
-<p>卷积操作即可表示为:</p>
-<center>T*x = C</center>
-
-<p>其中，结果 <strong>_C_</strong> 为<strong>4×1</strong>的矩阵。很显然，上面的这个式子是<strong>线性</strong>的；</p>
-<p>这是矩阵和一个列向量相乘，可以理解为这个列向量经过矩阵变化之后，最终成了<strong>_C_</strong></p>
-<p>那么，这么矩阵就可以理解为列向量的一个<strong>函数</strong>。</p>
-<p>也就是说，图像经过了卷积核这个函数，变成了最后的结果。</p>
-<h3 id="转置卷积"><a href="#转置卷积" class="headerlink" title="转置卷积"></a>转置卷积</h3><p>现在我们有<strong>2 × 2</strong> 的图像 <strong>_x_</strong>，想让他变成 <strong>4 × 4</strong>的，我们该如何操作？</p>
-<p>我们仍然可以利用上文提到的那个卷积矩阵 <strong>_T_</strong>，</p>
-<p>即：</p>
-<center>T^T(16*4) * x(4*1) = R(16*1)</center>
-
-<p>转置卷积通常用来做上采样(up sample)。</p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/" data-id="ckc7nj183001878ugcc08gabj"
-        class="article-share-link">分享</a>
-        
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CNN-NET/" rel="tag">CNN NET</a></li></ul>
-
     </footer>
 
   </div>
@@ -1236,12 +1308,22 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
     
   </div>
 </div>
-      <script src="/js/jquery-2.0.3.min.js"></script>
+      
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
 <script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
 <script src="/js/lazyload.min.js"></script>
+
+
 <script src="/js/busuanzi-2.3.pure.min.js"></script>
 
+
+
 <script src="/fancybox/jquery.fancybox.min.js"></script>
+
 
 
 
@@ -1254,7 +1336,9 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
   }
 </script>
 
+
 <script src="/js/ayer.js"></script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">

@@ -1,6 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Graph Neutral Network和Graph Embedding</title>
+    <url>/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/</url>
+    <content><![CDATA[<h2 id="Graph-Neutral-Network和Graph-Embedding"><a href="#Graph-Neutral-Network和Graph-Embedding" class="headerlink" title="Graph Neutral Network和Graph Embedding"></a>Graph Neutral Network和Graph Embedding</h2><h3 id="0-概述"><a href="#0-概述" class="headerlink" title="0. 概述"></a>0. 概述</h3><h4 id="0-1-图的基础知识"><a href="#0-1-图的基础知识" class="headerlink" title="0.1 图的基础知识"></a>0.1 图的基础知识</h4><p>​        通常定义一个图 $G=(V,E)$，其中 $V$为 <strong>顶点（Vertices）</strong>集合，$E$为<strong>边（Edges）</strong>集合。对于一条边$e=(u,v)$ 包含两个<strong>端点（Endpoints）</strong> u 和 v，同时 u 可以称为 v 的<strong>邻居（Neighbor）</strong>。当所有的边为有向边时，图称之为<strong>有向（Directed）</strong>图，当所有边为无向边时，图称之为<strong>无向（Undirected）</strong>图。在无向图中，对于一个顶点 v，令$d(v) $表示连接的边的数量，称之为<strong>度（Degree）</strong>；有向图中又分为<strong>入度</strong>和<strong>出度</strong>。</p>
+<p>​        对于一个无向图 $G=(V,E)$，其<strong>邻接矩阵（Adjacency Matrix）</strong>$A$通常定义为：</p>
+<script type="math/tex; mode=display">
+A_{ij} = \left\{  
+             \begin{array}{**lr**}  
+             1，i\not=j&if\ vi\ is\ adjacent\ to\ vj\\
+             0, &otherwise 
+             \end{array}  
+\right.</script><p>​        <img src="/images/graph.png" alt="image-20200707174530868"></p>
+<p>​        对于上面这个无向图，其度矩阵（degree matrix）如下。度矩阵$D$是一个对角矩阵。</p>
+<p><img src="/images/image-20200707174724389.png" alt="image-20200707174724389"></p>
+<p>​        图的拉普拉斯矩阵$L$定义为，在图论中，作为一个图的矩阵表示。拉普拉斯矩阵是对称的（Symmetric）。</p>
+<script type="math/tex; mode=display">
+L = D - A</script><p>​        另外一种更为常用的的是正则化的拉普拉斯矩阵（Symmetric normalized Laplacian）。</p>
+<script type="math/tex; mode=display">
+L^{sym} = D^{-\frac{1}{2}}LD^{-\frac{1}{2}} = I - D^{-\frac{1}{2}}AD^{-\frac{1}{2}}</script><p>​        说明：$I$为单位矩阵；$D^{-\frac{1}{2}}$表示度矩阵对角线上的元素开平方根取倒数。</p>
+<h4 id="0-2-二者不同"><a href="#0-2-二者不同" class="headerlink" title="0.2 二者不同"></a>0.2 二者不同</h4><p>​        图嵌入旨在通过保留图的网络<strong>拓扑结构和节点内容信息</strong>，将图中顶点表示为低维向量，以便使用简单的机器学习算法（例如，支持向量机分类）进行处理（摘自知乎：图神经网络（Graph Neural Networks）综述，作者：苏一。<a href="https://zhuanlan.zhihu.com/p/75307407）。" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/75307407）。</a></p>
+<p>​        图神经网络是用于处理图数据（非欧式空间）的神经网络结构。</p>
+<p>​        图嵌入和图神经网络的区别与联系。</p>
+<p><img src="https://d33wubrfki0l68.cloudfront.net/3c5b07652ee4f2012f3ce1b9cf25bf8282a4f9f4/abdc9/images/cn/2020-04-11-graph-embedding-and-gnn/graph-embedding-vs-graph-neural-networks.png" alt=""></p>
+<h3 id="1-Graph-Embedding"><a href="#1-Graph-Embedding" class="headerlink" title="1. Graph Embedding"></a>1. Graph Embedding</h3><p>​        Embedding在数学上是一个函数，将一个空间的点映射到另一个空间，通常是从高维抽象的空间映射到低维具象的空间，并且在低维空间保持原有的语义。早在2003年，Bengio就发表论文论述word embedding想法，将词汇映射到实数向量空间。而2013年google连发两篇论文推出word embedding的神经网咯工具包：skip-gram、cbow（连续词袋模型），使得embedding技术成为深度学习的基本操作，进而导致万物皆可embedding。</p>
+<p>​        而基于图的embedding又可以分为基于顶点（vertex）和基于图（graph）。前者主要是将给定的图数据中的vertex表示为单独的向量（vector），后者将整个图进行embedding表示，之后可以进行图的分类等工作。下面分别介绍。</p>
+<h4 id="1-1-Vertex-Embedding"><a href="#1-1-Vertex-Embedding" class="headerlink" title="1.1 Vertex Embedding"></a>1.1 Vertex Embedding</h4><h5 id="1-1-1-DeepWalk"><a href="#1-1-1-DeepWalk" class="headerlink" title="1.1.1 DeepWalk"></a>1.1.1 DeepWalk</h5><p>Perozzi B, Al-Rfou R, Skiena S. Deepwalk: Online learning of social representations[C]//Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining. 2014: 701-710.</p>
+<p><img src="/images/image-20200708200747355.png" alt="image-20200708200747355"></p>
+<p>即：基于图上的随机游走进行节点采样，之后将采样到的节点集（每个节点feature使用one-hot表示或者随机向量）输入到skip-gram模型进行训练，得到节点的embedding。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">RandomWalk</span><span class="params">(node,t)</span>:</span></span><br><span class="line">    walk = [node]        <span class="comment"># Walk starts from this node</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(t<span class="number">-1</span>):</span><br><span class="line">        <span class="comment"># 应先统计adj_list[node]对应的为1表示相邻的节点索引列表，从该列表中随机选取索引</span></span><br><span class="line">        adj_nodes = np.array(adj_list[node]).nonzero()[<span class="number">0</span>]<span class="comment"># nonzero返回一个元组</span></span><br><span class="line">        </span><br><span class="line">        node = adj_list[node][adj_nodes[random.randint(<span class="number">0</span>,len(adj_nodes)<span class="number">-1</span>)]]</span><br><span class="line">        walk.append(node)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> walk</span><br></pre></td></tr></table></figure>
+<h5 id="1-1-2-LINE"><a href="#1-1-2-LINE" class="headerlink" title="1.1.2 LINE"></a>1.1.2 LINE</h5><p>Tang J, Qu M, Wang M, et al. Line: Large-scale information network embedding[C]//Proceedings of the 24th international conference on world wide web. 2015: 1067-1077.</p>
+<p>​        相似度定义</p>
+<p><strong>first-order proximity</strong></p>
+<p>​        <img src="/images/image-20200709225053851.png" alt="image-20200709225053851"></p>
+<p>​        1阶相似度用于描述图中成对顶点之间的局部相似度，形式化描述为若$u,v$之间存在直连边，则边权$w_{uv}$即为两个顶点的相似度，若不存在直连边，则1阶相似度为0。 如上图，6和7之间存在直连边，且边权较大，则认为两者相似且1阶相似度较高，而5和6之间不存在直连边，则两者间1阶相似度为0。</p>
+<p><strong>second-order proximity</strong></p>
+<p>​        仅有1阶相似度就够了吗？显然不够，如上图，虽然5和6之间不存在直连边，但是他们有很多相同的邻居顶点(1,2,3,4)，这其实也可以表明5和6是相似的，而2阶相似度就是用来描述这种关系的。 形式化定义为，令$p_u = (w_{u,1},…,w_{u,|V|})$ 表示顶点$u$与<strong>所有其他</strong>顶点间的1阶相似度，则  $u$ 与 $v$ 的2阶相似度可以通过 $p_{u}$ 和  $p_v$ 的相似度表示（两个顶点他们的邻居集合的相似程度）。若$u$与$v$之间不存在相同的邻居顶点，则2阶相似度为0。</p>
+<p><strong>目标函数</strong></p>
+<p>​        <strong>1st-order</strong>（用于无向图）</p>
+<p>​        对于每条边集$E$中的任一条边$(i,j)$，邻接的两个节点$p_i,p_j$的联合分布定义为：</p>
+<script type="math/tex; mode=display">
+p(v_i,v_j) = \frac{1}{1 + \exp(-u_i·u_j)}</script><p>​        $u_i,u_j$即节点$v_i,v_j$的低维embedding表示。同时定义经验分布$\hat p$：</p>
+<script type="math/tex; mode=display">
+\hat p(i,j) = \frac{w_{ij}}{W},W = \sum_{(i,j)\in E}w_{ij}</script><p>​        那么，目标函数就是尽可能地减小这两个分布的差异，衡量两个分布差异可以使用KL散度来衡量，进而：</p>
+<script type="math/tex; mode=display">
+O_1 = - \sum_{(i,j)\in E}w_{ij}\log p(v_i,v_j)</script><p>​        <strong>2nd-order</strong></p>
+<script type="math/tex; mode=display">
+O_2 = - \sum_{(i,j)\in E} w_{ij}\log p(v_j|v_i)</script><p>​        当然也可以使用二者的结合。</p>
+<h5 id="1-1-3-Node2Vec"><a href="#1-1-3-Node2Vec" class="headerlink" title="1.1.3 Node2Vec"></a>1.1.3 Node2Vec</h5><p>Grover A, Leskovec J. node2vec: Scalable feature learning for networks[C]//Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining. 2016: 855-864.</p>
+<p>​        本质上也是基于随机游走，提出了一种新的节点采样策略，有“导向”的游走，即加入了参数来控制从某个节点到其他节点的概率。采样得到的节点集，<strong>仍使用word2vec形式进行训练</strong>。</p>
+<p>​        如下图。p（return parameter）、q（in-out parameter）为超参数。</p>
+<p>​        下图中，现处于节点v，上一个节点是t，那么从节点v到节点$t$、$x_1$、$x_2$、$x_3$的概率$\pi_{vx}$计算公式如下：</p>
+<script type="math/tex; mode=display">
+\alpha(t,x) = \frac{1}{p},d_{t,x} = 0</script><script type="math/tex; mode=display">
+\alpha(t,x) = 1,d_{t,x} = 1</script><script type="math/tex; mode=display">
+\alpha(t,x) = \frac{1}{q},d_{t,x} = 2</script><script type="math/tex; mode=display">
+\pi_{vx}=\alpha(t,x) w_{v,x}</script><p>​        其中，$d_{tx}$表示<strong>上一节点和下一个能到达的节点的距离</strong>，$w_{vx}$即节点v与next节点连接边的权重（无向图中为1）。下图中，节点$t$与$x_1$直接有边相连接，$d$为1；$t$与$x_2$、$x_3$距离为2（不相邻）；特别的，与上一个节点距离为0，概率为$\frac{1}{p}$。</p>
+<p><img src="/images/image-20200709201700829.png" alt="image-20200709201700829"></p>
+<p>​        基于这种随机游走策略，使得该模型可以体现网络的同质性（homophily）或结构性（structural equivalence）。网络的“同质性”指<strong>距离相近</strong>的节点的embedding应尽量相似；“结构性”指的是<strong>结构上相似</strong>的节点的embedding应尽量相似。</p>
+<p>​        为了能让graph embedding的结果能够表达网络的“结构性”，需要让游走的过程更倾向与<strong>BFS</strong>，因为BFS会更多的在当前节点的领域中游走遍历；为了表达”同质性”，则需要让游走过程倾向于<strong>DFS</strong>。</p>
+<p>​        现在讨论超参数p、q，q越大，则随机游走到远方节点的可能性更大，随机游走策略就近似于DFS；反之，近似于BFS。</p>
+<h5 id="1-1-4-SDNE"><a href="#1-1-4-SDNE" class="headerlink" title="1.1.4 SDNE"></a>1.1.4 SDNE</h5><p>Wang D, Cui P, Zhu W. Structural deep network embedding[C]//Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining. 2016: 1225-1234.</p>
+<p>​        SDNE基于LINE研究的基础上，采用deep encoder-decoder模型进行embedding。</p>
+<p>​        </p>
+<h4 id="1-2-Graph-Embedding"><a href="#1-2-Graph-Embedding" class="headerlink" title="1.2 Graph Embedding"></a>1.2 Graph Embedding</h4><h3 id="2-Graph-Neural-Network"><a href="#2-Graph-Neural-Network" class="headerlink" title="2. Graph Neural Network"></a>2. Graph Neural Network</h3><p>​        图神经网络目前主要的任务包括：节点分类（node classification）、图分类（graph classification）、graph representation、link predication等等。</p>
+<h4 id="2-1-Neighborhood-Aggravating"><a href="#2-1-Neighborhood-Aggravating" class="headerlink" title="2.1 Neighborhood Aggravating"></a>2.1 Neighborhood Aggravating</h4><p>​        <strong>neighborhood aggravating即用节点的neighbor feature更新下一个的hidden state。</strong></p>
+<p>​        给定一张图，我们可以用与与节点邻接的节点集去表示该节点。下图中，A与B、C、D相邻接，而B又与A、C邻接等等，每个节点都可以使用与其相邻接的节点进行表示（aggravating）（每个节点都有一个初始状态【特征】，当前节点状态用其他节点的上一个状态【特征】表示）。通过其邻接节点聚合，这个节点就可以学到图的结构。</p>
+<p><img src="/images/g1.png" alt="image-20200707215031730" style="zoom:67%;" /></p>
+<p><img src="E:\hexo\themes\ayer\source\images\image-20200707215123250.png" alt="image-20200707215123250" style="zoom:67%;" /></p>
+<p><img src="/images/image-20200707215155395.png" alt="image-20200707215155395" style="zoom:67%;" /></p>
+<p>​        因此，我们可以定义任意层的网络来聚合各个节点的信息。（如下图，注：并非完整）</p>
+<p><img src="/images/image-20200707215535544.png" alt="image-20200707215535544" style="zoom: 67%;" /></p>
+<p>​        注：图中方块表示任意的聚合函数。</p>
+<p>​        数学表示如下：</p>
+<script type="math/tex; mode=display">
+h_v^k = \sigma(W_k\sum_{u \in N(v)}\frac{h_u^{k-1}}{|N(v)|} + B_kh_v^{k-1}),k > 0</script><script type="math/tex; mode=display">
+h_v^0 = x_v</script><p>​        其中，k表示第k层（layer）；v表示节点；$\sigma$表示激活函数；$h_u$表示节点$u$的状态；$N(v)$表示节点$v$的邻接节点集合；$|N(v)|$即邻接节点数量；$W、B$分别为权重矩阵和偏置（bias）。</p>
+<p>​        因此，我们只需定义一个聚合函数（sum、mean、max-pooling等），以及损失函数（比如：基于节点分类的交叉熵损失函数等），就可以开始迭代训练，最终得到各个节点的embedding向量。</p>
+<h4 id="2-2-Graph-Convolution-Networks"><a href="#2-2-Graph-Convolution-Networks" class="headerlink" title="2.2 Graph Convolution Networks"></a>2.2 Graph Convolution Networks</h4><p>​        卷积网络大致分类如下图。</p>
+<p><img src="/images/image-20200707223107082.png" alt="image-20200707223107082"></p>
+<h5 id="2-2-1-Spatial-based"><a href="#2-2-1-Spatial-based" class="headerlink" title="2.2.1 Spatial-based"></a>2.2.1 Spatial-based</h5><p>​        空间卷积网络也是基于neighborhood aggravating的思想。</p>
+<ul>
+<li><p>Kipf T N, Welling M. Semi-supervised classification with graph convolutional networks[J]. arXiv preprint arXiv:1609.02907, 2016.</p>
+<p>这篇论文采用的图卷积网络在neighborhood aggravating上做出了一点改动。</p>
+</li>
+</ul>
+<script type="math/tex; mode=display">
+h_v^k = \sigma(W_k\sum_{u\in N(v)\cup v}\frac{h_u^{k-1}}{\sqrt{|N(u)||N(v)|}})</script><p>​        <strong>矩阵形式</strong>如下：</p>
+<script type="math/tex; mode=display">
+H^{(k+1)} = \sigma(D^{-\frac{1}{2}}\hat AD^{\frac{1}{2}}H^{(k)}W_k) \\
+\hat A = A + I</script><p>​        其中$A$为图邻接矩阵，$D$为度矩阵，$I$为单位矩阵。</p>
+<p>​        事实上，矩阵形式的式子利用了谱图理论中的知识。也就是说，<strong>根据空域卷积写出的第一个式子，利用谱图理论就可以推导出其矩阵形式</strong>，由此可以看出，谱图卷积和空域卷积并不是完全割裂的。</p>
+<p>​        </p>
+<h5 id="2-2-2-Spectral-based"><a href="#2-2-2-Spectral-based" class="headerlink" title="2.2.2 Spectral-based"></a>2.2.2 Spectral-based</h5><p>​         谱图卷积网络基于图的信号处理，即图的拉普拉斯矩阵进行傅里叶变化（Fourier Transform）与逆变化（Inverse Fourier Transform），</p>
+<p>​    <strong>图上的傅里叶变换</strong></p>
+<p>​        傅里叶变换可以将<strong>时域</strong>信号转为<strong>频域信号</strong>。时域即信号大小随时间而改变，其图像在二维平面中，横轴为时间，纵轴为信号大小，其图像是连续的；而频域图像，横轴代表频率大小，纵轴代表信号大小，其图像是离散的。频域图像本质上描述了一段信号中包含的具体成分（不同频率信号的叠加）如何。</p>
+<p>​        而图上的傅里叶变换用到了图的拉普拉斯矩阵$L$，因为$L$是半正定矩阵，因此其特征值都非负。对其进行特征值分解有：</p>
+<script type="math/tex; mode=display">
+L = U \Lambda U^T</script><p>，其中$U$为特征向量，$\Lambda$为特征值矩阵，是一个对角矩阵，$\lambda_1,\lambda_2…$即特征值，且$\lambda_1&lt;=\lambda_2&lt;=…&lt;=\lambda_n$。$\lambda$也代表了图上的频率。</p>
+<p>​        下面直接给出图上傅里叶变换公式，具体推导略去。</p>
+<p>​        给定图中某顶点$v$，其对应的信号（特征）为$x$，那么其傅里叶变换即：</p>
+<script type="math/tex; mode=display">
+\hat x = U^Tx</script><p>​        可知$\hat x$为频域上信号，要重新换变换顶点域，就需要逆傅里叶变换即：</p>
+<script type="math/tex; mode=display">
+y = U\hat x</script><p><strong>谱图卷积</strong></p>
+<p>​        要进行卷积，就需要在频域上进行卷积，即将顶点上的信号进行傅里叶变换后，定义对应的滤波器（滤波函数）$g_\theta(\lambda)$对其进行处理，再利用逆傅里叶变换还原为顶点域中。这里的滤波器或者说关于$\lambda$的滤波函数就是我们要通过训练学习的。说是关于$\lambda$的函数，就是说根据不同的$\lambda$给出不同的<strong>相应</strong>$\theta$。</p>
+<p>​        由此，图上信号卷积即：</p>
+<script type="math/tex; mode=display">
+y = U\hat x = Ug_{\theta}(\Lambda)U^Tx</script><p>​        但上面这样定义仍存在几个问题，一是当图太大时矩阵分解计算复杂度太高，二是这并非是局部的（localized）。进而又推出了ChebNet模型（坑太深，先留着吧…）。</p>
+<h4 id="2-2-Graph-Attention-Networks"><a href="#2-2-Graph-Attention-Networks" class="headerlink" title="2.2 Graph Attention Networks"></a>2.2 Graph Attention Networks</h4><p>Veličković P, Cucurull G, Casanova A, et al. Graph attention networks[J]. arXiv preprint arXiv:1710.10903, 2017.</p>
+<p>​        attention通俗的讲就是输入两个向量，然后输出一个分数；是一种思想，可以有不同的实现。</p>
+<p>​        GAT在空间卷积的基础上，引入了注意力机制，注意力机制也赋予了模型一定的可解释性。加入了attention后，我们aggravating的时候就需要计算当前节点和邻接节点的权重，然后进行聚合。</p>
+<p>​        节点v第k个状态更新公式如下：</p>
+<script type="math/tex; mode=display">
+h_v^k = \sigma (\sum_{u \in N(v)}\alpha_{vu}h_u)</script><p>​        其中$\alpha$就是计算得到的attention权重。</p>
+<p><img src="/images/image-20200707230726126.png" alt="image-20200707230726126" style="zoom:80%;" /></p>
+<p>参考资料：</p>
+<p>李宏毅，深度学习</p>
+<p><a href="http://snap.stanford.edu/proj/embeddings-www/" target="_blank" rel="noopener">http://snap.stanford.edu/proj/embeddings-www/</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/56478167" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/56478167</a></p>
+<p><a href="https://github.com/shenweichen/GraphEmbedding" target="_blank" rel="noopener">https://github.com/shenweichen/GraphEmbedding</a></p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+  </entry>
+  <entry>
     <title>交叉熵</title>
     <url>/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/</url>
     <content><![CDATA[<h2 id="交叉熵"><a href="#交叉熵" class="headerlink" title="交叉熵"></a>交叉熵</h2><ul>
@@ -631,7 +756,7 @@ N = \frac{W - F + 2P}{S} + 1</script><p>再经过<code>max_pooling</code> ,最�
 <script type="math/tex; mode=display">
 M = \frac{N-f}{s} + 1</script><p>注：<code>nn.Conv2d</code>输出维度：<code>[batch_size, channels, width, height]</code></p>
 <h3 id="2-训练你的模型"><a href="#2-训练你的模型" class="headerlink" title="2 训练你的模型"></a>2 训练你的模型</h3><p><strong>训练流程</strong>：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. Get batch from the training set.</span><br><span class="line">2. Pass batch to network.</span><br><span class="line">3. Calculate the loss (difference between the predicted values and the true values).</span><br><span class="line">4. Calculate the gradient of the loss function w.r.t the network&apos;s weights.</span><br><span class="line">5. Update the weights using the gradients to reduce the loss.（反向传播）</span><br><span class="line">6. Repeat steps 1-5 until one epoch is completed.</span><br><span class="line">7. Repeat steps 1-6 for as many epochs required to reach the minimum loss.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. Get batch from the training set.</span><br><span class="line">2. Pass batch to network.</span><br><span class="line">3. Calculate the loss (difference between the predicted values and the true values).</span><br><span class="line">4. Calculate the gradient of the loss function w.r.t the network&#39;s weights.</span><br><span class="line">5. Update the weights using the gradients to reduce the loss.（反向传播）</span><br><span class="line">6. Repeat steps 1-5 until one epoch is completed.</span><br><span class="line">7. Repeat steps 1-6 for as many epochs required to reach the minimum loss.</span><br></pre></td></tr></table></figure>
 <p><strong>batch</strong>：每次输入神经网络中的数据集数量。</p>
 <p><strong>epoch</strong>：遍历完整个数据集称之为一个<code>epoch</code>。</p>
 <p>整个流程代码如下：</p>
@@ -1608,13 +1733,13 @@ v_t = \gamma v_{t-1} + \alpha \nabla J(\theta)</script><script type="math/tex; m
 <p><strong>注意：</strong>reshape 返回后的结果可能与原<code>tensor</code>共享数据，而维度不同，即：你改变了 reshape 后的数据，原数据也会被修改；又或者 reshape 后的不共享存储。（无语….）</p>
 </li>
 <li><p><code>squeeze()</code> 将所有为 1 的维度删掉，可以传入具体的参数，表示将第几个维度进行“挤压”，如果指定维度不为1，那么调用该方法tensor不发生改变。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  &gt; t1 = torch.tensor([[1],[2],[3],[4]]) # [4,1]</span><br><span class="line">  &gt; t1_ = t1.squeeze(-1)# t1.squeeze(1)</span><br><span class="line">  tensor([1, 2, 3, 4])#[4]</span><br><span class="line">  &gt; t1_.shape</span><br><span class="line">  torch.Size([4])</span><br><span class="line"></span><br><span class="line">  &gt; a = torch.randn(1,1,3)</span><br><span class="line">  &gt; print(a)</span><br><span class="line">  tensor([[[ 1.8239, -1.0579,  0.3052]]])</span><br><span class="line"></span><br><span class="line">  &gt; b = torch.squeeze(a) # 将a中所有为1的维度删掉。不为1的维度没有影响。</span><br><span class="line">  &gt; b</span><br><span class="line">  tensor([ 1.8239, -1.0579,  0.3052])</span><br><span class="line">#[3]</span><br><span class="line">  &gt; c=torch.squeeze(a,1) # 第2维度是否为1，为1就删掉，成为2维矩阵；不为1则不受影响</span><br><span class="line">  &gt; c</span><br><span class="line">  tensor([[ 0.6552,  0.9220, -0.9763]])</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  &gt; t1 &#x3D; torch.tensor([[1],[2],[3],[4]]) # [4,1]</span><br><span class="line">  &gt; t1_ &#x3D; t1.squeeze(-1)# t1.squeeze(1)</span><br><span class="line">  tensor([1, 2, 3, 4])#[4]</span><br><span class="line">  &gt; t1_.shape</span><br><span class="line">  torch.Size([4])</span><br><span class="line"></span><br><span class="line">  &gt; a &#x3D; torch.randn(1,1,3)</span><br><span class="line">  &gt; print(a)</span><br><span class="line">  tensor([[[ 1.8239, -1.0579,  0.3052]]])</span><br><span class="line"></span><br><span class="line">  &gt; b &#x3D; torch.squeeze(a) # 将a中所有为1的维度删掉。不为1的维度没有影响。</span><br><span class="line">  &gt; b</span><br><span class="line">  tensor([ 1.8239, -1.0579,  0.3052])</span><br><span class="line">#[3]</span><br><span class="line">  &gt; c&#x3D;torch.squeeze(a,1) # 第2维度是否为1，为1就删掉，成为2维矩阵；不为1则不受影响</span><br><span class="line">  &gt; c</span><br><span class="line">  tensor([[ 0.6552,  0.9220, -0.9763]])</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><code>unsqueeze()</code> 对给指定位置加上维数为一的维度</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt; a = torch.linspace(<span class="number">-1</span>, <span class="number">1</span>, <span class="number">100</span>)</span><br><span class="line">&gt; a,shape</span><br><span class="line">torch.Size([<span class="number">100</span>])</span><br><span class="line"></span><br><span class="line">&gt; b = a.unsqueeze(<span class="number">0</span>)</span><br><span class="line">&gt; b.shape</span><br><span class="line">torch.Size([<span class="number">1</span>,<span class="number">100</span>])</span><br><span class="line"></span><br><span class="line">&gt; c = a.unsqueeze(<span class="number">1</span>)</span><br><span class="line">&gt; c.shape</span><br><span class="line">torch.Size([<span class="number">100</span>,<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><code>flatten</code>就是<code>reshape</code>和<code>squeezee</code>二者结合。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def flatten(t):</span><br><span class="line">    t = t.reshape(1, -1)</span><br><span class="line">    t = t.squeeze()</span><br><span class="line">    return t</span><br><span class="line">&gt; t = torch.ones(4,3)</span><br><span class="line">&gt; flatten(t) # t.reshape(1,-1).squeezee()</span><br><span class="line">tensor([1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.])</span><br><span class="line">&gt;  t.flatten()</span><br><span class="line">tensor([1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.])</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def flatten(t):</span><br><span class="line">    t &#x3D; t.reshape(1, -1)</span><br><span class="line">    t &#x3D; t.squeeze()</span><br><span class="line">    return t</span><br><span class="line">&gt; t &#x3D; torch.ones(4,3)</span><br><span class="line">&gt; flatten(t) # t.reshape(1,-1).squeezee()</span><br><span class="line">tensor([1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.])</span><br><span class="line">&gt;  t.flatten()</span><br><span class="line">tensor([1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.])</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><code>cat()</code>两个矩阵的拼接，按照行/列进行拼接。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>t1 = torch.tensor([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]]) <span class="comment"># 2*4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>t2 = torch.tensor([[<span class="number">4</span>],[<span class="number">8</span>]]) <span class="comment"># 2*1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>torch.concat((t1,t2),dim = <span class="number">1</span>) <span class="comment">#t2列数与t1不同，只能横着拼接，依旧是行方向</span></span><br><span class="line">tensor([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>],</span><br><span class="line">        [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">8</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>t3 = torch.tensor([[<span class="number">9</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]]) <span class="comment"># [9,2,3,4]会报错！维度不一样 [4] [[9,2,3,4]] =&gt; [1,4]</span></span><br><span class="line">tensor([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>],</span><br><span class="line">        [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>],</span><br><span class="line">        [<span class="number">9</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]])</span><br></pre></td></tr></table></figure>
@@ -1630,7 +1755,7 @@ v_t = \gamma v_{t-1} + \alpha \nabla J(\theta)</script><script type="math/tex; m
 </li>
 <li><p><code>permute</code>：交换维度</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt; t = torch.randn(<span class="number">5</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line">&gt; t = t.permute(<span class="number">1</span>,<span class="number">2</span>,<span class="number">0</span>)</span><br><span class="line">&gt; t.shape</span><br><span class="line">[<span class="number">3</span>,<span class="number">2</span>,<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  </span><br><span class="line">* `type_as`：转换`tensor`类型，`tensor`默认小数为`float`型。</span><br><span class="line"></span><br><span class="line">  ```pyth</span><br><span class="line">  &gt; t1 = np.linspace(-10,10,100)</span><br><span class="line">  &gt; t1_ = torch.tensor(t1)</span><br><span class="line">  &gt; t1_.dtype</span><br><span class="line">  torch.float64</span><br><span class="line"></span><br><span class="line">  t1_ = t1_.type_as(torch.FloatTensor())</span><br><span class="line">  &gt; t1_.dtype</span><br><span class="line">  torch.float32</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  </span><br><span class="line">* &#96;type_as&#96;：转换&#96;tensor&#96;类型，&#96;tensor&#96;默认小数为&#96;float&#96;型。</span><br><span class="line"></span><br><span class="line">  &#96;&#96;&#96;pyth</span><br><span class="line">  &gt; t1 &#x3D; np.linspace(-10,10,100)</span><br><span class="line">  &gt; t1_ &#x3D; torch.tensor(t1)</span><br><span class="line">  &gt; t1_.dtype</span><br><span class="line">  torch.float64</span><br><span class="line"></span><br><span class="line">  t1_ &#x3D; t1_.type_as(torch.FloatTensor())</span><br><span class="line">  &gt; t1_.dtype</span><br><span class="line">  torch.float32</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h4 id="1-4-tensor-的广播以及-reduction-操作"><a href="#1-4-tensor-的广播以及-reduction-操作" class="headerlink" title="1.4 tensor 的广播以及 reduction 操作"></a>1.4 tensor 的广播以及 reduction 操作</h4><p>和<code>numpy</code>类似，tensor 也可以进行每一列/行求均值(<code>mean</code>)、<code>max</code>、<code>argmax</code>、<code>sum</code>、<code>std</code>等操作。</p>
@@ -2185,7 +2310,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
     <url>/2019/11/10/PCA-StepByStep/</url>
     <content><![CDATA[<h3 id="How-to-Implements-PCA"><a href="#How-to-Implements-PCA" class="headerlink" title="How to Implements PCA"></a>How to Implements PCA</h3><p>Step by Step​​<br>​​<img src="https://img-blog.csdnimg.cn/20191109182949751.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
 <p><img src="https://img-blog.csdnimg.cn/20191109191048929.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def my_pca(X, k):</span><br><span class="line">    #X 行：样本量，列：样本维度</span><br><span class="line">    #函数默认对每一列进行demean处理</span><br><span class="line">    cov = np.cov(X,rowvar=0)</span><br><span class="line">    mean = np.mean(X,axis = 0)</span><br><span class="line">    X_ = X - mean</span><br><span class="line">    #求协方差矩阵的特征向量</span><br><span class="line">    eigenvalue, eigenfuture = np.linalg.eig(cov)</span><br><span class="line">    #选取前k个特征向量 n * k</span><br><span class="line">    eigenselect = eigenfuture[:,:k]</span><br><span class="line">    return np.dot(X_, eigenselect), eigenfuture</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def my_pca(X, k):</span><br><span class="line">    #X 行：样本量，列：样本维度</span><br><span class="line">    #函数默认对每一列进行demean处理</span><br><span class="line">    cov &#x3D; np.cov(X,rowvar&#x3D;0)</span><br><span class="line">    mean &#x3D; np.mean(X,axis &#x3D; 0)</span><br><span class="line">    X_ &#x3D; X - mean</span><br><span class="line">    #求协方差矩阵的特征向量</span><br><span class="line">    eigenvalue, eigenfuture &#x3D; np.linalg.eig(cov)</span><br><span class="line">    #选取前k个特征向量 n * k</span><br><span class="line">    eigenselect &#x3D; eigenfuture[:,:k]</span><br><span class="line">    return np.dot(X_, eigenselect), eigenfuture</span><br></pre></td></tr></table></figure>
 <h3 id="The-relationship-between-PCA-and-SVD"><a href="#The-relationship-between-PCA-and-SVD" class="headerlink" title="The relationship between PCA and SVD"></a>The relationship between PCA and SVD</h3><p>We can use <strong>SVD</strong> to perform <strong>PCA</strong>.</p>
 <ol>
 <li>sklearn 中的 PCA 在大规模运算时采用了 SVD 的方式进行降维处理</li>

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="description" content="天空如此辽阔，大地不过是必经之路" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Graph Neutral Network和Graph Embedding |  张永剑的博客
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/favicon.svg" />
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="张永剑的博客" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-Graph Neutral Network和Graph Embedding" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Graph Neutral Network和Graph Embedding
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/" class="article-date">
+  <time datetime="2020-07-07T09:14:50.127Z" itemprop="datePublished">2020-07-07</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">3.2k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">13分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="Graph-Neutral-Network和Graph-Embedding"><a href="#Graph-Neutral-Network和Graph-Embedding" class="headerlink" title="Graph Neutral Network和Graph Embedding"></a>Graph Neutral Network和Graph Embedding</h2><h3 id="0-概述"><a href="#0-概述" class="headerlink" title="0. 概述"></a>0. 概述</h3><h4 id="0-1-图的基础知识"><a href="#0-1-图的基础知识" class="headerlink" title="0.1 图的基础知识"></a>0.1 图的基础知识</h4><p>​        通常定义一个图 $G=(V,E)$，其中 $V$为 <strong>顶点（Vertices）</strong>集合，$E$为<strong>边（Edges）</strong>集合。对于一条边$e=(u,v)$ 包含两个<strong>端点（Endpoints）</strong> u 和 v，同时 u 可以称为 v 的<strong>邻居（Neighbor）</strong>。当所有的边为有向边时，图称之为<strong>有向（Directed）</strong>图，当所有边为无向边时，图称之为<strong>无向（Undirected）</strong>图。在无向图中，对于一个顶点 v，令$d(v) $表示连接的边的数量，称之为<strong>度（Degree）</strong>；有向图中又分为<strong>入度</strong>和<strong>出度</strong>。</p>
+<p>​        对于一个无向图 $G=(V,E)$，其<strong>邻接矩阵（Adjacency Matrix）</strong>$A$通常定义为：</p>
+<script type="math/tex; mode=display">
+A_{ij} = \left\{  
+             \begin{array}{**lr**}  
+             1，i\not=j&if\ vi\ is\ adjacent\ to\ vj\\
+             0, &otherwise 
+             \end{array}  
+\right.</script><p>​        <img src="/images/graph.png" alt="image-20200707174530868"></p>
+<p>​        对于上面这个无向图，其度矩阵（degree matrix）如下。度矩阵$D$是一个对角矩阵。</p>
+<p><img src="/images/image-20200707174724389.png" alt="image-20200707174724389"></p>
+<p>​        图的拉普拉斯矩阵$L$定义为，在图论中，作为一个图的矩阵表示。拉普拉斯矩阵是对称的（Symmetric）。</p>
+<script type="math/tex; mode=display">
+L = D - A</script><p>​        另外一种更为常用的的是正则化的拉普拉斯矩阵（Symmetric normalized Laplacian）。</p>
+<script type="math/tex; mode=display">
+L^{sym} = D^{-\frac{1}{2}}LD^{-\frac{1}{2}} = I - D^{-\frac{1}{2}}AD^{-\frac{1}{2}}</script><p>​        说明：$I$为单位矩阵；$D^{-\frac{1}{2}}$表示度矩阵对角线上的元素开平方根取倒数。</p>
+<h4 id="0-2-二者不同"><a href="#0-2-二者不同" class="headerlink" title="0.2 二者不同"></a>0.2 二者不同</h4><p>​        图嵌入旨在通过保留图的网络<strong>拓扑结构和节点内容信息</strong>，将图中顶点表示为低维向量，以便使用简单的机器学习算法（例如，支持向量机分类）进行处理（摘自知乎：图神经网络（Graph Neural Networks）综述，作者：苏一。<a href="https://zhuanlan.zhihu.com/p/75307407）。" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/75307407）。</a></p>
+<p>​        图神经网络是用于处理图数据（非欧式空间）的神经网络结构。</p>
+<p>​        图嵌入和图神经网络的区别与联系。</p>
+<p><img src="https://d33wubrfki0l68.cloudfront.net/3c5b07652ee4f2012f3ce1b9cf25bf8282a4f9f4/abdc9/images/cn/2020-04-11-graph-embedding-and-gnn/graph-embedding-vs-graph-neural-networks.png" alt=""></p>
+<h3 id="1-Graph-Embedding"><a href="#1-Graph-Embedding" class="headerlink" title="1. Graph Embedding"></a>1. Graph Embedding</h3><p>​        Embedding在数学上是一个函数，将一个空间的点映射到另一个空间，通常是从高维抽象的空间映射到低维具象的空间，并且在低维空间保持原有的语义。早在2003年，Bengio就发表论文论述word embedding想法，将词汇映射到实数向量空间。而2013年google连发两篇论文推出word embedding的神经网咯工具包：skip-gram、cbow（连续词袋模型），使得embedding技术成为深度学习的基本操作，进而导致万物皆可embedding。</p>
+<p>​        而基于图的embedding又可以分为基于顶点（vertex）和基于图（graph）。前者主要是将给定的图数据中的vertex表示为单独的向量（vector），后者将整个图进行embedding表示，之后可以进行图的分类等工作。下面分别介绍。</p>
+<h4 id="1-1-Vertex-Embedding"><a href="#1-1-Vertex-Embedding" class="headerlink" title="1.1 Vertex Embedding"></a>1.1 Vertex Embedding</h4><h5 id="1-1-1-DeepWalk"><a href="#1-1-1-DeepWalk" class="headerlink" title="1.1.1 DeepWalk"></a>1.1.1 DeepWalk</h5><p>Perozzi B, Al-Rfou R, Skiena S. Deepwalk: Online learning of social representations[C]//Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining. 2014: 701-710.</p>
+<p><img src="/images/image-20200708200747355.png" alt="image-20200708200747355"></p>
+<p>即：基于图上的随机游走进行节点采样，之后将采样到的节点集（每个节点feature使用one-hot表示或者随机向量）输入到skip-gram模型进行训练，得到节点的embedding。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">RandomWalk</span><span class="params">(node,t)</span>:</span></span><br><span class="line">    walk = [node]        <span class="comment"># Walk starts from this node</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(t<span class="number">-1</span>):</span><br><span class="line">        <span class="comment"># 应先统计adj_list[node]对应的为1表示相邻的节点索引列表，从该列表中随机选取索引</span></span><br><span class="line">        adj_nodes = np.array(adj_list[node]).nonzero()[<span class="number">0</span>]<span class="comment"># nonzero返回一个元组</span></span><br><span class="line">        </span><br><span class="line">        node = adj_list[node][adj_nodes[random.randint(<span class="number">0</span>,len(adj_nodes)<span class="number">-1</span>)]]</span><br><span class="line">        walk.append(node)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> walk</span><br></pre></td></tr></table></figure>
+<h5 id="1-1-2-LINE"><a href="#1-1-2-LINE" class="headerlink" title="1.1.2 LINE"></a>1.1.2 LINE</h5><p>Tang J, Qu M, Wang M, et al. Line: Large-scale information network embedding[C]//Proceedings of the 24th international conference on world wide web. 2015: 1067-1077.</p>
+<p>​        相似度定义</p>
+<p><strong>first-order proximity</strong></p>
+<p>​        <img src="/images/image-20200709225053851.png" alt="image-20200709225053851"></p>
+<p>​        1阶相似度用于描述图中成对顶点之间的局部相似度，形式化描述为若$u,v$之间存在直连边，则边权$w_{uv}$即为两个顶点的相似度，若不存在直连边，则1阶相似度为0。 如上图，6和7之间存在直连边，且边权较大，则认为两者相似且1阶相似度较高，而5和6之间不存在直连边，则两者间1阶相似度为0。</p>
+<p><strong>second-order proximity</strong></p>
+<p>​        仅有1阶相似度就够了吗？显然不够，如上图，虽然5和6之间不存在直连边，但是他们有很多相同的邻居顶点(1,2,3,4)，这其实也可以表明5和6是相似的，而2阶相似度就是用来描述这种关系的。 形式化定义为，令$p_u = (w_{u,1},…,w_{u,|V|})$ 表示顶点$u$与<strong>所有其他</strong>顶点间的1阶相似度，则  $u$ 与 $v$ 的2阶相似度可以通过 $p_{u}$ 和  $p_v$ 的相似度表示（两个顶点他们的邻居集合的相似程度）。若$u$与$v$之间不存在相同的邻居顶点，则2阶相似度为0。</p>
+<p><strong>目标函数</strong></p>
+<p>​        <strong>1st-order</strong>（用于无向图）</p>
+<p>​        对于每条边集$E$中的任一条边$(i,j)$，邻接的两个节点$p_i,p_j$的联合分布定义为：</p>
+<script type="math/tex; mode=display">
+p(v_i,v_j) = \frac{1}{1 + \exp(-u_i·u_j)}</script><p>​        $u_i,u_j$即节点$v_i,v_j$的低维embedding表示。同时定义经验分布$\hat p$：</p>
+<script type="math/tex; mode=display">
+\hat p(i,j) = \frac{w_{ij}}{W},W = \sum_{(i,j)\in E}w_{ij}</script><p>​        那么，目标函数就是尽可能地减小这两个分布的差异，衡量两个分布差异可以使用KL散度来衡量，进而：</p>
+<script type="math/tex; mode=display">
+O_1 = - \sum_{(i,j)\in E}w_{ij}\log p(v_i,v_j)</script><p>​        <strong>2nd-order</strong></p>
+<script type="math/tex; mode=display">
+O_2 = - \sum_{(i,j)\in E} w_{ij}\log p(v_j|v_i)</script><p>​        当然也可以使用二者的结合。</p>
+<h5 id="1-1-3-Node2Vec"><a href="#1-1-3-Node2Vec" class="headerlink" title="1.1.3 Node2Vec"></a>1.1.3 Node2Vec</h5><p>Grover A, Leskovec J. node2vec: Scalable feature learning for networks[C]//Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining. 2016: 855-864.</p>
+<p>​        本质上也是基于随机游走，提出了一种新的节点采样策略，有“导向”的游走，即加入了参数来控制从某个节点到其他节点的概率。采样得到的节点集，<strong>仍使用word2vec形式进行训练</strong>。</p>
+<p>​        如下图。p（return parameter）、q（in-out parameter）为超参数。</p>
+<p>​        下图中，现处于节点v，上一个节点是t，那么从节点v到节点$t$、$x_1$、$x_2$、$x_3$的概率$\pi_{vx}$计算公式如下：</p>
+<script type="math/tex; mode=display">
+\alpha(t,x) = \frac{1}{p},d_{t,x} = 0</script><script type="math/tex; mode=display">
+\alpha(t,x) = 1,d_{t,x} = 1</script><script type="math/tex; mode=display">
+\alpha(t,x) = \frac{1}{q},d_{t,x} = 2</script><script type="math/tex; mode=display">
+\pi_{vx}=\alpha(t,x) w_{v,x}</script><p>​        其中，$d_{tx}$表示<strong>上一节点和下一个能到达的节点的距离</strong>，$w_{vx}$即节点v与next节点连接边的权重（无向图中为1）。下图中，节点$t$与$x_1$直接有边相连接，$d$为1；$t$与$x_2$、$x_3$距离为2（不相邻）；特别的，与上一个节点距离为0，概率为$\frac{1}{p}$。</p>
+<p><img src="/images/image-20200709201700829.png" alt="image-20200709201700829"></p>
+<p>​        基于这种随机游走策略，使得该模型可以体现网络的同质性（homophily）或结构性（structural equivalence）。网络的“同质性”指<strong>距离相近</strong>的节点的embedding应尽量相似；“结构性”指的是<strong>结构上相似</strong>的节点的embedding应尽量相似。</p>
+<p>​        为了能让graph embedding的结果能够表达网络的“结构性”，需要让游走的过程更倾向与<strong>BFS</strong>，因为BFS会更多的在当前节点的领域中游走遍历；为了表达”同质性”，则需要让游走过程倾向于<strong>DFS</strong>。</p>
+<p>​        现在讨论超参数p、q，q越大，则随机游走到远方节点的可能性更大，随机游走策略就近似于DFS；反之，近似于BFS。</p>
+<h5 id="1-1-4-SDNE"><a href="#1-1-4-SDNE" class="headerlink" title="1.1.4 SDNE"></a>1.1.4 SDNE</h5><p>Wang D, Cui P, Zhu W. Structural deep network embedding[C]//Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining. 2016: 1225-1234.</p>
+<p>​        SDNE基于LINE研究的基础上，采用deep encoder-decoder模型进行embedding。</p>
+<p>​        </p>
+<h4 id="1-2-Graph-Embedding"><a href="#1-2-Graph-Embedding" class="headerlink" title="1.2 Graph Embedding"></a>1.2 Graph Embedding</h4><h3 id="2-Graph-Neural-Network"><a href="#2-Graph-Neural-Network" class="headerlink" title="2. Graph Neural Network"></a>2. Graph Neural Network</h3><p>​        图神经网络目前主要的任务包括：节点分类（node classification）、图分类（graph classification）、graph representation、link predication等等。</p>
+<h4 id="2-1-Neighborhood-Aggravating"><a href="#2-1-Neighborhood-Aggravating" class="headerlink" title="2.1 Neighborhood Aggravating"></a>2.1 Neighborhood Aggravating</h4><p>​        <strong>neighborhood aggravating即用节点的neighbor feature更新下一个的hidden state。</strong></p>
+<p>​        给定一张图，我们可以用与与节点邻接的节点集去表示该节点。下图中，A与B、C、D相邻接，而B又与A、C邻接等等，每个节点都可以使用与其相邻接的节点进行表示（aggravating）（每个节点都有一个初始状态【特征】，当前节点状态用其他节点的上一个状态【特征】表示）。通过其邻接节点聚合，这个节点就可以学到图的结构。</p>
+<p><img src="/images/g1.png" alt="image-20200707215031730" style="zoom:67%;" /></p>
+<p><img src="E:\hexo\themes\ayer\source\images\image-20200707215123250.png" alt="image-20200707215123250" style="zoom:67%;" /></p>
+<p><img src="/images/image-20200707215155395.png" alt="image-20200707215155395" style="zoom:67%;" /></p>
+<p>​        因此，我们可以定义任意层的网络来聚合各个节点的信息。（如下图，注：并非完整）</p>
+<p><img src="/images/image-20200707215535544.png" alt="image-20200707215535544" style="zoom: 67%;" /></p>
+<p>​        注：图中方块表示任意的聚合函数。</p>
+<p>​        数学表示如下：</p>
+<script type="math/tex; mode=display">
+h_v^k = \sigma(W_k\sum_{u \in N(v)}\frac{h_u^{k-1}}{|N(v)|} + B_kh_v^{k-1}),k > 0</script><script type="math/tex; mode=display">
+h_v^0 = x_v</script><p>​        其中，k表示第k层（layer）；v表示节点；$\sigma$表示激活函数；$h_u$表示节点$u$的状态；$N(v)$表示节点$v$的邻接节点集合；$|N(v)|$即邻接节点数量；$W、B$分别为权重矩阵和偏置（bias）。</p>
+<p>​        因此，我们只需定义一个聚合函数（sum、mean、max-pooling等），以及损失函数（比如：基于节点分类的交叉熵损失函数等），就可以开始迭代训练，最终得到各个节点的embedding向量。</p>
+<h4 id="2-2-Graph-Convolution-Networks"><a href="#2-2-Graph-Convolution-Networks" class="headerlink" title="2.2 Graph Convolution Networks"></a>2.2 Graph Convolution Networks</h4><p>​        卷积网络大致分类如下图。</p>
+<p><img src="/images/image-20200707223107082.png" alt="image-20200707223107082"></p>
+<h5 id="2-2-1-Spatial-based"><a href="#2-2-1-Spatial-based" class="headerlink" title="2.2.1 Spatial-based"></a>2.2.1 Spatial-based</h5><p>​        空间卷积网络也是基于neighborhood aggravating的思想。</p>
+<ul>
+<li><p>Kipf T N, Welling M. Semi-supervised classification with graph convolutional networks[J]. arXiv preprint arXiv:1609.02907, 2016.</p>
+<p>这篇论文采用的图卷积网络在neighborhood aggravating上做出了一点改动。</p>
+</li>
+</ul>
+<script type="math/tex; mode=display">
+h_v^k = \sigma(W_k\sum_{u\in N(v)\cup v}\frac{h_u^{k-1}}{\sqrt{|N(u)||N(v)|}})</script><p>​        <strong>矩阵形式</strong>如下：</p>
+<script type="math/tex; mode=display">
+H^{(k+1)} = \sigma(D^{-\frac{1}{2}}\hat AD^{\frac{1}{2}}H^{(k)}W_k) \\
+\hat A = A + I</script><p>​        其中$A$为图邻接矩阵，$D$为度矩阵，$I$为单位矩阵。</p>
+<p>​        事实上，矩阵形式的式子利用了谱图理论中的知识。也就是说，<strong>根据空域卷积写出的第一个式子，利用谱图理论就可以推导出其矩阵形式</strong>，由此可以看出，谱图卷积和空域卷积并不是完全割裂的。</p>
+<p>​        </p>
+<h5 id="2-2-2-Spectral-based"><a href="#2-2-2-Spectral-based" class="headerlink" title="2.2.2 Spectral-based"></a>2.2.2 Spectral-based</h5><p>​         谱图卷积网络基于图的信号处理，即图的拉普拉斯矩阵进行傅里叶变化（Fourier Transform）与逆变化（Inverse Fourier Transform），</p>
+<p>​    <strong>图上的傅里叶变换</strong></p>
+<p>​        傅里叶变换可以将<strong>时域</strong>信号转为<strong>频域信号</strong>。时域即信号大小随时间而改变，其图像在二维平面中，横轴为时间，纵轴为信号大小，其图像是连续的；而频域图像，横轴代表频率大小，纵轴代表信号大小，其图像是离散的。频域图像本质上描述了一段信号中包含的具体成分（不同频率信号的叠加）如何。</p>
+<p>​        而图上的傅里叶变换用到了图的拉普拉斯矩阵$L$，因为$L$是半正定矩阵，因此其特征值都非负。对其进行特征值分解有：</p>
+<script type="math/tex; mode=display">
+L = U \Lambda U^T</script><p>，其中$U$为特征向量，$\Lambda$为特征值矩阵，是一个对角矩阵，$\lambda_1,\lambda_2…$即特征值，且$\lambda_1&lt;=\lambda_2&lt;=…&lt;=\lambda_n$。$\lambda$也代表了图上的频率。</p>
+<p>​        下面直接给出图上傅里叶变换公式，具体推导略去。</p>
+<p>​        给定图中某顶点$v$，其对应的信号（特征）为$x$，那么其傅里叶变换即：</p>
+<script type="math/tex; mode=display">
+\hat x = U^Tx</script><p>​        可知$\hat x$为频域上信号，要重新换变换顶点域，就需要逆傅里叶变换即：</p>
+<script type="math/tex; mode=display">
+y = U\hat x</script><p><strong>谱图卷积</strong></p>
+<p>​        要进行卷积，就需要在频域上进行卷积，即将顶点上的信号进行傅里叶变换后，定义对应的滤波器（滤波函数）$g_\theta(\lambda)$对其进行处理，再利用逆傅里叶变换还原为顶点域中。这里的滤波器或者说关于$\lambda$的滤波函数就是我们要通过训练学习的。说是关于$\lambda$的函数，就是说根据不同的$\lambda$给出不同的<strong>相应</strong>$\theta$。</p>
+<p>​        由此，图上信号卷积即：</p>
+<script type="math/tex; mode=display">
+y = U\hat x = Ug_{\theta}(\Lambda)U^Tx</script><p>​        但上面这样定义仍存在几个问题，一是当图太大时矩阵分解计算复杂度太高，二是这并非是局部的（localized）。进而又推出了ChebNet模型（坑太深，先留着吧…）。</p>
+<h4 id="2-2-Graph-Attention-Networks"><a href="#2-2-Graph-Attention-Networks" class="headerlink" title="2.2 Graph Attention Networks"></a>2.2 Graph Attention Networks</h4><p>Veličković P, Cucurull G, Casanova A, et al. Graph attention networks[J]. arXiv preprint arXiv:1710.10903, 2017.</p>
+<p>​        attention通俗的讲就是输入两个向量，然后输出一个分数；是一种思想，可以有不同的实现。</p>
+<p>​        GAT在空间卷积的基础上，引入了注意力机制，注意力机制也赋予了模型一定的可解释性。加入了attention后，我们aggravating的时候就需要计算当前节点和邻接节点的权重，然后进行聚合。</p>
+<p>​        节点v第k个状态更新公式如下：</p>
+<script type="math/tex; mode=display">
+h_v^k = \sigma (\sum_{u \in N(v)}\alpha_{vu}h_u)</script><p>​        其中$\alpha$就是计算得到的attention权重。</p>
+<p><img src="/images/image-20200707230726126.png" alt="image-20200707230726126" style="zoom:80%;" /></p>
+<p>参考资料：</p>
+<p>李宏毅，深度学习</p>
+<p><a href="http://snap.stanford.edu/proj/embeddings-www/" target="_blank" rel="noopener">http://snap.stanford.edu/proj/embeddings-www/</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/56478167" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/56478167</a></p>
+<p><a href="https://github.com/shenweichen/GraphEmbedding" target="_blank" rel="noopener">https://github.com/shenweichen/GraphEmbedding</a></p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/" data-id="ckckeb7680020jgueeznh3gz2"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">交叉熵</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        notify: false,
+        verify: '',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2015-2020
+        张永剑
+      </li>
+      <li>
+        
+          Powered by
+        
+        
+        <a href="https://hexo.io" target="_blank">Hexo</a> Theme <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <ul class="list-inline">
+  <li>PV:<span id="busuanzi_value_page_pv"></span></li>
+  <li>UV:<span id="busuanzi_value_site_uv"></span></li>
+</ul>
+        
+      </li>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+      <aside class="sidebar">
+        <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="张永剑的博客"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于我</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+      </aside>
+      <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+      
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer:'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    onClick: (e) => {
+      $('.toc-link').removeClass('is-active-link');
+      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
+      $(e.target.hash).scrollIntoView();
+      return false;
+    }
+  });
+</script>
+
+
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+<script src="/js/ayer.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>
