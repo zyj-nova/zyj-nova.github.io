@@ -194,7 +194,11 @@ h_v^k = \sigma(W_k\sum_{u\in N(v)\cup v}\frac{h_u^{k-1}}{\sqrt{|N(u)||N(v)|}})</
 H^{(k+1)} = \sigma(D^{-\frac{1}{2}}\hat AD^{\frac{1}{2}}H^{(k)}W_k) \\
 \hat A = A + I</script><p>​        其中$A$为图邻接矩阵，$D$为度矩阵，$I$为单位矩阵。</p>
 <p>​        事实上，矩阵形式的式子利用了谱图理论中的知识。也就是说，<strong>根据空域卷积写出的第一个式子，利用谱图理论就可以推导出其矩阵形式</strong>，由此可以看出，谱图卷积和空域卷积并不是完全割裂的。</p>
-<p>​        </p>
+<p>​        下面看一下具体的矩阵形式</p>
+<p><img src="/images/g2.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上面这张图的邻接矩阵如下</span></span><br><span class="line">&gt; A = torch.tensor(np.array([[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>]]))</span><br><span class="line"><span class="comment"># 度矩阵 D，即邻接矩阵每一行求和</span></span><br><span class="line">&gt; D = torch.diag(torch.sum(torch.tensor(adj),<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">&gt; X = torch.tensor(np.array([[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]]))</span><br><span class="line"><span class="comment"># 每个节点的邻居节点聚合等价于A*X</span></span><br><span class="line">&gt; torch.mm(A,X)</span><br><span class="line"><span class="comment">#Output</span></span><br><span class="line">tensor([[<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">        [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">        [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]], dtype=torch.int32)</span><br><span class="line"><span class="comment"># 从结果可以看出相当于对每个节点的所有邻居节点特征求和</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义权重矩阵 W，将input维度映射到output维度，本例input=3</span></span><br><span class="line">&gt; out = <span class="number">4</span></span><br><span class="line">&gt; W = W = torch.randn(<span class="number">3</span>,out)</span><br><span class="line"><span class="comment"># 完成聚合</span></span><br><span class="line">&gt; output = torch.mm(torch.mm(A,X).type_as(torch.FloatTensor()),W)</span><br><span class="line"><span class="comment"># 经过激活函数,得到这一阶段的hidden（下一阶段的输入）</span></span><br><span class="line">&gt; hidden = F.relu(output)</span><br><span class="line"><span class="comment"># hidden [num_of_vertex, hidden_dims]</span></span><br></pre></td></tr></table></figure>
+<p>​        但是Kipf等人在他的论文中，对邻接矩阵$A$进行了标准化。即上文采用的公式。下面实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义图卷积</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GCNConv</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, A, in_channels, out_channels)</span>:</span></span><br><span class="line">        super(GCNConv, self).__init__()</span><br><span class="line">        self.A_hat = A+torch.eye(A.size(<span class="number">0</span>))</span><br><span class="line">        self.D     = torch.diag(torch.sum(A,<span class="number">1</span>))</span><br><span class="line">        self.D     = self.D.inverse().sqrt() <span class="comment"># D是对角矩阵，对角线元素开根号</span></span><br><span class="line">        self.A_hat = torch.mm(torch.mm(self.D, self.A_hat), self.D)</span><br><span class="line">        self.W     = nn.Parameter(torch.rand(in_channels,out_channels, requires_grad=<span class="literal">True</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, X)</span>:</span></span><br><span class="line">        out = torch.relu(torch.mm(torch.mm(self.A_hat, X), self.W))</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"><span class="comment"># 定义spatial-based GCN  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Net</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,A, input_dims, nhid, out_dims)</span>:</span></span><br><span class="line">        super(Net, self).__init__()</span><br><span class="line">        self.conv1 = GCNConv(A,input_dims, nhid)</span><br><span class="line">        self.conv2 = GCNConv(A,nhid, out_dims)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self,X)</span>:</span></span><br><span class="line">        H  = self.conv1(X)</span><br><span class="line">        H2 = self.conv2(H)</span><br><span class="line">        <span class="keyword">return</span> H2</span><br></pre></td></tr></table></figure>
 <h5 id="2-2-2-Spectral-based"><a href="#2-2-2-Spectral-based" class="headerlink" title="2.2.2 Spectral-based"></a>2.2.2 Spectral-based</h5><p>​         谱图卷积网络基于图的信号处理，即图的拉普拉斯矩阵进行傅里叶变化（Fourier Transform）与逆变化（Inverse Fourier Transform），</p>
 <p>​    <strong>图上的傅里叶变换</strong></p>
 <p>​        傅里叶变换可以将<strong>时域</strong>信号转为<strong>频域信号</strong>。时域即信号大小随时间而改变，其图像在二维平面中，横轴为时间，纵轴为信号大小，其图像是连续的；而频域图像，横轴代表频率大小，纵轴代表信号大小，其图像是离散的。频域图像本质上描述了一段信号中包含的具体成分（不同频率信号的叠加）如何。</p>
@@ -229,7 +233,7 @@ h_v^k = \sigma (\sum_{u \in N(v)}\alpha_{vu}h_u)</script><p>​        其中$\a
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/" data-id="ckckeb7680020jgueeznh3gz2"
+      <a data-url="http://yoursite.com/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/" data-id="ckcozf1nx002i2kue3omoboj3"
         class="article-share-link">分享</a>
         
       
@@ -328,7 +332,7 @@ M = \frac{1}{2}(P + Q)</script></li>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/" data-id="ckckeb75k001bjguegmzi4lnm"
+      <a data-url="http://yoursite.com/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/" data-id="ckcozf1mo001c2kue86a60a5e"
         class="article-share-link">分享</a>
         
       
@@ -420,7 +424,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/30/Dropout%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/" data-id="ckckeb74g0002jgue7mehbl8m"
+      <a data-url="http://yoursite.com/2020/06/30/Dropout%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/" data-id="ckcozf1lk00002kue4cbcao8p"
         class="article-share-link">分享</a>
         
       
@@ -486,7 +490,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/29/Flink%E6%B5%81%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" data-id="ckckeb7420000jgue1x425a8i"
+      <a data-url="http://yoursite.com/2020/06/29/Flink%E6%B5%81%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" data-id="ckcozf1lu00022kue2xvn1wka"
         class="article-share-link">分享</a>
         
       
@@ -598,7 +602,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" data-id="ckckeb752000ijgue96l82yza"
+      <a data-url="http://yoursite.com/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" data-id="ckcozf1ma000l2kue3iunhopa"
         class="article-share-link">分享</a>
         
       
@@ -664,7 +668,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/24/SpringMVC%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" data-id="ckckeb758000qjgue0v97fycd"
+      <a data-url="http://yoursite.com/2020/06/24/SpringMVC%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" data-id="ckcozf1mi00102kueh3602i8t"
         class="article-share-link">分享</a>
         
       
@@ -822,7 +826,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/22/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/" data-id="ckckeb777002njgue056ubwmn"
+      <a data-url="http://yoursite.com/2020/06/22/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/" data-id="ckcozf1o3002n2kueeqm2g8ap"
         class="article-share-link">分享</a>
         
       
@@ -981,7 +985,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" data-id="ckckeb76g0029jgue52jb1rbb"
+      <a data-url="http://yoursite.com/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" data-id="ckcozf1nj00252kuefh23fsd5"
         class="article-share-link">分享</a>
         
       
@@ -1049,7 +1053,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" data-id="ckckeb75g0013jgueatpac9q2"
+      <a data-url="http://yoursite.com/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" data-id="ckcozf1mg000x2kue7j179mla"
         class="article-share-link">分享</a>
         
       
@@ -1191,7 +1195,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckckeb76h002bjguedk7w281n"
+      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckcozf1no002a2kue3pph13e0"
         class="article-share-link">分享</a>
         
       
