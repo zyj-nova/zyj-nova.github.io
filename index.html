@@ -64,6 +64,120 @@
     
     
     
+    <article id="post-近期刷题总结记录" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/07/18/%E8%BF%91%E6%9C%9F%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93%E8%AE%B0%E5%BD%95/"
+    >近期刷题总结记录</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/18/%E8%BF%91%E6%9C%9F%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93%E8%AE%B0%E5%BD%95/" class="article-date">
+  <time datetime="2020-07-18T14:33:46.959Z" itemprop="datePublished">2020-07-18</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="近期刷题总结记录"><a href="#近期刷题总结记录" class="headerlink" title="近期刷题总结记录"></a>近期刷题总结记录</h2><h3 id="1-Leftmost-Digit"><a href="#1-Leftmost-Digit" class="headerlink" title="1. Leftmost Digit"></a>1. Leftmost Digit</h3><p>​        杭电1060题，给你一个数字$n$，求出$n^n$最高位数字$t$，$n$不超过$10,000,000,000$(10亿)。</p>
+<p>​        具体思想如下：</p>
+<p>​        设$M = n^n$（n为整数），两边取10的对数则有</p>
+<script type="math/tex; mode=display">
+\log_{10}M = \log_{10} n^n = k</script><p>​        直觉上，如果$M$不是10的整数幂次，那么$k$是一个浮点数。</p>
+<script type="math/tex; mode=display">
+k = A.B</script><p>​        $A$为$k$ 的整数部分，$B$ 则为$k$ 的小数部分。有</p>
+<script type="math/tex; mode=display">
+\log_{10} M = k = A.B \\
+10^{A.B} = M \\
+10^A*10^{B} = M(B < 1)</script><p>​        其实$A$就代表了$M$的位数（三位数$10^2$、四位数$10^3$以此类推），而$10^B$相当于前面的系数（有点类似科学计数法那个形式）。</p>
+<p>​        我们观察幂函数$y = 10^x$ ，在$x = 1$时$y = 10$，我们这儿$B &lt; 1$，<strong>因此$10^B$的值介于$[1,10)$之间，并且是一个浮点数</strong>。我们可以这么想，$10^A*10^{B}$把$10^B$放大了$10^A$倍后得到了$M$，即 $n$ 的 $n$ 次幂。</p>
+<p>​        好了，那么$M$的最高位到底是几？很明显是$10^B$这个数字的整数部分。如何取到$B$这个小数呢，$k = n \log_{10} n = A.B$，$k$减去其取整部分即可得到$B$。$10^B$再取整就得到了最高位。</p>
+<p>​        程序代码如下</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> t,n;</span><br><span class="line">	<span class="keyword">double</span> k;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;t);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; t; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</span><br><span class="line">        k = n * <span class="built_in">log10</span>(<span class="number">1.0</span> * n); <span class="comment">// k = A.B</span></span><br><span class="line">        <span class="comment">// k减去对k取整部分得到小数部分</span></span><br><span class="line">        k = k - (__int64)k;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,(<span class="keyword">int</span>)<span class="built_in">pow</span>(<span class="number">10</span>,k));</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-Euler函数"><a href="#2-Euler函数" class="headerlink" title="2. Euler函数"></a>2. Euler函数</h3><p>​        在数论中，对正整数，欧拉函数是小于或等于n的正整数中与n互质的数的数目。比如$\phi(8) = 4$，因为1、3、5、7与8互质。注：互质为两者没有除1外的公因数。</p>
+<p>​        具体定义如下：</p>
+<p>​        我们知道，对于任意正整数n，都可以表示为多个质数的乘积，即如下形式：</p>
+<script type="math/tex; mode=display">
+n = p_1^{k_1}p_2^{k2}...p_n^{k_n}</script><p>​        ，其中，$p_i$均为质数。</p>
+<p>​        那么欧拉函数$\phi(n)$等于</p>
+<script type="math/tex; mode=display">
+\phi(n) = n\prod_{i=1}^n (1 - \frac{1}{p_i})</script><p>​        性质：</p>
+<p>​        ① 欧拉函数是积性函数，$\phi(mn)=\phi(m)*\phi(n)$</p>
+<p>​        ② 若p为质数，$\phi(p)=p-1$</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="comment">// 欧拉函数:统计小于等于n中与n互质的数的个数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">euler</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = n;</span><br><span class="line">    <span class="keyword">int</span> tmp = n;</span><br><span class="line">    <span class="comment">// n在循环过程中会不断发生变化。</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= <span class="built_in">sqrt</span>(<span class="number">1.0</span> * tmp); i++ )&#123;<span class="comment">//枚举所有能够被n整除的质因数</span></span><br><span class="line">        <span class="keyword">if</span>(n % i == <span class="number">0</span>)&#123;</span><br><span class="line">            ans = ans * (i - <span class="number">1</span>) / i;<span class="comment">// 欧拉公式，不断累乘</span></span><br><span class="line">            <span class="keyword">while</span>(n % i == <span class="number">0</span>)&#123;</span><br><span class="line">                n /= i; <span class="comment">// 消除质数因子的过程</span></span><br><span class="line">                <span class="comment">//将质数i不断的左除过去</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">         <span class="comment">// 新的n = n / p1 / p1 / p1 ... = p2*p2*p2...*pn</span></span><br><span class="line">        <span class="comment">// p1 &lt; p2 &lt; ... &lt; pn</span></span><br><span class="line">        <span class="comment">// 再次循环通过枚举找到p2....pn</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// n不为1，表明还有因子，最后一个质因子可能不在[2,sqrt(n)]之间</span></span><br><span class="line">    <span class="keyword">if</span>(n &gt; <span class="number">1</span>)&#123;</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t,n;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;t);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; t; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,euler(n));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-找出缺失的数字"><a href="#3-找出缺失的数字" class="headerlink" title="3. 找出缺失的数字"></a>3. 找出缺失的数字</h3><p>​        题目大意如下，首先输入$n$个不同的数字，再次输入$n-1$个数字，找出第二次输入没有输入的那个数字。输入的数字的值介于$[0,1000000000]$，$2 &lt;= n &lt;= 400000$。</p>
+<p>​        可以看到数据规模较大，无论是集合还是利用高斯公式求两次和都可能数据溢出。能不能使用$O(n)$时间复杂度以及$O(1)$空间解决这个问题？</p>
+<p>​        下面介绍二进制中异或（<code>^</code>）的操作的一些性质。</p>
+<p>​        异或就是相同为0，不同为1。即<code>1 ^ 1 = 0,0 ^ 0 = 0,1 ^ 0 = 1,0 ^ 1 = 1</code>。异或还有如下性质</p>
+<ul>
+<li><p><code>0 ^ x = x</code></p>
+</li>
+<li><p><code>x ^ x = 0</code></p>
+</li>
+<li><p>异或满足交换律，即<code>1 ^ 2 ^ 4 ^ 6 =  6 ^ 2 ^ 1 ^ 4</code></p>
+<p>有了这些性质，对于这个题，我们设置<code>a = 0,b = 0</code>；</p>
+<p><code>a = a ^ arr1[i], i from 0 to n-1</code>，<code>b = b ^ arr2[j], j  from 0 to n-2</code>。</p>
+<p>最后所求数字即为<code>a^b</code>。</p>
+<p>其实很好理解：</p>
+<script type="math/tex; mode=display">
+a = a_1 \bigoplus a_2 \bigoplus....\bigoplus a_n \\
+b = b_1 \bigoplus b_2 \bigoplus....\bigoplus b_{n-1} \\</script><p>最后<code>a^b</code>，由<strong>异或交换律</strong>这个性质等价于，将前后两次相同的数字先做异或得到0，前后两次相同的数字就都被消掉了，最后剩下的那个数字再与0异或还是这个数字，也就是第二次没有出现的那个数字。</p>
+<p>同理，找出在都是偶数次出现的数字中出现次数为奇数次的数字也可以利用异或算法解决。</p>
+<p><code>a = 1 ^ 2 ^ 4 ^ 6;b = 4 ^ 6 ^ 1;</code></p>
+<p> <code>a ^ b =1 ^ 2 ^ 4 ^ 6 ^ 4 ^ 6 ^ 1 = 1 ^ 1 ^ 4 ^ 4 ^ 6 ^ 6 ^ 2= 0 ^ 0 ^ 0 ^ 2 = 0 ^ 2 = 2</code></p>
+</li>
+</ul>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/07/18/%E8%BF%91%E6%9C%9F%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93%E8%AE%B0%E5%BD%95/" data-id="ckcrtl10n001tq4ued4kd2y2e"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-Graph Neutral Network和Graph Embedding" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -233,7 +347,7 @@ h_v^k = \sigma (\sum_{u \in N(v)}\alpha_{vu}h_u)</script><p>​        其中$\a
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/" data-id="ckcozf1nx002i2kue3omoboj3"
+      <a data-url="http://yoursite.com/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/" data-id="ckcrtl11h002kq4uehred21e6"
         class="article-share-link">分享</a>
         
       
@@ -332,7 +446,7 @@ M = \frac{1}{2}(P + Q)</script></li>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/" data-id="ckcozf1mo001c2kue86a60a5e"
+      <a data-url="http://yoursite.com/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/" data-id="ckcrtl10c0019q4ue3u2v7gsd"
         class="article-share-link">分享</a>
         
       
@@ -424,7 +538,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/30/Dropout%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/" data-id="ckcozf1lk00002kue4cbcao8p"
+      <a data-url="http://yoursite.com/2020/06/30/Dropout%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/" data-id="ckcrtl0z50000q4ueb4c3ed0u"
         class="article-share-link">分享</a>
         
       
@@ -490,7 +604,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/29/Flink%E6%B5%81%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" data-id="ckcozf1lu00022kue2xvn1wka"
+      <a data-url="http://yoursite.com/2020/06/29/Flink%E6%B5%81%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" data-id="ckcrtl0zd0001q4ue0rsj5gub"
         class="article-share-link">分享</a>
         
       
@@ -602,7 +716,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" data-id="ckcozf1ma000l2kue3iunhopa"
+      <a data-url="http://yoursite.com/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" data-id="ckcrtl103000tq4uedf3y0csr"
         class="article-share-link">分享</a>
         
       
@@ -668,7 +782,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/24/SpringMVC%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" data-id="ckcozf1mi00102kueh3602i8t"
+      <a data-url="http://yoursite.com/2020/06/24/SpringMVC%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" data-id="ckcrtl1090011q4ue317b3hdx"
         class="article-share-link">分享</a>
         
       
@@ -826,7 +940,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/22/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/" data-id="ckcozf1o3002n2kueeqm2g8ap"
+      <a data-url="http://yoursite.com/2020/06/22/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/" data-id="ckcrtl11l002qq4ue7ju50jdj"
         class="article-share-link">分享</a>
         
       
@@ -985,7 +1099,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" data-id="ckcozf1nj00252kuefh23fsd5"
+      <a data-url="http://yoursite.com/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" data-id="ckcrtl1170028q4ue4np72vbe"
         class="article-share-link">分享</a>
         
       
@@ -1053,149 +1167,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" data-id="ckcozf1mg000x2kue7j179mla"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-数据分析之Pandas" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/"
-    >数据分析之Pandas</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" class="article-date">
-  <time datetime="2020-06-09T16:22:30.243Z" itemprop="datePublished">2020-06-10</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="数据分析之Pandas"><a href="#数据分析之Pandas" class="headerlink" title="数据分析之Pandas"></a>数据分析之Pandas</h2><p>​    Pandas中两大数据结构：DataFrame、Series。</p>
-<ol>
-<li><p>数据文件的读取。可以读取excel、csv、tsv等数据文件。下面以csv文件为例</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">df = pd.read_csv(<span class="string">'https://bitly.com/imdbratings'</span>)</span><br></pre></td></tr></table></figure>
-<p>具体可以指定的参数有：</p>
-<ul>
-<li><p>encoding，文件编码方式，如：<code>GBK/ANSI/UTF-8</code></p>
-</li>
-<li><p>names，指定数据文件的各个列的名称，传入的是list类型</p>
-</li>
-<li><p>seq，指定文件的分隔符</p>
-</li>
-</ul>
-</li>
-<li><p>查看数据相关信息</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.head()</span><br></pre></td></tr></table></figure>
-<p><img src="/images/pandas-1.png" alt=""></p>
-</li>
-</ol>
-   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">df.info()</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">RangeIndex</span>:</span> <span class="number">979</span> entries, <span class="number">0</span> to <span class="number">978</span></span><br><span class="line">Data columns (total <span class="number">6</span> columns):</span><br><span class="line"> <span class="comment">#   Column          Non-Null Count  Dtype  </span></span><br><span class="line">---  ------          --------------  -----  </span><br><span class="line"> <span class="number">0</span>   star_rating     <span class="number">979</span> non-null    float64</span><br><span class="line"> <span class="number">1</span>   title           <span class="number">979</span> non-null    object </span><br><span class="line"> <span class="number">2</span>   content_rating  <span class="number">976</span> non-null    object </span><br><span class="line"> <span class="number">3</span>   genre           <span class="number">979</span> non-null    object </span><br><span class="line"> <span class="number">4</span>   duration        <span class="number">979</span> non-null    int64  </span><br><span class="line"> <span class="number">5</span>   actors_list     <span class="number">979</span> non-null    object </span><br><span class="line">dtypes: float64(<span class="number">1</span>), int64(<span class="number">1</span>), object(<span class="number">4</span>)</span><br><span class="line">memory usage: <span class="number">46.0</span>+ KB</span><br></pre></td></tr></table></figure>
-   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">df.describe()</span><br><span class="line">	  star_rating	duration</span><br><span class="line">count	<span class="number">979.000000</span>	<span class="number">979.000000</span></span><br><span class="line">mean	<span class="number">7.889785</span>	<span class="number">120.979571</span></span><br><span class="line">std		<span class="number">0.336069</span>	<span class="number">26.218010</span></span><br><span class="line">min		<span class="number">7.400000</span>	<span class="number">64.000000</span></span><br><span class="line"><span class="number">25</span>%		<span class="number">7.600000</span>	<span class="number">102.000000</span></span><br><span class="line"><span class="number">50</span>%		<span class="number">7.800000</span>	<span class="number">117.000000</span></span><br><span class="line"><span class="number">75</span>%		<span class="number">8.100000</span>	<span class="number">134.000000</span></span><br><span class="line">max		<span class="number">9.300000</span>	<span class="number">242.000000</span></span><br></pre></td></tr></table></figure>
-<ol>
-<li><p>获取某一列或多个列的值</p>
-<p>通常将要获取的多个列名包装到list中。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#获取评分这一列的值，返回一个Series对象</span></span><br><span class="line">df[<span class="string">'star_rating'</span>]</span><br><span class="line"><span class="comment">#或者</span></span><br><span class="line">df.star_rating</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取评分、电影时长两列的值</span></span><br><span class="line">df[[<span class="string">'star_rating'</span>,<span class="string">'duration'</span>]]</span><br></pre></td></tr></table></figure>
-<p>注意：不能这么写：<code>df[[0,1,2,3]]</code></p>
-</li>
-<li><p>获取某一行或多行的数据</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#直接切片获取 </span></span><br><span class="line">df[:<span class="number">1</span>]</span><br><span class="line"><span class="comment">#Output</span></span><br><span class="line">star_rating                                                     <span class="number">9.3</span></span><br><span class="line">title                                      The Shawshank Redemption</span><br><span class="line">content_rating                                                    R</span><br><span class="line">genre                                                         Crime</span><br><span class="line">duration                                                        <span class="number">142</span></span><br><span class="line">actors_list       [<span class="string">u'Tim Robbins'</span>, <span class="string">u'Morgan Freeman'</span>, <span class="string">u'Bob Gunt...</span></span><br><span class="line"><span class="string">Name: 0, dtype: object</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#获取前10部电影的时长</span></span><br><span class="line"><span class="string">df[:10]['</span>duration<span class="string">'] </span></span><br><span class="line"><span class="string">df[:10][['</span>star_rating<span class="string">','</span>duration<span class="string">']]</span></span><br></pre></td></tr></table></figure>
-<p>还是推荐使用loc或者iloc来进行行的获取。这样更加直观。</p>
-</li>
-<li><p><strong>iloc和loc</strong></p>
-<p>使用形式：<code>loc[,]/iloc[,]</code></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取指定索引的数据，比如获取第10部电影的数据</span></span><br><span class="line">df.loc[<span class="number">10</span>] <span class="comment"># 默认取全部列（不建议这么写） 相当于 ） </span></span><br><span class="line">df.loc[<span class="number">10</span>,:] <span class="comment">#（推荐）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 取第1、5、10部电影</span></span><br><span class="line">df.loc[[<span class="number">1</span>,<span class="number">5</span>,<span class="number">10</span>], :]</span><br><span class="line"></span><br><span class="line"><span class="comment"># loc函数支持切片, 取前10部电影, 注意是：前闭后闭的</span></span><br><span class="line">df.loc[:<span class="number">10</span>,:] <span class="comment">#获取前10行的数据，返回一个DataFrame</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下面讲解列操作</span></span><br><span class="line"><span class="comment"># 取前10部电影的时长</span></span><br><span class="line">df.loc[:<span class="number">10</span>,<span class="string">'duration'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取前10部电影的时长和名字</span></span><br><span class="line">df.loc[:<span class="number">10</span>,[<span class="string">'star_rating'</span>,<span class="string">'title'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取前10部电影评分到时长列</span></span><br><span class="line">df.loc[:<span class="number">10</span>,[<span class="string">'star_rating'</span>:<span class="string">'duration'</span>]]                   </span><br><span class="line">              </span><br><span class="line"><span class="comment"># 下面全部是错误的写法！</span></span><br><span class="line">df[:<span class="number">10</span>][<span class="string">'star_rating'</span>:<span class="string">'duration'</span>]   </span><br><span class="line">df.loc[:,<span class="number">0</span>:<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
-<p><strong>注意：获取某一特定index行，不可以直接<code>df[index]</code>，需借助<code>df.loc[index,:]</code>函数。</strong></p>
-<p>loc不仅可以传入索引、列表、切片获得指定数据，还可以传入条件进行筛选，具体参见下一小节。</p>
-<p>iloc在列的选取上与loc不同，loc传入的是列名；而iloc传入的是列的索引。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#介绍df.iloc使用， iloc是按位置选取的,传入的参数都是整数</span></span><br><span class="line"><span class="comment"># 传入的切片是前闭后开的！</span></span><br><span class="line"><span class="comment">#选取索引为1、4、5的电影</span></span><br><span class="line">df.iloc[[<span class="number">1</span>,<span class="number">4</span>,<span class="number">5</span>],:]</span><br><span class="line"></span><br><span class="line">df.iloc[:<span class="number">100</span>,:<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 选择第0、2列</span></span><br><span class="line">df.iloc[[<span class="number">1</span>,<span class="number">4</span>,<span class="number">5</span>],[<span class="number">0</span>,<span class="number">2</span>]]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>获取满足特定条件的行</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取电影时长在120min以上的电影，返回一个DataFrame</span></span><br><span class="line">df[df[<span class="string">'duration'</span>] &gt; <span class="number">120</span>]</span><br><span class="line">df[df[<span class="string">'duration'</span>] &gt; <span class="number">120</span>].duration</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取电影时长在120min以上的电影且评分高于8的电影,多条件要用括号括起来</span></span><br><span class="line">df[(df[<span class="string">'duration'</span>] &gt; <span class="number">120</span>) &amp; (df[<span class="string">'star_rating'</span>] &gt; <span class="number">8</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">df.loc[(df[<span class="string">'duration'</span>] &gt; <span class="number">120</span>) &amp; (df[<span class="string">'star_rating'</span>] &gt; <span class="number">8</span>), :]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取电影时长在120min以上的电影且评分高于8的电影的名字</span></span><br><span class="line">df.loc[(df[<span class="string">'duration'</span>] &gt; <span class="number">120</span>) &amp; (df[<span class="string">'star_rating'</span>] &gt; <span class="number">8</span>),<span class="string">'title'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取电影时长在120min以上的电影且评分高于8的电影的名字和评分</span></span><br><span class="line">df.loc[(df[<span class="string">'duration'</span>] &gt; <span class="number">120</span>) &amp; (df[<span class="string">'star_rating'</span>] &gt; <span class="number">8</span>),[<span class="string">'title'</span>,<span class="string">'star_rating'</span>]]</span><br><span class="line"></span><br><span class="line">df.loc[(df[<span class="string">'duration'</span>] &gt; <span class="number">120</span>) &amp; (df[<span class="string">'star_rating'</span>] &gt; <span class="number">8</span>),<span class="string">'star_rating'</span>:<span class="string">'genre'</span>]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看不同分级的电影数量</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取电影具体的分级级别</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].unique()</span><br><span class="line"><span class="comment"># Output</span></span><br><span class="line">array([<span class="string">'R'</span>, <span class="string">'PG-13'</span>, <span class="string">'NOT RATED'</span>, <span class="string">'PG'</span>, <span class="string">'UNRATED'</span>, <span class="string">'APPROVED'</span>, <span class="string">'PASSED'</span>,</span><br><span class="line">       <span class="string">'G'</span>, <span class="string">'X'</span>, nan, <span class="string">'TV-MA'</span>, <span class="string">'GP'</span>, <span class="string">'NC-17'</span>], dtype=object)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看不同分级类别的电影数量</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].value_counts()</span><br><span class="line"><span class="comment"># Output</span></span><br><span class="line">R            <span class="number">460</span></span><br><span class="line">PG<span class="number">-13</span>        <span class="number">189</span></span><br><span class="line">PG           <span class="number">123</span></span><br><span class="line">NOT RATED     <span class="number">65</span></span><br><span class="line">APPROVED      <span class="number">47</span></span><br><span class="line">UNRATED       <span class="number">38</span></span><br><span class="line">G             <span class="number">32</span></span><br><span class="line">PASSED         <span class="number">7</span></span><br><span class="line">NC<span class="number">-17</span>          <span class="number">7</span></span><br><span class="line">X              <span class="number">4</span></span><br><span class="line">GP             <span class="number">3</span></span><br><span class="line">TV-MA          <span class="number">1</span></span><br><span class="line">Name: content_rating, dtype: int64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以柱状图形式展示</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].value_counts().plot(kind=<span class="string">'bar'</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/images/content-rating.png" alt=""></p>
-</li>
-<li><p>groupby的应用</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看不同题材的电影的平均时长</span></span><br><span class="line">df.groupby(<span class="string">'genre'</span>).duration.mean()</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>apply、map、applymap</p>
-<p>apply传入一个函数，会将该函数应用于选中的列</p>
-<p>applymap是指将函数应用于DataFrame的所有元素</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">df[<span class="string">'int_rating'</span>] = df.star_rating.apply(np.ceil) <span class="comment"># 默认为 0</span></span><br><span class="line">df.loc[:<span class="number">5</span>,[<span class="string">'int_rating'</span>,<span class="string">'star_rating'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment">#Output</span></span><br><span class="line">	int_rating	star_rating</span><br><span class="line"><span class="number">0</span>			<span class="number">10.0</span> 		<span class="number">9.3</span></span><br><span class="line"><span class="number">1</span>			<span class="number">10.0</span>		<span class="number">9.2</span></span><br><span class="line"><span class="number">2</span>			<span class="number">10.0</span>		<span class="number">9.1</span></span><br><span class="line"><span class="number">3</span>			<span class="number">9.0</span>			<span class="number">9.0</span></span><br><span class="line"><span class="number">4</span>			<span class="number">9.0</span>			<span class="number">8.9</span></span><br><span class="line"><span class="number">5</span>			<span class="number">9.0</span>			<span class="number">8.9</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#获取电影主演的第一个演员的名字</span></span><br><span class="line">df.actors_list.apply(<span class="keyword">lambda</span> x:eval(x)[<span class="number">0</span>])</span><br><span class="line"><span class="comment">#Outputs</span></span><br><span class="line"><span class="number">0</span>          Tim Robbins</span><br><span class="line"><span class="number">1</span>        Marlon Brando</span><br><span class="line"><span class="number">2</span>            Al Pacino</span><br><span class="line"><span class="number">3</span>       Christian Bale</span><br><span class="line"><span class="number">4</span>        John Travolta</span><br></pre></td></tr></table></figure>
-<p>下面引入一个新的数据集</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">drinks = pd.read_csv(<span class="string">'http://bit.ly/drinksbycountry'</span>)</span><br><span class="line">drinks.head()</span><br></pre></td></tr></table></figure>
-<p><img src="/images/pandas-2.png" alt=""></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在DataFrame中，可通过axis指定appply作用在行或者列上</span></span><br><span class="line">res = drinks.loc[:,<span class="string">'beer_servings'</span>:<span class="string">'wine_servings'</span>].apply(np.argmax,axis=<span class="number">0</span>)</span><br><span class="line">res</span><br><span class="line"><span class="comment"># Outputs</span></span><br><span class="line">beer_servings      <span class="number">117</span></span><br><span class="line">spirit_servings     <span class="number">68</span></span><br><span class="line">wine_servings       <span class="number">61</span></span><br><span class="line">dtype: int64</span><br><span class="line">    </span><br><span class="line">drinks.loc[res,<span class="string">'country'</span>]</span><br><span class="line"><span class="number">117</span>    Namibia</span><br><span class="line"><span class="number">68</span>     Grenada</span><br><span class="line"><span class="number">61</span>      France</span><br><span class="line"><span class="comment"># 即beer_servings 最大的国家是Namibia，spirit_servings大的国家Grenada等等</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在DataFrame中删除行或者列</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除一列或多列</span></span><br><span class="line">df.drop([<span class="string">'int_rating'</span>],axis=<span class="number">1</span>,inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除一行或多行</span></span><br><span class="line">df.drop([<span class="number">0</span>,<span class="number">1</span>], axis = <span class="number">0</span>, inplace = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<ol>
-<li><p>在DataFrame中给某一列重命名</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取所有列名</span></span><br><span class="line">df.columns</span><br><span class="line"><span class="comment"># 替换全部列名</span></span><br><span class="line">df_cols = [<span class="string">'Star rating'</span>,<span class="string">'Title'</span>, <span class="string">'Content rating'</span>,<span class="string">'Genre'</span>, <span class="string">'Duration'</span>, <span class="string">'Actors list'</span>]</span><br><span class="line">df.columns = df_cols</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改指定列名</span></span><br><span class="line">df.rename(columns = &#123;<span class="string">'star_rating'</span>:<span class="string">'star rating'</span>&#125;)</span><br></pre></td></tr></table></figure>
-<p>也可以通过在read数据时，指定names参数来指定列名（<code>names = df_cols</code>）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 也可以.str来使用Series中封装的字符串方法</span></span><br><span class="line">df.columns.str.[replace(<span class="string">'_'</span>,<span class="string">' '</span>)/lower()/upper()]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>给某一列进行排序</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pandas.Series.sort_values(ascending=True, inplace=False) 默认升序,且不改变原Series结果</span></span><br><span class="line"><span class="comment"># 按照电影时长从大倒小排序</span></span><br><span class="line">df.duration.sort_values(ascending=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># pandas.DataFrame.sort_values(by='columns_name')</span></span><br><span class="line">df.sort_values(by=<span class="string">'duration'</span>,ascending=<span class="literal">False</span>,inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按照电影评分从大到小排列，若评分相同，则时长长的在前</span></span><br><span class="line">df.sort_values([<span class="string">'star_rating'</span>,<span class="string">'duration'</span>],ascending=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>发现并删除重复行</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pandas.Series.duplicated() 返回bool的series</span></span><br><span class="line">df.title.duplicated().sum()</span><br><span class="line"></span><br><span class="line">df.duplicated()</span><br><span class="line"></span><br><span class="line">df.drop_duplicates(keep=<span class="string">'first'</span>)</span><br><span class="line"><span class="comment"># keep = first即保存第一个重复的元素，keep = False，不保留重复元素</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" data-id="ckcozf1no002a2kue3pph13e0"
+      <a data-url="http://yoursite.com/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" data-id="ckcrtl1080010q4ue68zk4sho"
         class="article-share-link">分享</a>
         
       
