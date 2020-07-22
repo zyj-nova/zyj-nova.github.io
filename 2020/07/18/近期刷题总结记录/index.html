@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.2k字</span>
+            <span class="post-count">1.8k字</span>
         </span>
     </span>
 
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">5分钟</span>
+            <span class="post-count">8分钟</span>
         </span>
     </span>
 </div>
@@ -149,13 +149,30 @@ b = b_1 \bigoplus b_2 \bigoplus....\bigoplus b_{n-1} \\</script><p>最后<code>a
 <p> <code>a ^ b =1 ^ 2 ^ 4 ^ 6 ^ 4 ^ 6 ^ 1 = 1 ^ 1 ^ 4 ^ 4 ^ 6 ^ 6 ^ 2= 0 ^ 0 ^ 0 ^ 2 = 0 ^ 2 = 2</code></p>
 </li>
 </ul>
+<h3 id="4-Rightmost-Digit"><a href="#4-Rightmost-Digit" class="headerlink" title="4. Rightmost Digit"></a>4. Rightmost Digit</h3><p>​        杭电1061题。与第1题相反的是，本题求正整数$n^n$最左边的数字。要用到快速幂取模算法。快速幂即比较快的计算n的幂次。相比于循环n次计算的$O(n)$算法，快速幂能够在$O(\log n)$求出结果。比如计算$3^{100}$，一般我们可以循环100次计算出结果。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">100</span>; i++)&#123;</span><br><span class="line">    ans *= <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​        我们观察发现:</p>
+<script type="math/tex; mode=display">
+3^{100} = 3^{50}*3^{50}\\
+3^{50} = 3^{25}*3^{25}\\
+3^{25} = 3^{12}*3^{12}*3\\
+3^{12} = 3^6*3^6 \\
+3^6 = 3^3*3^3\\
+3^3 = 3^2 * 3\\
+3^2 = 3 * 3</script><p>​        这样，我们要计算$3^{100}$，就可以先计算出$3^{50}$，然后自己和自己相乘就可以得到结果，对于$3^{25}$同理，然后这样递推下去就可得到结果。按照这个方法计算，我们只做了8次乘法便得到了结果，相比100次大大减少了时间。幂次不是奇数就是偶数，偶数次幂就等于自己乘自己，奇数次幂得额外再乘以一个基底数字。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 递归计算快速幂 a^b</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(b == <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> temp = f(a, b / <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">return</span> (b % <span class="number">2</span> == <span class="number">0</span> ? <span class="number">1</span> : a) * temp * temp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 非递归</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> base = a;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>( b != <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(b % <span class="number">2</span> == <span class="number">1</span>)&#123;</span><br><span class="line">            ans = ans * base;</span><br><span class="line">        &#125;</span><br><span class="line">        base = base * base;</span><br><span class="line">        b /= <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​        回到这道题，两个数相乘，二者的最后一位分别相乘贡献了结果，因此我们可以在计算快速幂过程中不断对10取模就可以得到最终结果。</p>
+<p>​        插入一点其他知识：</p>
+<script type="math/tex; mode=display">
+(a + b) \mod p = (a\mod p + b \mod p) \mod p</script><p>​        在计算斐波那契数列时会用到。将加号改为乘号同样适用。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 快速幂取余</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> base = a;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>( b != <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(b % <span class="number">2</span> == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="comment">// 最后两位数相乘再对10取余 ans = ans * base ans % 10 = (ans%10)*(base%10)%10</span></span><br><span class="line">            ans = (ans % <span class="number">10</span>) * (base % <span class="number">10</span>) % <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 因为求最后一位数字，每次记录最后一位数字是几就可以避免越界</span></span><br><span class="line">        base = (base % <span class="number">10</span>)* (base % <span class="number">10</span>) % <span class="number">10</span>;</span><br><span class="line">        b /= <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t,n;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; t;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; t; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,f(n,n));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/18/%E8%BF%91%E6%9C%9F%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93%E8%AE%B0%E5%BD%95/" data-id="ckcscg4pp002fjcued1uia1j2"
+      <a data-url="http://yoursite.com/2020/07/18/%E8%BF%91%E6%9C%9F%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93%E8%AE%B0%E5%BD%95/" data-id="ckcxbd5mt00213gueh87k1jiw"
         class="article-share-link">分享</a>
         
       
@@ -535,6 +552,21 @@ b = b_1 \bigoplus b_2 \bigoplus....\bigoplus b_{n-1} \\</script><p>最后<code>a
 
 <script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 
 </html>
