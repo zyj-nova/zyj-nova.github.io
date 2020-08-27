@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.8k字</span>
+            <span class="post-count">2.1k字</span>
         </span>
     </span>
 
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">8分钟</span>
+            <span class="post-count">9分钟</span>
         </span>
     </span>
 </div>
@@ -166,13 +166,23 @@ b = b_1 \bigoplus b_2 \bigoplus....\bigoplus b_{n-1} \\</script><p>最后<code>a
 <script type="math/tex; mode=display">
 (a + b) \mod p = (a\mod p + b \mod p) \mod p</script><p>​        在计算斐波那契数列时会用到。将加号改为乘号同样适用。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 快速幂取余</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> base = a;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>( b != <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(b % <span class="number">2</span> == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="comment">// 最后两位数相乘再对10取余 ans = ans * base ans % 10 = (ans%10)*(base%10)%10</span></span><br><span class="line">            ans = (ans % <span class="number">10</span>) * (base % <span class="number">10</span>) % <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 因为求最后一位数字，每次记录最后一位数字是几就可以避免越界</span></span><br><span class="line">        base = (base % <span class="number">10</span>)* (base % <span class="number">10</span>) % <span class="number">10</span>;</span><br><span class="line">        b /= <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t,n;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; t;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; t; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,f(n,n));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-阶乘位数"><a href="#5-阶乘位数" class="headerlink" title="5. 阶乘位数"></a>5. 阶乘位数</h3><p>​        给定一个小于等于$10,000,000$的正整数，计算其阶乘的位数。小于1000的数字的阶乘可以通过模拟乘法来计算出来，但是当数字特别大数组也无法存下。这是就要用到斯特林公式。</p>
+<p>​        一个十进制数 $n$ 的位数可以表示为：</p>
+<script type="math/tex; mode=display">
+(int)\log_{10} n + 1</script><p>这一点可以很明显的在$y = \log_{10} x$的函数图像上观察出来。</p>
+<p>​        因此，$n!$的位数即：</p>
+<script type="math/tex; mode=display">
+\log_{10} n! + 1</script><script type="math/tex; mode=display">
+\log_{10} n! = \log_{10} n * (n-1) * ... * 1 = \log_{10}n + \log_{10}n-1 + ...</script><p>​        只要循环计算1到n的对数再求和之后取整加一就是结果。</p>
+<h3 id="6-背包问题"><a href="#6-背包问题" class="headerlink" title="6. 背包问题"></a>6. 背包问题</h3><h4 id="6-1-0-1背包"><a href="#6-1-0-1背包" class="headerlink" title="6.1 0-1背包"></a>6.1 0-1背包</h4><h4 id="6-2-完全背包"><a href="#6-2-完全背包" class="headerlink" title="6.2 完全背包"></a>6.2 完全背包</h4><h4 id="6-3-多重背包"><a href="#6-3-多重背包" class="headerlink" title="6.3 多重背包"></a>6.3 多重背包</h4><p>背包练习(以下题目皆来自杭电 on-line judge: <a href="http://acm.hdu.edu.cn/)：" target="_blank" rel="noopener">http://acm.hdu.edu.cn/)：</a></p>
+<p><a href="http://acm.hdu.edu.cn/showproblem.php?pid=2602" target="_blank">2602</a> <a href="http://acm.hdu.edu.cn/showproblem.php?pid=1114" target="_blank">1114</a>  <a href="http://acm.hdu.edu.cn/showproblem.php?pid=1171" target="_blank">1171</a> <a href="http://acm.hdu.edu.cn/showproblem.php?pid=2844" target="_blank">2844</a> <a href="http://acm.hdu.edu.cn/showproblem.php?pid=1059" target="_blank">1059</a> <a href="http://acm.hdu.edu.cn/showproblem.php?pid=2955" target="_blank">2955</a> <a href="http://acm.hdu.edu.cn/showproblem.php?pid=1203" target="_blank">1203</a> <a href="http://acm.hdu.edu.cn/showproblem.php?pid=3466" target="_blank">3466</a></p>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/18/%E8%BF%91%E6%9C%9F%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93%E8%AE%B0%E5%BD%95/" data-id="ckcxbd5mt00213gueh87k1jiw"
+      <a data-url="http://yoursite.com/2020/07/18/%E8%BF%91%E6%9C%9F%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93%E8%AE%B0%E5%BD%95/" data-id="cked14yr6002fc4ue8u3i58k9"
         class="article-share-link">分享</a>
         
       
@@ -183,6 +193,15 @@ b = b_1 \bigoplus b_2 \bigoplus....\bigoplus b_{n-1} \\</script><p>最后<code>a
   
   
   <nav class="article-nav">
+    
+      <a href="/2020/08/03/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            浅谈逻辑斯蒂回归模型
+          
+        </div>
+      </a>
     
     
       <a href="/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/" class="article-nav-link">

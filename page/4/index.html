@@ -64,6 +64,169 @@
     
     
     
+    <article id="post-链表" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/15/%E9%93%BE%E8%A1%A8/"
+    >链表</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/15/%E9%93%BE%E8%A1%A8/" class="article-date">
+  <time datetime="2020-02-15T09:18:26.225Z" itemprop="datePublished">2020-02-15</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> val;</span><br><span class="line">	ListNode next;</span><br><span class="line">	ListNode(<span class="keyword">int</span> x) &#123;</span><br><span class="line">		val = x;</span><br><span class="line">		next = <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-反转链表"><a href="#1-反转链表" class="headerlink" title="1. 反转链表"></a>1. 反转链表</h3><p>​         反转一个单链表。 这是<code>Leetcode 206</code>号问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 头插法</span></span><br><span class="line">        ListNode dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode cur = <span class="keyword">null</span>, next = <span class="keyword">null</span>;</span><br><span class="line">      <span class="comment">//cur指向dummy结点后的第一个节点，在dummy和cur之间添加节点</span></span><br><span class="line">        <span class="keyword">while</span>(head!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            next = head.next;<span class="comment">//保存原链表下一个节点</span></span><br><span class="line">            dummy.next = head;</span><br><span class="line">            head.next = cur;</span><br><span class="line">            cur = head;<span class="comment">//更新cur结点，将其指向刚插入的结点head</span></span><br><span class="line">            <span class="comment">//原链表指向下一个节点</span></span><br><span class="line">            head = next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummy.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/reverse-node.png" alt=""></p>
+<h3 id="2-环形链表"><a href="#2-环形链表" class="headerlink" title="2. 环形链表"></a>2. 环形链表</h3><p>​         给定一个链表，判断链表中是否有环。 这是<code>Leetcode 141</code>号问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCycle</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">if</span> (head == <span class="keyword">null</span> || head.next == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        ListNode slow = head, fast = head.next;</span><br><span class="line">        <span class="keyword">while</span> (slow != fast) &#123;</span><br><span class="line">            <span class="keyword">if</span> (fast == <span class="keyword">null</span> || fast.next == <span class="keyword">null</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            slow = slow.next;</span><br><span class="line">            fast = fast.next.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-相交链表"><a href="#3-相交链表" class="headerlink" title="3. 相交链表"></a>3. 相交链表</h3><p>​         编写一个程序，找到两个单链表相交的起始节点。 这是<code>Leetcode 160</code>号问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">getIntersectionNode</span><span class="params">(ListNode headA, ListNode headB)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">if</span> (headA == <span class="keyword">null</span> || headB == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">int</span> lena = <span class="number">0</span>, lenb = <span class="number">0</span>;</span><br><span class="line">        ListNode heada = headA, headb = headB;</span><br><span class="line">        <span class="keyword">while</span>(heada!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            heada = heada.next;</span><br><span class="line">            lena++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(headb!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            headb = headb.next;</span><br><span class="line">            lenb++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(lena &gt; lenb)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= lena - lenb; i++ )</span><br><span class="line">                headA = headA.next;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= lenb - lena; i++)</span><br><span class="line">                headB = headB.next;</span><br><span class="line">        &#125;</span><br><span class="line">      <span class="keyword">while</span>(headA != <span class="keyword">null</span> &amp;&amp; headB != <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(headA == headB)&#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            headA = headA.next;</span><br><span class="line">            headB = headB.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> headA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/15/%E9%93%BE%E8%A1%A8/" data-id="cked14yr7002jc4ue8r210xcv"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-Java虚拟机内存结构" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/"
+    >Java虚拟机内存结构</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" class="article-date">
+  <time datetime="2020-02-13T10:08:12.676Z" itemprop="datePublished">2020-02-13</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="Java虚拟机栈内存结构"><a href="#Java虚拟机栈内存结构" class="headerlink" title="Java虚拟机栈内存结构"></a>Java虚拟机栈内存结构</h2><p>​        主要介绍虚拟机栈的内存结构。</p>
+<h3 id="1-构成"><a href="#1-构成" class="headerlink" title="1. 构成"></a>1. 构成</h3><p>​        Java虚拟机主要由<strong>堆区、方法区、虚拟机栈、本地方法栈、程序寄存器</strong>五部分组成。其中<strong>堆区、方法区是所有线程共享</strong>的，其余区域都是线程不共享的。</p>
+<h3 id="2-虚拟机栈"><a href="#2-虚拟机栈" class="headerlink" title="2. 虚拟机栈"></a>2. 虚拟机栈</h3><p>​         虚拟机为每个新创建的线程都分配一个栈。栈以<strong>帧</strong>为单位保存线程的状态。虚拟机对栈只进行两种操作：以帧为单位的压栈和出栈操作。  </p>
+<p>​        一个线程中的方法调用链可能会很长，很多方法都同时处理执行状态。对于执行引擎来讲，活动线程中，只有虚拟机栈顶的栈帧才是有效的，称为当前栈帧 (Current Stack Frame)，这个栈帧所关联的方法称为当前方法(Current Method)。执行引用所运行的所有字节码指令都只针对当前栈帧进行操作。</p>
+<p>​        虚拟机栈主要存储<strong>栈帧</strong>（Stack Frame）这种数据结构，在栈帧内部，存储了<strong>局部变量表、操作数栈、动态链接、方法返回地址、其他附加信息</strong>等。  线程每调用一个方法就对应着 Stack 中 Stack Frame 的入栈，方法执行完毕或者异常终止对应着出栈（销毁）。 </p>
+<ul>
+<li><p>局部变量表：</p>
+<p>​        定义为一个数字数组，主要用于存储方法参数和定义在方法体内的局部变量。局部变量表中的变量是<strong>重要的<code>GC Root</code>结点</strong>，只要被局部变量表中变量直接或间接引用的对象都不会被回收。 <strong>在编译程序代码的时候就可以确定栈帧中需要多大的局部变量表，具体大小可在编译后的 Class 文件中看到</strong>。局部变量表的容量以 Variable Slot（变量槽）为最小单位，每个变量槽都可以存储 32 位长度的内存空间。 </p>
+<pre><code>     在方法执行时，虚拟机是使用局部变量表完成参数变量列表的传递过程，如果是实例方法，那么局部变量表中的0位索引的Slot默认是用于传递方法所属对象实例的引用，在方法中可以通过关键字“this”来访问这个隐含的参数，其余参数则按照参数列表的顺序来排列，占用从1开始的局部变量Slot，参数表分配 完毕后，再根据方法体内部定义的变量顺序和作用域来分配其余的Slot。
+</code></pre><p>​        局部变量表中的Slot是可重用的，方法体中定义的变量，其作用域并不一定会覆盖整个方法，如果当前字节码PC计算器的值已经超出了某个变量的作用域，那么这个变量对应的Slot就可以交给其它变量使用。 </p>
+</li>
+<li><p>操作数栈</p>
+</li>
+<li><p>动态链接</p>
+<p>​        每个栈帧都包含一个指向运行时常量池中该栈帧所属性方法的引用，持有这个引用是为了支持方法调用过程中的动态连接。在Class文件的常量池中存有大量的符号引用，字节码中的方法调用指令就以常量池中指向方法的符号引用为参数。这些符号引用一部分会在类加载阶段或第一次使用的时候转化为直接引用，这种转化 称为静态解析。另外一部分将在每一次的运行期期间转化为直接引用，这部分称为动态连接。 </p>
+</li>
+<li><p>方法返回地址</p>
+<p>​        当一个方法被执行后，有两种方式退出这个方法。第一种方式是<strong>执行引擎</strong>遇到任意一个方法返回的字节码指令，这时候可能会有返回值传递给上层的方法调用者(调用当前方法的的方法称为调用者)，是否有返回值和返回值的类型将根据遇到何种方法返回指令来决定，这种退出方法方式称为正常完成出口(Normal Method Invocation Completion)。</p>
+<p>​        另外一种退出方式是，在方法执行过程中遇到了异常，并且这个异常没有在方法体内得到处理，无论是Java虚拟机内部产生的异常，还是代码中使用 <code>throw</code>字节码指令产生的异常，只要在本方法的异常表中没有搜索到匹配的异常处理器，就会导致方法退出，这种退出方式称为异常完成出口(Abrupt Method Invocation Completion)。一个方法使用异常完成出口的方式退出，是不会给它的调用都产生任何返回值的。</p>
+<p>​        无论采用何种方式退出，在方法退出之前，都需要返回到方法被调用的位置，程序才能继续执行，方法返回时可能需要在栈帧中保存一些信息，用来帮助恢复它的上层方法的执行状态。一般来说，方法正常退出时，调用者PC计数器的值就可以作为返回地址，栈帧中很可能会保存这个计数器值。而方法异常退出时，返回地址是要通过异常处理器来确定的，栈帧中一般不会保存这部分信息。</p>
+<p>​         <strong>方法退出的过程实际上等同于把当前栈帧出栈</strong>，因此退出时可能执行的操作有：恢复上层方法的局部变量表和操作数栈，把返回值(如果有的话)压入调用都栈帧的操作数栈中，调用PC计数器的值以指向方法调用指令后面的一条指令等。 </p>
+</li>
+</ul>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/13/Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" data-id="cked14yq0000nc4ueetge6ego"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-Pytorch 学习笔记之入门" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -281,7 +444,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%85%A5%E9%97%A8/" data-id="ckcxbd5mw00243gueanqccj1f"
+      <a data-url="http://yoursite.com/2020/02/12/Pytorch%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%85%A5%E9%97%A8/" data-id="cked14yqx0020c4ue164m9dp4"
         class="article-share-link">分享</a>
         
       
@@ -434,7 +597,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="ckcxbd5n4002e3guefoxg0474"
+      <a data-url="http://yoursite.com/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" data-id="cked14yr5002dc4uefuec0x50"
         class="article-share-link">分享</a>
         
       
@@ -708,7 +871,7 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="ckcxbd5ne002l3gue5w8h8w7b"
+      <a data-url="http://yoursite.com/2020/02/07/JAVA%20%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" data-id="cked14yrd002oc4ue8j4vemoj"
         class="article-share-link">分享</a>
         
       
@@ -820,7 +983,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="ckcxbd5lm00083gue6wwv9ily"
+      <a data-url="http://yoursite.com/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" data-id="cked14yps0007c4uedywpgtli"
         class="article-share-link">分享</a>
         
       
@@ -937,7 +1100,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="ckcxbd5nh002o3gue2utx85yc"
+      <a data-url="http://yoursite.com/2020/02/06/%E4%BA%8C%E5%8F%89%E6%A0%91/" data-id="cked14yrg002rc4ue2yq36iym"
         class="article-share-link">分享</a>
         
       
@@ -1017,13 +1180,23 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
 <p>考虑<code>852</code>号问题边界情况，最后一次循环已经到了“峰顶”元素，且此时<code>left = right = mid</code>，由于<code>A[mid]</code>为“峰顶”元素，且其后面至少有一个元素，那么<code>A[mid] &gt; A[mid+1]</code>（<code>mid+1</code>没有越界），因此执行<code>right = mid - 1</code>，又<code>right &lt; left</code>，跳出循环，返回<code>left</code>。</p>
 <p><code>Leetcode 1095</code>号问题。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * // This is MountainArray's API interface.</span></span><br><span class="line"><span class="comment"> * // You should not implement it, or speculate about its implementation</span></span><br><span class="line"><span class="comment"> * interface MountainArray &#123;</span></span><br><span class="line"><span class="comment"> *     public int get(int index) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     public int length() &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findInMountainArray</span><span class="params">(<span class="keyword">int</span> target, MountainArray mountainArr)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 最小的index</span></span><br><span class="line">        <span class="comment">// [1,2,3,4,5,3,1]</span></span><br><span class="line">        <span class="keyword">int</span> len = mountainArr.length();</span><br><span class="line">        <span class="keyword">int</span> peak = findPeak(<span class="number">0</span>, len - <span class="number">1</span>, mountainArr);</span><br><span class="line">        <span class="keyword">int</span> l = searchLeft(<span class="number">0</span>, peak, target, mountainArr);</span><br><span class="line">        <span class="keyword">return</span> l == -<span class="number">1</span> ? searchRight(peak, len - <span class="number">1</span>, target, mountainArr) : l;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 找到山峰值</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">findPeak</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> right, MountainArray mountainArray)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> v = mountainArray.get(mid);</span><br><span class="line">            <span class="comment">// 由于题中定义peak后面会有一个元素，因此不会越界</span></span><br><span class="line">            <span class="keyword">if</span> (v &lt; mountainArray.get(mid + <span class="number">1</span>)) &#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> left;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 左边找 [0, peak]严格升序数组</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">searchLeft</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> right, <span class="keyword">int</span> target, MountainArray mountainArray)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> v = mountainArray.get(mid);</span><br><span class="line">            <span class="keyword">if</span> (v == target) &#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (v &gt; target) &#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// [peak,len-1]右边是严格降序数组</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">searchRight</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> right, <span class="keyword">int</span> target, MountainArray mountainArray)</span>	</span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> v = mountainArray.get(mid);</span><br><span class="line">            <span class="keyword">if</span> (v == target) &#123;</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (v &gt; target) &#123;</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                right = mid - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-4-Pie"><a href="#3-4-Pie" class="headerlink" title="3.4 Pie"></a>3.4 Pie</h4><p>杭电oj  <a href="http://acm.hdu.edu.cn/showproblem.php?pid=1969" target="_blank">1969</a></p>
+<p>题目大意为：</p>
+<p>给定$n$个不同半径的派（高度均为1，口味互不相同），有$f + 1$个人，求一个最大体积$V$，使得这$n$个派可以分为$f+1$份（不可以多个不同口味的派拼起来凑成$V$）。可以发现最大体积一定不会大于最大派的体积$Max$，因此在区间$[0,Max]$中进行二分搜索就可以。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> pi = <span class="built_in">acos</span>(<span class="number">-1.0</span>);</span><br><span class="line"><span class="keyword">int</span> t, f, n, r[<span class="number">10005</span>], MAX;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">check</span><span class="params">(<span class="keyword">double</span> v)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">        <span class="keyword">double</span> tmp = r[i] * r[i] * pi;</span><br><span class="line">        cnt += <span class="built_in">floor</span>(tmp / v);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(cnt &gt;= (f + <span class="number">1</span>))&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">cin</span> &gt;&gt; n &gt;&gt; f;</span><br><span class="line">        MAX = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">            <span class="built_in">cin</span> &gt;&gt; r[i];</span><br><span class="line">            MAX = <span class="built_in">max</span>(MAX, r[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">double</span> left = <span class="number">0.0</span>, right = MAX * MAX * pi, mid;</span><br><span class="line">        <span class="comment">// 在0 - 最大面积中选一个值使得所有pie能够分成 f+1份</span></span><br><span class="line">        <span class="keyword">while</span>(right - left &gt;= <span class="number">1e-7</span>)&#123;</span><br><span class="line">            mid = (left + right) / <span class="number">2.0</span>;</span><br><span class="line">            <span class="comment">// check mid，是否可以分成 f+1</span></span><br><span class="line">            <span class="keyword">if</span>(check(mid) == <span class="number">1</span>)&#123;<span class="comment">// 还可以继续增大搜索</span></span><br><span class="line">                left = mid + <span class="number">1e-6</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123; <span class="comment">// 不够分了，要减小</span></span><br><span class="line">                right = mid - <span class="number">1e-6</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="comment">// 最后跳出循环时left = right</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%.4lf\n"</span>, left);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-利用二分法求解方程"><a href="#4-利用二分法求解方程" class="headerlink" title="4. 利用二分法求解方程"></a>4. 利用二分法求解方程</h3><p>杭电oj <a href="http://acm.hdu.edu.cn/showproblem.php?pid=2199" target="_blank">2199</a></p>
+<p>说的是给定函数$8x^4 + 7x^3 + 2x^2 + 3x + 6 == Y$，针对输入的不同的$Y$，求出$x$在区间$[0,100]$上的解，要求最终$x$精确到小数点后4位。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">int</span> t;</span><br><span class="line"><span class="keyword">double</span> y;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">f</span><span class="params">(<span class="keyword">double</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">8.0</span> * <span class="built_in">pow</span>(x,<span class="number">4.0</span>) + <span class="number">7.0</span> * <span class="built_in">pow</span>(x, <span class="number">3.0</span>) + <span class="number">2.0</span> * <span class="built_in">pow</span>(x, <span class="number">2.0</span>) + <span class="number">3.0</span> * x + <span class="number">6.0</span>;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">cin</span> &gt;&gt; y;</span><br><span class="line">        <span class="comment">// 函数在[0,100]上是单调递增的</span></span><br><span class="line">        <span class="keyword">if</span>(y &lt; f(<span class="number">0</span>) || y &gt; f(<span class="number">100</span>))&#123;</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; <span class="string">"No solution!\n"</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="comment">// 二分查找</span></span><br><span class="line">            <span class="keyword">double</span> left = <span class="number">0.0</span>, right = <span class="number">100.0</span>, mid;</span><br><span class="line">            <span class="keyword">while</span>(right - left &gt;= <span class="number">1e-6</span>)&#123;</span><br><span class="line">                mid = (left + right) / <span class="number">2.0</span>;</span><br><span class="line">                <span class="keyword">double</span> tmp = f(mid);</span><br><span class="line">                <span class="keyword">if</span>(tmp &gt; y)&#123;</span><br><span class="line">                    right = mid - <span class="number">1e-7</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    left = mid + <span class="number">1e-7</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 最终left right趋于一个值</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%.4lf\n"</span>, (left + right) / <span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>杭电oj <a href="http://acm.hdu.edu.cn/showproblem.php?pid=2899" target="_blank">2899</a></p>
+<p>给定函数$f(x) = 6x^7 + 8x^6 + 7x^3 + 5x^2 -yx,x\in[0,100]$，对于给定的不同的$y$值，求出$f(x)$在$[0,100]$上的最小值（精确到小数点后4位）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">int</span> t;</span><br><span class="line"><span class="keyword">double</span> y;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">f</span><span class="params">(<span class="keyword">double</span> x, <span class="keyword">double</span> y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">6.0</span> * <span class="built_in">pow</span>(x, <span class="number">7</span>) + <span class="number">8.0</span> * <span class="built_in">pow</span>(x, <span class="number">6</span>) + <span class="number">7.0</span> * <span class="built_in">pow</span>(x, <span class="number">3</span>)</span><br><span class="line">            + <span class="number">5.0</span> * <span class="built_in">pow</span>(x, <span class="number">2</span>) - y * x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">df</span><span class="params">(<span class="keyword">double</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">42.0</span> * <span class="built_in">pow</span>(x, <span class="number">6</span>) + <span class="number">48.0</span> * <span class="built_in">pow</span>(x, <span class="number">5</span>) + <span class="number">21.0</span> * <span class="built_in">pow</span>(x, <span class="number">2</span>) + <span class="number">10.0</span> * x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; t;</span><br><span class="line">    <span class="keyword">while</span>(t--)&#123;</span><br><span class="line">        <span class="built_in">cin</span> &gt;&gt; y;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">        针对给定的y，求出df中使得df(x) = y 的x值，判定x是否在[0,100]中，若在</span></span><br><span class="line"><span class="comment">        则x就是极小值点，带入f中求得极小值</span></span><br><span class="line"><span class="comment">        若不在, 在f(0)与f(100)中取最小值</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        <span class="keyword">double</span> left = <span class="number">0.0</span>, right = <span class="number">100.0</span>, mid, ans, x_star;</span><br><span class="line">        <span class="keyword">if</span>(y &lt; df(<span class="number">0</span>) || y &gt; df(<span class="number">100</span>))&#123;<span class="comment">//x_star 不在[0,100]之间</span></span><br><span class="line">            ans = <span class="built_in">min</span>(f(<span class="number">0.0</span>,y),f(<span class="number">100.0</span>,y));</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">while</span>(right - left &gt; <span class="number">1e-7</span>)&#123;</span><br><span class="line">                mid = (left + right) / <span class="number">2.0</span>;</span><br><span class="line">                <span class="keyword">if</span>(df(mid) &gt; y)&#123;</span><br><span class="line">                    right = mid - <span class="number">1e-6</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span> <span class="keyword">if</span>(df(mid) &lt; y)&#123;</span><br><span class="line">                    left = mid + <span class="number">1e-6</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            x_star = (left + right) / <span class="number">2.0</span>;</span><br><span class="line">            ans = f(x_star, y);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%.4lf\n"</span>,ans);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ckcxbd5n3002c3gue0r4tcks9"
+      <a data-url="http://yoursite.com/2020/02/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="cked14yr10027c4ue3mjo14go"
         class="article-share-link">分享</a>
         
       
@@ -1116,7 +1289,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="ckcxbd5lq000a3gue64rzcvn3"
+      <a data-url="http://yoursite.com/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" data-id="cked14ypv000bc4ueb3x5gsew"
         class="article-share-link">分享</a>
         
       
@@ -1198,151 +1371,7 @@ Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="ckcxbd5mu00233gue8aetfo0i"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-Faster R-CNN中anchor的理解" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/"
-    >Faster R-CNN中anchor的理解</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" class="article-date">
-  <time datetime="2020-02-04T02:37:19.958Z" itemprop="datePublished">2020-02-04</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="Faster-R-CNN-中-anchor-的理解"><a href="#Faster-R-CNN-中-anchor-的理解" class="headerlink" title="Faster R-CNN 中 anchor 的理解"></a>Faster R-CNN 中 anchor 的理解</h2><h3 id="1-什么是-anchor"><a href="#1-什么是-anchor" class="headerlink" title="1 什么是 anchor"></a>1 什么是 anchor</h3><p>​ 当图像经过 CNN 网络（如 VGG16）提取出特征即 <strong>feature map</strong> 之后，针对 <strong>feature map</strong> 进行 Region Proposal 操作。首先要明白的是 anchor 是相对于 feature map 在原图上的概念。提取出来的特征相对于原图像存在视野域这个概念，如果视野比例为 8，即 feature map 上一个点，对应在原图是一个 8 * 8 的正方形。那么，该正方形的中心就被称为 anchor。</p>
-<h3 id="2-anchor-boxes"><a href="#2-anchor-boxes" class="headerlink" title="2 anchor boxes"></a>2 anchor boxes</h3><p>​ 在确定 anchor 后，针对改 anchor 要选定 9 个框，首先有 anchor ratio 这个概念。即 <strong>1:1, 1:2, 2:1</strong> 。也就是说 9 个 anchor boxes 的边长比例满足 ratio，确切的说，anchor boxes 存在 3 组，每组 3 个，每个 boxes 的边长都是 1:1,1:2,2:1 。 还有 scales 这个概念， 即 <strong>8, 16, 32</strong> 。anchor boxes 中，1:1 这组的边长<strong>等于</strong>视野域比例*scale。</p>
-<p>如果视野域比例为<strong>16</strong>，那么边长分别为<strong>128,256,512</strong>。其余比例为 2 的边，按照 128/256/512 的 1.5 倍进行扩大。</p>
-<p>如 512*1.5 = 768，768 /2 = 384，256*1.5 = 384，384/2 = 192，128*1.5 = 192, 192 /2= 96</p>
-<p><img src="/images/faster-rcnn.jpg" alt="anchor示意图"></p>
-<h3 id="3-后续操作"><a href="#3-后续操作" class="headerlink" title="3 后续操作"></a>3 后续操作</h3><p>​ 假设 feature map 大小为 M*N，那么 anchor boxes 数量为 <strong>9MN*</strong> 。对于这些 boxes 在进行前景背景分类以及 ground truth 回归等操作，最终选定目标物体。</p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" data-id="ckcxbd5lo00093gue7s2h8qwe"
-        class="article-share-link">分享</a>
-        
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CV/" rel="tag">CV</a></li></ul>
-
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-PCA-StepByStep" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/11/10/PCA-StepByStep/"
-    >How to Implements PCA and SVD</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/11/10/PCA-StepByStep/" class="article-date">
-  <time datetime="2019-11-10T11:55:25.000Z" itemprop="datePublished">2019-11-10</time>
-</a>
-      
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h3 id="How-to-Implements-PCA"><a href="#How-to-Implements-PCA" class="headerlink" title="How to Implements PCA"></a>How to Implements PCA</h3><p>Step by Step​​<br>​​<img src="https://img-blog.csdnimg.cn/20191109182949751.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
-<p><img src="https://img-blog.csdnimg.cn/20191109191048929.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def my_pca(X, k):</span><br><span class="line">    #X 行：样本量，列：样本维度</span><br><span class="line">    #函数默认对每一列进行demean处理</span><br><span class="line">    cov &#x3D; np.cov(X,rowvar&#x3D;0)</span><br><span class="line">    mean &#x3D; np.mean(X,axis &#x3D; 0)</span><br><span class="line">    X_ &#x3D; X - mean</span><br><span class="line">    #求协方差矩阵的特征向量</span><br><span class="line">    eigenvalue, eigenfuture &#x3D; np.linalg.eig(cov)</span><br><span class="line">    #选取前k个特征向量 n * k</span><br><span class="line">    eigenselect &#x3D; eigenfuture[:,:k]</span><br><span class="line">    return np.dot(X_, eigenselect), eigenfuture</span><br></pre></td></tr></table></figure>
-<h3 id="The-relationship-between-PCA-and-SVD"><a href="#The-relationship-between-PCA-and-SVD" class="headerlink" title="The relationship between PCA and SVD"></a>The relationship between PCA and SVD</h3><p>We can use <strong>SVD</strong> to perform <strong>PCA</strong>.</p>
-<ol>
-<li>sklearn 中的 PCA 在大规模运算时采用了 SVD 的方式进行降维处理</li>
-</ol>
-<p><img src="/images/svd.png" alt="img"></p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/10/PCA-StepByStep/" data-id="ckcxbd5m1000r3gue5chidp2j"
+      <a data-url="http://yoursite.com/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" data-id="cked14yqn001sc4ue3vwc0fpt"
         class="article-share-link">分享</a>
         
       

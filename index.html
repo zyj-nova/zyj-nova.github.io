@@ -64,6 +64,259 @@
     
     
     
+    <article id="post-Strang教授线性代数笔记" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/08/27/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/"
+    >Strang教授线性代数笔记</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/08/27/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time datetime="2020-08-27T03:47:51.456Z" itemprop="datePublished">2020-08-27</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="Strang教授线性代数笔记"><a href="#Strang教授线性代数笔记" class="headerlink" title="Strang教授线性代数笔记"></a>Strang教授线性代数笔记</h2><h3 id="1-矩阵消元、矩阵的秩与转置（基础）"><a href="#1-矩阵消元、矩阵的秩与转置（基础）" class="headerlink" title="1.  矩阵消元、矩阵的秩与转置（基础）"></a>1.  矩阵消元、矩阵的秩与转置（基础）</h3><h4 id="1-1-矩阵的初等变换"><a href="#1-1-矩阵的初等变换" class="headerlink" title="1.1 矩阵的初等变换"></a>1.1 矩阵的初等变换</h4><p><strong>矩阵初等行变换</strong>：</p>
+<ul>
+<li><p>对换两行</p>
+</li>
+<li><p>以数$k \not= 0$乘某一行中所有元（数乘）</p>
+</li>
+<li><p>把某一行所有元的$k$倍加到另一行对应的元上去</p>
+<p>把“行”换成“列”，即为矩阵的初等列变换。矩阵的初等行变换和初等列变换统称为<strong>初等变换</strong>。</p>
+</li>
+</ul>
+<p><strong>初等矩阵</strong>：由单位矩阵$I$经过一次初等变换得到的矩阵成为初等矩阵。</p>
+<p><strong>性质</strong>：设矩阵$A$是一个 $m \times n$ 矩阵，则矩阵$A$的初等行变换可以表示为<strong>左乘</strong>多个 $m$ 阶初等矩阵$E$，即：</p>
+<p>$E_1E_2···E_nA$；矩阵$A$的初等列变换可以表示为<strong>右乘</strong>多个 $n$ 阶初等矩阵$E$，即：$AE_1E_2···E_n$。</p>
+<p>注意：这里的左右指矩阵$A$的左右。</p>
+<p><strong>例子</strong>：</p>
+<p>$A=\left[<br> \begin{matrix}<br>   a &amp; b\\<br>   c &amp; d<br>  \end{matrix}<br>\right]$，交换单位阵的两行得到初等矩阵 $E=\left[<br> \begin{matrix}<br>   0 &amp; 1\\<br>   1 &amp; 0<br>  \end{matrix}<br>\right]$，则$EA = \left[ \begin{matrix} c &amp; d\ a &amp; b\end{matrix} \right]$，即交换了矩阵$A$的两行。</p>
+<p>$E$也可以视为交换单位阵的两列得到，那么$AE=\left[ \begin{matrix} b &amp; a\ d &amp; c\end{matrix}\right]$，即交换$A$的两列。</p>
+<p><strong>行阶梯形矩阵</strong></p>
+<p>非零矩阵满足：</p>
+<ol>
+<li>非零行在零行（一行全为0）的上面</li>
+<li>非零行的第一个非零元素所在列在上一行（如果存在）的第一个非零元素所在列的右面。</li>
+</ol>
+<p>例如：$B = \left[ \begin{matrix} 1 &amp;1 &amp;-2 &amp;1 &amp;4 \ 0&amp; 1 &amp;-1 &amp;1 &amp;0 \ 0&amp; 0 &amp;0 &amp;1&amp; -3\ 0&amp; 0 &amp;0 &amp;0 &amp;0 \end{matrix}\right]$</p>
+<p><strong>行最简形矩阵</strong></p>
+<p>在阶梯形矩阵中，若<strong>非零行的第一个非零元素全是1，且非零行的第一个元素1所在列的其余元素全为零</strong>，就称该矩阵为行最简形矩阵。</p>
+<p>例如对上述行阶梯矩阵 $B$ 进行初等行变换得到：$\left[ \begin{matrix} 1 &amp; 0 &amp; -1 &amp; 0 &amp; 4 \ 0 &amp; 1 &amp; -1 &amp; 0 &amp; 3 \ 0 &amp; 0 &amp; 0 &amp; 1 &amp; -3 \ 0 &amp;0&amp;0&amp;0&amp;0\end{matrix}\right]$</p>
+<p>行最简形矩阵的非零行个数即为矩阵的<strong>秩</strong>（rank）。</p>
+<p><strong>利用初等行变换求矩阵的逆矩阵</strong></p>
+<p>$A$为可逆 $n$ 阶方阵，将矩阵$(A,I)$经过初等变换可以得到$(I,E)$，$I$ 为单位矩阵，则$E$为矩阵的逆矩阵。</p>
+<p><strong>从初等变换角度理解矩阵乘法</strong>：$A_{m \times n} B_{n \times p} = C_{m \times p}$</p>
+<p>从$A$的角度，相当于$A$右乘矩阵$B$中的每个列向量，$C$中每列都是$A$中列向量的线性组合。</p>
+<p>从$B$的角度，相当于$B$左乘$A$中每个行向量，$C$中每行都是$B$中行向量的线性组合。</p>
+<h4 id="1-2-矩阵的转置"><a href="#1-2-矩阵的转置" class="headerlink" title="1.2 矩阵的转置"></a>1.2 矩阵的转置</h4><p>$A$为$m \times n$ 的矩阵，$A^T$称为$A$的转置矩阵，且$(A)_{ij} = (A^T)_{ji}$。（行变列，列变行）。</p>
+<p><strong>性质</strong>：</p>
+<ul>
+<li>$(A + B)^T = A^T + B^T$</li>
+<li>$(\lambda A)^T = \lambda A^T$</li>
+<li>$(AB)^T = B^TA^T$</li>
+<li><strong>若 $A$ 为方阵，且$A = A^T$，则 $A$ 为对称矩阵</strong></li>
+<li>$A^TA$是一个$n$阶对称阵，$(A^TA)^T = A^T(A^T)^T = A^TA$</li>
+</ul>
+<h4 id="1-3-矩阵的逆"><a href="#1-3-矩阵的逆" class="headerlink" title="1.3 矩阵的逆"></a>1.3 矩阵的逆</h4><p>定义：$AB = BA = I$，则$A$、$B$互为逆矩阵。</p>
+<p><strong>可逆矩阵又称为非奇异矩阵，不可逆矩阵被称为奇异矩阵</strong>。</p>
+<p><strong>方阵$A$可逆的充要条件是$|A|\not=0$</strong>。</p>
+<p><strong>方阵A可逆的充要条件是A可以通过初等行变换得到单位阵</strong>。</p>
+<ul>
+<li>证明：A可逆 $\Leftrightarrow$ 存在可逆矩阵 $P$，$PA = I$ $\Leftrightarrow$ $A$ 行变换得到 $I$</li>
+</ul>
+<p><strong>逆矩阵的性质</strong></p>
+<p>若$n$阶矩阵$A$可逆，有</p>
+<ul>
+<li><p>$(A^{-1})^{-1} = A$</p>
+</li>
+<li><p>数$\lambda \not= 0$，$(\lambda A)^{-1} = \frac{A}{\lambda}$</p>
+</li>
+<li><p>$B$ 与$A$ 同阶数，且可逆，$(AB)^{-1} = B^{-1}A^{-1}$</p>
+<p>证明：$P(AB) = I \Rightarrow$ $PABB^{-1} = IB^{-1} \Rightarrow PA = B^{-1} \Rightarrow P = B^{-1}A^{-1}$</p>
+</li>
+<li><p>$A^T$亦可逆，且$(A^T)^{-1} = (A^{-1})^T$</p>
+</li>
+<li><p>$|A| \not= 0$</p>
+</li>
+<li><p>$|A^{-1}| = \frac{1}{|A|}$</p>
+<p>证明：$A$可逆 $\Rightarrow AA^{-1} = E \Rightarrow |A|*|A^{-1}| = |E| = 1 \Rightarrow |A^{-1}| = \frac{1}{|A|} $</p>
+</li>
+<li><p>$A$满秩矩阵。由于$|A|\not= 0$，则$A$的最高阶子式为自身且不为0，因此$R(A) = n$，即满秩。</p>
+</li>
+</ul>
+<h4 id="1-4-矩阵与向量乘法"><a href="#1-4-矩阵与向量乘法" class="headerlink" title="1.4 矩阵与向量乘法"></a>1.4 矩阵与向量乘法</h4><ul>
+<li><p>$Ax$相当于$A$的<strong>列向量</strong>的线性组合，结果是列向量 $x_1c_1 + x_2c_2 + …$ 对应列乘以$\vec x$的分量然后所有列求和</p>
+</li>
+<li><p>$xA$相当于$A$的<strong>行向量</strong>的线性组合，结果是行向量 $x_1r1 + x_2r2+ …$对应行乘以$\vec x$的分量然后所有行求和</p>
+</li>
+</ul>
+<h3 id="2-向量空间、列空间、零空间（进阶）"><a href="#2-向量空间、列空间、零空间（进阶）" class="headerlink" title="2. 向量空间、列空间、零空间（进阶）"></a>2. 向量空间、列空间、零空间（进阶）</h3><p>给定$m \times n$的矩阵$A$</p>
+<h4 id="2-1-向量空间的定义（只讨论实数）"><a href="#2-1-向量空间的定义（只讨论实数）" class="headerlink" title="2.1 向量空间的定义（只讨论实数）"></a>2.1 向量空间的定义（只讨论实数）</h4><p><strong>定义</strong>：以向量为元素的集合$V$称为向量空间（vector space）。</p>
+<p><strong>向量空间必须满足</strong>：</p>
+<ul>
+<li>对加法运算封闭，任意两个向量相加得到的向量仍在空间内</li>
+<li>对数乘运算封闭，乘以任意实数仍在空间内</li>
+<li>包含一个零向量（当非零向量数乘0得到零向量，因此必须包含）</li>
+</ul>
+<p>$\R^n$表示含有 $n$ 个元素的向量组成的向量空间。</p>
+<p><strong>子空间（subspace）</strong> 满足以上三条性质却又不包含所有向量的空间。（向量空间内的向量空间）</p>
+<p>例子：$\R^2$的子空间：整个二维平面；二维平面内，<strong>过原点</strong>的任意直线；零向量$\vec 0$ = $(0,0)$。</p>
+<p>向量空间$P$，两个$S$中子空间$S,I$。<strong>两个子空间的并并不是一个子空间，两个子空间的交是一个子空间。</strong></p>
+<p>即：$S \cap I \in P, S \cup I \notin P$.</p>
+<h4 id="2-2-列空间"><a href="#2-2-列空间" class="headerlink" title="2.2 列空间"></a>2.2 列空间</h4><p><strong>定义</strong>：矩阵$A$的列向量的<strong>线性组合</strong>（数乘和加法运算）构成了矩阵$A$的列空间，记为$C(A)$。</p>
+<p>同理，定义矩阵$A$的行向量的线性组合，构成了$A$的行空间，记为$R(A)$。</p>
+<p>考虑$A=\begin{pmatrix} 1&amp;3\\2&amp;3\\4&amp;1\end{pmatrix}$，$C(A)$构成了三维空间中的一个过原点的<strong>平面</strong>。</p>
+<p>考虑$A = \begin{pmatrix}1&amp;1&amp;2\\2&amp;1&amp;3\\3&amp;1&amp;4\\4&amp;1&amp;5 \end{pmatrix}$，$C(A)$是$\R^4$的一个子空间（每一列含有4个元素）。$C(A)$的维数为2，是四维空间的一个平面（第三列是前两列的线性组合，因此前两列作为列空间的基）。</p>
+<p>考虑线性方程组$Ax=b$，是否始终有解？答案是当$\vec b$不在$C(A)$内时，方程无解。因为$Ax$相当于矩阵列向量的线性组合，若$\vec b$不在列空间，必然无解。只有$b$是$A$中各列的线性组合时，即$\vec b \in C(A)$，方程才有解。</p>
+<h4 id="2-3-零空间（核）null-space"><a href="#2-3-零空间（核）null-space" class="headerlink" title="2.3 零空间（核）null space"></a>2.3 零空间（核）null space</h4><p>定义：$Null(A) = \{x | Ax=0，x \in \R^n \}$，齐次线性方程组的解构成了$A$的零空间。</p>
+<p><strong>定理</strong>：零空间的维数$\dim N(A) = n - R(A)$，$n$为列数。</p>
+<h3 id="3-线性相关性、基、维数、秩"><a href="#3-线性相关性、基、维数、秩" class="headerlink" title="3. 线性相关性、基、维数、秩"></a>3. 线性相关性、基、维数、秩</h3><h3 id="4-线性方程组的解"><a href="#4-线性方程组的解" class="headerlink" title="4. 线性方程组的解"></a>4. 线性方程组的解</h3><h4 id="4-1-齐次线性方程组"><a href="#4-1-齐次线性方程组" class="headerlink" title="4.1 齐次线性方程组"></a>4.1 齐次线性方程组</h4><p>考虑下列方程组：</p>
+<script type="math/tex; mode=display">
+a_{11}x_1 + a_{12}x_2 + a_{13}x3 = 0 \\
+a_{21}x_1 + a_{22}x_2 + a_{23}x3 = 0 \\
+a_{31}x_1 + a_{32}x_2 + a_{33}x3 = 0</script><p>可以写成矩阵形式：</p>
+<script type="math/tex; mode=display">
+x_1\begin{pmatrix} a_{11}\\ a_{21}\\ a_{31}\end{pmatrix} + x_2\begin{pmatrix} a_{12}\\ a_{22}\\ a_{32}\end{pmatrix} + x_3\begin{pmatrix} a_{13}\\ a_{23}\\ a_{33}\end{pmatrix} =b</script><script type="math/tex; mode=display">
+Ax = 0</script><p>其中$A=\left[ \begin{matrix} a_{11} &amp; a_{12}&amp; a_{13}\ a_{21} &amp; a_{22} &amp; a_{23} \ a_{31} &amp; a_{32} &amp; a_{33}\end{matrix}\right]$，$\vec x=\left[ \begin{matrix} x_1 \ x_2 \ x_3\end{matrix}\right]$</p>
+<p>对$A$进行初等变换为行阶梯形矩阵，那么非零行<strong>第一个非零元素对应的列</strong>对应的未知变量我们称为<strong>主元</strong>（pivot），其余列称为<strong>自由变量</strong>。 </p>
+<p>例子：若方程系数矩阵$A = \left[ \begin{matrix} 1 &amp;1 &amp;-2 &amp;1 &amp;4 \ 0&amp; 1 &amp;-1 &amp;1 &amp;0 \ 0&amp; 0 &amp;0 &amp;1&amp; -3\ 0&amp; 0 &amp;0 &amp;0 &amp;0 \end{matrix}\right]$，那么主元就是$x_1,x_2,x_4$，自由变量就是$x_3,x_5$。</p>
+<h4 id="4-2-非齐次线性方程组"><a href="#4-2-非齐次线性方程组" class="headerlink" title="4.2 非齐次线性方程组"></a>4.2 非齐次线性方程组</h4><p><strong>非齐次线性方程组解的结构</strong>：特解 + 通解，通解是求解$Ax = 0$得到的，即$N(A)$，特解是当自由变量取0时求解出对应的主元值构成的向量。</p>
+<h3 id="5-四个基本子空间"><a href="#5-四个基本子空间" class="headerlink" title="5. 四个基本子空间"></a>5. 四个基本子空间</h3><p><strong>列空间</strong></p>
+<p><strong>零空间</strong>$N(A)$</p>
+<p><strong>行空间</strong></p>
+<p><strong>$A^T$的零空间</strong></p>
+<p><strong>正交子空间</strong></p>
+<h3 id="6-正交向量与投影"><a href="#6-正交向量与投影" class="headerlink" title="6. 正交向量与投影"></a>6. 正交向量与投影</h3><h3 id="7-正交矩阵与正交化法"><a href="#7-正交矩阵与正交化法" class="headerlink" title="7. 正交矩阵与正交化法"></a>7. 正交矩阵与正交化法</h3><p><strong>QR分解</strong></p>
+<h3 id="8-行列式及其性质"><a href="#8-行列式及其性质" class="headerlink" title="8. 行列式及其性质"></a>8. 行列式及其性质</h3><h3 id="9-特征值与特征向量"><a href="#9-特征值与特征向量" class="headerlink" title="9. 特征值与特征向量"></a>9. 特征值与特征向量</h3><h3 id="10-对称矩阵与正定矩阵"><a href="#10-对称矩阵与正定矩阵" class="headerlink" title="10. 对称矩阵与正定矩阵"></a>10. 对称矩阵与正定矩阵</h3><h3 id="11-奇异值分解"><a href="#11-奇异值分解" class="headerlink" title="11. 奇异值分解"></a>11. 奇异值分解</h3>
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/08/27/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/" data-id="cked14yqz0022c4uea3wu8kwl"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-浅谈逻辑斯蒂回归模型" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/08/03/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/"
+    >浅谈逻辑斯蒂回归模型</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/08/03/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/" class="article-date">
+  <time datetime="2020-08-03T08:01:07.919Z" itemprop="datePublished">2020-08-03</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="浅谈逻辑斯蒂回归模型"><a href="#浅谈逻辑斯蒂回归模型" class="headerlink" title="浅谈逻辑斯蒂回归模型"></a>浅谈逻辑斯蒂回归模型</h2><p>​        逻辑斯蒂回归或者是Softmax回归，说是回归其实是在解决二分类或者多分类的问题。逻辑斯蒂函数如下：</p>
+<script type="math/tex; mode=display">
+y = \frac{1}{1 + e^{-（w^Tx +b)}}</script><p>​        其中，$x \in R^n, w \in R^n$，$b$为偏置bias可以设置为0，$x$为样本的特征向量，$w$即要学习的参数。在给定一批有label的训练数据集后，我们可以根据极大似然估计来得到最优的参数值，之后，给定某个测试数据，当：y &gt;= 0.5，我们就把这个样本划为1类，否则就划为0类。</p>
+<p>​        其实，完整的二项逻辑斯蒂回归模型是定义如下的条件概率分布：</p>
+<script type="math/tex; mode=display">
+P(Y = 1|x) = \frac{\exp(w*x + b)}{1 + \exp(w*x + b)}</script><script type="math/tex; mode=display">
+P(Y = 0|x) = \frac{1}{1 + \exp(w*x + b)}</script><p>​        观察上述条件概率计算公式我们发现，当$w<em>x+b &gt; 0$的时候，$P(Y=1)$的概率一定高于$P(Y=0)$，我们就把其划分为1类。对于$P(Y=1)$的分布函数上下同除以分子$\exp$就得到了熟悉的逻辑斯蒂函数。$w</em>x+b &gt; 0$就等价于$y &gt; 0.5$，因此当逻辑斯蒂函数值$y &gt; 0.5$时就把样本划分到1类，在这个条件下，样本为1类的概率大于为0类的概率。</p>
+<p>​        事实上，逻辑斯蒂函数是在计算样本为1类的概率，由于是二分类，不是1类就是0类。</p>
+<p>​        </p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/08/03/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/" data-id="cked14yr6002hc4uedxvw2qn0"
+        class="article-share-link">分享</a>
+        
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-近期刷题总结记录" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -171,13 +424,23 @@ b = b_1 \bigoplus b_2 \bigoplus....\bigoplus b_{n-1} \\</script><p>最后<code>a
 <script type="math/tex; mode=display">
 (a + b) \mod p = (a\mod p + b \mod p) \mod p</script><p>​        在计算斐波那契数列时会用到。将加号改为乘号同样适用。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 快速幂取余</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> base = a;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>( b != <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(b % <span class="number">2</span> == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="comment">// 最后两位数相乘再对10取余 ans = ans * base ans % 10 = (ans%10)*(base%10)%10</span></span><br><span class="line">            ans = (ans % <span class="number">10</span>) * (base % <span class="number">10</span>) % <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 因为求最后一位数字，每次记录最后一位数字是几就可以避免越界</span></span><br><span class="line">        base = (base % <span class="number">10</span>)* (base % <span class="number">10</span>) % <span class="number">10</span>;</span><br><span class="line">        b /= <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t,n;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; t;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; t; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,f(n,n));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-阶乘位数"><a href="#5-阶乘位数" class="headerlink" title="5. 阶乘位数"></a>5. 阶乘位数</h3><p>​        给定一个小于等于$10,000,000$的正整数，计算其阶乘的位数。小于1000的数字的阶乘可以通过模拟乘法来计算出来，但是当数字特别大数组也无法存下。这是就要用到斯特林公式。</p>
+<p>​        一个十进制数 $n$ 的位数可以表示为：</p>
+<script type="math/tex; mode=display">
+(int)\log_{10} n + 1</script><p>这一点可以很明显的在$y = \log_{10} x$的函数图像上观察出来。</p>
+<p>​        因此，$n!$的位数即：</p>
+<script type="math/tex; mode=display">
+\log_{10} n! + 1</script><script type="math/tex; mode=display">
+\log_{10} n! = \log_{10} n * (n-1) * ... * 1 = \log_{10}n + \log_{10}n-1 + ...</script><p>​        只要循环计算1到n的对数再求和之后取整加一就是结果。</p>
+<h3 id="6-背包问题"><a href="#6-背包问题" class="headerlink" title="6. 背包问题"></a>6. 背包问题</h3><h4 id="6-1-0-1背包"><a href="#6-1-0-1背包" class="headerlink" title="6.1 0-1背包"></a>6.1 0-1背包</h4><h4 id="6-2-完全背包"><a href="#6-2-完全背包" class="headerlink" title="6.2 完全背包"></a>6.2 完全背包</h4><h4 id="6-3-多重背包"><a href="#6-3-多重背包" class="headerlink" title="6.3 多重背包"></a>6.3 多重背包</h4><p>背包练习(以下题目皆来自杭电 on-line judge: <a href="http://acm.hdu.edu.cn/)：" target="_blank" rel="noopener">http://acm.hdu.edu.cn/)：</a></p>
+<p><a href="http://acm.hdu.edu.cn/showproblem.php?pid=2602" target="_blank">2602</a> <a href="http://acm.hdu.edu.cn/showproblem.php?pid=1114" target="_blank">1114</a>  <a href="http://acm.hdu.edu.cn/showproblem.php?pid=1171" target="_blank">1171</a> <a href="http://acm.hdu.edu.cn/showproblem.php?pid=2844" target="_blank">2844</a> <a href="http://acm.hdu.edu.cn/showproblem.php?pid=1059" target="_blank">1059</a> <a href="http://acm.hdu.edu.cn/showproblem.php?pid=2955" target="_blank">2955</a> <a href="http://acm.hdu.edu.cn/showproblem.php?pid=1203" target="_blank">1203</a> <a href="http://acm.hdu.edu.cn/showproblem.php?pid=3466" target="_blank">3466</a></p>
 
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/18/%E8%BF%91%E6%9C%9F%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93%E8%AE%B0%E5%BD%95/" data-id="ckcxbd5mt00213gueh87k1jiw"
+      <a data-url="http://yoursite.com/2020/07/18/%E8%BF%91%E6%9C%9F%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93%E8%AE%B0%E5%BD%95/" data-id="cked14yr6002fc4ue8u3i58k9"
         class="article-share-link">分享</a>
         
       
@@ -324,10 +587,9 @@ h_v^k = \sigma(W_k\sum_{u\in N(v)\cup v}\frac{h_u^{k-1}}{\sqrt{|N(u)||N(v)|}})</
 <script type="math/tex; mode=display">
 H^{(k+1)} = \sigma(D^{-\frac{1}{2}}\hat AD^{\frac{1}{2}}H^{(k)}W_k) \\
 \hat A = A + I</script><p>​        其中$A$为图邻接矩阵，$D$为度矩阵，$I$为单位矩阵。</p>
-<p>​        事实上，矩阵形式的式子利用了谱图理论中的知识。也就是说，<strong>根据空域卷积写出的第一个式子，利用谱图理论就可以推导出其矩阵形式</strong>，由此可以看出，谱图卷积和空域卷积并不是完全割裂的。</p>
 <p>​        下面看一下具体的矩阵形式</p>
 <p><img src="/images/g2.png" alt=""></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上面这张图的邻接矩阵如下</span></span><br><span class="line">&gt; A = torch.tensor(np.array([[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>]]))</span><br><span class="line"><span class="comment"># 度矩阵 D，即邻接矩阵每一行求和</span></span><br><span class="line">&gt; D = torch.diag(torch.sum(torch.tensor(adj),<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">&gt; X = torch.tensor(np.array([[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]]))</span><br><span class="line"><span class="comment"># 每个节点的邻居节点聚合等价于A*X</span></span><br><span class="line">&gt; torch.mm(A,X)</span><br><span class="line"><span class="comment">#Output</span></span><br><span class="line">tensor([[<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">        [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">        [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]], dtype=torch.int32)</span><br><span class="line"><span class="comment"># 从结果可以看出相当于对每个节点的所有邻居节点特征求和</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义权重矩阵 W，将input维度映射到output维度，本例input=3</span></span><br><span class="line">&gt; out = <span class="number">4</span></span><br><span class="line">&gt; W = W = torch.randn(<span class="number">3</span>,out)</span><br><span class="line"><span class="comment"># 完成聚合</span></span><br><span class="line">&gt; output = torch.mm(torch.mm(A,X).type_as(torch.FloatTensor()),W)</span><br><span class="line"><span class="comment"># 经过激活函数,得到这一阶段的hidden（下一阶段的输入）</span></span><br><span class="line">&gt; hidden = F.relu(output)</span><br><span class="line"><span class="comment"># hidden [num_of_vertex, hidden_dims]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上面这张图的邻接矩阵如下</span></span><br><span class="line">&gt; A = torch.tensor(np.array([[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>]]))</span><br><span class="line"><span class="comment"># 度矩阵 D，即邻接矩阵每一行求和</span></span><br><span class="line">&gt; D = torch.diag(torch.sum(torch.tensor(adj),<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">&gt; X = torch.tensor(np.array([[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]]))</span><br><span class="line"><span class="comment"># 每个节点的邻居节点聚合等价于A*X</span></span><br><span class="line">&gt; torch.mm(A,X)</span><br><span class="line"><span class="comment">#Output</span></span><br><span class="line">tensor([[<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">        [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">        [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]], dtype=torch.int32)</span><br><span class="line"><span class="comment"># 从结果可以看出相当于对每个节点的所有邻居节点特征求和</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义权重矩阵 W，将input维度映射到output维度，本例input=3</span></span><br><span class="line">&gt; out = <span class="number">4</span></span><br><span class="line">&gt; W = W = torch.randn(<span class="number">3</span>,out)</span><br><span class="line"><span class="comment"># 完成聚合 AXW</span></span><br><span class="line">&gt; output = torch.mm(torch.mm(A,X).type_as(torch.FloatTensor()),W)</span><br><span class="line"><span class="comment"># 经过激活函数,得到这一阶段的hidden（下一阶段的输入）</span></span><br><span class="line">&gt; hidden = F.relu(output)</span><br><span class="line"><span class="comment"># hidden [num_of_vertex, hidden_dims]</span></span><br></pre></td></tr></table></figure>
 <p>​        但是Kipf等人在他的论文中，对邻接矩阵$A$进行了标准化。即上文采用的公式。下面实现。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义图卷积</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GCNConv</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, A, in_channels, out_channels)</span>:</span></span><br><span class="line">        super(GCNConv, self).__init__()</span><br><span class="line">        self.A_hat = A+torch.eye(A.size(<span class="number">0</span>))</span><br><span class="line">        self.D     = torch.diag(torch.sum(A,<span class="number">1</span>))</span><br><span class="line">        self.D     = self.D.inverse().sqrt() <span class="comment"># D是对角矩阵，对角线元素开根号</span></span><br><span class="line">        self.A_hat = torch.mm(torch.mm(self.D, self.A_hat), self.D)</span><br><span class="line">        self.W     = nn.Parameter(torch.rand(in_channels,out_channels, requires_grad=<span class="literal">True</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, X)</span>:</span></span><br><span class="line">        out = torch.relu(torch.mm(torch.mm(self.A_hat, X), self.W))</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"><span class="comment"># 定义GCN  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Net</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,A, input_dims, nhid, out_dims)</span>:</span></span><br><span class="line">        super(Net, self).__init__()</span><br><span class="line">        self.conv1 = GCNConv(A,input_dims, nhid)</span><br><span class="line">        self.conv2 = GCNConv(A,nhid, out_dims)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self,X)</span>:</span></span><br><span class="line">        H  = self.conv1(X)</span><br><span class="line">        H2 = self.conv2(H)</span><br><span class="line">        <span class="keyword">return</span> H2</span><br></pre></td></tr></table></figure>
 <h5 id="2-2-2-Spectral-based"><a href="#2-2-2-Spectral-based" class="headerlink" title="2.2.2 Spectral-based"></a>2.2.2 Spectral-based</h5><p>​         谱图卷积网络基于图的信号处理，即图的拉普拉斯矩阵进行傅里叶变化（Fourier Transform）与逆变化（Inverse Fourier Transform），</p>
@@ -346,6 +608,14 @@ y = U\hat x</script><p><strong>谱图卷积</strong></p>
 <p>​        由此，图上信号卷积即：</p>
 <script type="math/tex; mode=display">
 y = U\hat x = Ug_{\theta}(\Lambda)U^Tx</script><p>​        但上面这样定义仍存在几个问题，一是当图太大时矩阵分解计算复杂度太高，二是这并非是局部的（localized）。进而又提出了ChebNet模型（Defferrard M, Bresson X, Vandergheynst P. Convolutional neural networks on graphs with fast localized spectral filtering[C]. Advances in neural information processing systems. 2016: 3844-3852.）。</p>
+<p>​        第一类切比雪夫多项式定义如下：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+T_0(x) &= 1 \\
+T_1(x) &= x \\
+T_n(x) &= 2xT_{n-1}(x) - T_{n-2}(x)
+\end{aligned}</script><p>​        代码参考：<a href="https://github.com/dovelism/Traffic_Data_Projection_Using_GCN/" target="_blank" rel="noopener">https://github.com/dovelism/Traffic_Data_Projection_Using_GCN/</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChebConv</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    The ChebNet convolution operation.</span></span><br><span class="line"><span class="string">    :param in_c: int, number of input channels.</span></span><br><span class="line"><span class="string">    :param out_c: int, number of output channels.</span></span><br><span class="line"><span class="string">    :param K: int, the order of Chebyshev Polynomial.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_c, out_c, K, bias=True, normalize=True)</span>:</span></span><br><span class="line">        super(ChebConv, self).__init__()</span><br><span class="line">        self.normalize = normalize</span><br><span class="line"></span><br><span class="line">        self.weight = nn.Parameter(torch.Tensor(K + <span class="number">1</span>, <span class="number">1</span>, in_c, out_c))  <span class="comment"># [K+1, 1, in_c, out_c]</span></span><br><span class="line">        init.xavier_normal_(self.weight)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> bias:</span><br><span class="line">            self.bias = nn.Parameter(torch.Tensor(<span class="number">1</span>, <span class="number">1</span>, out_c))</span><br><span class="line">            init.zeros_(self.bias)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.register_parameter(<span class="string">"bias"</span>, <span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">        self.K = K + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, inputs, graph)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :param inputs: the input data, [B, N, C]</span></span><br><span class="line"><span class="string">        :param graph: the graph structure, [N, N]</span></span><br><span class="line"><span class="string">        :return: convolution result, [B, N, D]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        L = ChebConv.get_laplacian(graph, self.normalize)  <span class="comment"># [N, N]</span></span><br><span class="line">        mul_L = self.cheb_polynomial(L).unsqueeze(<span class="number">1</span>)   <span class="comment"># [K, 1, N, N]</span></span><br><span class="line"></span><br><span class="line">        result = torch.matmul(mul_L, inputs)  <span class="comment"># [K, B, N, C]</span></span><br><span class="line">        result = torch.matmul(result, self.weight)  <span class="comment"># [K, B, N, D]</span></span><br><span class="line">        result = torch.sum(result, dim=<span class="number">0</span>) + self.bias  <span class="comment"># [B, N, D]</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cheb_polynomial</span><span class="params">(self, laplacian)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Compute the Chebyshev Polynomial, according to the graph laplacian.</span></span><br><span class="line"><span class="string">        :param laplacian: the graph laplacian, [N, N].</span></span><br><span class="line"><span class="string">        :return: the multi order Chebyshev laplacian, [K, N, N].</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        N = laplacian.size(<span class="number">0</span>)  <span class="comment"># [N, N]</span></span><br><span class="line">        multi_order_laplacian = torch.zeros([self.K, N, N], device=laplacian.device, dtype=torch.float)  <span class="comment"># [K, N, N]</span></span><br><span class="line">        multi_order_laplacian[<span class="number">0</span>] = torch.eye(N, device=laplacian.device, dtype=torch.float)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.K == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> multi_order_laplacian</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            multi_order_laplacian[<span class="number">1</span>] = laplacian</span><br><span class="line">            <span class="keyword">if</span> self.K == <span class="number">2</span>:</span><br><span class="line">                <span class="keyword">return</span> multi_order_laplacian</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">2</span>, self.K):</span><br><span class="line">                    multi_order_laplacian[k] = <span class="number">2</span> * torch.mm(laplacian, multi_order_laplacian[k<span class="number">-1</span>]) - multi_order_laplacian[k<span class="number">-2</span>]</span><br><span class="line">        <span class="keyword">return</span> multi_order_laplacian</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_laplacian</span><span class="params">(graph, normalize)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        return the laplacian of the graph.</span></span><br><span class="line"><span class="string">        :param graph: the graph structure without self loop, [N, N].</span></span><br><span class="line"><span class="string">        :param normalize: whether to used the normalized laplacian.</span></span><br><span class="line"><span class="string">        :return: graph laplacian.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> normalize:</span><br><span class="line">            D = torch.diag(torch.sum(graph, dim=<span class="number">-1</span>) ** (<span class="number">-1</span> / <span class="number">2</span>))</span><br><span class="line">            L = torch.eye(graph.size(<span class="number">0</span>), device=graph.device, dtype=graph.dtype) - torch.mm(torch.mm(D, graph), D)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            D = torch.diag(torch.sum(graph, dim=<span class="number">-1</span>))</span><br><span class="line">            L = D - graph</span><br><span class="line">        <span class="keyword">return</span> L</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChebNet</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_c, hid_c, out_c, K)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :param in_c: int, number of input channels.</span></span><br><span class="line"><span class="string">        :param hid_c: int, number of hidden channels.</span></span><br><span class="line"><span class="string">        :param out_c: int, number of output channels.</span></span><br><span class="line"><span class="string">        :param K:</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        super(ChebNet, self).__init__()</span><br><span class="line">        self.conv1 = ChebConv(in_c=in_c, out_c=hid_c, K=K)</span><br><span class="line">        self.conv2 = ChebConv(in_c=hid_c, out_c=out_c, K=K)</span><br><span class="line">        self.act = nn.ReLU()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, data, device)</span>:</span></span><br><span class="line">        graph_data = data[<span class="string">"graph"</span>].to(device)[<span class="number">0</span>]  <span class="comment"># [N, N]</span></span><br><span class="line">        flow_x = data[<span class="string">"flow_x"</span>].to(device)  <span class="comment"># [B, N, H, D]</span></span><br><span class="line"></span><br><span class="line">        B, N = flow_x.size(<span class="number">0</span>), flow_x.size(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        flow_x = flow_x.view(B, N, <span class="number">-1</span>)  <span class="comment"># [B, N, H*D]</span></span><br><span class="line"></span><br><span class="line">        output_1 = self.act(self.conv1(flow_x, graph_data))</span><br><span class="line">        output_2 = self.act(self.conv2(output_1, graph_data))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> output_2.unsqueeze(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GCN</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_c, hid_c, out_c)</span>:</span></span><br><span class="line">        super(GCN, self).__init__()</span><br><span class="line">        self.linear_1 = nn.Linear(in_c, hid_c)</span><br><span class="line">        self.linear_2 = nn.Linear(hid_c, out_c)</span><br><span class="line">        self.act = nn.ReLU()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, data, device)</span>:</span></span><br><span class="line">        graph_data = data[<span class="string">"graph"</span>].to(device)[<span class="number">0</span>]  <span class="comment"># [N, N]</span></span><br><span class="line">        graph_data = GCN.process_graph(graph_data)</span><br><span class="line">        flow_x = data[<span class="string">"flow_x"</span>].to(device)  <span class="comment"># [B, N, H, D]</span></span><br><span class="line">        B, N = flow_x.size(<span class="number">0</span>), flow_x.size(<span class="number">1</span>)</span><br><span class="line">        flow_x = flow_x.view(B, N, <span class="number">-1</span>)  <span class="comment"># [B, N, H*D]  H = 6, D = 1</span></span><br><span class="line"></span><br><span class="line">        output_1 = self.linear_1(flow_x)  <span class="comment"># [B, N, hid_C]</span></span><br><span class="line">        output_1 = self.act(torch.matmul(graph_data, output_1))  <span class="comment"># [N, N], [B, N, Hid_C]</span></span><br><span class="line"></span><br><span class="line">        output_2 = self.linear_2(output_1)</span><br><span class="line">        output_2 = self.act(torch.matmul(graph_data, output_2))  <span class="comment"># [B, N, 1, Out_C]</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> output_2.unsqueeze(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_graph</span><span class="params">(graph_data)</span>:</span></span><br><span class="line">        N = graph_data.size(<span class="number">0</span>)</span><br><span class="line">        matrix_i = torch.eye(N, dtype=graph_data.dtype, device=graph_data.device)</span><br><span class="line">        graph_data += matrix_i  <span class="comment"># A~ [N, N]</span></span><br><span class="line"></span><br><span class="line">        degree_matrix = torch.sum(graph_data, dim=<span class="number">-1</span>, keepdim=<span class="literal">False</span>)  <span class="comment"># [N]</span></span><br><span class="line">        degree_matrix = degree_matrix.pow(<span class="number">-1</span>)</span><br><span class="line">        degree_matrix[degree_matrix == float(<span class="string">"inf"</span>)] = <span class="number">0.</span>  <span class="comment"># [N]</span></span><br><span class="line"></span><br><span class="line">        degree_matrix = torch.diag(degree_matrix)  <span class="comment"># [N, N]</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> torch.mm(degree_matrix, graph_data)  <span class="comment"># D^(-1) * A = \hat(A)</span></span><br></pre></td></tr></table></figure>
 <p>​        在推出ChebNet后，Kipf等人进一步将公式化简，推出一阶（k=1）ChebNet模型（Kipf T N, Welling M. Semi-supervised classification with graph convolutional networks[J]. arXiv preprint arXiv:1609.02907, 2016.），这就有了上面我们模型中采用的那个公式。</p>
 <script type="math/tex; mode=display">
 H^{(k+1)} = \sigma(D^{-\frac{1}{2}}\hat AD^{\frac{1}{2}}H^{(k)}W_k) \\
@@ -367,7 +637,7 @@ h_v^k = \sigma (\sum_{u \in N(v)}\alpha_{vu}h_u)</script><p>​        其中$\a
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/" data-id="ckcxbd5nc002k3gue7xdchwog"
+      <a data-url="http://yoursite.com/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/" data-id="cked14yrf002qc4uedjhw6yob"
         class="article-share-link">分享</a>
         
       
@@ -466,7 +736,7 @@ M = \frac{1}{2}(P + Q)</script></li>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/" data-id="ckcxbd5md001e3guehi6x2j3v"
+      <a data-url="http://yoursite.com/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/" data-id="cked14yqk001kc4ue5x1g1rl9"
         class="article-share-link">分享</a>
         
       
@@ -558,7 +828,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/30/Dropout%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/" data-id="ckcxbd5m1000o3guegpmbegrw"
+      <a data-url="http://yoursite.com/2020/06/30/Dropout%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/" data-id="cked14yod0000c4uee044534z"
         class="article-share-link">分享</a>
         
       
@@ -624,7 +894,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/29/Flink%E6%B5%81%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" data-id="ckcxbd5li00033guegy4q5lu1"
+      <a data-url="http://yoursite.com/2020/06/29/Flink%E6%B5%81%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" data-id="cked14ypp0004c4ue76lrf89v"
         class="article-share-link">分享</a>
         
       
@@ -736,7 +1006,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" data-id="ckcxbd5m0000n3guee274a2x2"
+      <a data-url="http://yoursite.com/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" data-id="cked14yq2000qc4ue3qmj66d1"
         class="article-share-link">分享</a>
         
       
@@ -802,7 +1072,7 @@ r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/24/SpringMVC%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" data-id="ckcxbd5m800123gue4h0nhto5"
+      <a data-url="http://yoursite.com/2020/06/24/SpringMVC%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" data-id="cked14yq90011c4ue5wbl18ut"
         class="article-share-link">分享</a>
         
       
@@ -960,234 +1230,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/22/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/" data-id="ckcxbd5ni002q3gue8wfm2gle"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-ZooKeeper基础教程" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/"
-    >ZooKeeper基础教程</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" class="article-date">
-  <time datetime="2020-06-22T03:09:01.189Z" itemprop="datePublished">2020-06-22</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="ZooKeeper基础教程"><a href="#ZooKeeper基础教程" class="headerlink" title="ZooKeeper基础教程"></a><code>ZooKeeper</code>基础教程</h2><h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h3><h4 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h4><p>​        <code>Zookeeper</code> 是一个基于Java的分布式协调服务的开源框架。主要用来解决分布式集群中应用系统的一致性问题，例如怎样避免同时操作同一数据造成脏读的问题。<code>ZooKeeper</code>本质上是一个分布式的<strong>小文件存储系统</strong>。提供基于类似于文件系统的目录树方式的数据存储，并且可以对树中的节点进行有效管理。从而用来维护和监控你存储的数据的状态变化。通过监控这些数据状态的变化，从而可以达到基于数据的集群管理。诸如:统一命名服务、分布式配置管理、分布式消息队列、分布式锁、分布式协调等功能。</p>
-<h4 id="1-2-集群"><a href="#1-2-集群" class="headerlink" title="1.2 集群"></a>1.2 集群</h4><p>​        <code>ZooKeeper</code>集群包含两种角色，Leader和Follower。</p>
-<ul>
-<li><p>Leader</p>
-<p><code>Zookeeper</code>集群工作的核心，事务请求（写操作）的唯一调度和处理者，保证集群事务处理的顺序性；</p>
-<p>集群内部各个服务器的调度者。 对于 <code>create，setData，delete</code> 等有写操作的请求，则需要统一转发给 leader处理，leader需要决定编号、执行操作，这个过程称为一个事务。</p>
-</li>
-<li><p>Follower</p>
-<p>处理客户端非事务（读操作）请求，转发事务请求给 Leader； 参与集群 Leader 选举投票。 此外，针对访问量比较大的 <code>ZooKeeper</code> 集群，还可新增观察者角色。</p>
-</li>
-</ul>
-<ul>
-<li><p>Observer: </p>
-<p>观察者角色，观察<code>Zookeeper</code> 集群的最新状态变化并将这些状态同步过 来，其对于非事务请求可以进行独立处理，对于事务请求，则会转发给Leader服务器进行处理。 </p>
-<p>不会参与任何形式的投票只提供非事务服务，通常用于在不影响集群事务处理能力的前提下提升集群的非事务处理能力。</p>
-</li>
-</ul>
-<h4 id="1-3-集群搭建"><a href="#1-3-集群搭建" class="headerlink" title="1.3 集群搭建"></a>1.3 集群搭建</h4><p>​        集群通常由<strong>2n+1</strong>台 servers 组成。这是因为为了保证 Leader 选举（基于<code>Paxos</code>算法的实现）能过得到多数的支持，所以<code>ZooKeeper</code>集群的数量一般为奇数。</p>
-<p>​        <code>Zookeeper</code>运行需要<code>java</code>环境，所以需要提前安装 。对于安装 leader+follower 模式的集群，大致过程如下</p>
-<ul>
-<li><p>配置主机名称到IP地址映射配置</p>
-</li>
-<li><p>修改 <code>ZooKeeper</code> 配置文件（<code>/conf/zoo.cfg</code>文件）</p>
-<p>配置data暂存目录，各个服务器地址ip</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">dataDir=/usr/local/zookeeper-3.4.14/zkData</span><br><span class="line"></span><br><span class="line">clientPort=2181</span><br><span class="line"></span><br><span class="line">server.0=192.168.10.1:2888:3888</span><br><span class="line">server.1=192.168.10.2:2888:3888</span><br><span class="line">server.2=192.168.10.3:2888:3888</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p><code>server.A=B:C:D</code>解释：</p>
-<p>A：其中 A 是一个数字，表示这个是服务器的编号；</p>
-<p>B：是这个服务器的IP地址；</p>
-<p>C：<code>Leader</code>选举的端口；</p>
-<p>D：<code>Zookeeper</code>服务器之间的通信端口。</p>
-</li>
-<li><p>远程复制分发安装文件</p>
-</li>
-<li><p>设置<code>myid</code></p>
-<p>在 上一步<code>dataDir</code> 指定的目录下，创建<code>myid</code>文件。在对应的服务器上写入对应序号。</p>
-<p>比如<code>192.168.10.1</code>对应<code>server.0</code>，那么在<code>myid</code>中写入0即可。</p>
-</li>
-<li><p>启动集群</p>
-<p>启动命令：<code>zkServer.sh start</code></p>
-<p>停止命令：<code>zkServer.sh stop</code></p>
-<p>重启命令：<code>zkServer.sh restart</code></p>
-<p>查看集群结点状态：<code>zkServer.sh status</code></p>
-</li>
-</ul>
-<h3 id="2-Shell操作"><a href="#2-Shell操作" class="headerlink" title="2 Shell操作"></a>2 Shell操作</h3><p><code>bin/zkCli.sh</code>命令进入命令行界面。</p>
-<h4 id="2-1-创建结点"><a href="#2-1-创建结点" class="headerlink" title="2.1 创建结点"></a>2.1 创建结点</h4><p><code>ZooKeeper</code>中的结点类型分为<strong>永久节点和临时结点(-e)</strong>。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create [-s] [-e] path data acl</span><br></pre></td></tr></table></figure>
-<p>其中，-s 或-e 分别指定节点特性，顺序或临时节点，若不指定，则表示持 久节点；<code>acl</code>用来进行权限控制。</p>
-<p>例子：</p>
-<p>创建顺序节点，结点值为123：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create -s /test 123</span><br></pre></td></tr></table></figure>
-<p>创建临时结点</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create -e /test-tmp 123</span><br></pre></td></tr></table></figure>
-<p>创建永久节点：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create /test-per 123p</span><br></pre></td></tr></table></figure>
-<h4 id="2-2-读取节点"><a href="#2-2-读取节点" class="headerlink" title="2.2 读取节点"></a>2.2 读取节点</h4><pre><code>     与读取相关的命令有`ls`命令和 `get` 命令，`ls` 命令可以列出 `Zookeeper `指 定节点下的所有子节点，只能查看指定节点下的第一级的所有子节点；`get` 命令 可以获取 `Zookeeper` 指定节点的数据内容和属性信息。
-</code></pre><p>查看根目录下所有结点：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[zk: localhost:2181(CONNECTED) 0] ls /</span><br><span class="line">[cluster, brokers, zookeeper, admin, isr_change_notification, log_dir_event_notification, node1, controller_epoch, servers, nefu, test0000000015, consumers, latest_producer_id_block, config]</span><br></pre></td></tr></table></figure>
-<p>获取<code>/nefu</code>结点的信息</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[zk: localhost:2181(CONNECTED) 3] get /nefu</span><br><span class="line">ssss  #属性值</span><br><span class="line">cZxid = 0x12</span><br><span class="line">ctime = Thu Jun 04 16:51:44 CST 2020</span><br><span class="line">mZxid = 0x12</span><br><span class="line">mtime = Thu Jun 04 16:51:44 CST 2020</span><br><span class="line">pZxid = 0x12</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 0</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 4</span><br><span class="line">numChildren = 0</span><br></pre></td></tr></table></figure>
-<h4 id="2-3-更新与删除结点"><a href="#2-3-更新与删除结点" class="headerlink" title="2.3 更新与删除结点"></a>2.3 更新与删除结点</h4><h5 id="2-3-1-更新结点"><a href="#2-3-1-更新结点" class="headerlink" title="2.3.1 更新结点"></a>2.3.1 更新结点</h5><p><code>set path data [version]</code> data 就是要更新的新内容，version 表示数据版本。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[zk: localhost:2181(CONNECTED) 5] set /nefu ilovenefu     </span><br><span class="line">cZxid = 0x12</span><br><span class="line">ctime = Thu Jun 04 16:51:44 CST 2020</span><br><span class="line">mZxid = 0xd7</span><br><span class="line">mtime = Mon Jun 22 11:37:18 CST 2020</span><br><span class="line">pZxid = 0x12</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 1 #注意这儿的版本号</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 9</span><br><span class="line">numChildren = 0</span><br></pre></td></tr></table></figure>
-<h5 id="2-3-2-删除节点"><a href="#2-3-2-删除节点" class="headerlink" title="2.3.2 删除节点"></a>2.3.2 删除节点</h5><p><code>delete path [version]</code></p>
-<p>注意：若删除节点存在子节点，那么无法删除该节点，必须先删除子节点，再删除父节点。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Rmr path</span><br></pre></td></tr></table></figure>
-<h3 id="3-ZooKeeper数据模型"><a href="#3-ZooKeeper数据模型" class="headerlink" title="3. ZooKeeper数据模型"></a>3. <code>ZooKeeper</code>数据模型</h3><p>​        <code>ZooKeeper</code>的数据模型，在结构上和标准文件系统的非常相似，拥有一个层次的命名空间，都是采用树形层次结构，<code>ZooKeeper</code>树中的每个节点被称为一个<code>Znode</code>。和文件系统的目录树一样，<code>ZooKeeper</code>树中的每个节点可以拥有子节点。</p>
-<p><img src="/images/zookeeper.png" alt=""></p>
-<p>​        图中的每个节点称为一个<code>Znode</code> 。每个<code>Znode</code>由 3 部分组成:</p>
-<p> ① stat：此为状态信息, 描述该 <code>Znode</code> 的版本, 权限等信息</p>
-<p> ② data：与该 <code>Znode</code> 关联的数据 </p>
-<p> ③ children：该<code>Znode</code>下的子节点</p>
-<p>​        <code>Znode</code>有两种，分别为临时节点和永久节点。 </p>
-<p>​        节点的类型在创建时即被确定，并且不能改变。 </p>
-<p>​        <strong>临时节点</strong>：该节点的生命周期依赖于创建它们的会话。一旦<strong>会话结束</strong>，临时节点将被自动删除，当然可以也可以手动删除。临时节点不允许拥有子节点。 </p>
-<p>​        <strong>永久节点</strong>：该节点的生命周期不依赖于会话，并且只有在客户端显示执行删 除操作的时候，他们才能被删除。 </p>
-<p>​        <code>Znode</code>还有一个序列化的特性，如果创建的时候指定的话，该<code>Znode</code>的名字 后面会自动追加一个不断增加的序列号。序列号对于此节点的父节点来说是唯一 的，这样便会记录每个子节点创建的先后顺序。它的格式为“%10d”(10 位数字， 没有数值的数位用 0 补充，例如“0000000001”)。</p>
-<h3 id="4-Watcher"><a href="#4-Watcher" class="headerlink" title="4. Watcher"></a>4. Watcher</h3><p>​        ZooKeeper 提供了分布式数据发布/订阅功能，一个典型的发布/订阅模型系统定义了一种一对多的订阅关系，能让多个订阅者同时监听某一个主题对象，当 这个主题对象自身状态变化时，会通知所有订阅者，使他们能够做出相应的处理。 </p>
-<p>​        ZooKeeper 中，引入了 Watcher 机制来实现这种分布式的通知功能。 ZooKeeper 允许客户端向服务端注册一个 Watcher 监听，当服务端的一些事件触 发了这个 Watcher，那么就会向指定客户端发送一个事件通知来实现分布式的通知功能。</p>
-<p>​         触发事件种类很多，如：节点创建，节点删除，节点改变，子节点改变等。 </p>
-<p>​        总的来说可以概括 Watcher 为以下三个过程：客户端向服务端注册 Watcher、 服务端事件发生触发 Watcher、客户端回调 Watcher 得到触发事件情况。</p>
-<h3 id="5-Java-API编程"><a href="#5-Java-API编程" class="headerlink" title="5. Java API编程"></a>5. Java API编程</h3><p>首先导入<code>pom</code>依赖</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.nefu<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zookeeper-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.zookeeper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zookeeper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.4.10<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.8.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- https://mvnrepository.com/artifact/junit/junit --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>简单的连接集群和结点操作</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.zookeeper.*;</span><br><span class="line"><span class="keyword">import</span> org.apache.zookeeper.data.Stat;</span><br><span class="line"><span class="keyword">import</span> org.junit.Before;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestZookeeper</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String connectionString = <span class="string">"139.129.100.28:2181"</span>;</span><br><span class="line">    <span class="keyword">private</span> ZooKeeper zkClient;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        zkClient = <span class="keyword">new</span> ZooKeeper(connectionString,<span class="number">2000</span>, <span class="keyword">new</span> Watcher() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(WatchedEvent event)</span> </span>&#123;</span><br><span class="line">                List&lt;String&gt; children ;</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    System.out.println(<span class="string">"------------start----------------"</span>);</span><br><span class="line">                    children = zkClient.getChildren(<span class="string">"/"</span>, <span class="keyword">true</span>);</span><br><span class="line">                    System.out.println(children);</span><br><span class="line">                    System.out.println(<span class="string">"-------------end------------------"</span>);</span><br><span class="line">                &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCreateNode</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line">        String path = zkClient.create(<span class="string">"/nefu"</span>,<span class="string">"i wanna go back"</span>.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);</span><br><span class="line">        System.out.println(path);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getChildren</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        zkClient.getChildren(<span class="string">"/"</span>, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        Thread.sleep(Long.MAX_VALUE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exist</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        Stat stat = zkClient.exists(<span class="string">"/nefu"</span>, <span class="keyword">false</span>);</span><br><span class="line">        System.out.println(stat);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="6-ZooKeeper典型应用"><a href="#6-ZooKeeper典型应用" class="headerlink" title="6. ZooKeeper典型应用"></a>6. ZooKeeper典型应用</h3><h4 id="6-1-数据发布与订阅（配置中心）"><a href="#6-1-数据发布与订阅（配置中心）" class="headerlink" title="6.1 数据发布与订阅（配置中心）"></a>6.1 数据发布与订阅（配置中心）</h4><p>​        发布与订阅模型，即所谓的配置中心，顾名思义就是发布者将数据发布到ZK节点上，供订阅者动态获取数据，实现配置信息的集中式管理和动态更新。</p>
-<p>​         应用在启动的时候会主动来获取一次配置，同时，在节点上注册一个 Watcher， 这样一来，以后每次配置有更新的时候，都会实时通知到订阅的客户端，从来达 到获取最新配置信息的目的。</p>
-<p>​        比如： 分布式搜索服务中，索引的元信息和服务器集群机器的节点状态存放在 ZK 的一些指定节点，供各个客户端订阅使用。 </p>
-<p>​        注意：适合数据量很小的场景，这样数据更新可能会比较快。</p>
-<h4 id="6-2-命名服务-Naming-Service"><a href="#6-2-命名服务-Naming-Service" class="headerlink" title="6.2 命名服务(Naming Service)"></a>6.2 命名服务(Naming Service)</h4><p>​        在分布式系统中，通过使用命名服务，客户端应用能够根据指定名字来获取 资源或服务的地址，提供者等信息。被命名的实体通常可以是集群中的机器，提 供的服务地址，远程对象等等——这些我们都可以统称他们为名字（Name）。其 中较为常见的就是一些分布式服务框架中的服务地址列表。通过调用 ZK 提供的 创建节点的 API，能够很容易创建一个全局唯一的 path，这个 path 就可以作为 一个名称。</p>
-<p>​        阿里巴巴集团开源的分布式服务框架 <code>Dubbo</code> 中使用 <code>ZooKeeper</code>来作为其命 名服务，维护全局的服务地址列表。</p>
-<h4 id="6-3-分布式锁"><a href="#6-3-分布式锁" class="headerlink" title="6.3 分布式锁"></a>6.3 分布式锁</h4><p>​        分布式锁，这个主要得益于 ZooKeeper 保证了数据的强一致性。锁服务可以 分为两类，一个是保持独占，另一个是控制时序。</p>
-<p>​        所谓保持独占，就是所有试图来获取这个锁的客户端，最终只有一个可以成 功获得这把锁。通常的做法是把 zk 上的一个 znode 看作是一把锁，通过 create znode 的方式来实现。所有客户端都去创建 /distribute_lock 节点，最终成功 创建的那个客户端也即拥有了这把锁。</p>
-<p>​        控制时序，就是所有试图来获取这个锁的客户端，最终都是会被安排执行， 只是有个全局时序了。做法和上面基本类似，只是这里 /distribute_lock 已经 预先存在，客户端在它下面创建临时有序节点（这个可以通过节点的属性控制： CreateMode.EPHEMERAL_SEQUENTIAL 来指定）。Zk 的父节点（/distribute_lock） 维持一份 sequence,保证子节点创建的时序性，从而也形成了每个客户端的全局 时序。</p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" data-id="ckcxbd5n1002a3gue0ula96jg"
-        class="article-share-link">分享</a>
-        
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-  
-  
-
-  
-
-</article>
-    
-    <article id="post-LRU缓存机制" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/"
-    >LRU缓存机制</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" class="article-date">
-  <time datetime="2020-06-10T16:17:54.353Z" itemprop="datePublished">2020-06-11</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="LRU缓存机制"><a href="#LRU缓存机制" class="headerlink" title="LRU缓存机制"></a>LRU缓存机制</h2><p>LRU即最近最久未使用。这是Leetcode 147号问题，主要采用了双向链表和哈希表这两种数据结构。双向链表相比单向链表，插入和删除的时间复杂度为O(1)，而哈希表在获取key的时间复杂度为O(1)。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> key, val;</span><br><span class="line">    <span class="keyword">public</span> Node prev, next;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">        <span class="keyword">this</span>.val = val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 双向链表</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DoubleList</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Node head, tail;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> length = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DoubleList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        head = <span class="keyword">new</span> Node(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        tail = <span class="keyword">new</span> Node(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        head.next = tail;</span><br><span class="line">        tail.prev = head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addFirst</span><span class="params">(Node n)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 双向链表头部添加节点</span></span><br><span class="line">        n.next = head.next;</span><br><span class="line">        n.prev = head;</span><br><span class="line"></span><br><span class="line">        head.next.prev = n;</span><br><span class="line">        head.next = n;</span><br><span class="line">        length++;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Node x)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 删除链表中的结点</span></span><br><span class="line">        x.prev.next = x.next;</span><br><span class="line">        x.next.prev = x.prev;</span><br><span class="line">        length--;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Node <span class="title">removeLast</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 首先判断链表是否为空</span></span><br><span class="line">        <span class="keyword">if</span> (head.next == tail) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Node res = tail.prev;</span><br><span class="line">        remove(res);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;Integer, Node&gt; map;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> DoubleList cache;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> capacity;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LRUCache</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">        map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        cache = <span class="keyword">new</span> DoubleList();</span><br><span class="line">        <span class="keyword">this</span>.capacity = capacity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!map.containsKey(key)) &#123;</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> val = map.get(key).val;</span><br><span class="line">        put(key, val);</span><br><span class="line">        <span class="keyword">return</span> val;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Node x = <span class="keyword">new</span> Node(key, value);</span><br><span class="line">        <span class="keyword">if</span> (map.containsKey(key)) &#123;</span><br><span class="line">            <span class="comment">// map中存在key，更新值</span></span><br><span class="line">            cache.remove(map.get(key));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.capacity == cache.size()) &#123;</span><br><span class="line">                <span class="comment">// 删除最久未使用的结点 -- 最后一个结点</span></span><br><span class="line">                Node last = cache.removeLast();</span><br><span class="line">                map.remove(last.key);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        cache.addFirst(x);</span><br><span class="line">        map.put(key, x);<span class="comment">// if else 中都有的逻辑，提取出来</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" data-id="ckcxbd5ly000k3guecs4i40aq"
+      <a data-url="http://yoursite.com/2020/06/22/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/" data-id="cked14yrh002tc4ue7sc55e1n"
         class="article-share-link">分享</a>
         
       
