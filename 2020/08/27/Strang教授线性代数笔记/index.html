@@ -12,7 +12,7 @@
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
-  <link rel="shortcut icon" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
   
   
 <link rel="stylesheet" href="/css/style.css">
@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">3.5k字</span>
+            <span class="post-count">6k字</span>
         </span>
     </span>
 
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">14分钟</span>
+            <span class="post-count">25分钟</span>
         </span>
     </span>
 </div>
@@ -101,7 +101,8 @@
       
 
       
-      <h2 id="Strang-教授线性代数笔记"><a href="#Strang-教授线性代数笔记" class="headerlink" title="Strang 教授线性代数笔记"></a>Strang 教授线性代数笔记</h2><p>单位矩阵：$I$</p>
+      <h2 id="Strang-教授线性代数笔记"><a href="#Strang-教授线性代数笔记" class="headerlink" title="Strang 教授线性代数笔记"></a>Strang 教授线性代数笔记</h2><p>说明：单位矩阵：$I$；声明的向量都是列向量，$\vec a$、$\pmb a$都表示列向量。</p>
+<p>课程视频：<a href="https://www.youtube.com/playlist?list=PL6839449936471E0C" target="_blank" rel="noopener">https://www.youtube.com/playlist?list=PL6839449936471E0C</a></p>
 <h3 id="1-矩阵消元、矩阵的秩与转置（基础）"><a href="#1-矩阵消元、矩阵的秩与转置（基础）" class="headerlink" title="1.  矩阵消元、矩阵的秩与转置（基础）"></a>1.  矩阵消元、矩阵的秩与转置（基础）</h3><h4 id="1-1-矩阵的初等变换"><a href="#1-1-矩阵的初等变换" class="headerlink" title="1.1 矩阵的初等变换"></a>1.1 矩阵的初等变换</h4><p><strong>矩阵初等行变换</strong>：</p>
 <ul>
 <li><p>对换两行</p>
@@ -129,13 +130,16 @@
 <p><strong>行最简形矩阵</strong></p>
 <p>在阶梯形矩阵中，若<strong>非零行的第一个非零元素全是1，且非零行的第一个元素1所在列的其余元素全为零</strong>，就称该矩阵为行最简形矩阵。</p>
 <p>利用<strong>初等行变换</strong>，把一个矩阵化为行阶梯形矩阵和行最简形矩阵，是一种很重要的运算。</p>
-<p>例如对上述行阶梯矩阵 $B$ 进行<strong>初等行变换</strong>得到：$\left[ \begin{matrix} 1 &amp; 0 &amp; -1 &amp; 0 &amp; 4 \ 0 &amp; 1 &amp; -1 &amp; 0 &amp; 3 \ 0 &amp; 0 &amp; 0 &amp; 1 &amp; -3 \ 0 &amp;0&amp;0&amp;0&amp;0\end{matrix}\right]$</p>
+<p>例如对上述行阶梯矩阵 $B$ 进行<strong>初等行变换</strong>得到：$\begin{pmatrix} 1 &amp; 0 &amp; -1 &amp; 0 &amp; 4 \ 0 &amp; 1 &amp; -1 &amp; 0 &amp; 3 \ 0 &amp; 0 &amp; 0 &amp; 1 &amp; -3 \ 0 &amp;0&amp;0&amp;0&amp;0\end{pmatrix}$</p>
 <p><strong>行最简形矩阵(或者行阶梯形矩阵)的非零行个数即为矩阵的</strong>秩<strong>（rank）</strong>。</p>
 <p>若通过<strong>初等行变换</strong>可以得到形如$R = \begin{pmatrix} I_{r\times r} &amp; F_{r\times (n-r)} \ O &amp; O \end{pmatrix}$的简化矩阵（上述$B$就不符合以下情况），那么就有如下结论：</p>
 <p><strong>很重要!!!!</strong>：$RN =0 \Rightarrow N = \begin{pmatrix} -F \\I \end{pmatrix}$，可以看出对系数矩阵初等变换为形如$R$，解向量就可以写成$N$的形式。</p>
 <p>接着考虑$\begin{pmatrix} I &amp; F \end{pmatrix}\begin{pmatrix} x_{pivot} \ x_{free} \end{pmatrix} = 0 \Rightarrow x_{pivot} = -Fx_{free}$</p>
-<p><strong>利用初等行变换求矩阵的逆矩阵</strong></p>
-<p>$A$为可逆 $n$ 阶方阵，将矩阵$(A,I)$经过初等变换可以得到$(I,E)$，$I$ 为单位矩阵，则$E$为矩阵的逆矩阵。</p>
+<p><strong>利用初等行变换求方阵的逆矩阵</strong>（高斯-约旦消元法）（Lecture 10的内容）</p>
+<p>$A$为可逆 $n$ 阶<strong>方阵</strong>，将矩阵$(A,I)$经过初等<strong>行</strong>变换可以得到$(I,E)$，$I$ 为单位矩阵，则$E$为矩阵的逆矩阵。实际上，矩阵$E$是由单位阵变换而来的，在对$(A,I)$进行行变换的过程中，$E$记录了整个变换过程。</p>
+<script type="math/tex; mode=display">
+R(A,I) = (I,E)\\
+RA=I,RI=E \Rightarrow R = E = A^{-1}</script><p>$R$表示初等行变换矩阵。</p>
 <p><strong>从初等变换角度理解矩阵乘法</strong>：$A_{m \times n} B_{n \times p} = C_{m \times p}$</p>
 <p>从$A$的角度，相当于$A$右乘矩阵$B$中的每个列向量，$C$中每列都是$A$中列向量的线性组合。</p>
 <p>从$B$的角度，相当于$B$左乘$A$中每个行向量，$C$中每行都是$B$中行向量的线性组合。</p>
@@ -242,11 +246,12 @@ a_{31}x_1 + a_{32}x_2 + a_{33}x3 = 0</script><p>可以写成矩阵形式：</p>
 x_1\begin{pmatrix} a_{11}\\ a_{21}\\ a_{31}\end{pmatrix} + x_2\begin{pmatrix} a_{12}\\ a_{22}\\ a_{32}\end{pmatrix} + x_3\begin{pmatrix} a_{13}\\ a_{23}\\ a_{33}\end{pmatrix} =b</script><script type="math/tex; mode=display">
 Ax = 0</script><p>其中$A=\begin{pmatrix} a_{11} &amp; a_{12}&amp; a_{13}\ a_{21} &amp; a_{22} &amp; a_{23} \ a_{31} &amp; a_{32} &amp; a_{33}\end{pmatrix}]$，$\vec x=\begin{pmatrix} x_1 \ x_2 \ x_3\end{pmatrix}$</p>
 <p>对$A$进行初等变换为行阶梯形矩阵，那么非零行<strong>第一个非零元素对应的列</strong>对应的未知变量我们称为<strong>主元</strong>（pivot），其余列称为<strong>自由变量</strong>。 </p>
-<p>例子：若方程系数矩阵$A = \begin{pmatrix} 1 &amp;1 &amp;-2 &amp;1 &amp;4 \ 0&amp; 1 &amp;-1 &amp;1 &amp;0 \ 0&amp; 0 &amp;0 &amp;1&amp; -3\ 0&amp; 0 &amp;0 &amp;0 &amp;0 \end{pmatrix}$，那么主元就是$x_1,x_2,x_4$，自由变量就是$x_3,x_5$。</p>
+<p>例子：若方程系数矩阵$A = \begin{pmatrix} 1 &amp; 1 &amp;-2 &amp; 1 &amp; 4 \ 0&amp; 1 &amp;-1 &amp;1 &amp;0 \ 0&amp; 0 &amp;0 &amp;1&amp; -3\ 0&amp; 0 &amp;0 &amp;0 &amp;0 \end{pmatrix}$，那么主元就是$x_1,x_2,x_4$，自由变量就是$x_3,x_5$。</p>
 <ul>
-<li>例子：给定$A=\begin{pmatrix} 1&amp;2&amp;3 \ 2&amp;4&amp;6 \\2&amp;6&amp;8 \ 2&amp;8&amp;10\end{pmatrix}$，求$Ax=0$</li>
+<li>例子：给定$A$，求$Ax=0$.</li>
 </ul>
 <script type="math/tex; mode=display">
+A=\begin{pmatrix} 1&2&3 \\ 2&4&6 \\2&6&8 \\ 2&8&10 \end{pmatrix}</script><script type="math/tex; mode=display">
 A  ～ \begin{pmatrix} 1&2&3 \\ 0&0&0 \\ 0 &2& 2 \\ 0& 4 &4\end{pmatrix} ～ \begin{pmatrix} 1&0&1 \\ 0&1&1 \\ 0 &0& 0 \\ 0& 0 &0\end{pmatrix}</script><p>可知$x_1,x_2$为主元，$x_3$为自由变量，令$x_3=1$（为0时解为0向量无意义），得到$x = (-1,-1,1)^T$。</p>
 <p>$N(A) = c\vec x,c\in R$ 。<strong>注意</strong>：当求零空间的基向量时才是$\vec x$。任意倍的$\vec x$生成了零空间。</p>
 <p><strong>求解步骤</strong>：</p>
@@ -274,21 +279,96 @@ Ax = b</script><p>增广矩阵 $(A,b)$，若$R(A) = R(A,b)$则线性方程组有
 <li>若$R(A) = R(A,b) &lt; n$，此时存在自由变量，因此有无限解，$x_p + x_n$，$x_n$是一系列向量的线性组合。</li>
 <li>若$R(A) = R(A,b) = m &lt; n$，即<strong>行满秩</strong>，合第二种情况相同，无限解</li>
 </ul>
-<h3 id="5-四个基本子空间"><a href="#5-四个基本子空间" class="headerlink" title="5. 四个基本子空间"></a>5. 四个基本子空间</h3><p><strong>列空间</strong></p>
-<p><strong>零空间</strong>$N(A)$</p>
-<p><strong>行空间</strong></p>
-<p><strong>$A^T$的零空间</strong></p>
-<p><strong>正交子空间</strong></p>
-<h3 id="6-正交向量与投影"><a href="#6-正交向量与投影" class="headerlink" title="6. 正交向量与投影"></a>6. 正交向量与投影</h3><h3 id="7-正交矩阵与正交化法"><a href="#7-正交矩阵与正交化法" class="headerlink" title="7. 正交矩阵与正交化法"></a>7. 正交矩阵与正交化法</h3><p><strong>QR分解</strong></p>
-<h3 id="8-行列式及其性质"><a href="#8-行列式及其性质" class="headerlink" title="8. 行列式及其性质"></a>8. 行列式及其性质</h3><h3 id="9-特征值与特征向量"><a href="#9-特征值与特征向量" class="headerlink" title="9. 特征值与特征向量"></a>9. 特征值与特征向量</h3><h3 id="10-对称矩阵与正定矩阵"><a href="#10-对称矩阵与正定矩阵" class="headerlink" title="10. 对称矩阵与正定矩阵"></a>10. 对称矩阵与正定矩阵</h3><h3 id="11-奇异值分解"><a href="#11-奇异值分解" class="headerlink" title="11. 奇异值分解"></a>11. 奇异值分解</h3>
+<h3 id="5-四个基本子空间"><a href="#5-四个基本子空间" class="headerlink" title="5. 四个基本子空间"></a>5. 四个基本子空间</h3><p>给定矩阵$A_{m \times n}$</p>
+<p><strong>列空间$C(A)$</strong></p>
+<p><strong>零空间</strong>$N(A)$：$Ax=\vec 0, x\in \R^n$</p>
+<p><strong>行空间$C(A^T)$</strong>：矩阵$A$经过初等变换后，非零行即可作为行空间的一组基。</p>
+<p><strong>$A^T$的零空间(左零空间)$N(A^T)$</strong>：$A^Tx = \vec 0, x \in \R^m$或者写成$x^TA = 0$这也是为什么叫左零空间的原因。</p>
+<p>考虑 $A$ 到其行最简形矩阵 $R$ 的变换过程，现在我们想知道$A$乘以一个什么矩阵可以变到 $R$，即$EA = R$，求$E$？</p>
+<p>注意 $A$ 是任意矩阵（方阵或者长方形矩阵）！</p>
+<p>考虑求逆矩阵时在方阵后加上一个同阶方阵然后行变换的过程，同样在$A$后加一个$m$阶单位阵，有</p>
+<script type="math/tex; mode=display">
+(A_{m\times n},I_{m \times m}) \rightarrow (R_{m \times n},E_{m \times m})</script><p>$R$为矩阵 $A$ 的行阶梯矩阵，此时$E$就是我们要求的那个变换矩阵，即$EA = R$，此时 $R$ 中的零行对应矩阵 $E$ 的行就是 $N(A^T)$ 的一个基向量。</p>
+<p><strong>四个子空间的正交性(orthogonality)</strong></p>
+<ul>
+<li><p>$C(A)$&perp;$N(A^T)$</p>
+<p>证明：设$\vec v \in C(A)，\pmb v = A\pmb x，\pmb v \in \R^m$，即列空间的线性组合，$\vec u \in N(A^T),A^Tu=\vec 0$，$\vec u \in \R^m$$v^Tu=(Ax)^Tu=x^TA^Tu=x^T(A^Tu) = 0$.所以 $u$ 和 $v$ 正交，由于两个空间的任意向量都相互正交，因此这两个空间正交。</p>
+</li>
+<li><p>$C(A^T)$&perp;$N(A)$</p>
+<p>证明：显然$N(A) = \{x|A\pmb{x}=\pmb{0}\}$，即 $\pmb{x}$ 与 $A$ 中每个行向量正交$\pmb{r_i}\pmb{x}=0$，$\pmb{r_i}$是行向量。且行空间由行向量的线性组合得到，因此 $\pmb{x}$ 与行空间任意向量正交。即$\pmb{a}= c_1\pmb{r_1} + c_2\pmb{r_2} \in C(A^T),\pmb{a}^T\pmb{x} = (c_1\pmb{r_1} + c_2\pmb{r_2})\pmb{x} = 0$.</p>
+</li>
+</ul>
+<p><img src="https://tony4ai-1251394096.cos.ap-hongkong.myqcloud.com/blog_images/Math-Linear-Algebra-Chapter-4-1/4spaces.png" alt=""></p>
+<h3 id="6-正交向量与投影"><a href="#6-正交向量与投影" class="headerlink" title="6. 正交向量与投影"></a>6. 正交向量与投影</h3><h4 id="6-1-正交向量"><a href="#6-1-正交向量" class="headerlink" title="6.1 正交向量"></a>6.1 正交向量</h4><p>给定列向量 $\vec u,\vec v \in \R^n$，若$\vec u^T\vec v = \vec v^T\vec u = 0$，则$\vec u,\vec v$ 正交。零向量$\pmb{0}$与任意向量正交（orthogonal）。</p>
+<p>$||\vec u||$表示向量$\vec u$的模长，即$||\vec u|| = \sqrt{\vec u^T\vec u}$。注意：$\vec u \vec u^T$结果是一个$n \times n$的矩阵！</p>
+<h4 id="6-2-正交子空间与正交基"><a href="#6-2-正交子空间与正交基" class="headerlink" title="6.2 正交子空间与正交基"></a>6.2 正交子空间与正交基</h4><p>子空间$S、T$，若 $S$ 与 $T$ 正交，则 $S$ 中任意向量与 $T$ 的任意向量正交。四个基本子空间的正交性上一章已经讨论过。</p>
+<p>若空间的一组基向量两两正交，就是一组正交基，在此条件上，若每个向量的模长为$1$，则称这组基向量为<strong>标准正交基</strong>。</p>
+<p>例子：$\R^3$的一组标准正交基：$\begin{pmatrix} 1\\0\\0 \end{pmatrix},\begin{pmatrix} 0\\1\\0 \end{pmatrix},\begin{pmatrix} 0\\0\\1 \end{pmatrix}$</p>
+<h4 id="6-3-投影与投影矩阵"><a href="#6-3-投影与投影矩阵" class="headerlink" title="6.3 投影与投影矩阵"></a>6.3 投影与投影矩阵</h4><p><img src="/images/坐标系.png" alt=""></p>
+<p>根据上图可得：</p>
+<script type="math/tex; mode=display">
+\pmb p = x\pmb a,x\in R\\
+\pmb a \perp \pmb e \Rightarrow \pmb a^T(\pmb b - x\pmb a) = 0\Rightarrow x\pmb a^T\pmb a = \pmb a^T\pmb b</script><script type="math/tex; mode=display">
+x = \frac{\pmb a^T\pmb b}{\pmb a^T \pmb a}</script><script type="math/tex; mode=display">
+\pmb p = \pmb a \frac{\pmb a^T\pmb b}{\pmb a^T \pmb a}</script><p>我们称</p>
+<script type="math/tex; mode=display">
+P = \frac{\pmb a\pmb a^T}{\pmb a^T \pmb a}</script><p>为由 $\pmb b$ 到 $\pmb a$ 的投影变换矩阵，即 $\pmb p = P\pmb b$。直观上理解，任意向量与 $P$ 相乘，结果都会在 $P$ 的列空间内。</p>
+<p>投影矩阵 $P$ 的性质：</p>
+<ul>
+<li>$P^2 = P$，幂等，$P(P\pmb b) = P\pmb b$</li>
+<li>$ P^T = P$，对称</li>
+</ul>
+<p><strong>Q</strong>：现在考虑这个问题：线性方程组$A\pmb x=\pmb b$无解的时候，即$\pmb b \notin C(A)$，如何求一个近似（最优解）？</p>
+<p><strong>A</strong>：有了投影我们就可以把 $\pmb b$ 投影到$C(A)$中得到 $\hat{\pmb b}$，从而$A\hat{\pmb x} = \hat{\pmb b}$ 有解，$\hat{\pmb x}$ 即为一个近似解。</p>
+<p>那么问题随之而来，如何得到 $\hat{\pmb b}$ ？也就是问这里的投影矩阵 $P$ 如何求得？</p>
+<p>观察上图，我们发现有个误差向量$\pmb e = \pmb b - A\hat{\pmb x}$，在本例中，它是垂直于 $C(A)$ 的，在讲四个子空间时我们说过$C(A) \perp N(A^T)$，因此，$\pmb e \in N(A^T)$，有：</p>
+<script type="math/tex; mode=display">
+A^T(\pmb b - A\hat{\pmb x}) = 0</script><script type="math/tex; mode=display">
+A^T\pmb b = A^TA\hat{\pmb x}</script><p>我们希望这个方程有解，也就是求出$\hat{\pmb x} = (A^TA)^{-1}A^T\pmb b$。问题是$A^TA$的可逆性需要进一步讨论，即可能是可逆的也可能是不可逆的。那么$A^TA$这个方阵可逆的条件是什么？<strong>答案是当且仅当$A$各列线性无关时，$A^TA$可逆</strong></p>
+<p>（$A$为$m \times n$的矩阵，$A^TA$就是一个$n \times n$的对称方阵）。下面给出证明。</p>
+<p><strong>证明：</strong></p>
+<p>不妨先假设$A^TA\pmb x = \pmb 0$，即有：$\pmb x^TA^TA\pmb x = \pmb 0 \Rightarrow (A\pmb x)^TA\pmb x = \pmb 0$，即$||A\pmb x|| = 0 \Rightarrow A\pmb x = \pmb 0$</p>
+<p>又$A$各列线性无关，所以$A\pmb x = \pmb 0$只有零解（线性无关的定义），所以$\pmb x = \pmb 0$。即$A^TA\pmb x = \pmb 0$只有零解，$A^TA$中各列线性无关，$R(A^TA) = n$，满秩矩阵一定可逆（秩的定义，$|A^TA|\not = 0$），得证。</p>
+<hr>
+<p>好了，我们已经得到了$\hat{\pmb x}$的表达式，现在就可以求出投影矩阵了。</p>
+<script type="math/tex; mode=display">
+\hat{\pmb b} = A\hat{\pmb x} = A(A^TA)^{-1}A^T\pmb b</script><p>这里的投影矩阵</p>
+<script type="math/tex; mode=display">
+P =A(A^TA)^{-1}A^T</script><p>$P$依旧满足投影矩阵的两个性质。特别的，当$\pmb b \perp C(A)$，$P\pmb b = \pmb 0$。</p>
+<h4 id="6-4-最小二乘-Least-Squares"><a href="#6-4-最小二乘-Least-Squares" class="headerlink" title="6.4 最小二乘(Least Squares)"></a>6.4 最小二乘(Least Squares)</h4><p>最小二乘的思想最小化理论测与观测值的平方和：$\min \sum_0 ^n y - y_i$</p>
+<p>给定一系列二维平面上的点，要拟合一条直线$y = kx + b$，$k,b$未知；就用到了最小二乘。下面先讨论使用最小二乘拟合直线，再进一步探讨<strong>最小二乘与投影的奇妙联系</strong>。</p>
+<p><img src="https://pic7.zhimg.com/v2-4c65ed9cfa6aea8a65e98fda23ae27f3_r.jpg" style="zoom:80%;" /></p>
+<script type="math/tex; mode=display">
+kx_1 + b = y_1 \\
+kx_2 + b = y_2 \\
+...\\
+kx_m + b = y_m \\</script><p>写成矩阵形式就是</p>
+<script type="math/tex; mode=display">
+A = \begin{pmatrix}x_1 & 1\\x_2 & 1\\..&..\\x_m& 1\end{pmatrix},\pmb b= \begin{pmatrix}y_1\\y_2 \\..\\y_m\end{pmatrix},\pmb x = \begin{pmatrix} k \\ b\end{pmatrix}</script><p>求解方程组$A\pmb x = \pmb b$。接下来我们讨论这个方程<strong>无解</strong>的时候该怎么办？即根本没有一条直线同时经过上图中所有蓝色的点！为了选取最合适的$\pmb x$，让该等式”尽量成立”，引入残差平方和函数$H$：</p>
+<script type="math/tex; mode=display">
+min(H) = \arg \min_{\pmb x} ||A\pmb x - \pmb b||^2_2</script><p>（下标表示2范式，上标表示平方）。这也就是最小二乘法的思想。当 $\pmb x$ 取最优值的时候，$A\pmb x$恰好对应图中线上橙色的点，而 $b$ 则对应图中蓝色的点，$e$ 的值则应红色的线长。</p>
+<p>现在的问题是如何求最优的 $\pmb x$？我们可以求关于$\pmb x$的导数，并令其结果等于0，即：</p>
+<script type="math/tex; mode=display">
+ y = ||A\pmb x - \pmb b||^2_2 = (A\pmb x - \pmb b)^T(A\pmb x - \pmb b) = \pmb x^TA^TA\pmb x -\pmb x^TA^T\pmb b - \pmb b^TA\pmb x + b^Tb</script><script type="math/tex; mode=display">
+\frac{\partial y }{\partial \pmb x} = 2A^TA\pmb x - 2 A^T\pmb b = 0</script><p>即最优$\pmb x$满足$A^TA\pmb x = A^T\pmb b$，是不是有点眼熟？</p>
+<p><strong>投影与最小二乘的联系</strong></p>
+<p>最小二乘的思想是想如何选取参数 $x$ 使得 $H$ 最小。而从向量投影的角度来看这个问题，$H = ||\pmb b - A\pmb x||^2$ 就是向量 $\pmb e$ 长度的平方(参考6.3的图)，如何才能使 $\pmb e$ 的长度最小呢？$b$ 和$x_1$，$x_2$都是固定的，当然是$e$ 垂直$x_1$，$x_2$平面的时候长度最小！换句话说：最小二乘法的解与矩阵投影时对变量求解的目标是一致的！最小二乘的求解实质上就是$Ax=b$没有解，我们就把 $b$ 投影到$C(A)$内，此时误差向量或者说$H$最小（垂直于$C(A)$）。</p>
+<h3 id="7-正交矩阵与正交化法"><a href="#7-正交矩阵与正交化法" class="headerlink" title="7. 正交矩阵与正交化法"></a>7. 正交矩阵与正交化法</h3><h4 id="7-1-正交矩阵（只讨论实矩阵）"><a href="#7-1-正交矩阵（只讨论实矩阵）" class="headerlink" title="7.1 正交矩阵（只讨论实矩阵）"></a>7.1 正交矩阵（只讨论实矩阵）</h4><p><strong>注意：</strong>Strang教授在视频中讲正交矩阵时，谈到了非方阵的正交矩阵，而张贤达的《矩阵分析与应用》一书中对正交矩阵的定义仅限于方阵。下面以教授视频教授的为主。</p>
+<p><strong>定义：</strong>$A$为$m \times n$，若$A^TA = I$，则$A$为正交矩阵，即$A$中的列向量两两正交且模长为$1$！（列向量是标准正交向量组）当$A$为$n$阶方阵，可得$A^T = A^{-1}$。</p>
+<p>举个正交矩阵的例子：$\begin{pmatrix} \cos \theta &amp; -\sin \theta \ \sin \theta &amp; \cos \theta \end{pmatrix}$</p>
+<p>当某个向量投影到$C(A)$中时，投影矩阵$P = A(A^TA)^{-1}A^T = AA^T$,当$A$为方阵，$A^TA = AA^T =P = I$，投影矩阵是单位阵。</p>
+<p>考虑$A^TA\hat{\pmb x} = A^T\pmb b$当$A$为正交矩阵时，$\hat{\pmb x} = A^T\pmb b$，$\hat{\pmb x_i} = \pmb a_i\pmb b$，$\hat{\pmb x}$的第$i$个分量等于$A$中第$i$列的列向量与$\pmb b$的内积。可以看到当$A$为正交矩阵时，求解$A\pmb x = \pmb b$形式非常简单，那给定一个非正交矩阵$A$，如何把它化为正交矩阵呢？这就是下一节讨论的正交化法。</p>
+<h4 id="7-2-Gram-Schmidt-正交化法"><a href="#7-2-Gram-Schmidt-正交化法" class="headerlink" title="7.2 Gram-Schmidt 正交化法"></a>7.2 Gram-Schmidt 正交化法</h4><p>首先考虑两个不垂直的向量$\pmb a,\pmb b$，如图所示：</p>
+<p><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1130179427,1512306173&amp;fm=26&amp;gp=0.jpg" style="zoom:80%;" /></p>
+<p>现在的问题是，将这两个向量正交化，即求$\pmb p,\pmb q$使得$\pmb p \perp \pmb q$？</p>
+<p>正交化就是求给定矩阵$A$列空间$C(A)$的一组标准正交基。</p>
+<h4 id="7-3-QR分解"><a href="#7-3-QR分解" class="headerlink" title="7.3 QR分解"></a>7.3 QR分解</h4><h3 id="8-行列式及其性质"><a href="#8-行列式及其性质" class="headerlink" title="8. 行列式及其性质"></a>8. 行列式及其性质</h3><h3 id="9-特征值与特征向量"><a href="#9-特征值与特征向量" class="headerlink" title="9. 特征值与特征向量"></a>9. 特征值与特征向量</h3><h4 id="9-1-特征值"><a href="#9-1-特征值" class="headerlink" title="9.1 特征值"></a>9.1 特征值</h4><h4 id="9-2-矩阵对角化和矩阵幂乘"><a href="#9-2-矩阵对角化和矩阵幂乘" class="headerlink" title="9.2 矩阵对角化和矩阵幂乘"></a>9.2 矩阵对角化和矩阵幂乘</h4><h3 id="10-对称矩阵与正定矩阵"><a href="#10-对称矩阵与正定矩阵" class="headerlink" title="10. 对称矩阵与正定矩阵"></a>10. 对称矩阵与正定矩阵</h3><h3 id="11-奇异值分解"><a href="#11-奇异值分解" class="headerlink" title="11. 奇异值分解"></a>11. 奇异值分解</h3><h3 id="12-矩阵与向量微分"><a href="#12-矩阵与向量微分" class="headerlink" title="12. 矩阵与向量微分"></a>12. 矩阵与向量微分</h3>
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/27/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/" data-id="ckeed28ck0027x8uegziccpv7"
-        class="article-share-link">分享</a>
-        
+      
       
     </footer>
 
@@ -310,58 +390,6 @@ Ax = b</script><p>增广矩阵 $(A,b)$，若$R(A) = R(A,b)$则线性方程组有
   
 
   
-  
-<!-- valine评论 -->
-<div id="vcomments-box">
-    <div id="vcomments">
-    </div>
-</div>
-<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
-<script>
-    new Valine({
-        el: '#vcomments',
-        notify: false,
-        verify: '',
-        app_id: '',
-        app_key: '',
-        path: window.location.pathname,
-        avatar: 'mp',
-        placeholder: '给我的文章加点评论吧~',
-        recordIP: true
-    });
-    const infoEle = document.querySelector('#vcomments .info');
-    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
-        infoEle.childNodes.forEach(function (item) {
-            item.parentNode.removeChild(item);
-        });
-    }
-</script>
-<style>
-    #vcomments-box {
-        padding: 5px 30px;
-    }
-
-    @media screen and (max-width: 800px) {
-        #vcomments-box {
-            padding: 5px 0px;
-        }
-    }
-
-    #vcomments-box #vcomments {
-        background-color: #fff;
-    }
-
-    .v .vlist .vcard .vh {
-        padding-right: 20px;
-    }
-
-    .v .vlist .vcard {
-        padding-left: 10px;
-    }
-</style>
-
-  
 
   
   
@@ -374,7 +402,7 @@ Ax = b</script><p>增广矩阵 $(A,b)$，若$R(A) = R(A,b)$则线性方程组有
     <ul class="list-inline">
       <li>
         &copy;
-        2015-2020
+        2019-2020
         张永剑
       </li>
       <li>
@@ -432,11 +460,11 @@ Ax = b</script><p>增广矩阵 $(A,b)$，若$R(A) = R(A,b)$则线性方程组有
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/about">关于我</a>
+      <a class="nav-item-link" href="/tags">标签</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/tags">标签</a>
+      <a class="nav-item-link" href="/about">关于我</a>
     </li>
     
   </ul>
@@ -472,6 +500,16 @@ Ax = b</script><p>增广矩阵 $(A,b)$，若$R(A) = R(A,b)$则线性方程组有
   <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
   <div class="reward-box">
     
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
     
   </div>
 </div>
@@ -486,10 +524,6 @@ Ax = b</script><p>增广矩阵 $(A,b)$，若$R(A) = R(A,b)$则线性方程组有
 
 
 <script src="/js/busuanzi-2.3.pure.min.js"></script>
-
-
-
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
 
 
