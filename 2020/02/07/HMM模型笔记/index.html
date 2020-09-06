@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1k字</span>
+            <span class="post-count">1.1k字</span>
         </span>
     </span>
 
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3分钟</span>
+            <span class="post-count">4分钟</span>
         </span>
     </span>
 </div>
@@ -120,7 +120,13 @@
 <script type="math/tex; mode=display">
 Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的状态数，$N$ 为可能的观测数。则可以确定状态转移概率矩阵大小为 $M$ 阶的方阵，观测概率矩阵大小为 $M * N$ 的矩阵。 </p>
 <p><strong>总结</strong>：一条隐藏的马尔可夫链随机生成了一个不可观测的状态序列，然后每个状态又对应生成了一个观测结果（状态—&gt;观测, 观测概率矩阵B），这些观测结果按照时序排列形成了观测序列。</p>
-<h4 id="1-1-初始状态概率序列（-pi-）"><a href="#1-1-初始状态概率序列（-pi-）" class="headerlink" title="1.1 初始状态概率序列（$\pi$）"></a>1.1 初始状态概率序列（$\pi$）</h4><h4 id="1-2-状态转移概率矩阵（-A-）"><a href="#1-2-状态转移概率矩阵（-A-）" class="headerlink" title="1.2 状态转移概率矩阵（$A$）"></a>1.2 状态转移概率矩阵（$A$）</h4><h4 id="1-3-观测概率矩阵（-B-）"><a href="#1-3-观测概率矩阵（-B-）" class="headerlink" title="1.3 观测概率矩阵（$B$）"></a>1.3 观测概率矩阵（$B$）</h4><p>不同状态生成不同观测结果的概率。</p>
+<h4 id="1-1-初始状态概率序列（-pi-）"><a href="#1-1-初始状态概率序列（-pi-）" class="headerlink" title="1.1 初始状态概率序列（$\pi$）"></a>1.1 初始状态概率序列（$\pi$）</h4><script type="math/tex; mode=display">
+\pi = (\pi_i)</script><p>$\pi_i$表示初始时刻处于状态$q_i$的概率。</p>
+<h4 id="1-2-状态转移概率矩阵（-A-）"><a href="#1-2-状态转移概率矩阵（-A-）" class="headerlink" title="1.2 状态转移概率矩阵（$A$）"></a>1.2 状态转移概率矩阵（$A$）</h4><script type="math/tex; mode=display">
+A = [a_{ij}]_{M \times M}</script><p>$a_{ij}$表示时刻 $t$ 处于状态$q_i$，在时刻$t+1$转移到状态 $q_j$的概率。这也意味着$A$中每行元素和为$1$。</p>
+<h4 id="1-3-观测概率矩阵（-B-）"><a href="#1-3-观测概率矩阵（-B-）" class="headerlink" title="1.3 观测概率矩阵（$B$）"></a>1.3 观测概率矩阵（$B$）</h4><p>不同状态生成不同观测结果的概率。</p>
+<script type="math/tex; mode=display">
+B = [b_{ik}]_{M \times N}</script><p>$b_{ik}$表示时刻$t$处于状态$q_i$生成观测结果$v_k$的概率（即每一行表示一个状态，每一列表示一个观测结果）。</p>
 <h3 id="2-2个基本假设"><a href="#2-2个基本假设" class="headerlink" title="2 2个基本假设"></a>2 2个基本假设</h3><h4 id="2-1-齐次性，当前状态只和前一个状态相关"><a href="#2-1-齐次性，当前状态只和前一个状态相关" class="headerlink" title="2.1  齐次性，当前状态只和前一个状态相关"></a>2.1  齐次性，当前状态只和前一个状态相关</h4><p>​        任意时刻 $t$ 的状态只依赖前一时刻的状态。与其他时刻的观测与状态无关，也与 $t$ 时刻无关。 </p>
 <h4 id="2-2-观测独立性假设"><a href="#2-2-观测独立性假设" class="headerlink" title="2.2 观测独立性假设"></a>2.2 观测独立性假设</h4><p>​        假设任意时刻的观测只依赖于该时刻的马尔科夫链的状态，与其他观测及状态无关。</p>
 <h3 id="3-3个基本问题"><a href="#3-3个基本问题" class="headerlink" title="3 3个基本问题"></a>3 3个基本问题</h3><h4 id="3-1-概率计算"><a href="#3-1-概率计算" class="headerlink" title="3.1 概率计算"></a>3.1 概率计算</h4><p><strong>问题描述</strong>： </p>
