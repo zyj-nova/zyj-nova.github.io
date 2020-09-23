@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-09-06T09:09:49.247Z</updated>
+  <updated>2020-09-23T02:44:37.996Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -18,10 +18,10 @@
   
   <entry>
     <title>Strang教授线性代数笔记</title>
-    <link href="http://yoursite.com/2020/08/27/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/"/>
-    <id>http://yoursite.com/2020/08/27/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/</id>
-    <published>2020-08-27T03:47:51.456Z</published>
-    <updated>2020-09-06T09:09:49.247Z</updated>
+    <link href="http://yoursite.com/2020/09/23/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/"/>
+    <id>http://yoursite.com/2020/09/23/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/</id>
+    <published>2020-09-23T02:44:37.995Z</published>
+    <updated>2020-09-23T02:44:37.996Z</updated>
     
     <summary type="html">
     
@@ -29,14 +29,12 @@
       
         
         
-          &lt;h2 id=&quot;Strang-教授线性代数笔记&quot;&gt;&lt;a href=&quot;#Strang-教授线性代数笔记&quot; class=&quot;headerlink&quot; title=&quot;Strang 教授线性代数笔记&quot;&gt;&lt;/a&gt;Strang
+          &lt;h3 id=&quot;Strang教授线性代数笔记&quot;&gt;&lt;a href=&quot;#Strang教授线性代数笔记&quot; class=&quot;headerlink&quot; title=&quot;Strang教授线性代数笔记&quot;&gt;&lt;/a&gt;Strang教授线性代数笔记&lt;/h3&gt;&lt;p&gt;具体参见：&lt;a
         
       
     
     </summary>
     
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
   </entry>
@@ -71,7 +69,7 @@
     <link href="http://yoursite.com/2020/07/18/%E8%BF%91%E6%9C%9F%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93%E8%AE%B0%E5%BD%95/"/>
     <id>http://yoursite.com/2020/07/18/%E8%BF%91%E6%9C%9F%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93%E8%AE%B0%E5%BD%95/</id>
     <published>2020-07-18T14:33:46.959Z</published>
-    <updated>2020-09-02T03:24:23.862Z</updated>
+    <updated>2020-09-07T09:27:25.743Z</updated>
     
     <summary type="html">
     
@@ -96,7 +94,7 @@
     <link href="http://yoursite.com/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/"/>
     <id>http://yoursite.com/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/</id>
     <published>2020-07-07T09:14:50.127Z</published>
-    <updated>2020-08-01T15:15:02.768Z</updated>
+    <updated>2020-09-23T02:42:26.152Z</updated>
     
     <summary type="html">
     
@@ -174,7 +172,7 @@
     <link href="http://yoursite.com/2020/06/29/Flink%E6%B5%81%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/"/>
     <id>http://yoursite.com/2020/06/29/Flink%E6%B5%81%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/</id>
     <published>2020-06-29T14:46:15.156Z</published>
-    <updated>2020-06-29T14:46:15.156Z</updated>
+    <updated>2020-09-07T12:12:16.508Z</updated>
     
     <summary type="html">
     
@@ -182,7 +180,7 @@
       
         
         
-          &lt;h2 id=&quot;Flink流式处理框架学习&quot;&gt;&lt;a href=&quot;#Flink流式处理框架学习&quot; class=&quot;headerlink&quot; title=&quot;Flink流式处理框架学习&quot;&gt;&lt;/a&gt;Flink流式处理框架学习&lt;/h2&gt;&lt;h3 id=&quot;1-概述&quot;&gt;&lt;a
+          &lt;h2 id=&quot;Flink流式处理框架学习入门&quot;&gt;&lt;a href=&quot;#Flink流式处理框架学习入门&quot; class=&quot;headerlink&quot; title=&quot;Flink流式处理框架学习入门&quot;&gt;&lt;/a&gt;Flink流式处理框架学习入门&lt;/h2&gt;&lt;h3 id=&quot;1-概述&quot;&gt;&lt;a
         
       
     

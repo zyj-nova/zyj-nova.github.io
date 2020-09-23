@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">297字</span>
+            <span class="post-count">296字</span>
         </span>
     </span>
 
@@ -106,9 +106,8 @@
 <p>如何将其写为矩阵相乘形式？</p>
 <p>我们将卷积核拓展为 一个 <strong>4 × 16</strong> 的矩阵 <strong>=&gt;</strong> <strong>_T_</strong>，将图像<strong>_x_</strong> 压缩(flatten)为 <strong>16 × 1</strong> <strong>=&gt;</strong> <strong>_X_</strong></p>
 <p>卷积操作即可表示为:</p>
-<center>T*x = C</center>
-
-<p>其中，结果 <strong>_C_</strong> 为<strong>4×1</strong>的矩阵。很显然，上面的这个式子是<strong>线性</strong>的；</p>
+<script type="math/tex; mode=display">
+Tx=C</script><p>其中，结果 <strong>_C_</strong> 为<strong>4×1</strong>的矩阵。很显然，上面的这个式子是<strong>线性</strong>的；</p>
 <p>这是矩阵和一个列向量相乘，可以理解为这个列向量经过矩阵变化之后，最终成了<strong>_C_</strong></p>
 <p>那么，这么矩阵就可以理解为列向量的一个<strong>函数</strong>。</p>
 <p>也就是说，图像经过了卷积核这个函数，变成了最后的结果。</p>

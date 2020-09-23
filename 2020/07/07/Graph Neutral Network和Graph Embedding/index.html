@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">4.4k字</span>
+            <span class="post-count">5k字</span>
         </span>
     </span>
 
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">19分钟</span>
+            <span class="post-count">21分钟</span>
         </span>
     </span>
 </div>
@@ -180,7 +180,7 @@ h_v^0 = x_v</script><p>​        其中，k表示第k层（layer）；v表示�
 <h5 id="2-2-1-Spatial-based"><a href="#2-2-1-Spatial-based" class="headerlink" title="2.2.1 Spatial-based"></a>2.2.1 Spatial-based</h5><p>​        空间卷积网络也是基于neighborhood aggravating的思想。</p>
 <ul>
 <li><p>Kipf T N, Welling M. Semi-supervised classification with graph convolutional networks[J]. arXiv preprint arXiv:1609.02907, 2016.</p>
-<p>这篇论文采用的图卷积网络在neighborhood aggravating上做出了一点改动。</p>
+<p>这篇论文提出了著名的GCN模型，采用的图卷积网络在neighborhood aggravating上做出了一点改动。</p>
 </li>
 </ul>
 <script type="math/tex; mode=display">
@@ -227,6 +227,21 @@ H^{(k+1)} = \sigma(D^{-\frac{1}{2}}\hat AD^{\frac{1}{2}}H^{(k)}W_k) \\
 <script type="math/tex; mode=display">
 h_v^k = \sigma (\sum_{u \in N(v)}\alpha_{vu}h_u)</script><p>​        其中$\alpha$就是计算得到的attention权重。</p>
 <p><img src="/images/image-20200707230726126.png" alt="image-20200707230726126" style="zoom:80%;" /></p>
+<h4 id="2-3-Graph-SAGE"><a href="#2-3-Graph-SAGE" class="headerlink" title="2.3 Graph SAGE"></a>2.3 Graph SAGE</h4><p>Hamilton W, Ying Z, Leskovec J. Inductive representation learning on large graphs[C]. Advances in neural information processing systems. 2017: 1024-1034.</p>
+<p>SAGE即Sample and Aggregate。GCN（Kipf.2016）模型存在如下缺点：</p>
+<ul>
+<li>对于静态图有效，当图结构发生改变（比如：节点的删除和更新）时，需重新训练模型。</li>
+<li>当训练数据集非常时，内存无法全部加载图数据。</li>
+</ul>
+<p>该篇论文提出了名为inductive learning的模型，能更好的适应动态图，同时针对新加入的节点也可以快速的生成node embedding。具体思想是不是去学习一个固定的embedding，而是学习一个聚合函数（aggregator），学习到的聚合函数需满足对称性（symmetry property），因为对称性确保了模型可以被训练而且可以应用于任意顺序的顶点邻居特征集合上。常见的聚合函数有：mean、lstm、pooling等。</p>
+<p><img src="/images/sage.png" alt=""></p>
+<p>可以看出模型针对每个节点每次聚合固定数量的邻居，而不必把所有数据加载到内存中。</p>
+<p><em>K**</em>是网络的层数，也代表着每个顶点能够聚合的邻接点的跳数，因为每增加一层，可以聚合更远的一层邻居的信息**。</p>
+<p><img src="/images/khops.png" alt="image-20200920183029770" style="zoom:67%;" /></p>
+<p>当新的节点加入到图中时，已经训练好的聚合函数（参数固定了）会聚合新节点的邻居然后生成该节点的embedding。</p>
+<p>值得注意的是，当图中大量的节点有更新行为，图结构改变较大时，已经训练好的模型也需要重新训练，即模型退化为静态模型了。</p>
+<p>具体实现代码参见：<a href="https://github.com/dsgiitr/graph_nets，具体架构就是三个组件：Aggregator、Encoder、SupervisedModel。Aggregator用来聚合邻居节点的信息，给定节点列表以及对应的邻居节点，首先进行采样然后使用feature函数进行聚合；Encoder包含图的一系列信息，比如邻接矩阵、采样大小等，根据GraphSAGE论文中提出的模型，需要concatenate自身节点信息与Aggregator聚合的邻居节点信息，然后矩阵相乘经过非线性激活函数完成对整个图节点的embedding；SupervisedModel即最终模型，包含一个encoder以及损失函数，完成最终的任务。代码中定义了2个aggregator和2个encoder，实际上是2层的一个编码网络（hops=2）。具体示意图如下：" target="_blank" rel="noopener">https://github.com/dsgiitr/graph_nets，具体架构就是三个组件：Aggregator、Encoder、SupervisedModel。Aggregator用来聚合邻居节点的信息，给定节点列表以及对应的邻居节点，首先进行采样然后使用feature函数进行聚合；Encoder包含图的一系列信息，比如邻接矩阵、采样大小等，根据GraphSAGE论文中提出的模型，需要concatenate自身节点信息与Aggregator聚合的邻居节点信息，然后矩阵相乘经过非线性激活函数完成对整个图节点的embedding；SupervisedModel即最终模型，包含一个encoder以及损失函数，完成最终的任务。代码中定义了2个aggregator和2个encoder，实际上是2层的一个编码网络（hops=2）。具体示意图如下：</a></p>
+<p><img  src="/images/GraphSAGE.png" style="zoom:50%;" /></p>
 <p>参考资料：</p>
 <p>李宏毅，深度学习</p>
 <p><a href="http://snap.stanford.edu/proj/embeddings-www/" target="_blank" rel="noopener">http://snap.stanford.edu/proj/embeddings-www/</a></p>
