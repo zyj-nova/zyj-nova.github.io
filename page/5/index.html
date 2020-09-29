@@ -41,6 +41,84 @@
     
     
     
+    <article id="post-造成Java Out Of Memory原因总结" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/"
+    >造成Java Out Of Memory原因总结</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/04/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" class="article-date">
+  <time datetime="2020-02-04T04:34:09.363Z" itemprop="datePublished">2020-02-04</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="造成-Java-Out-Of-Memory-原因总结"><a href="#造成-Java-Out-Of-Memory-原因总结" class="headerlink" title="造成 Java Out Of Memory 原因总结"></a>造成 Java Out Of Memory 原因总结</h2><p>总结起来有 6 点原因，以下分点阐述。</p>
+<h3 id="1-heap-space"><a href="#1-heap-space" class="headerlink" title="1 heap space"></a>1 heap space</h3><p> 当申请的空间大小超出了堆中剩余空间就会产生这个原因。比如：通过 <strong>_-Xmx10m_</strong> 设置虚拟机堆最大空间为 10 M，运行代码：<code>byte data[] = new data[1024 * 1024 * 20];</code> 就会产生错误。</p>
+<h3 id="2-GC-overhead-limit"><a href="#2-GC-overhead-limit" class="headerlink" title="2 GC overhead limit"></a>2 GC overhead limit</h3><p> 当 Java 虚拟机连续多次垃圾回收却只回收了不到$2\%$的内存，也就是说你的程序有$98\%$的时间都在进行垃圾回收，却回收了不到$2\%$的内存，就会产生这个错误。</p>
+<h3 id="3-Direct-buffer-memory"><a href="#3-Direct-buffer-memory" class="headerlink" title="3 Direct buffer memory"></a>3 Direct buffer memory</h3><p> 由于在 Java 8 以后，hotspot 虚拟机废止了永久代，转而采用<i>MetaSpace</i>实现方法区。Metaspace 并不依赖于 JVM 内存，而直接占用本地内存。因此，当在 NIO 过程中，经常使用 ByteBuffer 来读取和写入数据，这是一种基于 Channel、Buffer 的 I/O 方式。它可以使用 native 函数库直接分配 OS 本地内存，然后通过一个存储在堆里的 DirectByteBuffer 对象作为这块内存的引用进行操作。因为避免了 Java 堆和 Native 堆中来回复制数据（不需要内存拷贝），可以提高性能。Buffer 空间直接在本地分配内存，不属于 GC 管辖范围，JVM 不要执行 GC。当本地内存(Direct Memory)用完，而堆内存反而很少使用，就会产生这个错误。</p>
+<p>以下代码设置元空间占用本地最大内存为 5 m，却要直接申请 50 m 的内存，会报错。</p>
+<p><code>-XX:+PrintGCDetails -XX:MaxDirectMemorySize=5m</code></p>
+<p><code>ByteBuffer buffer = ByteBuffer.allocateDirect(50 * 1024 * 1024);</code></p>
+<h3 id="4-Metaspace"><a href="#4-Metaspace" class="headerlink" title="4 Metaspace"></a>4 Metaspace</h3><p> Java 8 后，采用元空间实现方法区。方法区主要存放加载的类信息、静态变量/方法、运行时常量池等信息。当加载的类过多以致超出了元空间的大小，就会产生这个错误。</p>
+<p><strong>注意</strong>：</p>
+<p>方法区是Java虚拟机的一个规范，在Java 8之前，持久代作为方法区的实现，Java 8及以后，采用元空间(Meta Space)作为方法区的实现，并且元空间使用的是本地内存。</p>
+<p><code>-XX:MetaspaceSize=8m -XX:MaxMetaspaceSize=8m</code> 设置初始和最大元空间大小。</p>
+<h3 id="5-unable-to-create-new-native-thread"><a href="#5-unable-to-create-new-native-thread" class="headerlink" title="5 unable to create new native thread"></a>5 unable to create new native thread</h3><p>高并发请求服务器时，经常出现：</p>
+<p><code>java.lang.OutOfMemoryError: unable to create new native thread</code></p>
+<p>不同操作系统允许进程创建的线程数量有限，当 Java 应用创建太多线程时，超过了系统承载极限。linux 默认徐云一个进程创建 1024 个线程。</p>
+<p><strong>tips</strong>:当一个线程 start 后，线程状态会发生改变，不允许再次 start。</p>
+<h3 id="6-Stack-Overflow"><a href="#6-Stack-Overflow" class="headerlink" title="6 Stack Overflow"></a>6 Stack Overflow</h3><p> 最经典的一个错误，无限递归导致虚拟机栈空间不足，就会报这个错误。</p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-Faster R-CNN中anchor的理解" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
