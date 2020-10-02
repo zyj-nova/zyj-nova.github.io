@@ -19,6 +19,9 @@
 <p>模型在测试集上的准确率、召回率、f1_score如下：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">recall_score : <span class="number">0.9923076923076923</span></span><br><span class="line">accuracy_score : <span class="number">0.9846153846153847</span></span><br><span class="line">f1_score : <span class="number">0.9847328244274809</span></span><br></pre></td></tr></table></figure>
 ]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
   </entry>
   <entry>
     <title>Strang教授线性代数笔记</title>
@@ -361,13 +364,14 @@ J = -\frac{1}{N}\sum_{i=1}^N [y_i\log(\hat y_i) +(1-y_i)\log(1-\hat y_i)]</scrip
 <p>采用交叉熵损失函数的原因是该损失函数为凸函数，从而可以进行凸优化。</p>
 </li>
 <li><p>KL（Kullback–Leibler）散度（Divergence）和JS（Jensen–Shannon）散度</p>
-<p>KL散度用来衡量两个概率分布$P$、$Q$的距离。</p>
+<p>KL散度用来衡量两个概率分布$P$、$Q$的<strong>差异</strong>。</p>
 <script type="math/tex; mode=display">
-D_{KL}(P||Q)= \sum P\log(\frac{P}{Q})</script><p>注意：$D_{KL}(P||Q) \not= D_{KL}(Q||P)$。</p>
-<p>JSD定义如下：</p>
+D_{KL}(P||Q)= \sum P\log(\frac{P}{Q}) = -H(P) + H(P,Q)</script><p>注意：$D_{KL}(P||Q) \not= D_{KL}(Q||P)$。KL散度是不对称的！</p>
+<p>JS散度定义如下：</p>
 <script type="math/tex; mode=display">
 JSD(P||Q) = \frac{1}{2}D_{KL}(P||M) + \frac{1}{2}D_{KL}(Q||M)</script><script type="math/tex; mode=display">
-M = \frac{1}{2}(P + Q)</script></li>
+M = \frac{1}{2}(P + Q)</script><p>JS散度是对称的。</p>
+</li>
 </ul>
 ]]></content>
       <categories>
@@ -2542,17 +2546,15 @@ B = [b_{ik}]_{M \times N}</script><p>$b_{ik}$表示时刻$t$处于状态$q_i$生
       </tags>
   </entry>
   <entry>
-    <title>How to Implements PCA and SVD</title>
-    <url>/2019/11/10/PCA-StepByStep/</url>
-    <content><![CDATA[<h3 id="How-to-Implements-PCA"><a href="#How-to-Implements-PCA" class="headerlink" title="How to Implements PCA"></a>How to Implements PCA</h3><p>Step by Step​​<br>​​<img src="https://img-blog.csdnimg.cn/20191109182949751.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
+    <title>主成分分析</title>
+    <url>/2019/11/10/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h3 id="主成分分析与奇异值检测"><a href="#主成分分析与奇异值检测" class="headerlink" title="主成分分析与奇异值检测"></a>主成分分析与奇异值检测</h3><p>​​<img src="https://img-blog.csdnimg.cn/20191109182949751.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
 <p><img src="https://img-blog.csdnimg.cn/20191109191048929.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def my_pca(X, k):</span><br><span class="line">    #X 行：样本量，列：样本维度</span><br><span class="line">    #函数默认对每一列进行demean处理</span><br><span class="line">    cov &#x3D; np.cov(X,rowvar&#x3D;0)</span><br><span class="line">    mean &#x3D; np.mean(X,axis &#x3D; 0)</span><br><span class="line">    X_ &#x3D; X - mean</span><br><span class="line">    #求协方差矩阵的特征向量</span><br><span class="line">    eigenvalue, eigenfuture &#x3D; np.linalg.eig(cov)</span><br><span class="line">    #选取前k个特征向量 n * k</span><br><span class="line">    eigenselect &#x3D; eigenfuture[:,:k]</span><br><span class="line">    return np.dot(X_, eigenselect), eigenfuture</span><br></pre></td></tr></table></figure>
-<h3 id="The-relationship-between-PCA-and-SVD"><a href="#The-relationship-between-PCA-and-SVD" class="headerlink" title="The relationship between PCA and SVD"></a>The relationship between PCA and SVD</h3><p>We can use <strong>SVD</strong> to perform <strong>PCA</strong>.</p>
-<ol>
-<li>sklearn 中的 PCA 在大规模运算时采用了 SVD 的方式进行降维处理</li>
-</ol>
-<p><img src="/images/svd.png" alt="img"></p>
 ]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
   </entry>
   <entry>
     <title>HashMap LoadFactor</title>
@@ -2561,33 +2563,6 @@ B = [b_{ik}]_{M \times N}</script><p>$b_{ik}$表示时刻$t$处于状态$q_i$生
 <p>The initial capacity of the HashMap is the number of buckets in the hash table. It creates when we create the object of HashMap class. The initial capacity of the HashMap is 24, i.e.,16. The capacity of the HashMap is doubled each time it reaches the threshold. The capacity is increased to 25=32, 26=64, and so on.</p>
 <p>One way to calculate size:<br>When the load factor ratio (m/n) reaches 0.75 at that time, hashmap increases its capacity.<br>Where,<br>m is the number of entries in a hashmap.(size of HashMap)<br>n is the total size of hashmap.</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>卷积操作的线性性质</title>
-    <url>/2019/11/08/%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%E7%9A%84%E7%BA%BF%E6%80%A7%E6%80%A7%E8%B4%A8/</url>
-    <content><![CDATA[<h2 id="卷积操作的线性性质"><a href="#卷积操作的线性性质" class="headerlink" title="卷积操作的线性性质"></a>卷积操作的线性性质</h2><h3 id="卷积"><a href="#卷积" class="headerlink" title="卷积"></a>卷积</h3><p>我们假设有一幅大小为<strong>4 ×4</strong> 的图像 <strong>_x_</strong>，卷积核大小为 <strong>3×3</strong> <strong>_A_</strong></p>
-<p>卷积核滑动步长为 1 ，没有 padding；那么经过卷积以后图像大小即为 <strong>2×2</strong></p>
-<p>如何将其写为矩阵相乘形式？</p>
-<p>我们将卷积核拓展为 一个 <strong>4 × 16</strong> 的矩阵 <strong>=&gt;</strong> <strong>_T_</strong>，将图像<strong>_x_</strong> 压缩(flatten)为 <strong>16 × 1</strong> <strong>=&gt;</strong> <strong>_X_</strong></p>
-<p>卷积操作即可表示为:</p>
-<script type="math/tex; mode=display">
-Tx=C</script><p>其中，结果 <strong>_C_</strong> 为<strong>4×1</strong>的矩阵。很显然，上面的这个式子是<strong>线性</strong>的；</p>
-<p>这是矩阵和一个列向量相乘，可以理解为这个列向量经过矩阵变化之后，最终成了<strong>_C_</strong></p>
-<p>那么，这么矩阵就可以理解为列向量的一个<strong>函数</strong>。</p>
-<p>也就是说，图像经过了卷积核这个函数，变成了最后的结果。</p>
-<h3 id="转置卷积"><a href="#转置卷积" class="headerlink" title="转置卷积"></a>转置卷积</h3><p>现在我们有<strong>2 × 2</strong> 的图像 <strong>_x_</strong>，想让他变成 <strong>4 × 4</strong>的，我们该如何操作？</p>
-<p>我们仍然可以利用上文提到的那个卷积矩阵 <strong>_T_</strong>，</p>
-<p>即：</p>
-<center>T^T(16*4) * x(4*1) = R(16*1)</center>
-
-<p>转置卷积通常用来做上采样(up sample)。</p>
-]]></content>
-      <categories>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>CNN NET</tag>
-      </tags>
   </entry>
   <entry>
     <title>Canny Edge Detection Step By Step</title>

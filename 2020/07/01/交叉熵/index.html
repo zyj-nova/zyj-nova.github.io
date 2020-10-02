@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">441字</span>
+            <span class="post-count">463字</span>
         </span>
     </span>
 
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1分钟</span>
+            <span class="post-count">2分钟</span>
         </span>
     </span>
 </div>
@@ -126,13 +126,14 @@ J = -\frac{1}{N}\sum_{i=1}^N [y_i\log(\hat y_i) +(1-y_i)\log(1-\hat y_i)]</scrip
 <p>采用交叉熵损失函数的原因是该损失函数为凸函数，从而可以进行凸优化。</p>
 </li>
 <li><p>KL（Kullback–Leibler）散度（Divergence）和JS（Jensen–Shannon）散度</p>
-<p>KL散度用来衡量两个概率分布$P$、$Q$的距离。</p>
+<p>KL散度用来衡量两个概率分布$P$、$Q$的<strong>差异</strong>。</p>
 <script type="math/tex; mode=display">
-D_{KL}(P||Q)= \sum P\log(\frac{P}{Q})</script><p>注意：$D_{KL}(P||Q) \not= D_{KL}(Q||P)$。</p>
-<p>JSD定义如下：</p>
+D_{KL}(P||Q)= \sum P\log(\frac{P}{Q}) = -H(P) + H(P,Q)</script><p>注意：$D_{KL}(P||Q) \not= D_{KL}(Q||P)$。KL散度是不对称的！</p>
+<p>JS散度定义如下：</p>
 <script type="math/tex; mode=display">
 JSD(P||Q) = \frac{1}{2}D_{KL}(P||M) + \frac{1}{2}D_{KL}(Q||M)</script><script type="math/tex; mode=display">
-M = \frac{1}{2}(P + Q)</script></li>
+M = \frac{1}{2}(P + Q)</script><p>JS散度是对称的。</p>
+</li>
 </ul>
 
       
