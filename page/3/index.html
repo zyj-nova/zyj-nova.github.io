@@ -41,6 +41,144 @@
     
     
     
+    <article id="post-PyTorch学习笔记之循环神经网络" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"
+    >PyTorch学习笔记之循环神经网络</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="article-date">
+  <time datetime="2020-05-18T02:52:24.487Z" itemprop="datePublished">2020-05-18</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="PyTorch学习笔记之循环神经网络"><a href="#PyTorch学习笔记之循环神经网络" class="headerlink" title="PyTorch学习笔记之循环神经网络"></a>PyTorch学习笔记之循环神经网络</h2><p>循环神经网络的提出是为了解决序列数据。如：翻译、语言识别、时间序列问题等。</p>
+<h3 id="1-基本结构"><a href="#1-基本结构" class="headerlink" title="1 基本结构"></a>1 基本结构</h3><p>循环神经网络（Recurrent Neutral Network）不同于卷积网络，刚开始接触时个人感觉比较抽象。</p>
+<p>在每个 cell 中，激活函数输入的不仅包含这个时序内输入的数据$x^{<t>}$，而且还包括上个时序的输出 $a^{t-1}$(隐藏态)。因此，可以表示为：</p>
+<script type="math/tex; mode=display">
+a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)</script><p>其中，$W_{aa}$表示 $t-1$ 时段输出的权重，$W_{ax}$表示 $t$ 时段输入的权重。之后，$a^{\langle t \rangle}$再向 $t+1$ 时段传播，或者经过$soft\max$函数，作为 $t$ 时段的输出。</p>
+<p><img src="/images/RNN.png" alt=""></p>
+<p><img src="/images/LSTM1.png" alt=""></p>
+<center>基本RNN结构</center>
+
+<p><strong>多层 RNN 结构</strong>：</p>
+<p><img src="/images/multi_rnn.png" alt=""></p>
+<p><strong>双向RNN结构</strong></p>
+<p><img src="https://d2l.ai/_images/birnn.svg" alt=""></p>
+<p>需要注意的是：前向和后向的隐藏态互不干扰和影响，每个时间步的输出由前向和后向的隐藏态共同决定。</p>
+<p><strong>RNN 的特点</strong>：</p>
+<ol>
+<li>RNNs 主要用于处理序列数据。对于传统神经网络模型，从输入层到隐含层再到输出层，层与层之间一般为全连接，每层之间神经元是无连接的。但是传统神经网络无法处理数据间的前后关联问题。例如，为了预测句子的下一个单词，一般需要该词之前的语义信息。这是因为一个句子中前后单词是存在语义联系的。</li>
+<li>RNNs 中当前单元的输出与之前步骤输出也有关，因此称之为循环神经网络。具体的表现形式为当前单元会对之前步骤信息进行储存并应用于当前输出的计算中。隐藏层之间的节点连接起来，隐藏层当前输出由当前时刻输入向量和之前时刻隐藏层状态共同决定。</li>
+<li>标准的 RNNs 结构图，图中每个箭头代表做一次变换，也就是说箭头连接带有权值。</li>
+<li>在标准的 RNN 结构中，隐层的神经元之间也是带有权值的，且权值共享。</li>
+</ol>
+<h3 id="2-LSTM-和-GRU"><a href="#2-LSTM-和-GRU" class="headerlink" title="2 LSTM 和 GRU"></a>2 LSTM 和 GRU</h3><h4 id="2-1-LSTM"><a href="#2-1-LSTM" class="headerlink" title="2.1 LSTM"></a>2.1 LSTM</h4><p><strong>三个门控：遗忘门、输入门、输出门</strong></p>
+<p><img src="/images/LSTM.png" alt=""></p>
+<p><img src="/images/LSTM2.png" alt=""></p>
+<p><img src="/images/lstm-simple.jpg" alt=""></p>
+<p><img src="/images/lstm-normal.jpg" alt=""></p>
+<p><img src="/images/lstm-peephole.jpg" alt=""></p>
+<center>基本LSTM结构</center>
+
+<p><strong>提出原因</strong>：</p>
+<p>$RNN$ 在处理长期依赖（时间序列上距离较远的节点）时会遇到巨大的困难，因为计算距离较远的节点之间的联系时会涉及雅可比矩阵的多次相乘，会造成<strong>梯度消失或者梯度膨胀</strong>的现象。为了解决该问题，研究人员提出了许多解决办法，例如 ESN（Echo State Network），增加有漏单元（Leaky Units）等等。其中最成功应用最广泛的就是门限 RNN（Gated RNN），而 LSTM 就是门限 RNN 中最著名的一种。有漏单元通过设计连接间的权重系数，从而允许 RNN 累积距离较远节点间的长期联系；而门限 RNN 则泛化了这样的思想，允许在不同时刻改变该系数，且允许网络忘记当前已经累积的信息。</p>
+<p>在<code>torch.nn.LSTM</code>中，返回两个值，一个是<code>cell</code>，一个是<code>hidden</code>。cell即记忆值，hidden即最后一个时间步的隐藏态。</p>
+<h4 id="2-2-GRU"><a href="#2-2-GRU" class="headerlink" title="2.2 GRU"></a>2.2 GRU</h4><p><strong>提出原因</strong></p>
+<p>解决长距离梯度消失的问题</p>
+<p><strong>具体结构</strong></p>
+<p><strong>两个门：update gate和reset gate</strong></p>
+<p><strong>Update gate</strong></p>
+<p><img src="https://cdn-images-1.medium.com/max/800/1*9aIpAyB1Jlubq0ktVEmKmw.png" alt=""></p>
+<p><strong>Reset gate</strong></p>
+<p><img src="https://cdn-images-1.medium.com/max/800/1*ifB-DfmokJKQqNzMjDpMQQ.png" alt=""></p>
+<p><code>torch.nn.GRU</code> 具体参数和<code>nn.RNN</code>类似</p>
+<h3 id="3-Pytorch-构建-RNN"><a href="#3-Pytorch-构建-RNN" class="headerlink" title="3 Pytorch 构建 RNN"></a>3 Pytorch 构建 RNN</h3><script type="math/tex; mode=display">
+a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)</script><p>根据计算公式，为了提高运算速度，在具体实现经常采用矩阵相乘的形式。一般来说，可以分解为如下形式：</p>
+<script type="math/tex; mode=display">
+\left[
+ \begin{matrix}
+ a^{\langle t-1 \rangle} & x^{\langle t \rangle}
+  \end{matrix}
+\right]*
+\left[
+ \begin{matrix}
+  W_{aa} \\
+  W_{ax}
+  \end{matrix}
+\right]</script><p>即，将$W_{aa},W_{ax}$按照<strong>列</strong>进行拼接，将$a^{\langle t-1 \rangle},x^{\langle t \rangle}$ 按照<strong>行</strong>进行拼接。下面确定两个权重矩阵的维度。</p>
+<p>如果假设输入($input$)的维度为 $x_m$，$hidden$ 的维度为$h_n$。可知$W_{aa},W_{ax}$ 的列维度一定是相同的，否则不能按$1*D$的大小，经过激活函数成为隐藏态，那么$D$的大小必然要和$hidden$的维度相同。因此$W_{aa},W_{ax}$的维度分别为：</p>
+<script type="math/tex; mode=display">
+W_{aa} \rightarrow \left[h_n, h_n\right],W_{ax} \rightarrow [x_m, h_n]</script><p>在<code>Pytorch</code>中，使用<code>torch.nn.RNN</code>来完成<code>RNN</code>的设计。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line">&gt; rnn = nn.RNN(input_size=<span class="number">5</span>,hidden_size=<span class="number">10</span>,num_layers=<span class="number">1</span>)</span><br><span class="line">&gt; rnn.weight_hh_l0.shape <span class="comment">#hidden to hidden 即W_aa</span></span><br><span class="line">torch.Size([<span class="number">10</span>, <span class="number">10</span>])</span><br><span class="line">&gt; rnn.weight_ih_l0.shape <span class="comment"># input to hidden 即W_ax</span></span><br><span class="line">torch.Size([<span class="number">10</span>, <span class="number">5</span>])</span><br><span class="line">&gt; input = torch.randn(<span class="number">6</span>,<span class="number">12</span>,<span class="number">5</span>) <span class="comment"># 构造一个批次为10，input_dim为5,序列长度为6的矩阵，即每个序列长6，共有12个这样的序列，序列中每个时间步的dim为5</span></span><br><span class="line"><span class="comment"># input [src_len, batch, dim]</span></span><br><span class="line">&gt; output,hidden = rnn(input)</span><br><span class="line">&gt; output.shape</span><br><span class="line">(torch.Size([<span class="number">6</span>, <span class="number">12</span>, <span class="number">10</span>])</span><br><span class="line"> <span class="comment">#[src_len, batch, num_directions * hidden_size]</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong>在循环神经网络中，</p>
+<script type="math/tex; mode=display">
+h_t = \tanh(w_{ih}x_t + b_{ih} + w_{hh}h_{t-1}+b_{hh})</script><p>每个时间步都会输出一个<code>hid</code>向量，<code>output</code>就是所有<code>hid</code>向量形成的矩阵，而<code>hidden</code>向量是最后一个时间步产生的<code>hid</code>向量。将<code>hid</code>向量经过全连接或<code>tanh</code>等函数就会得到这个时间步的输出。</p>
+<p>要构建双向循环神经网络，将<code>bidirectional</code>参数设为<code>True</code>即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; input = torch.randn(<span class="number">20</span>,<span class="number">128</span>,<span class="number">12</span>) <span class="comment">#[src_len, batch_size, embedded_dim]</span></span><br><span class="line">&gt; gru = nn.GRU(<span class="number">12</span>, <span class="number">512</span>, bidirectional = <span class="literal">True</span>)</span><br><span class="line">&gt; outputs,hidden = gru(input)</span><br><span class="line">&gt; outputs.shape,hidden.shape</span><br><span class="line">torch.Size([<span class="number">20</span>, <span class="number">128</span>, <span class="number">1024</span>]),torch.Size([<span class="number">2</span>, <span class="number">128</span>, <span class="number">512</span>])</span><br></pre></td></tr></table></figure>
+<p><strong>输出维度解释</strong>：</p>
+<p><code>output</code>：<code>[src len, batch size, hid dim * num directions]</code>，注意第三个维度，因为是双向，因此从前向后会产生hidden，而从后向前也会产生hidden，即一个时间步由两个hidden产生，第三个维度就是<code>[hid*2]</code>。单向的话就是<code>[hid*1]</code>。</p>
+<p><code>output[:,:,0]</code>代表前向产生的hidden，<code>output[:,:,1]代表后向产生的hidden</code>。</p>
+<p><code>hidden</code>：<code>[n layers * num directions, batch size, hid dim]</code>。</p>
+<p><code>hidden[0,:,:]</code>所有前向产生的最后一个hidden向量，即到了序列的最后一个state，<code>hidden[1,:,:]</code>所有后向产生的第一个hidden向量，即到了序列的第一个state。</p>
+<p>同<code>nn.Conv2d</code>不同的是，<code>rnn</code>的<code>batch_size</code>是第2个维度。</p>
+<p>下面实际看一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt; a = torch.randint(<span class="number">10</span>,(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))<span class="comment"># 假设这是hidden hid dim = 4, batch = 3, 前向3个hidden </span></span><br><span class="line">&gt; a</span><br><span class="line">tensor([[[<span class="number">0</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">5</span>],</span><br><span class="line">         [<span class="number">8</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">1</span>],</span><br><span class="line">         [<span class="number">5</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">6</span>]],</span><br><span class="line"></span><br><span class="line">        [[<span class="number">2</span>, <span class="number">7</span>, <span class="number">7</span>, <span class="number">1</span>],</span><br><span class="line">         [<span class="number">1</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">9</span>],</span><br><span class="line">         [<span class="number">7</span>, <span class="number">9</span>, <span class="number">4</span>, <span class="number">6</span>]]])</span><br><span class="line">&gt; a[<span class="number">0</span>,:,:] <span class="comment"># 前向产生的hidden</span></span><br><span class="line">tensor([[<span class="number">0</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">5</span>],</span><br><span class="line">        [<span class="number">8</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">1</span>],</span><br><span class="line">        [<span class="number">5</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">6</span>]])</span><br><span class="line">&gt; torch.cat((a[<span class="number">-2</span>,:,:], a[<span class="number">-1</span>,:,:]), dim = <span class="number">1</span>).shape</span><br><span class="line">torch.Size([<span class="number">3</span>, <span class="number">8</span>])</span><br><span class="line">&gt; torch.cat((a[<span class="number">-2</span>,:,:], a[<span class="number">-1</span>,:,:]), dim = <span class="number">1</span>)</span><br><span class="line"><span class="comment"># 即将每个句子的前向和后向合并成一个vector，经过合并后的hidden经过线性变换和激活函数可以传入decoder作为context向量或计算attention权重</span></span><br><span class="line">tensor([[<span class="number">0</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">7</span>, <span class="number">1</span>],</span><br><span class="line">        [<span class="number">8</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">9</span>],</span><br><span class="line">        [<span class="number">5</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">4</span>, <span class="number">6</span>]])</span><br></pre></td></tr></table></figure>
+<p>attention权重生成的一种方式：</p>
+<script type="math/tex; mode=display">
+weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</script><p>$W_1$、$W_2$可以是全连接层得到（<code>nn.Linear</code>）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Attention</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, enc_hid_dim, dec_hid_dim)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        </span><br><span class="line">        self.attn = nn.Linear((enc_hid_dim * <span class="number">2</span>) + dec_hid_dim, dec_hid_dim)</span><br><span class="line">        self.v = nn.Linear(dec_hid_dim, <span class="number">1</span>, bias = <span class="literal">False</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, hidden, encoder_outputs)</span>:</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">#hidden = [batch size, dec hid dim]</span></span><br><span class="line">        <span class="comment">#encoder_outputs = [src len, batch size, enc hid dim * 2]</span></span><br><span class="line">        </span><br><span class="line">        batch_size = encoder_outputs.shape[<span class="number">1</span>]</span><br><span class="line">        src_len = encoder_outputs.shape[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#repeat decoder hidden state src_len times</span></span><br><span class="line">        hidden = hidden.unsqueeze(<span class="number">1</span>).repeat(<span class="number">1</span>, src_len, <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        encoder_outputs = encoder_outputs.permute(<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#hidden = [batch size, src len, dec hid dim]</span></span><br><span class="line">        <span class="comment">#encoder_outputs = [batch size, src len, enc hid dim * 2]</span></span><br><span class="line">        </span><br><span class="line">        energy = torch.tanh(self.attn(torch.cat((hidden, encoder_outputs), dim = <span class="number">2</span>))) </span><br><span class="line">        </span><br><span class="line">        <span class="comment">#energy = [batch size, src len, dec hid dim]</span></span><br><span class="line"></span><br><span class="line">        attention = self.v(energy).squeeze(<span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#attention= [batch size, src len]</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> F.softmax(attention, dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment">#在每一行上进行softmax，即每一个单词的权重</span></span><br></pre></td></tr></table></figure>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-微信小程序开发入门指南" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -1038,104 +1176,6 @@ v_t = \gamma v_{t-1} + \alpha \nabla J(\theta)</script><script type="math/tex; m
 <p>相比于之前的<strong>AdaGrad</strong>，采用了指数加权平均来更新每个参数的历史梯度(近期的梯度比重较大，历史梯度指数减小)，增加了一个衰减系数来控制历史信息的获取多少。</p>
 <p><img src="/images/momprop2-2.png" alt=""></p>
 <h3 id="7-Adam"><a href="#7-Adam" class="headerlink" title="7. Adam"></a>7. Adam</h3><p><img src="/images/adam.png" alt=""></p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-GitHub的骚操作" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/"
-    >GitHub的骚操作</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/" class="article-date">
-  <time datetime="2020-02-27T04:57:10.082Z" itemprop="datePublished">2020-02-27</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="GitHub的骚操作"><a href="#GitHub的骚操作" class="headerlink" title="GitHub的骚操作"></a>GitHub的骚操作</h2><h3 id="1-in-限制搜索"><a href="#1-in-限制搜索" class="headerlink" title="1. in 限制搜索"></a>1. in 限制搜索</h3><p><strong>用法</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gnn <span class="keyword">in</span>:name</span><br><span class="line">spring <span class="keyword">in</span>:readme,name,description</span><br></pre></td></tr></table></figure>
-<h3 id="2-starts-forks范围搜索"><a href="#2-starts-forks范围搜索" class="headerlink" title="2. starts/forks范围搜索"></a>2. starts/forks范围搜索</h3><p><strong>用法</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name stars/forks:&gt;500</span><br><span class="line">name stars/forks:500..600</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">组合命令</span></span><br><span class="line">redis starts:&gt;5000 forks:6000..10000 in:name</span><br></pre></td></tr></table></figure>
-<h3 id="3-awesome搜索"><a href="#3-awesome搜索" class="headerlink" title="3. awesome搜索"></a>3. awesome搜索</h3><p><strong>用法</strong>：展示站点上较好的项目</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awesome gan</span><br></pre></td></tr></table></figure>
-<h3 id="4-高亮显示代码"><a href="#4-高亮显示代码" class="headerlink" title="4.高亮显示代码"></a>4.高亮显示代码</h3><p><strong>用法</strong>：在代码链接后加<code>#Lnum</code>，将高亮该行代码；<code>#L5-L50</code>高亮<code>5-50</code>行的代码。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/JeffLi1993/springboot-learning-example/blob/master/chapter-2-spring-boot-config/src/main/java/demo/springboot/web/HelloBookController.java#L1</span><br><span class="line"></span><br><span class="line">https://github.com/JeffLi1993/springboot-learning-example/blob/master/chapter-2-spring-boot-config/src/main/java/demo/springboot/web/HelloBookController.java#L1-L15</span><br></pre></td></tr></table></figure>
-<h3 id="5-t搜索"><a href="#5-t搜索" class="headerlink" title="5. t搜索"></a>5. t搜索</h3><p>在某个项目首页下，<code>t</code>键可以查看该项目所有代码文件。</p>
-<p>还有其他快捷键，可参考官方文档。</p>
-<p><img src="/images/image-20200227130114291.png" alt="image-20200227130114291"></p>
-<p><img src="/images/image-20200227130247176.png" alt="image-20200227130247176"></p>
-<h3 id="6-关于git的一些知识"><a href="#6-关于git的一些知识" class="headerlink" title="6. 关于git的一些知识"></a>6. 关于git的一些知识</h3><ul>
-<li><p><code>git</code>分为工作区、暂存区、版本库。将工作区的文件<code>add</code>到暂存区，<code>git</code>才可以对改文件进行版本管理，<code>add</code>之后就可以<code>commit</code>到版本库</p>
-</li>
-<li><p>已经<code>add</code>到暂存区的文件，又对其进行了修改，务必再次执行<code>add</code>操作，否则<code>commit</code>时，这个修改不会被提交到版本库。第一次修改 -&gt; <code>git add</code> -&gt; 第二次修改 -&gt; <code>git add</code> -&gt; <code>git commit</code>，两次修改合并为一次<code>commit</code></p>
-</li>
-<li><p>撤销修改：</p>
-<ul>
-<li><p>已经执行<code>add</code>的文件，现在在工作区区又进行了一次修改（这次修改还没<code>add</code>），<code>git checkout -- filename</code>可放弃工作区的这次修改</p>
-</li>
-<li><p>做了修改，并且已经<code>add</code>到暂存区，现在不想要这次修改了，先</p>
-<p><code>git reset HEAD filename</code>，从暂存区中拉回到工作区，然后<code>git checkout -- filename</code>放弃这次修改。</p>
-</li>
-</ul>
-</li>
-<li><p>版本回退</p>
-<ul>
-<li><code>git reset --hard commitId</code>，可回退到之前的版本。可采用<code>git log</code>来查看每次<code>commit</code>的详细情况</li>
-<li>要重新返回到最新版本，用<code>git reflog</code>查看命令历史，获取<code>commitId</code>，以便确定要回到未来的哪个版本。然后采用<code>reset</code>命令。</li>
-</ul>
-</li>
-<li><p>分支管理</p>
-<p>参考<a href="https://www.liaoxuefeng.com/wiki/896043488029600/900003767775424" target="_blank" rel="noopener">https://www.liaoxuefeng.com/wiki/896043488029600/900003767775424</a></p>
-</li>
-</ul>
 
       
       <!-- 打赏 -->

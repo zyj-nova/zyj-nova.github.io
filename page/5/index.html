@@ -41,6 +41,95 @@
     
     
     
+    <article id="post-JVM 垃圾回收器分类总结" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/"
+    >JVM 垃圾回收器分类总结</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/04/JVM%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E5%88%86%E7%B1%BB%E6%80%BB%E7%BB%93/" class="article-date">
+  <time datetime="2020-02-04T05:58:43.203Z" itemprop="datePublished">2020-02-04</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="JVM-垃圾回收器分类总结"><a href="#JVM-垃圾回收器分类总结" class="headerlink" title="JVM 垃圾回收器分类总结"></a>JVM 垃圾回收器分类总结</h2><p>概览：</p>
+<p>由于垃圾回收存在多种算法：标记-复制、标记-清除、标记-整理。组合多种垃圾回收器，形成分代收集算法。</p>
+<p><strong>新生代收集器</strong>：Serial、ParNew、Parallel Scavenge</p>
+<p><strong>老年代收集器</strong>：CMS、Serial Old、Parallel Old</p>
+<p><strong>整堆收集器</strong>： G1</p>
+<h3 id="1-Serial-垃圾回收器"><a href="#1-Serial-垃圾回收器" class="headerlink" title="1. Serial 垃圾回收器"></a>1. Serial 垃圾回收器</h3><p> 串行垃圾回收器，单线程，执行垃圾回收时其他线程停止等待。</p>
+<h3 id="2-Parallel-New-垃圾回收器"><a href="#2-Parallel-New-垃圾回收器" class="headerlink" title="2. Parallel New 垃圾回收器"></a>2. Parallel New 垃圾回收器</h3><p> 并行垃圾回收器。相较于 Serial，多线程并行进行垃圾回收。其他线程也必须停止等待。</p>
+<h3 id="3-Parallel-Scavenge-收集器"><a href="#3-Parallel-Scavenge-收集器" class="headerlink" title="3. Parallel Scavenge 收集器"></a>3. Parallel Scavenge 收集器</h3><p> 与<strong>吞吐量</strong>关系密切，故也称为吞吐量优先收集器。</p>
+<p> <strong>特点</strong>：属于新生代收集器也是采用复制算法的收集器，又是并行的多线程收集器（与 ParNew 收集器类似）。</p>
+<h3 id="4-Parallel-Old-收集器"><a href="#4-Parallel-Old-收集器" class="headerlink" title="4. Parallel Old 收集器"></a>4. Parallel Old 收集器</h3><p> 是 Parallel Scavenge 收集器的老年代版本。</p>
+<p> <strong>特点</strong>：多线程，采用标记-整理算法。</p>
+<p> <strong>应用场景</strong>：注重高吞吐量以及 CPU 资源敏感的场合，都可以优先考虑 Parallel Scavenge+Parallel Old 收集器。</p>
+<h3 id="5-Serial-Old-收集器"><a href="#5-Serial-Old-收集器" class="headerlink" title="5. Serial Old 收集器"></a>5. Serial Old 收集器</h3><p> Serial Old 是 Serial 收集器的老年代版本。</p>
+<p> <strong>特点</strong>：同样是单线程收集器，采用标记-整理算法。</p>
+<h3 id="6-CMS-垃圾回收器"><a href="#6-CMS-垃圾回收器" class="headerlink" title="6. CMS 垃圾回收器"></a>6. CMS 垃圾回收器</h3><p> 并发垃圾回收器，在进行垃圾回收时，其余线程不必停止等待。</p>
+<p> <strong>CMS 收集器的运行过程分为下列 4 步：</strong></p>
+<p> <strong>初始标记</strong>：标记 GC Roots 能直接到的对象。速度很快但是仍存在 Stop The World 问题。</p>
+<p> <strong>并发标记</strong>：进行 GC Roots Tracing 的过程，找出存活对象且用户线程可并发执行。</p>
+<p> <strong>重新标记</strong>：为了修正并发标记期间因用户程序继续运行而导致标记产生变动的那一部分对象的标记记录。仍然存在 Stop The World 问题。</p>
+<p> <strong>并发清除</strong>：对标记的对象进行清除回收。</p>
+<p> CMS 收集器的内存回收过程是与用户线程一起并发执行的。</p>
+<h3 id="7-G1-垃圾回收器"><a href="#7-G1-垃圾回收器" class="headerlink" title="7. G1 垃圾回收器"></a>7. G1 垃圾回收器</h3><p>一款面向服务端应用的垃圾收集器。它把内存划分为多个不同的子区域，G1只存在逻辑上的分区，子区域可能随G1的运行在不同代期间前后切换，每个子区域大小为1-32<code>M</code>不等，最多设置<code>2048</code>个区域。</p>
+<p><strong>特点如下：</strong></p>
+<p>并行与并发：G1 能充分利用多 CPU、多核环境下的硬件优势，使用多个 CPU 来缩短 Stop-The-World 停顿时间。部分收集器原本需要停顿 Java 线程来执行 GC 动作，G1 收集器仍然可以通过并发的方式让 Java 程序继续运行。</p>
+<p>分代收集：G1 能够独自管理整个 Java 堆，并且采用不同的方式去处理新创建的对象和已经存活了一段时间、熬过多次 GC 的旧对象以获取更好的收集效果。</p>
+<p>空间整合：G1 运作期间不会产生空间碎片，收集后能提供规整的可用内存。</p>
+<p>可预测的停顿：G1 除了追求低停顿外，还能建立可预测的停顿时间模型。能让使用者明确指定在一个长度为 M 毫秒的时间段内，消耗在垃圾收集上的时间不得超过 N 毫秒。</p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-造成Java Out Of Memory原因总结" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -231,7 +320,21 @@
       
 
       
-      <h3 id="主成分分析与奇异值检测"><a href="#主成分分析与奇异值检测" class="headerlink" title="主成分分析与奇异值检测"></a>主成分分析与奇异值检测</h3><p>​​<img src="https://img-blog.csdnimg.cn/20191109182949751.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
+      <h3 id="主成分分析与奇异值分解"><a href="#主成分分析与奇异值分解" class="headerlink" title="主成分分析与奇异值分解"></a>主成分分析与奇异值分解</h3><h4 id="1-奇异值分解"><a href="#1-奇异值分解" class="headerlink" title="1 奇异值分解"></a>1 奇异值分解</h4><p>参见：<a href="https://github.com/zyj-nova/LinearAlgebraNotes" target="_blank" rel="noopener">https://github.com/zyj-nova/LinearAlgebraNotes</a></p>
+<h4 id="2-主成分分析"><a href="#2-主成分分析" class="headerlink" title="2 主成分分析"></a>2 主成分分析</h4><h5 id="2-1-算法分析"><a href="#2-1-算法分析" class="headerlink" title="2.1 算法分析"></a>2.1 算法分析</h5><p><strong>矩阵的弗罗贝尼乌斯范数</strong>：</p>
+<script type="math/tex; mode=display">
+||A||_2 = \sqrt {tr (A^TA)} = \sqrt{\sum_{i=1}^m\sum_{j=1}^na_{ij}^2}</script><p>$tr$代表矩阵的迹函数$trace$（主对角线元素求和，$A^TA$一定是个方阵）。</p>
+<p>给定一组标准正交基$\pmb w_1,\pmb w_2,…,\pmb w_n,\pmb w_i \in \R^n$，$\R^n$中的某个向量$\pmb a$可以表示为：</p>
+<script type="math/tex; mode=display">
+\pmb a = \sum_{j = 1}^n <\pmb a,\pmb w_j>\pmb w_j</script><p>$&lt;,&gt;$表示向量的内积操作，可以看出$&lt;\pmb a,\pmb w_j&gt;$即$\pmb a$在空间中的坐标。现在我们考虑，是否可以将$\pmb a$表示在$\pmb w_1,\pmb w_2,…,\pmb w_k,k &lt; n$生成的子空间中，使得$&lt;\pmb a,\pmb w_{k+1}&gt;=0,…,&lt;\pmb a, \pmb w_n&gt; = 0$？</p>
+<p>这就可以将问题转化为一个优化问题：</p>
+<script type="math/tex; mode=display">
+\min_{\pmb w_1,\pmb w_2,...,\pmb w_k} = \sum_{i=1}^m ||\pmb a_i - \sum_{j=1}^k<\pmb a_i,\pmb w_j>\pmb w_j||_2^2\\
+s.t.<\pmb w_i,\pmb w_j> = \delta_{ij},i=j,\delta_{ij}=1;i\not=j,\delta_{ij}=0</script><p>写为矩阵形式即：</p>
+<script type="math/tex; mode=display">
+\min_{\pmb w_1,\pmb w_2,...,\pmb w_k} = ||A^T-A^TWW^T||_2^2 = tr(A^TA-A^TWW^TA)\\
+s.t. W^TW = I</script><p>其中，$A$为数据的特征矩阵，$W$为正交基按列组成的正交矩阵。</p>
+<h5 id="2-2-算法描述"><a href="#2-2-算法描述" class="headerlink" title="2.2 算法描述"></a>2.2 算法描述</h5><p><img src="https://img-blog.csdnimg.cn/20191109182949751.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
 <p><img src="https://img-blog.csdnimg.cn/20191109191048929.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def my_pca(X, k):</span><br><span class="line">    #X 行：样本量，列：样本维度</span><br><span class="line">    #函数默认对每一列进行demean处理</span><br><span class="line">    cov &#x3D; np.cov(X,rowvar&#x3D;0)</span><br><span class="line">    mean &#x3D; np.mean(X,axis &#x3D; 0)</span><br><span class="line">    X_ &#x3D; X - mean</span><br><span class="line">    #求协方差矩阵的特征向量</span><br><span class="line">    eigenvalue, eigenfuture &#x3D; np.linalg.eig(cov)</span><br><span class="line">    #选取前k个特征向量 n * k</span><br><span class="line">    eigenselect &#x3D; eigenfuture[:,:k]</span><br><span class="line">    return np.dot(X_, eigenselect), eigenfuture</span><br></pre></td></tr></table></figure>
 

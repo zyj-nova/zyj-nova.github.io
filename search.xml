@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Transformer模型介绍</title>
+    <url>/2020/10/03/Transformer%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h2 id="Transformer模型介绍"><a href="#Transformer模型介绍" class="headerlink" title="Transformer模型介绍"></a>Transformer模型介绍</h2><p>文献：Vaswani A,  Shazeer N,  Parmar N,  et al.  Attention is all you need[C]. Advances in neural information processing systems. 2017: 5998-6008.</p>
+<p>详解：<a href="http://nlp.seas.harvard.edu/2018/04/03/attention.html" target="_blank" rel="noopener">http://nlp.seas.harvard.edu/2018/04/03/attention.html</a> The Annotated Transformer.</p>
+<p>视频：<a href="https://www.youtube.com/watch?v=ugWDIIOHtPA" target="_blank" rel="noopener">https://www.youtube.com/watch?v=ugWDIIOHtPA</a> 李宏毅：Transformer</p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+  </entry>
+  <entry>
     <title>贝叶斯垃圾邮件分类器</title>
     <url>/2020/09/29/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%9E%83%E5%9C%BE%E9%82%AE%E4%BB%B6%E5%88%86%E7%B1%BB%E5%99%A8/</url>
     <content><![CDATA[<h2 id="贝叶斯垃圾邮件分类器"><a href="#贝叶斯垃圾邮件分类器" class="headerlink" title="贝叶斯垃圾邮件分类器"></a>贝叶斯垃圾邮件分类器</h2><p>利用朴素贝叶斯算法，在给定训练数据上，训练一个垃圾分类器。有关朴素贝叶斯的基本思想，可以参见另一篇博客：<a href="https://zyj-nova.github.io/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" target="_blank" rel="noopener">https://zyj-nova.github.io/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/</a></p>
@@ -32,7 +43,9 @@
   <entry>
     <title>浅谈逻辑斯蒂回归模型</title>
     <url>/2020/08/03/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/</url>
-    <content><![CDATA[<h2 id="浅谈逻辑斯蒂回归模型"><a href="#浅谈逻辑斯蒂回归模型" class="headerlink" title="浅谈逻辑斯蒂回归模型"></a>浅谈逻辑斯蒂回归模型</h2><p>​        逻辑斯蒂回归或者是Softmax回归，说是回归其实是在解决二分类或者多分类的问题。逻辑斯蒂函数如下：</p>
+    <content><![CDATA[<h2 id="浅谈逻辑斯蒂回归模型"><a href="#浅谈逻辑斯蒂回归模型" class="headerlink" title="浅谈逻辑斯蒂回归模型"></a>浅谈逻辑斯蒂回归模型</h2><h3 id="sigmod函数"><a href="#sigmod函数" class="headerlink" title="sigmod函数"></a>sigmod函数</h3><script type="math/tex; mode=display">
+f(x) = \frac{1}{1 + e^{-x}}</script><script type="math/tex; mode=display">
+f^\prime (x)= f(x)*(1-f(x))</script><p>​        逻辑斯蒂回归或者是softmax回归，说是回归其实是在解决二分类或者多分类的问题。逻辑斯蒂模型如下：</p>
 <script type="math/tex; mode=display">
 y = \frac{1}{1 + e^{-（w^Tx +b)}}</script><p>​        其中，$x \in R^n, w \in R^n$，$b$为偏置bias可以设置为0，$x$为样本的特征向量，$w$即要学习的参数。在给定一批有label的训练数据集后，我们可以根据极大似然估计来得到最优的参数值，之后，给定某个测试数据，当：y &gt;= 0.5，我们就把这个样本划为1类，否则就划为0类。</p>
 <p>​        其实，完整的二项逻辑斯蒂回归模型是定义如下的条件概率分布：</p>
@@ -40,7 +53,45 @@ y = \frac{1}{1 + e^{-（w^Tx +b)}}</script><p>​        其中，$x \in R^n, w 
 P(Y = 1|x) = \frac{\exp(w*x + b)}{1 + \exp(w*x + b)}</script><script type="math/tex; mode=display">
 P(Y = 0|x) = \frac{1}{1 + \exp(w*x + b)}</script><p>​        观察上述条件概率计算公式我们发现，当$w<em>x+b &gt; 0$的时候，$P(Y=1)$的概率一定高于$P(Y=0)$，我们就把其划分为1类。对于$P(Y=1)$的分布函数上下同除以分子$\exp$就得到了熟悉的逻辑斯蒂函数。$w</em>x+b &gt; 0$就等价于$y &gt; 0.5$，因此当逻辑斯蒂函数值$y &gt; 0.5$时就把样本划分到1类，在这个条件下，样本为1类的概率大于为0类的概率。</p>
 <p>​        事实上，逻辑斯蒂函数是在计算样本为1类的概率，由于是二分类，不是1类就是0类。</p>
-<p>​        </p>
+<pre><code>### softmax回归模型
+</code></pre><p>参考：<a href="https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/" target="_blank" rel="noopener">https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/</a></p>
+<p><strong>softmax函数</strong></p>
+<script type="math/tex; mode=display">
+\sigma (\pmb x)_i = \frac{e^{x_i}}{\sum_j^n e^{x_j}},i = 1,...,n,\pmb x=(x_1,...,x_n)</script><p>定义：</p>
+<script type="math/tex; mode=display">
+S_j = \frac{e^{x_j}}{\sum_{k=1}^ne^{x_k}}, j = 1,2,...,n</script><p>​        可以看到，softmax函数输入一个向量，输出是一个向量，是一个$\R^n \rightarrow \R^n$的函数。下面讨论其输入的各个分量的偏导，可以看到其输出分量对输入分量的偏导构成了一个$n \times n$的雅可比矩阵。</p>
+<script type="math/tex; mode=display">
+D_jS_i = \frac{\partial S_i}{\partial x_j}</script><script type="math/tex; mode=display">
+DS = \begin{pmatrix}D_1S_1&D_1S_2&...&D_1S_n\\...&...&...&...\\D_nS_1&..&...&D_nS_n\end{pmatrix}</script><p>现在计算$D_jS_i$:</p>
+<script type="math/tex; mode=display">
+D_jS_i = \frac{\partial S_i}{\partial x_j} ,S_i =\frac{e^{x_i}}{\sum_{k=1}^ne^{x_k}}</script><p>$S_i$是个复合函数</p>
+<script type="math/tex; mode=display">
+S_i = \frac{g(x)}{h(x)},g(x) = e^{x_i},h(x)=\sum_{k=1}^ne^{x_k}</script><p>根据求导的除法法则：</p>
+<script type="math/tex; mode=display">
+D_jS_i = \frac{g^\prime(x)h(x)-h^\prime(x)g(x)}{h^2(x)}</script><p>这里需要分类讨论，即$i =j$和$i\not=j$的情况：$i=j$时，$g^\prime(x_j)=e^{x_j}=e^{x_i},h^\prime(x_i)=e^{x_i} = e^{x_j}$；否则$i\not=j$，$g^\prime(x_i)=0,h^\prime(x_i)=e^{x_j}$.</p>
+<p>$i=j$时带入得：</p>
+<script type="math/tex; mode=display">
+D_jS_i = \frac{e^{x_i}\Sigma - e^{x_j}e^{x_i}}{\Sigma^2} = \frac{e^{x_i}}{\Sigma}\frac{\Sigma - e^{x_j}}{\Sigma} = S_i(1-S_j)</script><p>$i\not=j$时，带入得：</p>
+<script type="math/tex; mode=display">
+D_jS_i = \frac{0 - e^{x_i}e^{x_j}}{\Sigma^2} = -S_iS_j</script><p>综合以上讨论，有：</p>
+<script type="math/tex; mode=display">
+D_jS_i = S_i(\delta_{ij}-S_j)</script><script type="math/tex; mode=display">
+i = j,\delta_{ij} = 1;i \not=j,\delta_{ij}=0</script><p><strong>softmax回归模型</strong>        </p>
+<p>​        值得注意的是，这里讲的softmax回归与softmax函数还是有一点不同的。softmax函数只是把给定的输入做了一个指数归一化；相比logistic回归模型的参数只是一个向量，softmax回归模型包含参数矩阵$W$，也就是每一个类别都对应一个n维向量，n为输入特征数量。</p>
+<p>假设有$k$个类别，则权重矩阵：</p>
+<script type="math/tex; mode=display">
+W_{k \times n} = \begin{pmatrix}\pmb w_1^T\\...\\\pmb w_k^T\end{pmatrix}</script><p>输入为第$j$个类别的概率为：</p>
+<script type="math/tex; mode=display">
+P(y = j | \pmb x) = \frac{e^{\pmb x^T\pmb w_j}}{\sum_{i=1}^k e^{\pmb x^T\pmb w_i}}</script><p>模型针对给定输入预测类别的过程如下图所示：</p>
+<p><img src="https://eli.thegreenplace.net/images/2016/softmax-layer-generic.png" alt=""></p>
+<p>注：T表示类别数量。</p>
+<h3 id="二者的关联"><a href="#二者的关联" class="headerlink" title="二者的关联"></a>二者的关联</h3><p>当$k = 2$的时候，</p>
+<script type="math/tex; mode=display">
+P(y = 1) = \frac{e^{\pmb x^T\pmb w_1}}{e^{\pmb x^T\pmb w_1} + e^{\pmb x^T\pmb w_0}} = \frac{e^{\pmb x^T(\pmb w_1 - \pmb w_0)}}{1 + e^{\pmb x^T(\pmb w_1 - \pmb w_0)}}</script><script type="math/tex; mode=display">
+P(y = 0) = \frac{e^{\pmb x^T\pmb w_0}}{e^{\pmb x^T\pmb w_1} + e^{\pmb x^T\pmb w_0}} = \frac{1}{1 + e^{\pmb x^T(\pmb w_1 - \pmb w_0)}}</script><p>令$x^T(\pmb w_1 - \pmb w_0) = \pmb t$，那么：</p>
+<script type="math/tex; mode=display">
+P(y = 1) = \frac{e^{\pmb t}}{1 + e^{\pmb t}}</script><script type="math/tex; mode=display">
+P(y = 0) = \frac{1}{1 + e^{\pmb t}}</script><p>我们可以发现，当类别数等于$2$时，softmax模型就会退化为logistic回归模型。</p>
 ]]></content>
       <categories>
         <category>机器学习</category>
@@ -2548,7 +2599,21 @@ B = [b_{ik}]_{M \times N}</script><p>$b_{ik}$表示时刻$t$处于状态$q_i$生
   <entry>
     <title>主成分分析</title>
     <url>/2019/11/10/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<h3 id="主成分分析与奇异值检测"><a href="#主成分分析与奇异值检测" class="headerlink" title="主成分分析与奇异值检测"></a>主成分分析与奇异值检测</h3><p>​​<img src="https://img-blog.csdnimg.cn/20191109182949751.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
+    <content><![CDATA[<h3 id="主成分分析与奇异值分解"><a href="#主成分分析与奇异值分解" class="headerlink" title="主成分分析与奇异值分解"></a>主成分分析与奇异值分解</h3><h4 id="1-奇异值分解"><a href="#1-奇异值分解" class="headerlink" title="1 奇异值分解"></a>1 奇异值分解</h4><p>参见：<a href="https://github.com/zyj-nova/LinearAlgebraNotes" target="_blank" rel="noopener">https://github.com/zyj-nova/LinearAlgebraNotes</a></p>
+<h4 id="2-主成分分析"><a href="#2-主成分分析" class="headerlink" title="2 主成分分析"></a>2 主成分分析</h4><h5 id="2-1-算法分析"><a href="#2-1-算法分析" class="headerlink" title="2.1 算法分析"></a>2.1 算法分析</h5><p><strong>矩阵的弗罗贝尼乌斯范数</strong>：</p>
+<script type="math/tex; mode=display">
+||A||_2 = \sqrt {tr (A^TA)} = \sqrt{\sum_{i=1}^m\sum_{j=1}^na_{ij}^2}</script><p>$tr$代表矩阵的迹函数$trace$（主对角线元素求和，$A^TA$一定是个方阵）。</p>
+<p>给定一组标准正交基$\pmb w_1,\pmb w_2,…,\pmb w_n,\pmb w_i \in \R^n$，$\R^n$中的某个向量$\pmb a$可以表示为：</p>
+<script type="math/tex; mode=display">
+\pmb a = \sum_{j = 1}^n <\pmb a,\pmb w_j>\pmb w_j</script><p>$&lt;,&gt;$表示向量的内积操作，可以看出$&lt;\pmb a,\pmb w_j&gt;$即$\pmb a$在空间中的坐标。现在我们考虑，是否可以将$\pmb a$表示在$\pmb w_1,\pmb w_2,…,\pmb w_k,k &lt; n$生成的子空间中，使得$&lt;\pmb a,\pmb w_{k+1}&gt;=0,…,&lt;\pmb a, \pmb w_n&gt; = 0$？</p>
+<p>这就可以将问题转化为一个优化问题：</p>
+<script type="math/tex; mode=display">
+\min_{\pmb w_1,\pmb w_2,...,\pmb w_k} = \sum_{i=1}^m ||\pmb a_i - \sum_{j=1}^k<\pmb a_i,\pmb w_j>\pmb w_j||_2^2\\
+s.t.<\pmb w_i,\pmb w_j> = \delta_{ij},i=j,\delta_{ij}=1;i\not=j,\delta_{ij}=0</script><p>写为矩阵形式即：</p>
+<script type="math/tex; mode=display">
+\min_{\pmb w_1,\pmb w_2,...,\pmb w_k} = ||A^T-A^TWW^T||_2^2 = tr(A^TA-A^TWW^TA)\\
+s.t. W^TW = I</script><p>其中，$A$为数据的特征矩阵，$W$为正交基按列组成的正交矩阵。</p>
+<h5 id="2-2-算法描述"><a href="#2-2-算法描述" class="headerlink" title="2.2 算法描述"></a>2.2 算法描述</h5><p><img src="https://img-blog.csdnimg.cn/20191109182949751.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
 <p><img src="https://img-blog.csdnimg.cn/20191109191048929.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def my_pca(X, k):</span><br><span class="line">    #X 行：样本量，列：样本维度</span><br><span class="line">    #函数默认对每一列进行demean处理</span><br><span class="line">    cov &#x3D; np.cov(X,rowvar&#x3D;0)</span><br><span class="line">    mean &#x3D; np.mean(X,axis &#x3D; 0)</span><br><span class="line">    X_ &#x3D; X - mean</span><br><span class="line">    #求协方差矩阵的特征向量</span><br><span class="line">    eigenvalue, eigenfuture &#x3D; np.linalg.eig(cov)</span><br><span class="line">    #选取前k个特征向量 n * k</span><br><span class="line">    eigenselect &#x3D; eigenfuture[:,:k]</span><br><span class="line">    return np.dot(X_, eigenselect), eigenfuture</span><br></pre></td></tr></table></figure>
 ]]></content>
