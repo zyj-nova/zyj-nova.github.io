@@ -111,8 +111,7 @@ y = \frac{1}{1 + e^{-（w^Tx +b)}}</script><p>​        其中，$x \in R^n, w 
 P(Y = 1|x) = \frac{\exp(w*x + b)}{1 + \exp(w*x + b)}</script><script type="math/tex; mode=display">
 P(Y = 0|x) = \frac{1}{1 + \exp(w*x + b)}</script><p>​        观察上述条件概率计算公式我们发现，当$w<em>x+b &gt; 0$的时候，$P(Y=1)$的概率一定高于$P(Y=0)$，我们就把其划分为1类。对于$P(Y=1)$的分布函数上下同除以分子$\exp$就得到了熟悉的逻辑斯蒂函数。$w</em>x+b &gt; 0$就等价于$y &gt; 0.5$，因此当逻辑斯蒂函数值$y &gt; 0.5$时就把样本划分到1类，在这个条件下，样本为1类的概率大于为0类的概率。</p>
 <p>​        事实上，逻辑斯蒂函数是在计算样本为1类的概率，由于是二分类，不是1类就是0类。</p>
-<pre><code>### softmax回归模型
-</code></pre><p>参考：<a href="https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/" target="_blank" rel="noopener">https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/</a></p>
+<h3 id="softmax回归模型"><a href="#softmax回归模型" class="headerlink" title="softmax回归模型"></a>softmax回归模型</h3><p>参考：<a href="https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/" target="_blank" rel="noopener">https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/</a></p>
 <p><strong>softmax函数</strong></p>
 <script type="math/tex; mode=display">
 \sigma (\pmb x)_i = \frac{e^{x_i}}{\sum_j^n e^{x_j}},i = 1,...,n,\pmb x=(x_1,...,x_n)</script><p>定义：</p>

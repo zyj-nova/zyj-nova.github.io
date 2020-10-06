@@ -1,12 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>多元高斯及其极大似然估计</title>
+    <url>/2020/10/06/%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%8F%8A%E5%85%B6%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1/</url>
+    <content><![CDATA[<h2 id="多元高斯及其极大似然估计"><a href="#多元高斯及其极大似然估计" class="headerlink" title="多元高斯及其极大似然估计"></a>多元高斯及其极大似然估计</h2><p>参考：<a href="https://blog.csdn.net/Joyliness/article/details/80097491" target="_blank" rel="noopener">https://blog.csdn.net/Joyliness/article/details/80097491</a></p>
+<h3 id="1-独立多元高斯的概率密度函数"><a href="#1-独立多元高斯的概率密度函数" class="headerlink" title="1. 独立多元高斯的概率密度函数"></a>1. 独立多元高斯的概率密度函数</h3><p>$n$个独立的随机变量$(x_1,x_2,…x_n)$的联合密度函数为</p>
+<script type="math/tex; mode=display">
+f_{\mu,\Sigma}(\pmb x)=\frac{1}{\sqrt{(2\pi)^n\det\Sigma}}e^{-\frac{1}{2}(\pmb x - \pmb \mu)^T\Sigma^{-1}(\pmb x - \pmb \mu)}</script><p>就是多元高斯分布（Multivariate Normal Distribution，MVN）。其中，$\pmb \mu$是各个随机变量的期望值所组成的向量，$\Sigma$是随机变量间的协方差矩阵，是$n \times n$的正定矩阵。</p>
+<h3 id="2-多元高斯的极大似然估计"><a href="#2-多元高斯的极大似然估计" class="headerlink" title="2. 多元高斯的极大似然估计"></a>2. 多元高斯的极大似然估计</h3><p>对于$N$个满足多元高斯分布的独立样本集：$\{\pmb x_1,\pmb x_2,..,\pmb x_N\},\pmb x \in \R^n$，似然函数为：</p>
+<script type="math/tex; mode=display">
+\prod_{i=1}^Nf_{\mu,\Sigma}(\pmb x_i) = (2\pi)^{-\frac{Nn}{2}}|\Sigma|^{-\frac{N}{2}}e^{-\frac{1}{2}\sum_{i=1}^N(\pmb x_i - \pmb \mu)^T\Sigma^{-1}(\pmb x_i - \pmb \mu)}</script><p>取对数：</p>
+<script type="math/tex; mode=display">
+\ln L(\pmb \mu,\Sigma) =\ln\prod_{i=1}^Nf_{\mu,\Sigma}(\pmb x_i) =-\frac{Nn}{2}\ln2\pi -\frac{N}{2}\ln |\Sigma| - \sum_{i=1}^N(\pmb x_i - \pmb \mu)^T\Sigma^{-1}(\pmb x_i - \pmb \mu)\\
+=C - \frac{N}{2}\ln |\Sigma| - \frac{1}{2}\sum_{i=1}^N(\pmb x_i - \pmb \mu)^T\Sigma^{-1}(\pmb x_i - \pmb \mu)</script><p>其中$C = -\frac{Nn}{2}\ln2\pi$是一个与参数$\pmb \mu,\Sigma$ 无关的常数，因此：</p>
+<script type="math/tex; mode=display">
+arg\max_{\pmb \mu,\Sigma}\ln\prod_{i=1}^Nf_{\mu,\Sigma}(\pmb x_i)</script><ul>
+<li>$\ln L(\pmb \mu,\Sigma)$对$\pmb \mu$求偏导（标量对向量求偏导）</li>
+</ul>
+<p>先将$\sum_{i=1}^N(\pmb x_i - \pmb \mu)^T\Sigma^{-1}(\pmb x_i - \pmb \mu)$展开，得到：</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^N\pmb x_i^T\Sigma^{-1}\pmb x_i - 2\sum_{i=1}^N\pmb x^T\Sigma^{-1}\pmb \mu + N\pmb \mu^T\Sigma^{-1}\pmb \mu</script><p>后两项对$\pmb \mu$求偏导得到：</p>
+<script type="math/tex; mode=display">
+-2\sum_{i=1}^N\Sigma^{-1}\pmb x_i + 2N\Sigma^{-1}\pmb \mu</script><p>因此：</p>
+<script type="math/tex; mode=display">
+\frac{\partial \ln L(\pmb \mu,\Sigma)}{\partial \pmb \mu} = 2\sum_{i=1}^N\Sigma^{-1}\pmb x_i - 2N\Sigma^{-1}\pmb \mu = 0</script><p>求得：</p>
+<script type="math/tex; mode=display">
+\bar{\pmb \mu} = \frac{1}{N}\sum_{i=1}^N \pmb x_i</script><ul>
+<li>$\ln L(\pmb \mu, \Sigma)$对$\Sigma$求偏导（标量对矩阵求偏导）</li>
+</ul>
+<p>tips：$\frac{\partial \det(X)}{\partial X } = \det (X)tr(X^{-1})$</p>
+<script type="math/tex; mode=display">
+\frac{\partial -\frac{N}{2}\ln \det(\Sigma)}{\partial \Sigma} = -\frac{N}{2}tr(X^{-1})</script><script type="math/tex; mode=display">
+\frac{\partial \ln L(\pmb \mu, \Sigma)}{\partial \Sigma} = 0</script><p>解得：</p>
+<script type="math/tex; mode=display">
+\bar \Sigma = \frac{1}{N} \sum_{i=1}^N(\pmb x_i - \bar{\pmb \mu})(\pmb x_i - \bar{\pmb \mu})^T</script>]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Transformer模型介绍</title>
     <url>/2020/10/03/Transformer%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D/</url>
     <content><![CDATA[<h2 id="Transformer模型介绍"><a href="#Transformer模型介绍" class="headerlink" title="Transformer模型介绍"></a>Transformer模型介绍</h2><p>文献：Vaswani A,  Shazeer N,  Parmar N,  et al.  Attention is all you need[C]. Advances in neural information processing systems. 2017: 5998-6008.</p>
-<p>详解：<a href="http://nlp.seas.harvard.edu/2018/04/03/attention.html" target="_blank" rel="noopener">http://nlp.seas.harvard.edu/2018/04/03/attention.html</a> The Annotated Transformer.</p>
-<p>视频：<a href="https://www.youtube.com/watch?v=ugWDIIOHtPA" target="_blank" rel="noopener">https://www.youtube.com/watch?v=ugWDIIOHtPA</a> 李宏毅：Transformer</p>
-]]></content>
+<p>详解：<a href="http://nlp.seas.harvard.edu/2018/04/03/attention.html" target="_blank" rel="noopener">http://nlp.seas.harvard.edu/2018/04/03/attention.html</a>  The Annotated Transformer.</p>
+<p>视频：<a href="https://www.youtube.com/watch?v=ugWDIIOHtPA" target="_blank" rel="noopener">https://www.youtube.com/watch?v=ugWDIIOHtPA</a>  李宏毅：Transformer</p>
+<h3 id="1-encoder-decoder"><a href="#1-encoder-decoder" class="headerlink" title="1. encoder-decoder"></a>1. encoder-decoder</h3><h3 id="2-self-attention"><a href="#2-self-attention" class="headerlink" title="2. self attention"></a>2. self attention</h3><h3 id="3-multi-head-attention"><a href="#3-multi-head-attention" class="headerlink" title="3. multi head attention"></a>3. multi head attention</h3>]]></content>
       <categories>
         <category>深度学习</category>
       </categories>
@@ -53,8 +91,7 @@ y = \frac{1}{1 + e^{-（w^Tx +b)}}</script><p>​        其中，$x \in R^n, w 
 P(Y = 1|x) = \frac{\exp(w*x + b)}{1 + \exp(w*x + b)}</script><script type="math/tex; mode=display">
 P(Y = 0|x) = \frac{1}{1 + \exp(w*x + b)}</script><p>​        观察上述条件概率计算公式我们发现，当$w<em>x+b &gt; 0$的时候，$P(Y=1)$的概率一定高于$P(Y=0)$，我们就把其划分为1类。对于$P(Y=1)$的分布函数上下同除以分子$\exp$就得到了熟悉的逻辑斯蒂函数。$w</em>x+b &gt; 0$就等价于$y &gt; 0.5$，因此当逻辑斯蒂函数值$y &gt; 0.5$时就把样本划分到1类，在这个条件下，样本为1类的概率大于为0类的概率。</p>
 <p>​        事实上，逻辑斯蒂函数是在计算样本为1类的概率，由于是二分类，不是1类就是0类。</p>
-<pre><code>### softmax回归模型
-</code></pre><p>参考：<a href="https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/" target="_blank" rel="noopener">https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/</a></p>
+<h3 id="softmax回归模型"><a href="#softmax回归模型" class="headerlink" title="softmax回归模型"></a>softmax回归模型</h3><p>参考：<a href="https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/" target="_blank" rel="noopener">https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/</a></p>
 <p><strong>softmax函数</strong></p>
 <script type="math/tex; mode=display">
 \sigma (\pmb x)_i = \frac{e^{x_i}}{\sum_j^n e^{x_j}},i = 1,...,n,\pmb x=(x_1,...,x_n)</script><p>定义：</p>

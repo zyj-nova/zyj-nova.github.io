@@ -41,6 +41,114 @@
     
     
     
+    <article id="post-Kafka入门教程" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/"
+    >Kafka入门教程</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" class="article-date">
+  <time datetime="2020-06-25T14:56:20.418Z" itemprop="datePublished">2020-06-25</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="Kafka入门教程"><a href="#Kafka入门教程" class="headerlink" title="Kafka入门教程"></a>Kafka入门教程</h2><h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h3><h4 id="1-1-消息队列"><a href="#1-1-消息队列" class="headerlink" title="1.1 消息队列"></a>1.1 消息队列</h4><p>​        总的来说，消息队列可以分为点对点模式、发布订阅模式</p>
+<p>​        （1）点对点模式（一对一，消费者主动拉取数据，消息收到后消息清除）</p>
+<p>​        点对点模型通常是一个基于拉取或者轮询的消息传送模型，这种模型从队列中请求信息， 而不是将消息推送到客户端。这个模型的特点是发送到队列的消息被一个且只有一个接收者 接收处理，即使有多个消息监听者也是如此。</p>
+<p>​        （2）发布订阅模式（一对多，数据生产后，推送给所有订阅者）</p>
+<p>​        发布订阅模型则是一个基于推送的消息传送模型。发布订阅模型可以有多种不同的订阅 者，临时订阅者只在主动监听主题时才接收消息，而持久订阅者则监听主题的所有消息，即 使当前订阅者不可用，处于离线状态。</p>
+<h4 id="1-2-什么是Kafka"><a href="#1-2-什么是Kafka" class="headerlink" title="1.2 什么是Kafka"></a>1.2 什么是Kafka</h4><p>​        在流式计算中，Kafka 一般用来缓存数据，作为大数据处理系统中的一个中间件。</p>
+<p>​        （1）Apache Kafka 是一个开源消息系统，由 Scala 写成。是由 Apache 软件基金会开发的 一个开源消息系统项目。</p>
+<p>​        （2）Kafka 最初是由 LinkedIn 公司开发，并于 2011 年初开源。2012 年 10 月从 Apache Incubator 毕业。该项目的目标是为处理实时数据提供一个统一、高通量、低等待的平台。</p>
+<p>​        （3））Kafka 是一个分布式消息队列。Kafka 对消息保存时根据 Topic 进行归类，发送消息 者称为 Producer，消息接受者称为 Consumer，此外 Kafka 集群有多个 Kafka 实例组成，每个实例(server)称为 broker。</p>
+<p>​        （4）无论是 Kafka 集群，还是 consumer 都依赖于 zookeeper 集群保存一些 meta 信息， 来保证系统可用性。</p>
+<h4 id="1-3-Kafka架构"><a href="#1-3-Kafka架构" class="headerlink" title="1.3 Kafka架构"></a>1.3 Kafka架构</h4><p>​        （1）Producer ：消息生产者，就是向 Kafka broker 发消息的客户端；</p>
+<p>​        （2）Consumer ：消息消费者，向 Kafka broker 取消息的客户端； </p>
+<p>​        （3）Topic ：可以理解为一个队列；</p>
+<p>​        （4）Consumer Group：这是Kafka用来实现一个topic消息的广播（发给所有的consumer） 和单播（发给任意一个 consumer）的手段。一个 topic 可以有多个 CG。topic 的消息会复制 （不是真的复制，是概念上的）到所有的 CG，但每个 partition 只会把消息发给该 CG 中的一 个 consumer。如果需要实现广播，只要每个 consumer 有一个独立的 CG 就可以了。要实现 单播只要所有的 consumer 在同一个 CG。用 CG 还可以将 consumer 进行自由的分组而不需 要多次发送消息到不同的 topic；</p>
+<p>​        （5）Broker ：一台 Kafka 服务器就是一个 broker。一个集群由多个 broker 组成。一个 broker 可以容纳多个 topic；</p>
+<p>​        （6）Partition：为了实现扩展性，一个非常大的 topic 可以分布到多个 broker（即服务器）上，一个 topic 可以分为多个 partition，每个 partition 是一个有序的队列。partition 中的每条消息 都会被分配一个有序的 id（offset）。Kafka 只保证按一个 partition 中的顺序将消息发给 consumer，不保证一个 topic 的整体（多个 partition 间）的顺序； </p>
+<p>​        （7）Offset：Kafka 的存储文件都是按照 offset.kafka 来命名，用 offset 做名字的好处是方便查 找。例如你想找位于 2049 的位置，只要找到 2048.kafka 的文件即可。当然 the first offset 就 是 00000000000.kafka。</p>
+<p>​    <img src="C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20200702161839173.png" alt="image-20200702161839173"></p>
+<h3 id="2-Kafka集群部署"><a href="#2-Kafka集群部署" class="headerlink" title="2. Kafka集群部署"></a>2. Kafka集群部署</h3><p>​        Kafka集群依赖ZooKeeper，因此，启动Kafka集群前，应启动zookeeper集群。否则会报错。</p>
+<h4 id="2-1-集群部署"><a href="#2-1-集群部署" class="headerlink" title="2.1 集群部署"></a>2.1 集群部署</h4><p>​        （1）修改配置文件</p>
+<p>​        下载好对应的tar包并解压后，找到<code>config</code>目录下的<code>server.propertites</code>文件，修改<code>log.dirs</code>配置项，即配置Kafka运行日志的存放路径。</p>
+<p>​        （2）启动</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-server-start.sh config/server.properties &amp;</span><br></pre></td></tr></table></figure>
+<p><code>&amp;</code>指后台启动。        </p>
+<p>​        （3）关闭</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-server-stop.sh stop</span><br></pre></td></tr></table></figure>
+<p>​        （4）发生错误日志检查</p>
+<p>​        当启动或运行时发生故障后，可以检查<code>logs/server.log</code>文件进行故障排查。</p>
+<h4 id="2-2-Kafka命令行操作"><a href="#2-2-Kafka命令行操作" class="headerlink" title="2.2 Kafka命令行操作"></a>2.2 Kafka命令行操作</h4><p>​        （1）查看当前服务器中所有topic</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --zookeeper localhost:2181 --list</span><br></pre></td></tr></table></figure>
+<p>​        （2）创建topic</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --zookeeper localhost:2181 \</span><br><span class="line">--create --replication-factor 3 --partitions 1 --topic first</span><br></pre></td></tr></table></figure>
+<p>选项说明：</p>
+<p>​        —topic 定义 topic 名 </p>
+<p>​        —replication-factor 定义副本数</p>
+<p>​        —partitions 定义分区数</p>
+<p>​        （3）删除topic</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic first</span><br></pre></td></tr></table></figure>
+<p>注意：需要<code>server.properties</code>中设置<code>delete.topic.enable=true</code>否则只是标记删除或者直接重启。</p>
+<p>​        （4）发送（生产）消息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> bin/kafka-console-producer.sh \</span><br><span class="line">--broker-list localhost:9092 --topic first</span><br></pre></td></tr></table></figure>
+<p>​        （5）消费消息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> bin/kafka-console-consumer.sh \</span><br><span class="line">--bootstrap-server localhost:2181 --from-beginning --topic first</span><br></pre></td></tr></table></figure>
+<p>​        （6）查看某个topic的详情</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --zookeeper localhost:2181 --describe --topic first</span><br></pre></td></tr></table></figure>
+<h3 id="3-Kafka工作流程分析"><a href="#3-Kafka工作流程分析" class="headerlink" title="3. Kafka工作流程分析"></a>3. Kafka工作流程分析</h3><p>​        </p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-SpringMVC源码浅析" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -969,197 +1077,6 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> p = &#123;<span class="attr">name</span>:<span class="string">"bill"</span>, <span class="attr">age</span>: <span class="number">25</span>&#125;</span><br><span class="line"><span class="keyword">let</span> &#123;name,age&#125; = p <span class="comment">//变量名务必和对象属性名相同，否则会得到undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(name + <span class="string">","</span> + age) <span class="comment">// bill 25</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> &#123;log&#125; = <span class="built_in">console</span></span><br><span class="line">log(<span class="string">"hello world"</span>)</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-Pytorch学习笔记之卷积神经网络" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"
-    >Pytorch学习笔记之卷积神经网络</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="article-date">
-  <time datetime="2020-05-18T02:54:23.567Z" itemprop="datePublished">2020-05-18</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="Pytorch学习笔记之卷积神经网络"><a href="#Pytorch学习笔记之卷积神经网络" class="headerlink" title="Pytorch学习笔记之卷积神经网络"></a>Pytorch学习笔记之卷积神经网络</h2><h3 id="1-模型构建"><a href="#1-模型构建" class="headerlink" title="1 模型构建"></a>1 模型构建</h3><p>在<code>pytorch</code>中，我们构建的模型都继承自<code>torch.nn.Module</code>这个类，并且要重写其<code>forward</code>方法。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Network</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.conv1 = nn.Conv2d(in_channels=<span class="number">1</span>, out_channels=<span class="number">6</span>, kernel_size=<span class="number">5</span>)</span><br><span class="line">        self.conv2 = nn.Conv2d(in_channels=<span class="number">6</span>, out_channels=<span class="number">12</span>, kernel_size=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">        self.fc1 = nn.Linear(in_features=<span class="number">12</span> * <span class="number">4</span> * <span class="number">4</span>, out_features=<span class="number">120</span>)</span><br><span class="line">        self.fc2 = nn.Linear(in_features=<span class="number">120</span>, out_features=<span class="number">60</span>)</span><br><span class="line">        self.out = nn.Linear(in_features=<span class="number">60</span>, out_features=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, t)</span>:</span></span><br><span class="line">        <span class="comment"># implement the forward pass</span></span><br><span class="line">        <span class="comment"># (1) input layer</span></span><br><span class="line">		t = t</span><br><span class="line">        <span class="comment"># (2) hidden conv layer</span></span><br><span class="line">        t = self.conv1(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line">        t = F.max_pool2d(t, kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (3) hidden conv layer</span></span><br><span class="line">        t = self.conv2(t) <span class="comment"># [batch_size, channels, width, height]</span></span><br><span class="line">        </span><br><span class="line">        t = F.relu(t)</span><br><span class="line">        t = F.max_pool2d(t, kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (4) hidden linear layer</span></span><br><span class="line">        t = t.reshape(<span class="number">-1</span>, <span class="number">12</span> * <span class="number">4</span> * <span class="number">4</span>)</span><br><span class="line">        t = self.fc1(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (5) hidden linear layer</span></span><br><span class="line">        t = self.fc2(t)</span><br><span class="line">        t = F.relu(t)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># (6) output layer</span></span><br><span class="line">        t = self.out(t)</span><br><span class="line">        <span class="comment">#t = F.softmax(t, dim=1)</span></span><br><span class="line">        <span class="keyword">return</span> t</span><br><span class="line"></span><br><span class="line">&gt; network = Network()</span><br><span class="line">&gt; print(network)</span><br><span class="line">Network(</span><br><span class="line">  (conv1): Conv2d(<span class="number">1</span>, <span class="number">6</span>, kernel_size=(<span class="number">5</span>, <span class="number">5</span>), stride=(<span class="number">1</span>, <span class="number">1</span>))</span><br><span class="line">  (conv2): Conv2d(<span class="number">6</span>, <span class="number">12</span>, kernel_size=(<span class="number">5</span>, <span class="number">5</span>), stride=(<span class="number">1</span>, <span class="number">1</span>))</span><br><span class="line">  (fc1): Linear(in_features=<span class="number">192</span>, out_features=<span class="number">120</span>, bias=<span class="literal">True</span>)</span><br><span class="line">  (fc2): Linear(in_features=<span class="number">120</span>, out_features=<span class="number">60</span>, bias=<span class="literal">True</span>)</span><br><span class="line">  (out): Linear(in_features=<span class="number">60</span>, out_features=<span class="number">10</span>, bias=<span class="literal">True</span>)</span><br><span class="line">)</span><br><span class="line">&gt; network.conv1.weight.shape <span class="comment"># [channels,kernel_nums, kernel_size,kernel_size]</span></span><br><span class="line">torch.Size([<span class="number">6</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">5</span>])</span><br><span class="line">&gt; network.conv2.weight.shape</span><br><span class="line">torch.Size([<span class="number">12</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">5</span>])</span><br></pre></td></tr></table></figure>
-<p>总的来说，要经过 3 个步骤：</p>
-<ol>
-<li><p>继承<code>nn.Moudle</code></p>
-</li>
-<li><p>在<code>__init__(self)</code>方法中定义神经网络中的<code>layer</code>作为类的属性</p>
-</li>
-<li>实现<code>forward()</code>方法。</li>
-</ol>
-<p><strong>tips</strong>：一个多通道卷积与<strong>feature maps</strong>作卷积，结果是一个数值（每个通道卷积最后加起来），因此，<code>output_channels</code>的数量<strong>取决于卷积核的数量</strong>。每一层卷积的参数 = <code>channels * kernel_nums * size</code>。</p>
-<p>在定义好模型结构后，就可以输入训练集进行迭代训练直至收敛。</p>
-<p>上述网络结构中，<code>feature maps</code>尺寸变化如下：</p>
-<p><img src="/images/feature——maps.png" alt=""></p>
-<p><strong><code>feature_map</code>变换公式</strong>：</p>
-<ul>
-<li>图片大小 $W$</li>
-<li>卷积核<code>filter</code>大小 $F$</li>
-<li>步长<code>stride</code> 大小 $S$</li>
-<li>填充<code>padding</code>大小 $P$</li>
-<li><code>max_pooling</code>层 核大小 $f$</li>
-<li><code>max_pooling</code>层步长 <code>stride</code> $s$</li>
-</ul>
-<p>经过卷积输出大小 $N$ 有：</p>
-<script type="math/tex; mode=display">
-N = \frac{W - F + 2P}{S} + 1</script><p>再经过<code>max_pooling</code> ,最终大小 $M$ ,有:</p>
-<script type="math/tex; mode=display">
-M = \frac{N-f}{s} + 1</script><p>注：<code>nn.Conv2d</code>输出维度：<code>[batch_size, channels, width, height]</code></p>
-<h3 id="2-训练你的模型"><a href="#2-训练你的模型" class="headerlink" title="2 训练你的模型"></a>2 训练你的模型</h3><p><strong>训练流程</strong>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. Get batch from the training set.</span><br><span class="line">2. Pass batch to network.</span><br><span class="line">3. Calculate the loss (difference between the predicted values and the true values).</span><br><span class="line">4. Calculate the gradient of the loss function w.r.t the network&#39;s weights.</span><br><span class="line">5. Update the weights using the gradients to reduce the loss.（反向传播）</span><br><span class="line">6. Repeat steps 1-5 until one epoch is completed.</span><br><span class="line">7. Repeat steps 1-6 for as many epochs required to reach the minimum loss.</span><br></pre></td></tr></table></figure>
-<p><strong>batch</strong>：每次输入神经网络中的数据集数量。</p>
-<p><strong>epoch</strong>：遍历完整个数据集称之为一个<code>epoch</code>。</p>
-<p>整个流程代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</span><br><span class="line"><span class="comment">#from plotcm import plot_confusion_matrix</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pdb</span><br><span class="line"></span><br><span class="line">torch.set_printoptions(linewidth=<span class="number">120</span>)</span><br><span class="line"><span class="comment">#训练数据集的加载</span></span><br><span class="line">train_set = torchvision.datasets.FashionMNIST(</span><br><span class="line">    root=<span class="string">'./data'</span></span><br><span class="line">    ,train=<span class="literal">True</span></span><br><span class="line">    ,download=<span class="literal">True</span></span><br><span class="line">    ,transform=transforms.Compose([</span><br><span class="line">        transforms.ToTensor()</span><br><span class="line">    ])</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">train_loader = torch.utils.data.DataLoader(train_set</span><br><span class="line">    ,batch_size=<span class="number">1000</span></span><br><span class="line">    ,shuffle=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_num_correct</span><span class="params">(preds, labels)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> preds.argmax(dim=<span class="number">1</span>).eq(labels).sum().item()</span><br><span class="line"></span><br><span class="line"><span class="comment">#开始训练</span></span><br><span class="line">network = Network()</span><br><span class="line">torch.set_grad_enabled(<span class="literal">True</span>)</span><br><span class="line">train_loader = torch.utils.data.DataLoader(train_set, batch_size=<span class="number">100</span>)</span><br><span class="line">optimizer = optim.Adam(network.parameters(), lr=<span class="number">0.01</span>)</span><br><span class="line"><span class="comment"># 要遍历10次整个数据集</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    total_loss = <span class="number">0</span></span><br><span class="line">    total_correct = <span class="number">0</span></span><br><span class="line">	<span class="comment"># batchsize = 1000</span></span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> train_loader: <span class="comment"># Get Batch</span></span><br><span class="line">        images, labels = batch</span><br><span class="line"></span><br><span class="line">        preds = network(images) <span class="comment"># Pass Batch</span></span><br><span class="line">        loss = F.cross_entropy(preds, labels) <span class="comment"># Calculate Loss</span></span><br><span class="line"></span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        loss.backward() <span class="comment"># Calculate Gradients</span></span><br><span class="line">        optimizer.step() <span class="comment"># Update Weights</span></span><br><span class="line"></span><br><span class="line">        total_loss += loss.item()</span><br><span class="line">        total_correct += get_num_correct(preds, labels)</span><br><span class="line"></span><br><span class="line">    print(</span><br><span class="line">        <span class="string">"epoch"</span>, epoch,</span><br><span class="line">        <span class="string">"total_correct:"</span>, total_correct,</span><br><span class="line">        <span class="string">"loss:"</span>, total_loss</span><br><span class="line">    )</span><br><span class="line">total_correct/len(train_set) <span class="comment"># 0.8858833333333334</span></span><br></pre></td></tr></table></figure>
-<p>最后可以看出，在训练集上的准确率为 $88\%$ 左右。</p>
-<p>输出如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">epoch <span class="number">0</span> total_correct: <span class="number">51138</span> loss: <span class="number">238.7455054372549</span></span><br><span class="line">epoch <span class="number">1</span> total_correct: <span class="number">52016</span> loss: <span class="number">216.4094382673502</span></span><br><span class="line">epoch <span class="number">2</span> total_correct: <span class="number">52269</span> loss: <span class="number">206.6615267843008</span></span><br><span class="line">epoch <span class="number">3</span> total_correct: <span class="number">52513</span> loss: <span class="number">201.51278421282768</span></span><br><span class="line">epoch <span class="number">4</span> total_correct: <span class="number">52504</span> loss: <span class="number">197.78098802268505</span></span><br><span class="line">epoch <span class="number">5</span> total_correct: <span class="number">52791</span> loss: <span class="number">192.42419914901257</span></span><br><span class="line">epoch <span class="number">6</span> total_correct: <span class="number">52802</span> loss: <span class="number">193.69900572299957</span></span><br><span class="line">epoch <span class="number">7</span> total_correct: <span class="number">53002</span> loss: <span class="number">187.62913002073765</span></span><br><span class="line">epoch <span class="number">8</span> total_correct: <span class="number">53087</span> loss: <span class="number">183.71526048332453</span></span><br><span class="line">epoch <span class="number">9</span> total_correct: <span class="number">53153</span> loss: <span class="number">182.18467965722084</span></span><br></pre></td></tr></table></figure>
-<p>在测试集上的表现如何？</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">test_set = torchvision.datasets.FashionMNIST(</span><br><span class="line">    root=<span class="string">'./data'</span>,</span><br><span class="line">    train= <span class="literal">False</span>,</span><br><span class="line">    download=<span class="literal">False</span>,</span><br><span class="line">    transform=transforms.Compose([</span><br><span class="line">        transforms.ToTensor()])</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">test_loader = torch.utils.data.DataLoader(test_set,batch_size=<span class="number">500</span>,shuffle=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">global</span> correct</span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    correct = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> test_loader:</span><br><span class="line"></span><br><span class="line">        images,labels = batch</span><br><span class="line">        preds = network(images)</span><br><span class="line">        preds = preds.argmax(dim = <span class="number">1</span>)</span><br><span class="line">        correct += (preds == labels).sum()</span><br><span class="line">        print(correct)</span><br><span class="line">print(correct.item() *<span class="number">1.0</span> / len(test_set)) <span class="comment">#0.8631</span></span><br></pre></td></tr></table></figure>
-<p>在测试集上的准确率为 $86.31\%$。仍然有很大改善空间。</p>
-<p>下面观察以下经过<code>conv1</code>、<code>conv2</code>后的<code>feature maps</code>。（没有经过最大池化）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">sets = iter(train_loader)</span><br><span class="line">batch = next(sets)</span><br><span class="line">images,labels = batch</span><br><span class="line">input = images[<span class="number">0</span>].unsqueeze(<span class="number">0</span>) <span class="comment">#[1, 1, 28, 28] 升维，增加一个维度 batch</span></span><br><span class="line">network = Network()</span><br><span class="line">feature1 = network.conv1(input)</span><br><span class="line">feature2 = network.conv2(feature1)</span><br><span class="line">feature1_ = feature1.squeeze() <span class="comment">#[6,24,24]</span></span><br><span class="line">feature2_ = feature2.squeeze() <span class="comment">#[12,20,20]</span></span><br><span class="line"></span><br><span class="line">ch1 = feature1_[<span class="number">5</span>]</span><br><span class="line">ch1_ = ch1.data.numpy()</span><br><span class="line">ch2 = feature2_[<span class="number">5</span>]</span><br><span class="line">ch2_ = ch2.data.numpy()</span><br><span class="line"></span><br><span class="line">plt.imshow(ch1_)</span><br><span class="line">plt.show()</span><br><span class="line">plt.imshow(ch2_)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p><img src="/images/f1_6.png" alt=""></p>
-<center>conv1后第6通道的feature</center>
-
-<p><img src="/images/f2_6.png" alt=""></p>
-<center>conv2后第6通道的feature</center>
-
-<h3 id="3-记点其他的知识"><a href="#3-记点其他的知识" class="headerlink" title="3 记点其他的知识"></a>3 记点其他的知识</h3><h4 id="3-1-Batch-Normalization"><a href="#3-1-Batch-Normalization" class="headerlink" title="3.1 Batch Normalization"></a>3.1 Batch Normalization</h4><p>在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。[ <a href="https://pytorch.org/docs/stable/nn.html#batchnorm2d" target="_blank" rel="noopener">https://pytorch.org/docs/stable/nn.html#batchnorm2d</a> ]</p>
-<p><strong>提出原因</strong>：解决梯度消失问题， 加速训练收敛过程 。</p>
-<p><strong>原理</strong>：将隐层的输入分布变为均值为 $0$ ，方差为 $1$ 的正态分布。</p>
-<p>设$X = \{x_1,x_2,…,x_m\}$表示$X$的维度。$m$ 代表 $batch-size$.</p>
-<script type="math/tex; mode=display">
-x = Wu + b</script><p>计算样本每个维度均值：</p>
-<script type="math/tex; mode=display">
-\mu_B = \frac{1}{m} \sum_{i = 1}^{m} x_i</script><p>计算样本每个维度的方差：</p>
-<script type="math/tex; mode=display">
-\sigma_B^2 = \frac{1}{m} \sum_{i = 1}^{m} (x_i - \mu_B)^2</script><script type="math/tex; mode=display">
-\hat x_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}</script><script type="math/tex; mode=display">
-y_i = \gamma\hat x_i + \beta = BN_{\gamma,\beta}(x_i)</script><p>其中，$\gamma$、$\beta$ 是通过学习得到的。</p>
-<p><strong>如何操作</strong>：即将<code>input</code>与<code>weight matrix</code>相乘后，再作为激活函数的输入。在<code>CNN</code>中，是做完卷积操作后，激活函数之前。在训练时，均值、方差都是训练时<code>batch</code>的统计数据，可以记下然后做加权平均得到测试时使用的均值和方差，在测试时使用。</p>
-<p><img src="/images/20160522210927345.png" alt=""></p>
-<center>全连接层，bn层的位置</center>
-
-<p><img src="/images/cnn-bn.png" style="zoom:70%;" /></p>
-<center>一般卷积操作中，bn层的位置</center>
-
-<p><strong>进一步的理解</strong>：</p>
-<p>在原论文<code>3.2</code>节，作者提到 $BN$ 通常加入到<strong>非线性单元（激活函数）之前</strong>，对 $Wu + b$ 进行<code>normalizing</code>，而不是 $u$，作者是这样解释的：$u$ 可能是上一个非线性单元的输出，非线性单元的输出分布形状会在训练过程中变化，归一化无法消除他的方差偏移。</p>
-<p>而对于 $Wu+b$ （线性变换，卷积操作也是线性变换）这种变换的输出一般是一个对称，非稀疏的一个分布，更加类似高斯分布，对他们进行归一化会产生更加稳定的分布。</p>
-<p>看一下 $W u + b$ 经过$BN$后，参数 $b$ 的变化：</p>
-<script type="math/tex; mode=display">
-\mu = \frac{1}{m} \sum_{i = 1}^{m} Wu_i + b = \frac{1}{m}\sum_{i=1}^{m}Wu_i + \frac{bm}{m}</script><script type="math/tex; mode=display">
-\hat x_i = \frac{Wu_i + b- \mu}{\sqrt{\sigma^2 + \epsilon}} = \frac{Wu_i - \frac{1}{m}\sum_{i=1}^{m}Wu_i}{\sqrt{\sigma^2 + \epsilon}}</script><p>可以看到参数$b$最后被消掉了，可有可无。因此可以表示为：</p>
-<script type="math/tex; mode=display">
-z = g(BN(Wu + b)) \rightarrow z = g(BN(Wu))</script><p><strong>We could have also normalized the layer inputs u, but since u is likely the output of another nonlinearity, the shape of its distribution is likely to change during training, and constraining its first and second moments would not eliminate the co-variate shift.</strong></p>
-<p><strong>In contrast, Wu + b is more likely to have a symmetric, non-sparse distribution, that is “more Gaussian”; normalizing it is likely to produce activations with a stable distribution.</strong></p>
-<p><strong>经过卷积后怎么 BN</strong></p>
-<p>通常经过卷积操作后，会产生多个<code>channel</code>。将每个<code>channel</code>视为一个维度，统计<code>channel</code>内所有样本的均值和方差，这样每个<code>channel</code>对应一对参数$\gamma,\beta$。比如：<code>[batch_size,channel,width,height]</code>，每个<code>channel</code>内，<code>batch_size * width * height</code>的均值和方差。</p>
-<h4 id="3-2-Dropout"><a href="#3-2-Dropout" class="headerlink" title="3.2 Dropout"></a>3.2 Dropout</h4><p>在<code>Pytorch</code>中，位于<code>torch.nn</code>包下。</p>
-<p><strong>提出原因</strong>：解决过拟合问题。</p>
-<h4 id="3-3-卷积数学定义"><a href="#3-3-卷积数学定义" class="headerlink" title="3.3 卷积数学定义"></a>3.3 卷积数学定义</h4><p><strong>离散卷积</strong></p>
-<script type="math/tex; mode=display">
-(f*g)(n) = \sum_{\tau = -m}^{m} f(\tau)g(n-\tau)</script><p><strong>连续卷积</strong></p>
-<script type="math/tex; mode=display">
-(f*g)(n) = \int_{\tau = -m}^{\tau = m} f(\tau)g(n-\tau)</script><p>事实上，我们在二维卷积的时候，使用的卷积核<script type="math/tex">(g)</script>是经过反转后的，为了方便计算。在进行一维卷积时，也需要对核进行反转（左右反转）。</p>
-<p>参考：<a href="https://www.cnblogs.com/itmorn/p/11177439.html" target="_blank" rel="noopener">https://www.cnblogs.com/itmorn/p/11177439.html</a></p>
-<p>计算：<a href="https://www.nowcoder.com/questionTerminal/0a3fc6ff7d89441db100fdd00ce22132?orderByHotValue=1&amp;page=1&amp;onlyReference=false" target="_blank" rel="noopener">https://www.nowcoder.com/questionTerminal/0a3fc6ff7d89441db100fdd00ce22132?orderByHotValue=1&amp;page=1&amp;onlyReference=false</a></p>
-<h4 id="3-4-Attention-机制"><a href="#3-4-Attention-机制" class="headerlink" title="3.4 Attention 机制"></a>3.4 Attention 机制</h4><p><strong>传统 Encoder-Decoder 模型</strong>：</p>
-<p> 在传统的模型中， 我们仅使用 Encoder 的最后一个隐状态作为 Decoder 的初始隐状态，Encoder 最后的隐状态被称为<strong>context vector</strong>向量，因为他对整个输入的 sentence 做了一个编码。在之后的 Decoder 模型中，<code>Decoder</code>初始<code>input</code>为<code>SOS(start of string) token</code>，初始隐状态为这个 context vector，然后接受上一次的<code>output</code>作为<code>input</code>迭代完成训练。</p>
-<p><img src="/images/encoder-decoder.png" alt=""></p>
-<p><strong>加入了 Attention 机制的 Encoder-Decoder 模型</strong>：</p>
-<p> 标准$seq2seq$模型通常无法准确处理长输入序列，因为只有编码器的最后一个隐藏状态被用作解码器的上下文向量。 另一方面，注意力机制在解码过程中保留并利用了输入序列的所有隐藏状态(context vector)，因此直接解决了此问题。 它通过在解码器输出的每个时间步长到所有编码器隐藏状态之间创建唯一的映射来实现此目的。 这意味着，对于解码器产生的每个输出，它都可以访问整个输入序列，并且可以从该序列中有选择地选择特定元素以产生输出。 相对于传统 LSTM 记忆网络处理长度较长的序列，加入 Attention 后参数减少。</p>
-<p><img src="/images/1152PYf.png" alt=""></p>
-<p> Attention 机制分为不同的种类，但总的来说大概分为以下几步：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> Calculating Alignment Scores</span><br><span class="line"><span class="number">2.</span> Softmaxing alignment scores to get Attention weights（归一化）</span><br><span class="line"><span class="number">3.</span> Multiplying the Attention weights <span class="keyword">with</span> encoder outputs/all hidden states to get the context vector(加权求和)</span><br><span class="line"><span class="number">4.</span> Concatenating context vector <span class="keyword">with</span> embedded input word</span><br></pre></td></tr></table></figure>
-<p>具体实现参考：</p>
-<p><a href="https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html" target="_blank" rel="noopener">https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html</a></p>
-<p><a href="https://blog.floydhub.com/attention-mechanism/" target="_blank" rel="noopener">https://blog.floydhub.com/attention-mechanism/</a></p>
-<p><img src="/images/attention-decoder-network.png" alt=""></p>
-<p> 下面介绍<strong>NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</strong>论文中提到的 Attention 机制。</p>
-<ul>
-<li><p>首先将序列经过 Encoder 模型，产生所有隐状态$H_{Encoder}$</p>
-</li>
-<li><p>计算 Alignment Scores:</p>
-<p>在 Decoder 模型中，时间 $i$ 对应的前一个隐状态为$s_{i-1}$，</p>
-<script type="math/tex; mode=display">
-e_{ij} = \alpha(s_{i-1},h_j),j=1,2,3,...,T_x</script><p>表示不同$h_j$对$s_{i}$的影响程度。即将 $s_{i-1}$ 与每一个 Encoder 的隐状态经过一个函数得到输出，这个函数的参数通过学习得到。</p>
-</li>
-<li><p>$soft\max$归一化，得到 attention weights</p>
-<script type="math/tex; mode=display">
-\alpha_{ij} = \frac{\exp(e_{ij})}{\sum_{k=1}^{T_X} \exp(e_{ik})}</script></li>
-</ul>
-<ul>
-<li><p>计算 context vector:</p>
-<script type="math/tex; mode=display">
-c_i = \sum_{j=1}^{T_x} \alpha_{ij}h_j</script><p><strong>注意</strong>：此时$c_i$仍是一个多维向量，相加的时候是各个维度分别相加。</p>
-</li>
-<li><p>将 context vector 与$t-1$的 output 作为输入（ _concatenated_ ），与$s_{i-1}$传入 decoder 模型中得到输出。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># 所有encoder隐状态 共有3个隐态，维度为4</span></span><br><span class="line">hidden_states = np.array([</span><br><span class="line">    [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],</span><br><span class="line">    [<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>],</span><br><span class="line">    [<span class="number">0</span>,<span class="number">-1</span>,<span class="number">3</span>,<span class="number">6</span>]</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 得出的attention权重</span></span><br><span class="line">weights = np.array([[<span class="number">0.6</span>,<span class="number">0.3</span>,<span class="number">0.1</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># weights和hidden_states 相乘</span></span><br><span class="line">np.dot(weights,hidden_states)</span><br><span class="line"><span class="comment">#各个维度相加得到context_vector</span></span><br><span class="line">array([[<span class="number">1.2</span>, <span class="number">2.</span> , <span class="number">3.6</span>, <span class="number">5.1</span>]])</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><img src="/images/attn_mem.jpeg" alt=""></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BahdanauDecoder</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, hidden_size, output_size, n_layers=<span class="number">1</span>, drop_prob=<span class="number">0.1</span>)</span>:</span></span><br><span class="line">    super(BahdanauDecoder, self).__init__()</span><br><span class="line">    self.hidden_size = hidden_size</span><br><span class="line">    self.output_size = output_size</span><br><span class="line">    self.n_layers = n_layers</span><br><span class="line">    self.drop_prob = drop_prob</span><br><span class="line"></span><br><span class="line">    self.embedding = nn.Embedding(self.output_size, self.hidden_size)</span><br><span class="line"></span><br><span class="line">    self.fc_hidden = nn.Linear(self.hidden_size, self.hidden_size, bias=<span class="literal">False</span>)</span><br><span class="line">  </span><br><span class="line">    self.fc_encoder = nn.Linear(self.hidden_size, self.hidden_size, bias=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment">#也可以用nn.Linear代替</span></span><br><span class="line">    self.weight = nn.Parameter(torch.FloatTensor(<span class="number">1</span>, hidden_size))</span><br><span class="line">    self.attn_combine = nn.Linear(self.hidden_size * <span class="number">2</span>, self.hidden_size)</span><br><span class="line">    self.dropout = nn.Dropout(self.drop_prob)</span><br><span class="line">    self.lstm = nn.LSTM(self.hidden_size*<span class="number">2</span>, self.hidden_size, batch_first=<span class="literal">True</span>)</span><br><span class="line">    self.classifier = nn.Linear(self.hidden_size, self.output_size)</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, inputs, hidden, encoder_outputs)</span>:</span></span><br><span class="line">    encoder_outputs = encoder_outputs.squeeze()</span><br><span class="line">    <span class="comment"># Embed input words</span></span><br><span class="line">    embedded = self.embedding(inputs).view(<span class="number">1</span>, <span class="number">-1</span>)</span><br><span class="line">    embedded = self.dropout(embedded)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Calculating Alignment Scores</span></span><br><span class="line">    x = torch.tanh(self.fc_hidden(hidden[<span class="number">0</span>])+self.fc_encoder(encoder_outputs))</span><br><span class="line">    alignment_scores = x.bmm(self.weight.unsqueeze(<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Softmaxing alignment scores to get Attention weights</span></span><br><span class="line">    attn_weights = F.softmax(alignment_scores.view(<span class="number">1</span>,<span class="number">-1</span>), dim=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Multiplying the Attention weights with encoder outputs to get the context vector</span></span><br><span class="line">    context_vector = torch.bmm(attn_weights.unsqueeze(<span class="number">0</span>),</span><br><span class="line">                             encoder_outputs.unsqueeze(<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Concatenating context vector with embedded input word</span></span><br><span class="line">    output = torch.cat((embedded, context_vector[<span class="number">0</span>]), <span class="number">1</span>).unsqueeze(<span class="number">0</span>)</span><br><span class="line">    <span class="comment"># Passing the concatenated vector as input to the LSTM cell</span></span><br><span class="line">    output, hidden = self.lstm(output, hidden)</span><br><span class="line">    <span class="comment"># Passing the LSTM output through a Linear layer acting as a classifier</span></span><br><span class="line">    output = F.log_softmax(self.classifier(output[<span class="number">0</span>]), dim=<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> output, hidden, attn_weights</span><br></pre></td></tr></table></figure>
-<h3 id="4-卷积网络之电影评论情感分类"><a href="#4-卷积网络之电影评论情感分类" class="headerlink" title="4. 卷积网络之电影评论情感分类"></a>4. 卷积网络之电影评论情感分类</h3><p>​        参考：<a href="https://github.com/bentrevett/pytorch-sentiment-analysis" target="_blank" rel="noopener">https://github.com/bentrevett/pytorch-sentiment-analysis</a></p>
-<p>​        采用<code>IMDB</code>数据集，使用<code>glove.6B.100d</code>预训练好的词向量。label总共有两类：消极评价：<code>neg</code>，积极评价：<code>pos</code>。</p>
-<p>​        使用卷积网络用来扫描词向量组成的矩阵，即使用过滤器（filters）扫描embedding矩阵，这里介绍的模型使用三个大小不同的filter，每个filter共100个，filter的宽度和embedding_dim相同，高度分为3、4、5，即filter每次扫描的单词个数分别为3、4、5，filter每次移动1个单词距离。最后的向量shape为<code>[lenth_of_the_word  - height_of_the_filter + 1, 1]</code>。将经过不同filter后的向量拼接起来然后经过全连接得到最终的预测结果。</p>
-<p><img src="/images/sentiment.png" alt="filter示意图"></p>
-<p><img src="/images/网络结构.jpg" alt=""></p>
 
       
       <!-- 打赏 -->

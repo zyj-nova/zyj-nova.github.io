@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-10-03T11:42:43.524Z</updated>
+  <updated>2020-10-06T10:33:32.064Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,36 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>多元高斯及其极大似然估计</title>
+    <link href="http://yoursite.com/2020/10/06/%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%8F%8A%E5%85%B6%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1/"/>
+    <id>http://yoursite.com/2020/10/06/%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%8F%8A%E5%85%B6%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1/</id>
+    <published>2020-10-06T07:54:18.217Z</published>
+    <updated>2020-10-06T10:33:32.064Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;多元高斯及其极大似然估计&quot;&gt;&lt;a href=&quot;#多元高斯及其极大似然估计&quot; class=&quot;headerlink&quot; title=&quot;多元高斯及其极大似然估计&quot;&gt;&lt;/a&gt;多元高斯及其极大似然估计&lt;/h2&gt;&lt;p&gt;参考：&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Transformer模型介绍</title>
     <link href="http://yoursite.com/2020/10/03/Transformer%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D/"/>
     <id>http://yoursite.com/2020/10/03/Transformer%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D/</id>
     <published>2020-10-03T06:58:05.171Z</published>
-    <updated>2020-10-03T11:42:43.524Z</updated>
+    <updated>2020-10-06T08:41:54.460Z</updated>
     
     <summary type="html">
     
@@ -94,7 +119,7 @@
     <link href="http://yoursite.com/2020/08/03/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/"/>
     <id>http://yoursite.com/2020/08/03/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/</id>
     <published>2020-08-03T08:01:07.919Z</published>
-    <updated>2020-10-05T13:06:14.965Z</updated>
+    <updated>2020-10-06T08:42:42.661Z</updated>
     
     <summary type="html">
     
@@ -488,31 +513,6 @@
     
     
       <category term="JS" scheme="http://yoursite.com/categories/JS/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Pytorch学习笔记之卷积神经网络</title>
-    <link href="http://yoursite.com/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
-    <id>http://yoursite.com/2020/05/18/Pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</id>
-    <published>2020-05-18T02:54:23.567Z</published>
-    <updated>2020-05-19T13:53:11.191Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;Pytorch学习笔记之卷积神经网络&quot;&gt;&lt;a href=&quot;#Pytorch学习笔记之卷积神经网络&quot; class=&quot;headerlink&quot; title=&quot;Pytorch学习笔记之卷积神经网络&quot;&gt;&lt;/a&gt;Pytorch学习笔记之卷积神经网络&lt;/h2&gt;&lt;h3
-        
-      
-    
-    </summary>
-    
-    
-      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
   </entry>
