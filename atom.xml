@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-10-06T10:33:32.064Z</updated>
+  <updated>2020-10-08T12:09:29.211Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>机器视觉基础Lecture 2</title>
+    <link href="http://yoursite.com/2020/10/08/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%202/"/>
+    <id>http://yoursite.com/2020/10/08/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%202/</id>
+    <published>2020-10-08T09:28:38.672Z</published>
+    <updated>2020-10-08T12:09:29.211Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;机器视觉基础-Lecture-2&quot;&gt;&lt;a href=&quot;#机器视觉基础-Lecture-2&quot; class=&quot;headerlink&quot; title=&quot;机器视觉基础 Lecture 2&quot;&gt;&lt;/a&gt;机器视觉基础 Lecture 2&lt;/h2&gt;&lt;h3
+        
+      
+    
+    </summary>
+    
+    
+      <category term="机器视觉基础" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>多元高斯及其极大似然估计</title>
@@ -481,31 +506,6 @@
         
         
           &lt;h2 id=&quot;Vuex使用&quot;&gt;&lt;a href=&quot;#Vuex使用&quot; class=&quot;headerlink&quot; title=&quot;Vuex使用&quot;&gt;&lt;/a&gt;Vuex使用&lt;/h2&gt;&lt;p&gt;​       
-        
-      
-    
-    </summary>
-    
-    
-      <category term="JS" scheme="http://yoursite.com/categories/JS/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>ES6模块的导出和导入</title>
-    <link href="http://yoursite.com/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/"/>
-    <id>http://yoursite.com/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/</id>
-    <published>2020-05-22T14:52:05.540Z</published>
-    <updated>2020-05-22T15:31:56.463Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;ES6模块的导出和导入&quot;&gt;&lt;a href=&quot;#ES6模块的导出和导入&quot; class=&quot;headerlink&quot; title=&quot;ES6模块的导出和导入&quot;&gt;&lt;/a&gt;ES6模块的导出和导入&lt;/h2&gt;&lt;p&gt;​   
         
       
     
