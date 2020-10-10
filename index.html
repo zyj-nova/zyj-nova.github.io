@@ -473,16 +473,24 @@ arg\max_{\pmb \mu,\Sigma}\ln\prod_{i=1}^Nf_{\mu,\Sigma}(\pmb x_i)</script><ul>
       
 
       
-      <h2 id="浅谈逻辑斯蒂回归模型"><a href="#浅谈逻辑斯蒂回归模型" class="headerlink" title="浅谈逻辑斯蒂回归模型"></a>浅谈逻辑斯蒂回归模型</h2><h3 id="sigmod函数"><a href="#sigmod函数" class="headerlink" title="sigmod函数"></a>sigmod函数</h3><script type="math/tex; mode=display">
-f(x) = \frac{1}{1 + e^{-x}}</script><script type="math/tex; mode=display">
-f^\prime (x)= f(x)*(1-f(x))</script><p>​        逻辑斯蒂回归或者是softmax回归，说是回归其实是在解决二分类或者多分类的问题。逻辑斯蒂模型如下：</p>
+      <h2 id="浅谈逻辑斯蒂回归模型"><a href="#浅谈逻辑斯蒂回归模型" class="headerlink" title="浅谈逻辑斯蒂回归模型"></a>浅谈逻辑斯蒂回归模型</h2><h3 id="sigmod函数"><a href="#sigmod函数" class="headerlink" title="sigmod函数"></a>sigmod函数</h3><p>​        $sigmod$函数及其导数形式如下：</p>
 <script type="math/tex; mode=display">
-y = \frac{1}{1 + e^{-（w^Tx +b)}}</script><p>​        其中，$x \in R^n, w \in R^n$，$b$为偏置bias可以设置为0，$x$为样本的特征向量，$w$即要学习的参数。在给定一批有label的训练数据集后，我们可以根据极大似然估计来得到最优的参数值，之后，给定某个测试数据，当：y &gt;= 0.5，我们就把这个样本划为1类，否则就划为0类。</p>
+f(x) = \frac{1}{1 + e^{-x}}</script><script type="math/tex; mode=display">
+f^\prime (x)= f(x)*(1-f(x))</script><p>​        逻辑斯蒂回归或者是$soft\max$回归，说是回归其实是在解决二分类或者多分类的问题。逻辑斯蒂模型如下：</p>
+<script type="math/tex; mode=display">
+y = \frac{1}{1 + e^{-（w^Tx +b)}}</script><p>​        其中，$x \in R^n, w \in R^n$，$b$为偏置bias可以设置为0，$x$为样本的特征向量，$w$即要学习的参数。在给定一批有label的训练数据集后，我们可以根据极大似然估计或者梯度下降来得到最优的参数值，之后，给定某个测试数据，当：$y &gt;= 0.5$，我们就把这个样本划为1类，否则就划为0类。</p>
 <p>​        其实，完整的二项逻辑斯蒂回归模型是定义如下的条件概率分布：</p>
 <script type="math/tex; mode=display">
 P(Y = 1|x) = \frac{\exp(w*x + b)}{1 + \exp(w*x + b)}</script><script type="math/tex; mode=display">
-P(Y = 0|x) = \frac{1}{1 + \exp(w*x + b)}</script><p>​        观察上述条件概率计算公式我们发现，当$w<em>x+b &gt; 0$的时候，$P(Y=1)$的概率一定高于$P(Y=0)$，我们就把其划分为1类。对于$P(Y=1)$的分布函数上下同除以分子$\exp$就得到了熟悉的逻辑斯蒂函数。$w</em>x+b &gt; 0$就等价于$y &gt; 0.5$，因此当逻辑斯蒂函数值$y &gt; 0.5$时就把样本划分到1类，在这个条件下，样本为1类的概率大于为0类的概率。</p>
+P(Y = 0|x) = \frac{1}{1 + \exp(w*x + b)}</script><p>​        观察上述条件概率计算公式我们发现，当$w<em>x+b &gt; 0$的时候，$\exp(w</em>x+b)&gt;1,P(Y=1)$的概率一定高于$P(Y=0)$，我们就把其划分为1类。对于$P(Y=1)$的分布函数上下同除以分子$\exp$就得到了熟悉的逻辑斯蒂函数。</p>
 <p>​        事实上，逻辑斯蒂函数是在计算样本为1类的概率，由于是二分类，不是1类就是0类。</p>
+<p>​        <strong>本质上，逻辑斯蒂回归是一个线性分类器，以二维特征为例，如果不对特征进行任何组合，不使用核函数，其决策平面始终是一条直线：$w^Tx = 0$</strong>。</p>
+<p><img src="/images/make_moons.png" alt=""></p>
+<p>​        以make moons生成的数据集为例，不对特征进行任何处理，决策平面如下：</p>
+<p><img src="/images/log_bundary2.png" alt=""></p>
+<p>​        若对两维特征进行平方处理，绘制的决策平面如下：</p>
+<p><img src="/images/log_bundary1.png" alt=""></p>
+<p>​        谈到特征融合，决策树就可以拿来做特征融合（从根节点到叶子节点的每一条路径都是一个组合特征）。</p>
 <h3 id="softmax回归模型"><a href="#softmax回归模型" class="headerlink" title="softmax回归模型"></a>softmax回归模型</h3><p>参考：<a href="https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/" target="_blank" rel="noopener">https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/</a></p>
 <p><strong>softmax函数</strong></p>
 <script type="math/tex; mode=display">
