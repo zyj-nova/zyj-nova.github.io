@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">540字</span>
+            <span class="post-count">541字</span>
         </span>
     </span>
 
@@ -105,7 +105,7 @@
 <h3 id="1-独立多元高斯的概率密度函数"><a href="#1-独立多元高斯的概率密度函数" class="headerlink" title="1. 独立多元高斯的概率密度函数"></a>1. 独立多元高斯的概率密度函数</h3><p>$n$个独立的随机变量$(x_1,x_2,…x_n)$的联合密度函数为</p>
 <script type="math/tex; mode=display">
 f_{\mu,\Sigma}(\pmb x)=\frac{1}{\sqrt{(2\pi)^n\det\Sigma}}e^{-\frac{1}{2}(\pmb x - \pmb \mu)^T\Sigma^{-1}(\pmb x - \pmb \mu)}</script><p>就是多元高斯分布（Multivariate Normal Distribution，MVN）。其中，$\pmb \mu$是各个随机变量的期望值所组成的向量，$\Sigma$是随机变量间的协方差矩阵，是$n \times n$的正定矩阵。</p>
-<h3 id="2-多元高斯的极大似然估计"><a href="#2-多元高斯的极大似然估计" class="headerlink" title="2. 多元高斯的极大似然估计"></a>2. 多元高斯的极大似然估计</h3><p>对于$N$个满足多元高斯分布的独立样本集：$\{\pmb x_1,\pmb x_2,..,\pmb x_N\},\pmb x \in \R^n$，似然函数为：</p>
+<h3 id="2-多元高斯的极大似然估计"><a href="#2-多元高斯的极大似然估计" class="headerlink" title="2. 多元高斯的极大似然估计"></a>2. 多元高斯的极大似然估计</h3><p>对于$N$个满足多元高斯分布的独立样本集：$\{\pmb x_1,\pmb x_2,..,\pmb x_N\},\pmb x \in  \mathbb{R}^n$，似然函数为：</p>
 <script type="math/tex; mode=display">
 \prod_{i=1}^Nf_{\mu,\Sigma}(\pmb x_i) = (2\pi)^{-\frac{Nn}{2}}|\Sigma|^{-\frac{N}{2}}e^{-\frac{1}{2}\sum_{i=1}^N(\pmb x_i - \pmb \mu)^T\Sigma^{-1}(\pmb x_i - \pmb \mu)}</script><p>取对数：</p>
 <script type="math/tex; mode=display">

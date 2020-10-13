@@ -41,6 +41,94 @@
     
     
     
+    <article id="post-Dropout理解与实现" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/06/30/Dropout%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/"
+    >Dropout理解与实现</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/06/30/Dropout%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="article-date">
+  <time datetime="2020-06-30T12:34:33.033Z" itemprop="datePublished">2020-06-30</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="Dropout理解与实现"><a href="#Dropout理解与实现" class="headerlink" title="Dropout理解与实现"></a>Dropout理解与实现</h2><ul>
+<li><p>作用：</p>
+<p>正则化的一种手段，训练过程中避免神经网络的过拟合。</p>
+<p>在某一层中，随机使一部分神经元失活（输出为0），<strong>导致这部分神经元对下一层输入的贡献为0</strong>。</p>
+<p>数学表达如下：</p>
+<p>第$l + 1$层的输入：</p>
+<script type="math/tex; mode=display">
+z_i^{(l+1)} = w_i^{(l+1)}y^l + b_i^{(l+1)}</script><script type="math/tex; mode=display">
+y_i^{(l+1)} = f(z_i^{(l+1)})</script><p>$f$为激活函数。</p>
+<p>若在该层使用dropout，则：</p>
+<script type="math/tex; mode=display">
+r^{(l+1)} = Bernouli(p)</script><script type="math/tex; mode=display">
+\hat y^{(l+1)} = r^{(l+1)} * y_i^{(l+1)}</script><p>$r^{(l+1)}$是一个mask向量，只包含0、1，其中为0表示该神经元失活了。$\hat y^{(l+1)}$即作为下一层的输入。</p>
+<p><img src="/images/dropout.png" alt=""></p>
+<p>即等价于：</p>
+<p><img src="https://pic2.zhimg.com/v2-64930dc0337f42bcdbec488fd5337e95_r.jpg" alt=""></p>
+</li>
+<li><p>实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">	x: 输入</span></span><br><span class="line"><span class="string">	keep_prob: 留存概率</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dropout</span><span class="params">(x, keep_prob)</span>:</span></span><br><span class="line">    mask = np.random.binomial(<span class="number">1</span>, keep_prob, size=x.shape)</span><br><span class="line">    x *= mask</span><br><span class="line">    x = x / keep_prob <span class="comment"># 对余下的神经元进行rescale</span></span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(x, W1, W2, W3, training=False)</span>:</span></span><br><span class="line">    z1 = np.dot(x, W1)</span><br><span class="line">    y1 = np.tanh(z1)</span><br><span class="line">    z2 = np.dot(y1, W2)</span><br><span class="line">    y2 = np.tanh(z2)</span><br><span class="line">    <span class="comment"># Dropout in layer 2 </span></span><br><span class="line">    <span class="keyword">if</span> training:</span><br><span class="line">        m2 = np.random.binomial(<span class="number">1</span>, <span class="number">0.5</span>, size=z2.shape) <span class="comment"># 生成mask</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        m2 = <span class="number">0.5</span> <span class="comment"># 训练中没有rescale，测试时需要平衡训练中失活的神经元数量</span></span><br><span class="line">    y2 *= m2 <span class="comment"># 乘以mask，为0即代表失活</span></span><br><span class="line">    z3 = np.dot(y2, W3)</span><br><span class="line">    y3 = z3 <span class="comment"># linear output</span></span><br><span class="line">    <span class="keyword">return</span> y1, y2, y3, m2</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(x, W1, W2, W3, training=False)</span>:</span></span><br><span class="line">    z1 = np.dot(x, W1)</span><br><span class="line">    y1 = np.tanh(z1)</span><br><span class="line">    z2 = np.dot(y1, W2)</span><br><span class="line">    y2 = np.tanh(z2)</span><br><span class="line">    <span class="comment"># Dropout in layer 2</span></span><br><span class="line">    <span class="keyword">if</span> training:</span><br><span class="line">   		y2 = dropout(y2,<span class="number">0.5</span>) <span class="comment"># 训练阶段已经进行了rescale</span></span><br><span class="line">    z3 = np.dot(y2, W3)</span><br><span class="line">    y3 = z3 <span class="comment"># linear output</span></span><br><span class="line">    <span class="keyword">return</span> y1, y2, y3, m2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注意：</p>
+<p>测试中不需要dropout。dropout一般用于全连接层之前，对卷积层的效果一般。</p>
+</li>
+</ul>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-Flink流式处理框架学习" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -987,83 +1075,6 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
 <li><p><strong>决策树、朴素贝叶斯等概率模型不需要标准化</strong></p>
 </li>
 </ol>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-Vuex使用" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/"
-    >Vuex使用</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" class="article-date">
-  <time datetime="2020-05-23T09:17:03.636Z" itemprop="datePublished">2020-05-23</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/JS/">JS</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="Vuex使用"><a href="#Vuex使用" class="headerlink" title="Vuex使用"></a>Vuex使用</h2><p>​        <code>Vuex</code>是一个状态管理库，使用单一状态树管理应用内的全局状态。</p>
-<p>​        <code>index.js</code>文件如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">"vue"</span>;</span><br><span class="line"><span class="keyword">import</span> Vuex <span class="keyword">from</span> <span class="string">"vuex"</span>;</span><br><span class="line"><span class="keyword">import</span> cart <span class="keyword">from</span> <span class="string">"./cart"</span></span><br><span class="line">Vue.use(Vuex);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">  <span class="comment">//全局的state</span></span><br><span class="line">  <span class="comment">// 如何调用：this.$store.state.状态名 / this.$store.state.模块名.状态名</span></span><br><span class="line">  state: &#123;</span><br><span class="line">    isTabbarShow: <span class="literal">true</span>,</span><br><span class="line">    itemList: [],</span><br><span class="line">  &#125;,</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    <span class="comment">//修改state操作，state为第一个参数，vue会自动注入该函数</span></span><br><span class="line">    <span class="comment">//如何调用：this.$store.commit("函数名",[data])</span></span><br><span class="line">    HideTabbar(state, data) &#123;</span><br><span class="line">      state.isTabbarShow = data;</span><br><span class="line">    &#125;,</span><br><span class="line">    ShowTabbar(state, data) &#123;</span><br><span class="line">      state.isTabbarShow = data;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  actions: &#123;</span><br><span class="line">    <span class="comment">//主要执行异步操作,</span></span><br><span class="line">    <span class="comment">// 如何调用：this.$store.dispatch("模块名/函数名称",[data])</span></span><br><span class="line">    test(store, data) &#123;</span><br><span class="line">      <span class="comment">//使用commit通过mutation中方法修改state</span></span><br><span class="line">      store.commit(<span class="string">""</span>, data);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  getters: &#123;</span><br><span class="line">    <span class="comment">// store中的计算属性</span></span><br><span class="line">    <span class="comment">// 调用方式 $store.getters."函数名字"</span></span><br><span class="line">    getItemListTop3(state) &#123;</span><br><span class="line">      <span class="keyword">return</span> state.itemList.slice(<span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  modules: &#123;</span><br><span class="line">    <span class="comment">//不同模块中可以定义state、mutations、actions，然后包装成一个对象导出，在这儿进行导入，注意在子模块中不需要使用Vuex.Store构造函数。</span></span><br><span class="line">      cart,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store;</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">cart/index.js</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> state = &#123;</span><br><span class="line">  items: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>],</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> getters = &#123;</span><br><span class="line">  getOddItem(state) &#123;</span><br><span class="line">    <span class="keyword">return</span> state.items.filter(<span class="function">(<span class="params">x</span>) =&gt;</span> x % <span class="number">2</span> == <span class="number">0</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> mutations = &#123;</span><br><span class="line">  incre(state) &#123;</span><br><span class="line">    state.items = state.items.map(<span class="function">(<span class="params">x</span>) =&gt;</span> x + <span class="number">2</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;<span class="comment">//开启了命名空间</span></span><br><span class="line">  namespaced: <span class="literal">true</span>,</span><br><span class="line">  state,</span><br><span class="line">  getters,</span><br><span class="line">  mutations,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>在<code>main.js</code>中：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">"@/store"</span>;</span><br><span class="line"></span><br><span class="line">Vue.config.productionTip = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  store,</span><br><span class="line">  render: <span class="function">(<span class="params">h</span>) =&gt;</span> h(App),</span><br><span class="line">&#125;).$mount(<span class="string">"#app"</span>);</span><br></pre></td></tr></table></figure>
-<p>​        <strong>注意：</strong></p>
-<p>​        默认情况下，模块内部的 <strong>action、mutation 和 getter</strong> 是注册在<strong>全局命名空间</strong>的——这样使得多个模块能够对同一 mutation 或 action 作出响应。</p>
-<p>​        <strong>即不论是在那个模块定义的，都可以使用</strong><code>this.$store.getters.名字</code>进行调用。如果希望你的模块具有更高的封装度和复用性，你可以通过添加 <code>namespaced: true</code> 的方式使其成为带命名空间的模块。当模块被注册后，它的所有 getter、action 及 mutation 都会自动根据模块注册的路径调整命名。即：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$store.getters[<span class="string">"cart/getOddItem"</span>]</span><br><span class="line">$store.dispatch(<span class="string">'cart/login'</span>)</span><br><span class="line">$store.commit(<span class="string">'cart/incre)</span></span><br></pre></td></tr></table></figure>
-<p>​        可以看到，在vuex中，只允许mutation操作修改state，构成单向数据流。示意图如下：</p>
-<p><img src="https://vuex.vuejs.org/vuex.png" alt=""></p>
-<p><strong>补充：</strong></p>
-<p>vue中计算属性（computed）和方法（methods）的区别：</p>
-<p>计算属性以方法形式定义，使用时使用属性的方式进行调用；计算属性只会计算一次，结果缓存在内存中，当其相关联的数据发生改变时才会重新计算。而方法调用一次就会被执行一次。当有关数据处理逻辑较为复杂，或页面中需要多处使用时可以使用计算属性。</p>
 
       
       <!-- 打赏 -->

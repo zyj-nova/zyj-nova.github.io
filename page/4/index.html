@@ -41,6 +41,141 @@
     
     
     
+    <article id="post-EM算法" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/03/19/EM%E7%AE%97%E6%B3%95/"
+    >EM算法</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/03/19/EM%E7%AE%97%E6%B3%95/" class="article-date">
+  <time datetime="2020-03-19T08:59:43.608Z" itemprop="datePublished">2020-03-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h2><p>唉，em算法是我看过最恶心的算法。是我概率论知识太差了？…</p>
+<p>参考资料：$Andrew Ng$ $cs229-notes8$ 、统计学习方法（第二版）</p>
+<h3 id="1-极大似然估计"><a href="#1-极大似然估计" class="headerlink" title="1.极大似然估计"></a>1.极大似然估计</h3><ul>
+<li><p>似然（$likelihood$）与概率（$probability$）</p>
+<p>​        概率，用于在已知一些参数的情况下，预测接下来在观测上所得到的结果；似然性，则是用于在已知某些观测所得到的结果时，对有关事物之性质的参数进行估值，即<strong>估计参数的可能性</strong>。</p>
+<p>参见：<a href="https://zh.wikipedia.org/wiki/似然函数" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E4%BC%BC%E7%84%B6%E5%87%BD%E6%95%B0</a></p>
+</li>
+</ul>
+<p>​        <strong>其实极大似然估计就是根据样本来估计统计模型的参数，选取一个参数使得当前观测的概率最大</strong>。<strong>似然函数取得最大值表示相应的参数能够使得统计模型最为合理。</strong></p>
+<p>推荐宋浩老师的这节课。<a href="https://www.bilibili.com/video/av36206436?t=3565&amp;p=67" target="_blank" rel="noopener">https://www.bilibili.com/video/av36206436?t=3565&amp;p=67</a></p>
+<p>主要有以下步骤：</p>
+<ol>
+<li>写出总体的概率函数或概率密度函数</li>
+<li>写出似然函数（通常是概率连乘的形式）。在数理统计学中，似然函数是一种关于统计模型中的参数的函数。</li>
+<li>两边取对数，得到<strong>对数似然函数</strong></li>
+<li>求对数似然函数关于参数的导数或偏导，并求出使得导数或偏导为0的参数。该参数即为所求</li>
+</ol>
+<p><strong>注意：</strong></p>
+<ul>
+<li>Q：为什么是连乘的形式？A：所有样本之间的概率是相互独立的。</li>
+<li>通常某个函数的极值点，导数为0或不存在。</li>
+</ul>
+<p><strong>例子：</strong></p>
+<p>已知存在一批可观测样本$\{x_1,x_2,…,x_n\}$，随机变量 $X$ 满足正态分布 $N(\mu,\sigma^2)$，利用极大似然估计，求出正态分布的相关参数。</p>
+<p><strong>解：</strong></p>
+<ol>
+<li><p>先写出正态分布的概率密度函数：</p>
+<script type="math/tex; mode=display">
+f(x) = \frac{1}{\sqrt{2\pi}\sigma}\exp^{-\frac{(x - \mu)^2}{2\sigma^2}}</script></li>
+<li><p>写出似然函数</p>
+<script type="math/tex; mode=display">
+L(\mu,\sigma^2) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x_i - \mu)^2}{2\sigma^2}} = (\frac{1}{\sqrt{2\pi}})^n(\sigma^2)^{-\frac{1}{2}n}e^{-\frac{\sum_{i}^{n}(x_i-\mu)^2 }{2\sigma^2}}</script></li>
+<li><p>两边取对数，得到对数似然函数</p>
+<script type="math/tex; mode=display">
+\ln L(\mu,\sigma^2) = n\ln(\frac{1}{\sqrt{2\pi}})-\frac{1}{2}n\ln(\sigma^2)-\frac{\sum_{i=1}^n (x_i-\mu)^2}{2\sigma^2}</script></li>
+<li><p>求对数似然函数关于$\mu$ ，$\sigma^2$ 的偏导</p>
+<script type="math/tex; mode=display">
+\frac{\partial \ln(L(\mu,\sigma^2))}{\partial \mu} = \frac{\sum_{i=1}^n(x_i-\mu)}{\sigma^2} = 0</script><script type="math/tex; mode=display">
+\sum_{i=1}^n(x_i-\mu) = 0 \rightarrow x_1+x_2+...+x_n-n\mu = 0</script></li>
+</ol>
+<script type="math/tex; mode=display">
+\mu = \frac{x_1+x_2+x_3+...+x_n}{n}</script><script type="math/tex; mode=display">
+\frac{\partial \ln(L(\mu,\sigma^2))}{\partial \sigma^2} =-\frac{n}{2\sigma^2}+\frac{\sum_{i=1}^n (x_i-\mu)^2}{2\sigma^4} = 0</script><p>化简，可得：</p>
+<script type="math/tex; mode=display">
+\sigma^2 = \frac{(x_1-\mu)^2 + (x_2-\mu)^2 +...+(x_n-\mu)^2}{n}</script><p>观察上式可知:</p>
+<ul>
+<li>$\mu$ 即为样本<strong>均值</strong></li>
+<li>$\sigma^2$ 为样本的<strong>方差</strong></li>
+</ul>
+<h3 id="2-Jensen不等式"><a href="#2-Jensen不等式" class="headerlink" title="2. Jensen不等式"></a>2. Jensen不等式</h3><h3 id="3-E-M算法的导出"><a href="#3-E-M算法的导出" class="headerlink" title="3. E-M算法的导出"></a>3. E-M算法的导出</h3><script type="math/tex; mode=display">
+L(\theta) = \prod_i^n P(x_i|\theta)</script><script type="math/tex; mode=display">
+L(\theta) =  \sum_i^n \log P(x_i|\theta) =\\ \sum_i^n\log\sum_Z  P(x_i,z|\theta) = \\
+\sum_i^n\log\sum_ZQ(z)\frac{p(x_i,z|\theta)}{Q(z)}</script><p>注意：$z$为隐变量（<strong>latent variables</strong>）$Q(z)$为$z$的一个分布，是啥分布不确定。</p>
+<p>求这个似然函数的导数比较麻烦和困难，因此提出了EM算法，通过迭代的方式逐步求解。</p>
+<p>继续推导，有Jensen不等式有：</p>
+<script type="math/tex; mode=display">
+\sum_i^n\log\sum_ZQ(z)\frac{p(x_i,z|\theta)}{Q(z)} >= \sum_i^n\sum_ZQ(z)\log\frac{p(x_i,z|\theta)}{Q(z)}</script><p>当且仅当$\frac{p(x_i,z|\theta)}{Q(z)}$ 为常数时取等。即：</p>
+<script type="math/tex; mode=display">
+\frac{p(x_i,z|\theta)}{Q(z)} = c \\
+\sum_Z Q(z) = 1 \\
+Q(z) ∝ p(x_i,z;\theta)
+Q(z) = p(z|x_i;\theta)</script><p>可以看出，Q是给定观测数据、参数的条件下，隐变量的一个后验分布(条件分布)。</p>
+<p>带回到上个式子：</p>
+<script type="math/tex; mode=display">
+\theta^{j+1} = \arg\max_\theta \sum_i^n\sum_ZQ(z)\log\frac{p(x_i,z|\theta^j)}{Q(z)} = \\
+
+\arg\max_\theta \sum_i^n\sum_Z p(z|x_i;\theta^j)\log p(x_i,z;\theta^j)</script><p>(与z无关的省略掉，给定参数$\theta^j$ 、观测数据，计算出$p(z|x_i;\theta^j)$ 再带进去。然后就只需要最大化$p(x,z;\theta)$ 得到$\theta^{j+1}$)。上述就是M步；我们来看看要极大化的那个式子</p>
+<script type="math/tex; mode=display">
+Q(z)\log p(x_i,z;\theta^j) = E_{Q}[\log p(x_i,z;\theta^j)] = \\
+E_{p(z|x_i,\theta^j)}[\log p(x_i,z;\theta^j)] = \\
+E_Z[\log p(x_i,z;\theta)|x_i;\theta^j]</script><p>我们将最后一个式子称为<strong>Q函数</strong>。注意，这个Q不同于上面那个Q分布。</p>
+<p>​        <strong>Q函数是完全数据（观测数据和隐变量）的对数似然函数关于隐变量在给定观测数据和参数的情况下的条件分布的期望。E步的求期望，求的就是这个期望。</strong></p>
+<p>​        念起来真的很抽象，结合例子做的话就好多了。</p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-PyTorch 使用GPU加速" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -1216,120 +1351,6 @@ P(x_1,x_2,...,x_7) = p(x_1)p(x_2)p(x_3)p(x_4|x_1,x_2,x_3)p(x_5|x_1,x_3)p(x_6|x_4
 </li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContainerDemo2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String []args)</span></span>&#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        CopyOnWriteArrayList&lt;Integer&gt; list2 = <span class="keyword">new</span> CopyOnWriteArrayList&lt;&gt;();</span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                list2.add(random.nextInt(<span class="number">10</span>));</span><br><span class="line">                System.out.println(list2);</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-HMM模型笔记" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/"
-    >HMM模型笔记</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" class="article-date">
-  <time datetime="2020-02-07T03:46:41.529Z" itemprop="datePublished">2020-02-07</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="隐马尔可夫模型"><a href="#隐马尔可夫模型" class="headerlink" title="隐马尔可夫模型"></a>隐马尔可夫模型</h2><p><strong>记住一下几个要点</strong></p>
-<ul>
-    <li>
-        <strong>3个基本组成元素</strong>
-    </li>
-    <li>
-        <strong>2个基本假设</strong>
-    </li>
-    <li>
-        <strong>3个基本问题</strong>
-    </li>
-</ul>
-
-<p><strong>tips</strong>：其实我在看好多算法时，涉及到许多数学公式，如果你刚开始接触这个模型算法，先不要直接就开始研究公式，先明白这个算法或模型时如何工作的，找个例子算一下，跑一下。数学公式是方便为了归纳总结而提出来的，如果你能很好的理解这个算法，那么他的公式也就不难理解了。这是我学习中的一点小经验。</p>
-<h3 id="1-3个基本组成元素"><a href="#1-3个基本组成元素" class="headerlink" title="1 3个基本组成元素"></a>1 3个基本组成元素</h3><p><strong>隐马尔科夫模型可以用三元组表示</strong></p>
-<p>同时，一般用 $I$ 表示<em>隐藏序列</em>，$O$ 表示<em>观测序列</em> ，用 $Q$ 表示可能的状态集合，用 $V$ 表示可能的观测集合</p>
-<script type="math/tex; mode=display">
-Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的状态数，$N$ 为可能的观测数。则可以确定状态转移概率矩阵大小为 $M$ 阶的方阵，观测概率矩阵大小为 $M * N$ 的矩阵。 </p>
-<p><strong>总结</strong>：一条隐藏的马尔可夫链随机生成了一个不可观测的状态序列，然后每个状态又对应生成了一个观测结果（状态—&gt;观测, 观测概率矩阵B），这些观测结果按照时序排列形成了观测序列。</p>
-<h4 id="1-1-初始状态概率序列（-pi-）"><a href="#1-1-初始状态概率序列（-pi-）" class="headerlink" title="1.1 初始状态概率序列（$\pi$）"></a>1.1 初始状态概率序列（$\pi$）</h4><script type="math/tex; mode=display">
-\pi = (\pi_i)</script><p>$\pi_i$表示初始时刻处于状态$q_i$的概率。</p>
-<h4 id="1-2-状态转移概率矩阵（-A-）"><a href="#1-2-状态转移概率矩阵（-A-）" class="headerlink" title="1.2 状态转移概率矩阵（$A$）"></a>1.2 状态转移概率矩阵（$A$）</h4><script type="math/tex; mode=display">
-A = [a_{ij}]_{M \times M}</script><p>$a_{ij}$表示时刻 $t$ 处于状态$q_i$，在时刻$t+1$转移到状态 $q_j$的概率。这也意味着$A$中每行元素和为$1$。</p>
-<h4 id="1-3-观测概率矩阵（-B-）"><a href="#1-3-观测概率矩阵（-B-）" class="headerlink" title="1.3 观测概率矩阵（$B$）"></a>1.3 观测概率矩阵（$B$）</h4><p>不同状态生成不同观测结果的概率。</p>
-<script type="math/tex; mode=display">
-B = [b_{ik}]_{M \times N}</script><p>$b_{ik}$表示时刻$t$处于状态$q_i$生成观测结果$v_k$的概率（即每一行表示一个状态，每一列表示一个观测结果）。</p>
-<h3 id="2-2个基本假设"><a href="#2-2个基本假设" class="headerlink" title="2 2个基本假设"></a>2 2个基本假设</h3><h4 id="2-1-齐次性，当前状态只和前一个状态相关"><a href="#2-1-齐次性，当前状态只和前一个状态相关" class="headerlink" title="2.1  齐次性，当前状态只和前一个状态相关"></a>2.1  齐次性，当前状态只和前一个状态相关</h4><p>​        任意时刻 $t$ 的状态只依赖前一时刻的状态。与其他时刻的观测与状态无关，也与 $t$ 时刻无关。 </p>
-<h4 id="2-2-观测独立性假设"><a href="#2-2-观测独立性假设" class="headerlink" title="2.2 观测独立性假设"></a>2.2 观测独立性假设</h4><p>​        假设任意时刻的观测只依赖于该时刻的马尔科夫链的状态，与其他观测及状态无关。</p>
-<h3 id="3-3个基本问题"><a href="#3-3个基本问题" class="headerlink" title="3 3个基本问题"></a>3 3个基本问题</h3><h4 id="3-1-概率计算"><a href="#3-1-概率计算" class="headerlink" title="3.1 概率计算"></a>3.1 概率计算</h4><p><strong>问题描述</strong>： </p>
-<p>​        在给定模型参数 $\lambda$ 的情况下，观测序列 $O$ 出现的概率是多少？即 $P(O|\lambda)$ 概率值为多少？</p>
-<p><strong>如何解决</strong></p>
-<p>​        1.暴力计算，算法实现的时间复杂度太高，理论可行，实际不采用！</p>
-<p>​        2.前向算法，利用动态规划，将时间复杂度降到O($n^2$)</p>
-<p>​        3.后向算法，基本同前向算法。</p>
-<h4 id="3-2-预测问题（解码问题）"><a href="#3-2-预测问题（解码问题）" class="headerlink" title="3.2 预测问题（解码问题）"></a>3.2 预测问题（解码问题）</h4><p><strong>问题描述</strong></p>
-<p>​        给定信息：</p>
-<p>​        <strong>模型</strong>：$\lambda = \{A,B,\pi\}$</p>
-<p>​        <strong>观测序列</strong>：$O = \{o_1,o_2,…,o_T\}$</p>
-<p>​        <strong>求解</strong>：求使得$P(O|S)$最大的状态序列$S$.</p>
-<p><strong>如何解决</strong></p>
-<p>​        <strong>维特比</strong>算法（动态规划—最大概率路径）。其实简单来说，要找到一条从起点到终点的最优路径，最大概率路径因为满足<strong>最优子结构</strong>和<strong>重叠子问题</strong>，因此可以从采用动态规划来解。</p>
-<p>$\sigma_t(i)$ 表示 <code>t</code>时刻状态为 <code>i</code>, 计算如下：</p>
-<script type="math/tex; mode=display">
-\sigma_{t+1}(i) = max\{\sigma_{t}a_{ji}\} * b_i(o_{t+1}), j = 1,2,...N. N为状态数</script><p>$a_{ji}$表示由第<code>j</code>个状态向第<code>i</code>个状态转移的概率，$b_i(o_{t+1})$表示由第<code>i</code>个状态生成<code>t+1</code>时序时的观测的概率。递推计算，<code>from t =1 to t = T</code>。然后输出状态序列。</p>
-<h4 id="3-3-学习问题（参数估计）"><a href="#3-3-学习问题（参数估计）" class="headerlink" title="3.3 学习问题（参数估计）"></a>3.3 学习问题（参数估计）</h4><p><strong>问题描述</strong></p>
-<p>​        给定信息：</p>
-<p>​        <strong>观测序列</strong>: $O = \{o_1,o_2,…,o_T\}$</p>
-<p>​        <strong>求解</strong>：模型$\lambda$ 参数，</p>
-<p><strong>如何求解</strong></p>
-<p>​        <strong>EM</strong>算法</p>
-<h3 id="4-有啥用"><a href="#4-有啥用" class="headerlink" title="4 有啥用?"></a>4 有啥用?</h3><h4 id="4-1-中文分词"><a href="#4-1-中文分词" class="headerlink" title="4.1 中文分词"></a>4.1 中文分词</h4><p>我们假设每个词都有Begin、Medium、End、S分别代表开头、中间、结尾、独立的词等隐状态，所给的文本为观测态，我们要做的就是训练（语料库）一个HMM模型，在给定文本的情况下，输出隐含态，也就是分词结果。</p>
-<h4 id="4-2-语音识别"><a href="#4-2-语音识别" class="headerlink" title="4.2 语音识别"></a>4.2 语音识别</h4><h4 id="参考书目"><a href="#参考书目" class="headerlink" title="参考书目"></a>参考书目</h4><p>统计学习方法（第2版），李航。</p>
 
       
       <!-- 打赏 -->

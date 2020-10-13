@@ -41,6 +41,83 @@
     
     
     
+    <article id="post-Vuex使用" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/"
+    >Vuex使用</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time datetime="2020-05-23T09:17:03.636Z" itemprop="datePublished">2020-05-23</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JS/">JS</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="Vuex使用"><a href="#Vuex使用" class="headerlink" title="Vuex使用"></a>Vuex使用</h2><p>​        <code>Vuex</code>是一个状态管理库，使用单一状态树管理应用内的全局状态。</p>
+<p>​        <code>index.js</code>文件如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">"vue"</span>;</span><br><span class="line"><span class="keyword">import</span> Vuex <span class="keyword">from</span> <span class="string">"vuex"</span>;</span><br><span class="line"><span class="keyword">import</span> cart <span class="keyword">from</span> <span class="string">"./cart"</span></span><br><span class="line">Vue.use(Vuex);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">  <span class="comment">//全局的state</span></span><br><span class="line">  <span class="comment">// 如何调用：this.$store.state.状态名 / this.$store.state.模块名.状态名</span></span><br><span class="line">  state: &#123;</span><br><span class="line">    isTabbarShow: <span class="literal">true</span>,</span><br><span class="line">    itemList: [],</span><br><span class="line">  &#125;,</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    <span class="comment">//修改state操作，state为第一个参数，vue会自动注入该函数</span></span><br><span class="line">    <span class="comment">//如何调用：this.$store.commit("函数名",[data])</span></span><br><span class="line">    HideTabbar(state, data) &#123;</span><br><span class="line">      state.isTabbarShow = data;</span><br><span class="line">    &#125;,</span><br><span class="line">    ShowTabbar(state, data) &#123;</span><br><span class="line">      state.isTabbarShow = data;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  actions: &#123;</span><br><span class="line">    <span class="comment">//主要执行异步操作,</span></span><br><span class="line">    <span class="comment">// 如何调用：this.$store.dispatch("模块名/函数名称",[data])</span></span><br><span class="line">    test(store, data) &#123;</span><br><span class="line">      <span class="comment">//使用commit通过mutation中方法修改state</span></span><br><span class="line">      store.commit(<span class="string">""</span>, data);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  getters: &#123;</span><br><span class="line">    <span class="comment">// store中的计算属性</span></span><br><span class="line">    <span class="comment">// 调用方式 $store.getters."函数名字"</span></span><br><span class="line">    getItemListTop3(state) &#123;</span><br><span class="line">      <span class="keyword">return</span> state.itemList.slice(<span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  modules: &#123;</span><br><span class="line">    <span class="comment">//不同模块中可以定义state、mutations、actions，然后包装成一个对象导出，在这儿进行导入，注意在子模块中不需要使用Vuex.Store构造函数。</span></span><br><span class="line">      cart,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">cart/index.js</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> state = &#123;</span><br><span class="line">  items: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>],</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> getters = &#123;</span><br><span class="line">  getOddItem(state) &#123;</span><br><span class="line">    <span class="keyword">return</span> state.items.filter(<span class="function">(<span class="params">x</span>) =&gt;</span> x % <span class="number">2</span> == <span class="number">0</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> mutations = &#123;</span><br><span class="line">  incre(state) &#123;</span><br><span class="line">    state.items = state.items.map(<span class="function">(<span class="params">x</span>) =&gt;</span> x + <span class="number">2</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;<span class="comment">//开启了命名空间</span></span><br><span class="line">  namespaced: <span class="literal">true</span>,</span><br><span class="line">  state,</span><br><span class="line">  getters,</span><br><span class="line">  mutations,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在<code>main.js</code>中：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">"@/store"</span>;</span><br><span class="line"></span><br><span class="line">Vue.config.productionTip = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  store,</span><br><span class="line">  render: <span class="function">(<span class="params">h</span>) =&gt;</span> h(App),</span><br><span class="line">&#125;).$mount(<span class="string">"#app"</span>);</span><br></pre></td></tr></table></figure>
+<p>​        <strong>注意：</strong></p>
+<p>​        默认情况下，模块内部的 <strong>action、mutation 和 getter</strong> 是注册在<strong>全局命名空间</strong>的——这样使得多个模块能够对同一 mutation 或 action 作出响应。</p>
+<p>​        <strong>即不论是在那个模块定义的，都可以使用</strong><code>this.$store.getters.名字</code>进行调用。如果希望你的模块具有更高的封装度和复用性，你可以通过添加 <code>namespaced: true</code> 的方式使其成为带命名空间的模块。当模块被注册后，它的所有 getter、action 及 mutation 都会自动根据模块注册的路径调整命名。即：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$store.getters[<span class="string">"cart/getOddItem"</span>]</span><br><span class="line">$store.dispatch(<span class="string">'cart/login'</span>)</span><br><span class="line">$store.commit(<span class="string">'cart/incre)</span></span><br></pre></td></tr></table></figure>
+<p>​        可以看到，在vuex中，只允许mutation操作修改state，构成单向数据流。示意图如下：</p>
+<p><img src="https://vuex.vuejs.org/vuex.png" alt=""></p>
+<p><strong>补充：</strong></p>
+<p>vue中计算属性（computed）和方法（methods）的区别：</p>
+<p>计算属性以方法形式定义，使用时使用属性的方式进行调用；计算属性只会计算一次，结果缓存在内存中，当其相关联的数据发生改变时才会重新计算。而方法调用一次就会被执行一次。当有关数据处理逻辑较为复杂，或页面中需要多处使用时可以使用计算属性。</p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-ES6模块的导出和导入" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -1114,141 +1191,6 @@ C - (C-k) = k</script><p>同样是k个距离。</p>
 </li>
 </ol>
 <p><img src="/images/快慢指针示意图.jpg" alt=""></p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-EM算法" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/03/19/EM%E7%AE%97%E6%B3%95/"
-    >EM算法</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/03/19/EM%E7%AE%97%E6%B3%95/" class="article-date">
-  <time datetime="2020-03-19T08:59:43.608Z" itemprop="datePublished">2020-03-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h2><p>唉，em算法是我看过最恶心的算法。是我概率论知识太差了？…</p>
-<p>参考资料：$Andrew Ng$ $cs229-notes8$ 、统计学习方法（第二版）</p>
-<h3 id="1-极大似然估计"><a href="#1-极大似然估计" class="headerlink" title="1.极大似然估计"></a>1.极大似然估计</h3><ul>
-<li><p>似然（$likelihood$）与概率（$probability$）</p>
-<p>​        概率，用于在已知一些参数的情况下，预测接下来在观测上所得到的结果；似然性，则是用于在已知某些观测所得到的结果时，对有关事物之性质的参数进行估值，即<strong>估计参数的可能性</strong>。</p>
-<p>参见：<a href="https://zh.wikipedia.org/wiki/似然函数" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E4%BC%BC%E7%84%B6%E5%87%BD%E6%95%B0</a></p>
-</li>
-</ul>
-<p>​        <strong>其实极大似然估计就是根据样本来估计统计模型的参数，选取一个参数使得当前观测的概率最大</strong>。<strong>似然函数取得最大值表示相应的参数能够使得统计模型最为合理。</strong></p>
-<p>推荐宋浩老师的这节课。<a href="https://www.bilibili.com/video/av36206436?t=3565&amp;p=67" target="_blank" rel="noopener">https://www.bilibili.com/video/av36206436?t=3565&amp;p=67</a></p>
-<p>主要有以下步骤：</p>
-<ol>
-<li>写出总体的概率函数或概率密度函数</li>
-<li>写出似然函数（通常是概率连乘的形式）。在数理统计学中，似然函数是一种关于统计模型中的参数的函数。</li>
-<li>两边取对数，得到<strong>对数似然函数</strong></li>
-<li>求对数似然函数关于参数的导数或偏导，并求出使得导数或偏导为0的参数。该参数即为所求</li>
-</ol>
-<p><strong>注意：</strong></p>
-<ul>
-<li>Q：为什么是连乘的形式？A：所有样本之间的概率是相互独立的。</li>
-<li>通常某个函数的极值点，导数为0或不存在。</li>
-</ul>
-<p><strong>例子：</strong></p>
-<p>已知存在一批可观测样本$\{x_1,x_2,…,x_n\}$，随机变量 $X$ 满足正态分布 $N(\mu,\sigma^2)$，利用极大似然估计，求出正态分布的相关参数。</p>
-<p><strong>解：</strong></p>
-<ol>
-<li><p>先写出正态分布的概率密度函数：</p>
-<script type="math/tex; mode=display">
-f(x) = \frac{1}{\sqrt{2\pi}\sigma}\exp^{-\frac{(x - \mu)^2}{2\sigma^2}}</script></li>
-<li><p>写出似然函数</p>
-<script type="math/tex; mode=display">
-L(\mu,\sigma^2) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x_i - \mu)^2}{2\sigma^2}} = (\frac{1}{\sqrt{2\pi}})^n(\sigma^2)^{-\frac{1}{2}n}e^{-\frac{\sum_{i}^{n}(x_i-\mu)^2 }{2\sigma^2}}</script></li>
-<li><p>两边取对数，得到对数似然函数</p>
-<script type="math/tex; mode=display">
-\ln L(\mu,\sigma^2) = n\ln(\frac{1}{\sqrt{2\pi}})-\frac{1}{2}n\ln(\sigma^2)-\frac{\sum_{i=1}^n (x_i-\mu)^2}{2\sigma^2}</script></li>
-<li><p>求对数似然函数关于$\mu$ ，$\sigma^2$ 的偏导</p>
-<script type="math/tex; mode=display">
-\frac{\partial \ln(L(\mu,\sigma^2))}{\partial \mu} = \frac{\sum_{i=1}^n(x_i-\mu)}{\sigma^2} = 0</script><script type="math/tex; mode=display">
-\sum_{i=1}^n(x_i-\mu) = 0 \rightarrow x_1+x_2+...+x_n-n\mu = 0</script></li>
-</ol>
-<script type="math/tex; mode=display">
-\mu = \frac{x_1+x_2+x_3+...+x_n}{n}</script><script type="math/tex; mode=display">
-\frac{\partial \ln(L(\mu,\sigma^2))}{\partial \sigma^2} =-\frac{n}{2\sigma^2}+\frac{\sum_{i=1}^n (x_i-\mu)^2}{2\sigma^4} = 0</script><p>化简，可得：</p>
-<script type="math/tex; mode=display">
-\sigma^2 = \frac{(x_1-\mu)^2 + (x_2-\mu)^2 +...+(x_n-\mu)^2}{n}</script><p>观察上式可知:</p>
-<ul>
-<li>$\mu$ 即为样本<strong>均值</strong></li>
-<li>$\sigma^2$ 为样本的<strong>方差</strong></li>
-</ul>
-<h3 id="2-Jensen不等式"><a href="#2-Jensen不等式" class="headerlink" title="2. Jensen不等式"></a>2. Jensen不等式</h3><h3 id="3-E-M算法的导出"><a href="#3-E-M算法的导出" class="headerlink" title="3. E-M算法的导出"></a>3. E-M算法的导出</h3><script type="math/tex; mode=display">
-L(\theta) = \prod_i^n P(x_i|\theta)</script><script type="math/tex; mode=display">
-L(\theta) =  \sum_i^n \log P(x_i|\theta) =\\ \sum_i^n\log\sum_Z  P(x_i,z|\theta) = \\
-\sum_i^n\log\sum_ZQ(z)\frac{p(x_i,z|\theta)}{Q(z)}</script><p>注意：$z$为隐变量（<strong>latent variables</strong>）$Q(z)$为$z$的一个分布，是啥分布不确定。</p>
-<p>求这个似然函数的导数比较麻烦和困难，因此提出了EM算法，通过迭代的方式逐步求解。</p>
-<p>继续推导，有Jensen不等式有：</p>
-<script type="math/tex; mode=display">
-\sum_i^n\log\sum_ZQ(z)\frac{p(x_i,z|\theta)}{Q(z)} >= \sum_i^n\sum_ZQ(z)\log\frac{p(x_i,z|\theta)}{Q(z)}</script><p>当且仅当$\frac{p(x_i,z|\theta)}{Q(z)}$ 为常数时取等。即：</p>
-<script type="math/tex; mode=display">
-\frac{p(x_i,z|\theta)}{Q(z)} = c \\
-\sum_Z Q(z) = 1 \\
-Q(z) ∝ p(x_i,z;\theta)
-Q(z) = p(z|x_i;\theta)</script><p>可以看出，Q是给定观测数据、参数的条件下，隐变量的一个后验分布(条件分布)。</p>
-<p>带回到上个式子：</p>
-<script type="math/tex; mode=display">
-\theta^{j+1} = \arg\max_\theta \sum_i^n\sum_ZQ(z)\log\frac{p(x_i,z|\theta^j)}{Q(z)} = \\
-
-\arg\max_\theta \sum_i^n\sum_Z p(z|x_i;\theta^j)\log p(x_i,z;\theta^j)</script><p>(与z无关的省略掉，给定参数$\theta^j$ 、观测数据，计算出$p(z|x_i;\theta^j)$ 再带进去。然后就只需要最大化$p(x,z;\theta)$ 得到$\theta^{j+1}$)。上述就是M步；我们来看看要极大化的那个式子</p>
-<script type="math/tex; mode=display">
-Q(z)\log p(x_i,z;\theta^j) = E_{Q}[\log p(x_i,z;\theta^j)] = \\
-E_{p(z|x_i,\theta^j)}[\log p(x_i,z;\theta^j)] = \\
-E_Z[\log p(x_i,z;\theta)|x_i;\theta^j]</script><p>我们将最后一个式子称为<strong>Q函数</strong>。注意，这个Q不同于上面那个Q分布。</p>
-<p>​        <strong>Q函数是完全数据（观测数据和隐变量）的对数似然函数关于隐变量在给定观测数据和参数的情况下的条件分布的期望。E步的求期望，求的就是这个期望。</strong></p>
-<p>​        念起来真的很抽象，结合例子做的话就好多了。</p>
 
       
       <!-- 打赏 -->

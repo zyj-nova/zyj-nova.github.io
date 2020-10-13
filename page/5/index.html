@@ -41,6 +41,120 @@
     
     
     
+    <article id="post-HMM模型笔记" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/"
+    >HMM模型笔记</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/02/07/HMM%E6%A8%A1%E5%9E%8B%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time datetime="2020-02-07T03:46:41.529Z" itemprop="datePublished">2020-02-07</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="隐马尔可夫模型"><a href="#隐马尔可夫模型" class="headerlink" title="隐马尔可夫模型"></a>隐马尔可夫模型</h2><p><strong>记住一下几个要点</strong></p>
+<ul>
+    <li>
+        <strong>3个基本组成元素</strong>
+    </li>
+    <li>
+        <strong>2个基本假设</strong>
+    </li>
+    <li>
+        <strong>3个基本问题</strong>
+    </li>
+</ul>
+
+<p><strong>tips</strong>：其实我在看好多算法时，涉及到许多数学公式，如果你刚开始接触这个模型算法，先不要直接就开始研究公式，先明白这个算法或模型时如何工作的，找个例子算一下，跑一下。数学公式是方便为了归纳总结而提出来的，如果你能很好的理解这个算法，那么他的公式也就不难理解了。这是我学习中的一点小经验。</p>
+<h3 id="1-3个基本组成元素"><a href="#1-3个基本组成元素" class="headerlink" title="1 3个基本组成元素"></a>1 3个基本组成元素</h3><p><strong>隐马尔科夫模型可以用三元组表示</strong></p>
+<p>同时，一般用 $I$ 表示<em>隐藏序列</em>，$O$ 表示<em>观测序列</em> ，用 $Q$ 表示可能的状态集合，用 $V$ 表示可能的观测集合</p>
+<script type="math/tex; mode=display">
+Q = \{q_1,q_2,...,q_M\}, V = \{v_1,v_2,...,v_N\}</script><p>，$M$ 为可能的状态数，$N$ 为可能的观测数。则可以确定状态转移概率矩阵大小为 $M$ 阶的方阵，观测概率矩阵大小为 $M * N$ 的矩阵。 </p>
+<p><strong>总结</strong>：一条隐藏的马尔可夫链随机生成了一个不可观测的状态序列，然后每个状态又对应生成了一个观测结果（状态—&gt;观测, 观测概率矩阵B），这些观测结果按照时序排列形成了观测序列。</p>
+<h4 id="1-1-初始状态概率序列（-pi-）"><a href="#1-1-初始状态概率序列（-pi-）" class="headerlink" title="1.1 初始状态概率序列（$\pi$）"></a>1.1 初始状态概率序列（$\pi$）</h4><script type="math/tex; mode=display">
+\pi = (\pi_i)</script><p>$\pi_i$表示初始时刻处于状态$q_i$的概率。</p>
+<h4 id="1-2-状态转移概率矩阵（-A-）"><a href="#1-2-状态转移概率矩阵（-A-）" class="headerlink" title="1.2 状态转移概率矩阵（$A$）"></a>1.2 状态转移概率矩阵（$A$）</h4><script type="math/tex; mode=display">
+A = [a_{ij}]_{M \times M}</script><p>$a_{ij}$表示时刻 $t$ 处于状态$q_i$，在时刻$t+1$转移到状态 $q_j$的概率。这也意味着$A$中每行元素和为$1$。</p>
+<h4 id="1-3-观测概率矩阵（-B-）"><a href="#1-3-观测概率矩阵（-B-）" class="headerlink" title="1.3 观测概率矩阵（$B$）"></a>1.3 观测概率矩阵（$B$）</h4><p>不同状态生成不同观测结果的概率。</p>
+<script type="math/tex; mode=display">
+B = [b_{ik}]_{M \times N}</script><p>$b_{ik}$表示时刻$t$处于状态$q_i$生成观测结果$v_k$的概率（即每一行表示一个状态，每一列表示一个观测结果）。</p>
+<h3 id="2-2个基本假设"><a href="#2-2个基本假设" class="headerlink" title="2 2个基本假设"></a>2 2个基本假设</h3><h4 id="2-1-齐次性，当前状态只和前一个状态相关"><a href="#2-1-齐次性，当前状态只和前一个状态相关" class="headerlink" title="2.1  齐次性，当前状态只和前一个状态相关"></a>2.1  齐次性，当前状态只和前一个状态相关</h4><p>​        任意时刻 $t$ 的状态只依赖前一时刻的状态。与其他时刻的观测与状态无关，也与 $t$ 时刻无关。 </p>
+<h4 id="2-2-观测独立性假设"><a href="#2-2-观测独立性假设" class="headerlink" title="2.2 观测独立性假设"></a>2.2 观测独立性假设</h4><p>​        假设任意时刻的观测只依赖于该时刻的马尔科夫链的状态，与其他观测及状态无关。</p>
+<h3 id="3-3个基本问题"><a href="#3-3个基本问题" class="headerlink" title="3 3个基本问题"></a>3 3个基本问题</h3><h4 id="3-1-概率计算"><a href="#3-1-概率计算" class="headerlink" title="3.1 概率计算"></a>3.1 概率计算</h4><p><strong>问题描述</strong>： </p>
+<p>​        在给定模型参数 $\lambda$ 的情况下，观测序列 $O$ 出现的概率是多少？即 $P(O|\lambda)$ 概率值为多少？</p>
+<p><strong>如何解决</strong></p>
+<p>​        1.暴力计算，算法实现的时间复杂度太高，理论可行，实际不采用！</p>
+<p>​        2.前向算法，利用动态规划，将时间复杂度降到O($n^2$)</p>
+<p>​        3.后向算法，基本同前向算法。</p>
+<h4 id="3-2-预测问题（解码问题）"><a href="#3-2-预测问题（解码问题）" class="headerlink" title="3.2 预测问题（解码问题）"></a>3.2 预测问题（解码问题）</h4><p><strong>问题描述</strong></p>
+<p>​        给定信息：</p>
+<p>​        <strong>模型</strong>：$\lambda = \{A,B,\pi\}$</p>
+<p>​        <strong>观测序列</strong>：$O = \{o_1,o_2,…,o_T\}$</p>
+<p>​        <strong>求解</strong>：求使得$P(O|S)$最大的状态序列$S$.</p>
+<p><strong>如何解决</strong></p>
+<p>​        <strong>维特比</strong>算法（动态规划—最大概率路径）。其实简单来说，要找到一条从起点到终点的最优路径，最大概率路径因为满足<strong>最优子结构</strong>和<strong>重叠子问题</strong>，因此可以从采用动态规划来解。</p>
+<p>$\sigma_t(i)$ 表示 <code>t</code>时刻状态为 <code>i</code>, 计算如下：</p>
+<script type="math/tex; mode=display">
+\sigma_{t+1}(i) = max\{\sigma_{t}a_{ji}\} * b_i(o_{t+1}), j = 1,2,...N. N为状态数</script><p>$a_{ji}$表示由第<code>j</code>个状态向第<code>i</code>个状态转移的概率，$b_i(o_{t+1})$表示由第<code>i</code>个状态生成<code>t+1</code>时序时的观测的概率。递推计算，<code>from t =1 to t = T</code>。然后输出状态序列。</p>
+<h4 id="3-3-学习问题（参数估计）"><a href="#3-3-学习问题（参数估计）" class="headerlink" title="3.3 学习问题（参数估计）"></a>3.3 学习问题（参数估计）</h4><p><strong>问题描述</strong></p>
+<p>​        给定信息：</p>
+<p>​        <strong>观测序列</strong>: $O = \{o_1,o_2,…,o_T\}$</p>
+<p>​        <strong>求解</strong>：模型$\lambda$ 参数，</p>
+<p><strong>如何求解</strong></p>
+<p>​        <strong>EM</strong>算法</p>
+<h3 id="4-有啥用"><a href="#4-有啥用" class="headerlink" title="4 有啥用?"></a>4 有啥用?</h3><h4 id="4-1-中文分词"><a href="#4-1-中文分词" class="headerlink" title="4.1 中文分词"></a>4.1 中文分词</h4><p>我们假设每个词都有Begin、Medium、End、S分别代表开头、中间、结尾、独立的词等隐状态，所给的文本为观测态，我们要做的就是训练（语料库）一个HMM模型，在给定文本的情况下，输出隐含态，也就是分词结果。</p>
+<h4 id="4-2-语音识别"><a href="#4-2-语音识别" class="headerlink" title="4.2 语音识别"></a>4.2 语音识别</h4><h4 id="参考书目"><a href="#参考书目" class="headerlink" title="参考书目"></a>参考书目</h4><p>统计学习方法（第2版），李航。</p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-二叉树" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -526,24 +640,30 @@
 
       
       <h3 id="主成分分析与奇异值分解"><a href="#主成分分析与奇异值分解" class="headerlink" title="主成分分析与奇异值分解"></a>主成分分析与奇异值分解</h3><h4 id="1-奇异值分解"><a href="#1-奇异值分解" class="headerlink" title="1 奇异值分解"></a>1 奇异值分解</h4><p>参见：<a href="https://github.com/zyj-nova/LinearAlgebraNotes" target="_blank" rel="noopener">https://github.com/zyj-nova/LinearAlgebraNotes</a></p>
-<h4 id="2-主成分分析"><a href="#2-主成分分析" class="headerlink" title="2 主成分分析"></a>2 主成分分析</h4><h5 id="2-1-算法分析"><a href="#2-1-算法分析" class="headerlink" title="2.1 算法分析"></a>2.1 算法分析</h5><p>已知样本$\pmb a_1,\pmb a_2,…,\pmb a_m,\pmb a_i \in \R^n$，则按行组成的矩阵:</p>
+<h4 id="2-主成分分析"><a href="#2-主成分分析" class="headerlink" title="2 主成分分析"></a>2 主成分分析</h4><h5 id="2-1-算法分析"><a href="#2-1-算法分析" class="headerlink" title="2.1 算法分析"></a>2.1 算法分析</h5><p>已知样本$\pmb a_1,\pmb a_2,…,\pmb a_N,\pmb a_i \in \mathbb{R}^n$，则按列组成的矩阵:</p>
 <script type="math/tex; mode=display">
-A_{m \times n} = \begin{pmatrix}\pmb a_1^T\\\pmb a_2^T\\...\\\pmb a_m^T\end{pmatrix}</script><p><strong>矩阵的弗罗贝尼乌斯范数</strong>：</p>
+A_{n \times m} = \begin{pmatrix}\pmb a_1,&\pmb a_2,...&,\pmb a_N\end{pmatrix}</script><p><strong>矩阵的弗罗贝尼乌斯范数</strong>：</p>
 <script type="math/tex; mode=display">
 ||A||_2 = \sqrt {tr (A^TA)} = \sqrt{\sum_{i=1}^m\sum_{j=1}^na_{ij}^2}</script><p>$tr$代表矩阵的迹函数$trace$（主对角线元素求和，$A^TA$一定是个方阵）。</p>
-<p>给定一组标准正交基$\pmb w_1,\pmb w_2,…,\pmb w_n,\pmb w_i \in \R^n$，$\R^n$中的某个向量$\pmb a$可以表示为：</p>
+<p>给定一组标准正交基$\pmb w_1,\pmb w_2,…,\pmb w_N,\pmb w_i \in \mathbb{R}^n$，$\mathbb{R}^n$中的某个向量$\pmb a$可以表示为：</p>
 <script type="math/tex; mode=display">
-\pmb a = \sum_{j = 1}^n <\pmb a,\pmb w_j>\pmb w_j</script><p>$&lt;,&gt;$表示向量的内积操作，可以看出$&lt;\pmb a,\pmb w_j&gt;$即$\pmb a$在空间中的坐标。现在我们考虑，是否可以将$\pmb a$表示在$\pmb w_1,\pmb w_2,…,\pmb w_k,k &lt; n$生成的子空间中，使得$&lt;\pmb a,\pmb w_{k+1}&gt;=0,…,&lt;\pmb a, \pmb w_n&gt; = 0$？</p>
+\pmb a = \sum_{j = 1}^n <\pmb a,\pmb w_j>\pmb w_j</script><p>$&lt;,&gt;$表示向量的内积操作，可以看出$&lt;\pmb a,\pmb w_j&gt;$即$\pmb a$在空间中的坐标。现在我们考虑，是否可以将$\pmb a$表示在由$\pmb w_1,\pmb w_2,…,\pmb w_m,m \mathbb{&lt;&lt;} n$，生成的子空间$\mathbb{R}^m$中，使得$&lt;\pmb a,\pmb w_{k+1}&gt;=0,…,&lt;\pmb a, \pmb w_n&gt; = 0$ ?</p>
+<p><strong>注意：</strong>$\pmb w_i$仍然是包含$n$个分量的向量，$m$个包含$n$个元素基向量构成了$n$维空间的一个$m$维子空间（空间的维数等于基向量个数）。</p>
 <p>这就可以将问题转化为一个优化问题：</p>
 <script type="math/tex; mode=display">
-\min_{\pmb w_1,\pmb w_2,...,\pmb w_k} = \sum_{i=1}^m ||\pmb a_i - \sum_{j=1}^k<\pmb a_i,\pmb w_j>\pmb w_j||_2^2\\
+\min_{\pmb w_1,\pmb w_2,...,\pmb w_m} = \sum_{i=1}^N ||\pmb a_i - \sum_{j=1}^m<\pmb a_i,\pmb w_j>\pmb w_j||_2^2\\
 s.t.<\pmb w_i,\pmb w_j> = \delta_{ij},i=j,\delta_{ij}=1;i\not=j,\delta_{ij}=0</script><p>写为矩阵形式即：</p>
 <script type="math/tex; mode=display">
-\min_{\pmb w_1,\pmb w_2,...,\pmb w_k} = ||A^T-A^TWW^T||_2^2 = tr(A^TA-A^TWW^TA)\\
-s.t. W^TW = I</script><p>其中，$A$为数据的特征矩阵，$W$为正交基按列组成的正交矩阵。</p>
-<p>求解过程略去，最后可得：</p>
+\arg \min_{\pmb w_1,\pmb w_2,...,\pmb w_m} = ||A-WW^TA||_2^2\\
+s.t. W^TW = I_{m \times m}</script><p>其中，$A$为数据的特征矩阵，$W_{n \times m}$为前$m$个正交基按列组成的矩阵，它是半正交的。</p>
+<p><strong>tips：</strong>因为有$m$个基向量，两两相乘，最后矩阵是一个$m \times m$的单位阵。</p>
 <script type="math/tex; mode=display">
-W^{\star}_{n \times n} = A^TA</script><p>以上描述，从优化角度给出了为何选择$A^TA$作为分解矩阵的原因。</p>
+||A-WW^TA||_2^2 = tr\{(A-WW^TA)^T(A-WW^TA)\} = tr(A^TA) - tr(A^TWW^TA)</script><p>由于$tr(A^TA)$这一项与优化目标无关，因此目标函数变为：</p>
+<script type="math/tex; mode=display">
+\arg\min_{W}-tr(A^TWW^TA) = -tr\{(W^TA)^T(W^TA)\} = -||W^TA||^2_2\\s.t: W^TW = I</script><p>求出最忧$W$后，降维数据：</p>
+<script type="math/tex; mode=display">
+Y_{m \times N} = W_{m \times n}^TX_{n\times N}</script><p>以上推导过程从<strong>基向量</strong>、最优化角度解释了主成分分析算法。</p>
+<p><strong>注意：</strong>主成分分析是无监督、线性的降维方法。线性判别分析是有监督的线性降维方法。</p>
 <h5 id="2-2-算法描述"><a href="#2-2-算法描述" class="headerlink" title="2.2 算法描述"></a>2.2 算法描述</h5><p><img src="https://img-blog.csdnimg.cn/20191109182949751.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
 <p><img src="https://img-blog.csdnimg.cn/20191109191048929.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def my_pca(X, k):</span><br><span class="line">    #X 行：样本量，列：样本维度</span><br><span class="line">    #函数默认对每一列进行demean处理</span><br><span class="line">    cov &#x3D; np.cov(X,rowvar&#x3D;0)</span><br><span class="line">    mean &#x3D; np.mean(X,axis &#x3D; 0)</span><br><span class="line">    X_ &#x3D; X - mean</span><br><span class="line">    #求协方差矩阵的特征向量</span><br><span class="line">    eigenvalue, eigenfuture &#x3D; np.linalg.eig(cov)</span><br><span class="line">    #选取前k个特征向量 n * k</span><br><span class="line">    eigenselect &#x3D; eigenfuture[:,:k]</span><br><span class="line">    return np.dot(X_, eigenselect), eigenfuture</span><br></pre></td></tr></table></figure>
