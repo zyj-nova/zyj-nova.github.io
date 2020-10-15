@@ -41,6 +41,102 @@
     
     
     
+    <article id="post-交叉熵" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/"
+    >交叉熵</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/" class="article-date">
+  <time datetime="2020-07-01T14:23:46.523Z" itemprop="datePublished">2020-07-01</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="交叉熵"><a href="#交叉熵" class="headerlink" title="交叉熵"></a>交叉熵</h2><ul>
+<li><p>熵与交叉熵的定义：</p>
+<p>信息论中熵的定义：</p>
+<script type="math/tex; mode=display">
+H(X) = -\sum_i p(x_i)\log p(x_i)</script><p>，其中$X$表示一个分布，$x_i$为该分布中的样本，$p(x_i)$即该样本的概率。</p>
+<p><strong>在信息论中，熵是表示信息不确定性的度量。熵越大，表明信息的不确定性越大。</strong></p>
+<p>两个分布$p$、$q$的交叉熵定义如下：</p>
+<script type="math/tex; mode=display">
+H(p,q) = -\sum_i p_i\log(q_i)</script></li>
+<li><p>多分类问题中的交叉熵损失函数</p>
+<p>在神经网路多分类任务时，最后一层采用$soft\max$层输出预测概率。</p>
+<script type="math/tex; mode=display">
+soft\max(x_i) = \frac{e^{x_i}}{\sum_j e^{x_j}}</script><p>输出概率向量表示为$p$，训练$ont-hot$标签向量为$L$，交叉熵定义为$H(L,p)$。</p>
+<p>则分类的损失函数定义为</p>
+<script type="math/tex; mode=display">
+J = \frac{1}{N}\sum_{i=1}^N H(L_i,p_i)</script><p>因为$L_i$、$q_i$表示一个样本，所以计算交叉熵即计算$-L_ilog(q_i)$。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">p = np.array([<span class="number">0.2</span>,<span class="number">0.5</span>,<span class="number">0.3</span>])</span><br><span class="line">target = np.array([<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>])</span><br><span class="line">H = <span class="number">-1</span> * np.sum(target * np.log(p)) / <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>当分类为<strong>二分类时</strong>，最后一层通常采用$sigmod$函数（逻辑斯蒂”回归”）。</p>
+<script type="math/tex; mode=display">
+sigmod(x) = \frac{1}{1 + e^{-x}}</script><script type="math/tex; mode=display">
+J = -\frac{1}{N}\sum_{i=1}^N [y_i\log(\hat y_i) +(1-y_i)\log(1-\hat y_i)]</script><script type="math/tex; mode=display">
+\hat y(x) = \frac{1}{1 + e^{-W*x}}</script><p>即为交叉熵损失函数的一个特殊形式。</p>
+<p>采用交叉熵损失函数的原因是该损失函数为凸函数，从而可以进行凸优化。</p>
+</li>
+<li><p>KL（Kullback–Leibler）散度（Divergence）和JS（Jensen–Shannon）散度</p>
+<p>KL散度用来衡量两个概率分布$P$、$Q$的<strong>差异</strong>。</p>
+<script type="math/tex; mode=display">
+D_{KL}(P||Q)= \sum P\log(\frac{P}{Q}) = -H(P) + H(P,Q)</script><p>注意：$D_{KL}(P||Q) \not= D_{KL}(Q||P)$。KL散度是不对称的！</p>
+<p>JS散度定义如下：</p>
+<script type="math/tex; mode=display">
+JSD(P||Q) = \frac{1}{2}D_{KL}(P||M) + \frac{1}{2}D_{KL}(Q||M)</script><script type="math/tex; mode=display">
+M = \frac{1}{2}(P + Q)</script><p>JS散度是对称的。</p>
+</li>
+</ul>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-Dropout理解与实现" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -972,109 +1068,6 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
 <p>顺便提一下，多态指的是动态绑定方法，而非类内变量。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i + <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Father son = <span class="keyword">new</span> Son();</span><br><span class="line">		System.out.println(son.test()); <span class="comment">// 10 子类没有定义test，找到父类方法，由于多态不动态绑定变量，因此i取得是父类的</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> getI() + <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getI</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getI</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Father son = <span class="keyword">new</span> Son();</span><br><span class="line">		Son son2 = <span class="keyword">new</span> Son();</span><br><span class="line">		</span><br><span class="line">		System.out.println(son.test()); <span class="comment">// 20</span></span><br><span class="line">		System.out.println(son2.test());<span class="comment">// 20</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-归一化和标准化" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/"
-    >归一化和标准化</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" class="article-date">
-  <time datetime="2020-05-23T12:29:05.107Z" itemprop="datePublished">2020-05-23</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="归一化和标准化"><a href="#归一化和标准化" class="headerlink" title="归一化和标准化"></a>归一化和标准化</h2><p>​        注：本文内容转载自:<a href="https://www.jianshu.com/p/4c3081d40ca6" target="_blank" rel="noopener">https://www.jianshu.com/p/4c3081d40ca6</a></p>
-<h2 id="1-先说是什么，再说为什么"><a href="#1-先说是什么，再说为什么" class="headerlink" title="1. 先说是什么，再说为什么"></a>1. 先说是什么，再说为什么</h2><ul>
-<li><p>归一化：</p>
-<p>就是将训练集中某一列<strong>数值</strong>特征（假设是第i列）的值缩放到<strong>0和1</strong>之间。方法如下所示：</p>
-<script type="math/tex; mode=display">
-\frac{x_i - \min(x)}{\max(x) - \min(x)}</script></li>
-<li><p>标准化：</p>
-<p>就是将训练集中某一列<strong>数值</strong>特征（假设是第i列）的值缩放成<strong>均值为0，方差为1</strong>的状态。如下所示：</p>
-<script type="math/tex; mode=display">
-\frac{x_i - \bar{x}}{std(x)}</script></li>
-</ul>
-<p>  sklearn中<code>MinmaxScaler</code>对应着归一化，<code>StandardScaler</code>对应标准化。</p>
-<p>  神经网络中Batch Normalization对应标准化，即把样本拉回到均值为0，方差为1的分布上。</p>
-<ul>
-<li><p>进一步明确二者含义：</p>
-<p>归一化和标准化的相同点都是对<strong>某个特征（column）</strong>进行缩放（scaling）而不是对某个样本的特征向量（row）进行缩放。对特征向量进行缩放是毫无意义的（<strong>暗坑1</strong>），比如三列特征：身高、体重、血压。每一条样本（row）就是三个这样的值，对这个row无论是进行标准化还是归一化都是好笑的，因为你不能将身高、体重和血压混到一起去！<br> 在线性代数中，将一个向量除以向量的长度，也被称为标准化，不过这里的标准化是将向量变为长度为1的单位向量，它和我们这里的标准化不是一回事儿，不要搞混哦（<strong>暗坑2</strong>）。</p>
-</li>
-</ul>
-<h2 id="2-标准化和归一化的对比分析"><a href="#2-标准化和归一化的对比分析" class="headerlink" title="2. 标准化和归一化的对比分析"></a>2. 标准化和归一化的对比分析</h2><p>首先明确，在机器学习中，标准化是更常用的手段，归一化的应用场景是有限的。我总结原因有两点：</p>
-<ul>
-<li>1、标准化更好保持了样本间距。当样本中有异常点时，归一化有可能将正常的样本“挤”到一起去。比如三个样本，某个特征的值为1,2,10000，假设10000这个值是异常值，用归一化的方法后，正常的1,2就会被“挤”到一起去。如果不幸的是1和2的分类标签还是相反的，那么，当我们用梯度下降来做分类模型训练时，模型会需要更长的时间收敛，因为将样本分开需要更大的努力！而标准化在这方面就做得很好，至少它不会将样本“挤到一起”。</li>
-<li>2、标准化更符合统计学假设<br> 对一个数值特征来说，很大可能它是服从正态分布的。标准化其实是基于这个隐含假设，只不过是略施小技，将这个正态分布调整为均值为0，方差为1的标准正态分布而已。</li>
-</ul>
-<h2 id="3-逻辑回归是否需要标准化"><a href="#3-逻辑回归是否需要标准化" class="headerlink" title="3. 逻辑回归是否需要标准化"></a>3. 逻辑回归是否需要标准化</h2><p>真正的答案是，这取决于我们的逻辑回归是不是用正则。</p>
-<p><strong>如果你不用正则，那么，标准化并不是必须的，如果你用正则，那么标准化是必须的。（暗坑3）</strong></p>
-<p>因为不用正则时，我们的损失函数<strong>只是仅仅</strong>在度量<strong>预测与真实的差距</strong>，加上正则后，我们的损失函数除了要度量上面的差距外，还要度量<strong>参数值</strong>是否足够小。而<strong>参数值的大小程度或者说大小的级别是与特征的数值范围</strong>相关的。举例来说，我们用体重预测身高，体重用kg衡量时，训练出的模型是：<br>身高 = 体重*x，x就是我们训练出来的参数。</p>
-<p>当我们的体重用吨来衡量时，x的值就会扩大为原来的1000倍。<br>在上面两种情况下，都用L1正则的话，显然对模型的训练影响是不同的。</p>
-<p>假如不同的特征的数值范围不一样，有的是0到0.1，有的是100到10000，那么，每个特征对应的参数大小级别也会不一样，在L1正则时，我们是简单将参数的绝对值相加，因为它们的大小级别不一样，就会导致L1最后只会对那些级别比较大的参数有作用，那些小的参数都被忽略了。</p>
-<p>如果你回答到这里，面试官应该基本满意了，但是他可能会进一步考察你，如果不用正则，那么标准化对逻辑回归有什么好处吗？</p>
-<p>答案是有好处，进行标准化后，我们得出的参数值的大小可以反应出不同特征对样本label的<strong>贡献度</strong>，方便我们进行特征筛选。如果不做标准化，是不能这样来筛选特征的。</p>
-<p>答到这里，有些厉害的面试官可能会继续问，做标准化有什么注意事项吗？</p>
-<p><strong>最大的注意事项就是先拆分出test集，不要在整个数据集上做标准化，因为那样会将test集的信息引入到训练集中，这是一个非常容易犯的错误！</strong></p>
-<h2 id="4-决策树需要标准化吗"><a href="#4-决策树需要标准化吗" class="headerlink" title="4. 决策树需要标准化吗"></a>4. 决策树需要标准化吗</h2><p>答案是不需要标准化。因为决策树中的切分依据，信息增益、信息增益比、Gini指数都是基于概率得到的，和值的大小没有关系。另外同属概率模型的朴素贝叶斯，隐马尔科夫也不需要标准化。</p>
-<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h2><ol>
-<li><p><strong>搞清楚标准化和归一化的具体定义和区别</strong></p>
-</li>
-<li><p><strong>标准化要在train_test_split后，在训练集、测试集上分别进行标准化</strong></p>
-</li>
-<li><p><strong>决策树、朴素贝叶斯等概率模型不需要标准化</strong></p>
-</li>
-</ol>
 
       
       <!-- 打赏 -->

@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Lecture 3 局部特征</title>
+    <url>/2020/10/15/Lecture%203%20%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/</url>
+    <content><![CDATA[<h3 id="Lecture-3-局部特征"><a href="#Lecture-3-局部特征" class="headerlink" title="Lecture 3 局部特征"></a>Lecture 3 局部特征</h3><h3 id="1-Harris角点检测"><a href="#1-Harris角点检测" class="headerlink" title="1. Harris角点检测"></a>1. Harris角点检测</h3><h4 id="1-1-特征点需要满足的性质"><a href="#1-1-特征点需要满足的性质" class="headerlink" title="1.1 特征点需要满足的性质"></a>1.1 特征点需要满足的性质</h4><p>可重复性/区分性/容易计算</p>
+<p>为什么选角点？</p>
+<p>一个窗口在图像上滑动，处于平坦（flat）区域时，窗口内的内容不会发生明显改变；处于边缘（edge）区域时，只有沿一个方向（竖直或水平）滑动会发生变化；而处于角点（corner）区域时，沿两个方向滑动窗口内容都会发生改变。</p>
+<h4 id="1-2-角点"><a href="#1-2-角点" class="headerlink" title="1.2 角点"></a>1.2 角点</h4><script type="math/tex; mode=display">
+E(u,v) = \sum_{x,y} w(x,y)[I(x + u, y + v) - I(x,y)]^2</script><p>说明：$x,y$的取值范围是窗口的范围；$w(x,y)$指权值函数，比如$Gaussian$函数，本质上取到一个加权的作用。$u,v$即平移的距离。$E(u,v)$表示窗口内容变化程度。</p>
+<p>我们希望直接观察到$u,v$和$E(u,v)$之间的关系，而上式定义较麻烦不直观（还得通过$I(x,y)$），怎么直接建立关系呢？答案：二维泰勒展开！</p>
+<script type="math/tex; mode=display">
+E(u,v) \approx E(0,0) + [u,v]\begin{pmatrix}E_u(0,0)\\E_v(0,0)\end{pmatrix} +\frac{1}{2}[u,v]\begin{pmatrix}E_{uu}&E_{uv}\\E_{vu}&E_{vv}\end{pmatrix}\left [\begin{matrix}u\\v\end{matrix} \right]</script><script type="math/tex; mode=display">
+E(0,0) = 0</script><script type="math/tex; mode=display">
+E_{u}(u,v) = \sum_{x,y}2w(x,y)[I(x+u,y+v)-I(x,y)]I_x(x+u,y+v)</script><p>将(0,0)带入：得：$E_u(0,0) = 0$；同理可得$E_v(0,0)=0$；</p>
+<script type="math/tex; mode=display">
+E_{uu}(u,v) = \sum_{x,y}2w(x,y)I_x(x+u,y+v)I_x(x+u,y+v)+\sum_{x,y}2w(x,y)[I(x+u,y+v)-I(x,y)]I_{xx}(x+u,y+v)</script><script type="math/tex; mode=display">
+E_{uv}(u,v) =\sum_{x,y}2w(x,y)I_y(x+u,y+v)I_x(x+u,y+v)+\sum_{x,y}2w(x,y)[I(x+u,y+v)-I(x,y)]I_{xy}(x+u,y+v)</script><p>带(0,0)有：</p>
+<script type="math/tex; mode=display">
+E_{uu}(0,0) = \sum_{x,y}2w(x,y)I_x(x,y)I_x(x,y)\\
+E_{vv}(0,0) = \sum_{x,y}2w(x,y)I_y(x,y)I_y(x,y)\\
+E_{uv}(0,0) =E_{vu}(0,0)= \sum_{x,y}2w(x,y)I_x(x,y)I_y(x,y)</script><p>即：</p>
+<script type="math/tex; mode=display">
+E(u,v) \approx [u,v]M\left[ \begin{matrix}u\\v\end{matrix} \right]</script><script type="math/tex; mode=display">
+M_{2\times2} = \sum_{x,y}w(x,y)\left[\begin{matrix}I_x^2&I_xI_y\\I_xI_y&I_y^2\end{matrix}\right] = \left[\begin{matrix}\lambda_1&0\\0&\lambda_2\end{matrix}\right]</script><p>$I_x,I_y$即上一个Lecture讲过的图像上定义的梯度（同方向相邻两个像素的差值）。$M$被称为second moment matrix。它是一个对称正定矩阵，因此可以<strong>对角化</strong>为特征值组成的对角矩阵。</p>
+<p>考虑：</p>
+<script type="math/tex; mode=display">
+E(u,v) = \lambda_1u^2 + \lambda_2v^2=C,C\in R</script><p>可知$E(u,v)$在几何上是一个椭圆。其轴分别为$1/\sqrt\lambda_1,1/\sqrt\lambda_2$。</p>
+<p>$\lambda_1,\lambda_2$表示窗口内的$x,y$方向的图像梯度。当两个方向变化都很大时可能为角点。</p>
+<script type="math/tex; mode=display">
+R = \det(M) - \alpha *trace(M)^2 = \lambda_1\lambda_2-\alpha(\lambda_1+\lambda_2)^2</script><p><img src="/images/image-20201015212534161.png" alt="image-20201015212534161"></p>
+<p>优点：对光照、亮度不敏感</p>
+<p>缺点：对尺度（scale）变换敏感！</p>
+<h3 id="2-SIFT"><a href="#2-SIFT" class="headerlink" title="2. SIFT"></a>2. SIFT</h3><p>SIFT即尺度不变特征变换。</p>
+]]></content>
+      <categories>
+        <category>机器视觉基础</category>
+      </categories>
+  </entry>
+  <entry>
     <title>降维方法</title>
     <url>/2020/10/13/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/</url>
     <content><![CDATA[<h2 id="降维方法"><a href="#降维方法" class="headerlink" title="降维方法"></a>降维方法</h2><h3 id="1-主成分分析"><a href="#1-主成分分析" class="headerlink" title="1. 主成分分析"></a>1. 主成分分析</h3><p>参见我的另一篇博客：“主成分分析”。</p>
