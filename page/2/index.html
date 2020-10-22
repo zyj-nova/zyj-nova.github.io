@@ -41,6 +41,220 @@
     
     
     
+    <article id="post-Graph Neutral Network和Graph Embedding" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/"
+    >Graph Neutral Network和Graph Embedding</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/" class="article-date">
+  <time datetime="2020-07-07T09:14:50.127Z" itemprop="datePublished">2020-07-07</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="Graph-Neutral-Network和Graph-Embedding"><a href="#Graph-Neutral-Network和Graph-Embedding" class="headerlink" title="Graph Neutral Network和Graph Embedding"></a>Graph Neutral Network和Graph Embedding</h2><h3 id="0-概述"><a href="#0-概述" class="headerlink" title="0. 概述"></a>0. 概述</h3><h4 id="0-1-图的基础知识"><a href="#0-1-图的基础知识" class="headerlink" title="0.1 图的基础知识"></a>0.1 图的基础知识</h4><p>​        通常定义一个图 $G=(V,E)$，其中 $V$为 <strong>顶点（Vertices）</strong>集合，$E$为<strong>边（Edges）</strong>集合。对于一条边$e=(u,v)$ 包含两个<strong>端点（Endpoints）</strong> u 和 v，同时 u 可以称为 v 的<strong>邻居（Neighbor）</strong>。当所有的边为有向边时，图称之为<strong>有向（Directed）</strong>图，当所有边为无向边时，图称之为<strong>无向（Undirected）</strong>图。在无向图中，对于一个顶点 v，令$d(v) $表示连接的边的数量，称之为<strong>度（Degree）</strong>；有向图中又分为<strong>入度</strong>和<strong>出度</strong>。</p>
+<p>​        对于一个无向图 $G=(V,E)$，其<strong>邻接矩阵（Adjacency Matrix）</strong>$A$通常定义为：</p>
+<script type="math/tex; mode=display">
+A_{ij} = \left\{  
+             \begin{array}{**lr**}  
+             1，i\not=j&if\ vi\ is\ adjacent\ to\ vj\\
+             0, &otherwise 
+             \end{array}  
+\right.</script><p>​        <img src="/images/graph.png" alt="image-20200707174530868"></p>
+<p>​        对于上面这个无向图，其度矩阵（degree matrix）如下。度矩阵$D$是一个对角矩阵。</p>
+<p><img src="/images/image-20200707174724389.png" alt="image-20200707174724389"></p>
+<p>​        图的拉普拉斯矩阵$L$定义为，在图论中，作为一个图的矩阵表示。拉普拉斯矩阵是对称的（Symmetric）。</p>
+<script type="math/tex; mode=display">
+L = D - A</script><p>​        另外一种更为常用的的是正则化的拉普拉斯矩阵（Symmetric normalized Laplacian）。</p>
+<script type="math/tex; mode=display">
+L^{sym} = D^{-\frac{1}{2}}LD^{-\frac{1}{2}} = I - D^{-\frac{1}{2}}AD^{-\frac{1}{2}}</script><p>​        说明：$I$为单位矩阵；$D^{-\frac{1}{2}}$表示度矩阵对角线上的元素开平方根取倒数。</p>
+<h4 id="0-2-二者不同"><a href="#0-2-二者不同" class="headerlink" title="0.2 二者不同"></a>0.2 二者不同</h4><p>​        图嵌入旨在通过保留图的网络<strong>拓扑结构和节点内容信息</strong>，将图中顶点表示为低维向量，以便使用简单的机器学习算法（例如，支持向量机分类）进行处理（摘自知乎：图神经网络（Graph Neural Networks）综述，作者：苏一。<a href="https://zhuanlan.zhihu.com/p/75307407）。" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/75307407）。</a></p>
+<p>​        图神经网络是用于处理图数据（非欧式空间）的神经网络结构。</p>
+<p>​        图嵌入和图神经网络的区别与联系。</p>
+<p><img src="https://d33wubrfki0l68.cloudfront.net/3c5b07652ee4f2012f3ce1b9cf25bf8282a4f9f4/abdc9/images/cn/2020-04-11-graph-embedding-and-gnn/graph-embedding-vs-graph-neural-networks.png" alt=""></p>
+<h3 id="1-Graph-Embedding"><a href="#1-Graph-Embedding" class="headerlink" title="1. Graph Embedding"></a>1. Graph Embedding</h3><p>​        Embedding在数学上是一个函数，将一个空间的点映射到另一个空间，通常是从高维抽象的空间映射到低维具象的空间，并且在低维空间保持原有的语义。早在2003年，Bengio就发表论文论述word embedding想法，将词汇映射到实数向量空间。而2013年google连发两篇论文推出word embedding的神经网咯工具包：skip-gram、cbow（连续词袋模型），使得embedding技术成为深度学习的基本操作，进而导致万物皆可embedding。</p>
+<p>​        而基于图的embedding又可以分为基于顶点（vertex）和基于图（graph）。前者主要是将给定的图数据中的vertex表示为单独的向量（vector），后者将整个图进行embedding表示，之后可以进行图的分类等工作。下面分别介绍。</p>
+<h4 id="1-1-Vertex-Embedding"><a href="#1-1-Vertex-Embedding" class="headerlink" title="1.1 Vertex Embedding"></a>1.1 Vertex Embedding</h4><h5 id="1-1-1-DeepWalk"><a href="#1-1-1-DeepWalk" class="headerlink" title="1.1.1 DeepWalk"></a>1.1.1 DeepWalk</h5><p>Perozzi B, Al-Rfou R, Skiena S. Deepwalk: Online learning of social representations[C]//Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining. 2014: 701-710.</p>
+<p><img src="/images/image-20200708200747355.png" alt="image-20200708200747355"></p>
+<p>即：基于图上的随机游走进行节点采样，之后将采样到的节点集（每个节点feature使用one-hot表示或者随机向量）输入到skip-gram模型进行训练，得到节点的embedding。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">RandomWalk</span><span class="params">(node,t)</span>:</span></span><br><span class="line">    walk = [node]        <span class="comment"># Walk starts from this node</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(t<span class="number">-1</span>):</span><br><span class="line">        <span class="comment"># 应先统计adj_list[node]对应的为1表示相邻的节点索引列表，从该列表中随机选取索引</span></span><br><span class="line">        adj_nodes = np.array(adj_list[node]).nonzero()[<span class="number">0</span>]<span class="comment"># nonzero返回一个元组</span></span><br><span class="line">        </span><br><span class="line">        node = adj_list[node][adj_nodes[random.randint(<span class="number">0</span>,len(adj_nodes)<span class="number">-1</span>)]]</span><br><span class="line">        walk.append(node)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> walk</span><br></pre></td></tr></table></figure>
+<h5 id="1-1-2-LINE"><a href="#1-1-2-LINE" class="headerlink" title="1.1.2 LINE"></a>1.1.2 LINE</h5><p>Tang J, Qu M, Wang M, et al. Line: Large-scale information network embedding[C]//Proceedings of the 24th international conference on world wide web. 2015: 1067-1077.</p>
+<p>​        相似度定义</p>
+<p><strong>first-order proximity</strong></p>
+<p>​        <img src="/images/image-20200709225053851.png" alt="image-20200709225053851"></p>
+<p>​        1阶相似度用于描述图中成对顶点之间的局部相似度，形式化描述为若$u,v$之间存在直连边，则边权$w_{uv}$即为两个顶点的相似度，若不存在直连边，则1阶相似度为0。 如上图，6和7之间存在直连边，且边权较大，则认为两者相似且1阶相似度较高，而5和6之间不存在直连边，则两者间1阶相似度为0。</p>
+<p><strong>second-order proximity</strong></p>
+<p>​        仅有1阶相似度就够了吗？显然不够，如上图，虽然5和6之间不存在直连边，但是他们有很多相同的邻居顶点(1,2,3,4)，这其实也可以表明5和6是相似的，而2阶相似度就是用来描述这种关系的。 形式化定义为，令$p_u = (w_{u,1},…,w_{u,|V|})$ 表示顶点$u$与<strong>所有其他</strong>顶点间的1阶相似度，则  $u$ 与 $v$ 的2阶相似度可以通过 $p_{u}$ 和  $p_v$ 的相似度表示（两个顶点他们的邻居集合的相似程度）。若$u$与$v$之间不存在相同的邻居顶点，则2阶相似度为0。</p>
+<p><strong>目标函数</strong></p>
+<p>​        <strong>1st-order</strong>（用于无向图）</p>
+<p>​        对于每条边集$E$中的任一条边$(i,j)$，邻接的两个节点$p_i,p_j$的联合分布定义为：</p>
+<script type="math/tex; mode=display">
+p(v_i,v_j) = \frac{1}{1 + \exp(-u_i·u_j)}</script><p>​        $u_i,u_j$即节点$v_i,v_j$的低维embedding表示。同时定义经验分布$\hat p$：</p>
+<script type="math/tex; mode=display">
+\hat p(i,j) = \frac{w_{ij}}{W},W = \sum_{(i,j)\in E}w_{ij}</script><p>​        那么，目标函数就是尽可能地减小这两个分布的差异，衡量两个分布差异可以使用KL散度来衡量，进而：</p>
+<script type="math/tex; mode=display">
+O_1 = - \sum_{(i,j)\in E}w_{ij}\log p(v_i,v_j)</script><p>​        <strong>2nd-order</strong></p>
+<script type="math/tex; mode=display">
+O_2 = - \sum_{(i,j)\in E} w_{ij}\log p(v_j|v_i)</script><p>​        当然也可以使用二者的结合。</p>
+<h5 id="1-1-3-Node2Vec"><a href="#1-1-3-Node2Vec" class="headerlink" title="1.1.3 Node2Vec"></a>1.1.3 Node2Vec</h5><p>Grover A, Leskovec J. node2vec: Scalable feature learning for networks[C]//Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining. 2016: 855-864.</p>
+<p>​        本质上也是基于随机游走，提出了一种新的节点采样策略，有“导向”的游走，即加入了参数来控制从某个节点到其他节点的概率。采样得到的节点集，<strong>仍使用word2vec形式进行训练</strong>。</p>
+<p>​        如下图。p（return parameter）、q（in-out parameter）为超参数。</p>
+<p>​        下图中，现处于节点v，上一个节点是t，那么从节点v到节点$t$、$x_1$、$x_2$、$x_3$的概率$\pi_{vx}$计算公式如下：</p>
+<script type="math/tex; mode=display">
+\alpha(t,x) = \frac{1}{p},d_{t,x} = 0</script><script type="math/tex; mode=display">
+\alpha(t,x) = 1,d_{t,x} = 1</script><script type="math/tex; mode=display">
+\alpha(t,x) = \frac{1}{q},d_{t,x} = 2</script><script type="math/tex; mode=display">
+\pi_{vx}=\alpha(t,x) w_{v,x}</script><p>​        其中，$d_{tx}$表示<strong>上一节点和下一个能到达的节点的距离</strong>，$w_{vx}$即节点v与next节点连接边的权重（无向图中为1）。下图中，节点$t$与$x_1$直接有边相连接，$d$为1；$t$与$x_2$、$x_3$距离为2（不相邻）；特别的，与上一个节点距离为0，概率为$\frac{1}{p}$。</p>
+<p><img src="/images/image-20200709201700829.png" alt="image-20200709201700829"></p>
+<p>​        基于这种随机游走策略，使得该模型可以体现网络的同质性（homophily）或结构性（structural equivalence）。网络的“同质性”指<strong>距离相近</strong>的节点的embedding应尽量相似；“结构性”指的是<strong>结构上相似</strong>的节点的embedding应尽量相似。</p>
+<p>​        为了能让graph embedding的结果能够表达网络的“结构性”，需要让游走的过程更倾向与<strong>BFS</strong>，因为BFS会更多的在当前节点的领域中游走遍历；为了表达”同质性”，则需要让游走过程倾向于<strong>DFS</strong>。</p>
+<p>​        现在讨论超参数p、q，q越大，则随机游走到远方节点的可能性更大，随机游走策略就近似于DFS；反之，近似于BFS。</p>
+<h5 id="1-1-4-SDNE"><a href="#1-1-4-SDNE" class="headerlink" title="1.1.4 SDNE"></a>1.1.4 SDNE</h5><p>Wang D, Cui P, Zhu W. Structural deep network embedding[C]//Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining. 2016: 1225-1234.</p>
+<p>​        SDNE基于LINE研究的基础上，采用deep encoder-decoder模型进行embedding。</p>
+<p>​        </p>
+<h4 id="1-2-Graph-Embedding"><a href="#1-2-Graph-Embedding" class="headerlink" title="1.2 Graph Embedding"></a>1.2 Graph Embedding</h4><h3 id="2-Graph-Neural-Network"><a href="#2-Graph-Neural-Network" class="headerlink" title="2. Graph Neural Network"></a>2. Graph Neural Network</h3><p>​        图神经网络目前主要的任务包括：节点分类（node classification）、图分类（graph classification）、graph representation、link predication等等。</p>
+<h4 id="2-1-Neighborhood-Aggravating"><a href="#2-1-Neighborhood-Aggravating" class="headerlink" title="2.1 Neighborhood Aggravating"></a>2.1 Neighborhood Aggravating</h4><p>​        <strong>neighborhood aggravating即用节点的neighbor feature更新下一个的hidden state。</strong></p>
+<p>​        给定一张图，我们可以用与与节点邻接的节点集去表示该节点。下图中，A与B、C、D相邻接，而B又与A、C邻接等等，每个节点都可以使用与其相邻接的节点进行表示（aggravating）（每个节点都有一个初始状态【特征】，当前节点状态用其他节点的上一个状态【特征】表示）。通过其邻接节点聚合，这个节点就可以学到图的结构。</p>
+<p><img src="/images/g1.png" alt="image-20200707215031730" style="zoom:67%;" /></p>
+<p><img src="E:\hexo\themes\ayer\source\images\image-20200707215123250.png" alt="image-20200707215123250" style="zoom:67%;" /></p>
+<p><img src="/images/image-20200707215155395.png" alt="image-20200707215155395" style="zoom:67%;" /></p>
+<p>​        因此，我们可以定义任意层的网络来聚合各个节点的信息。（如下图，注：并非完整）</p>
+<p><img src="/images/image-20200707215535544.png" alt="image-20200707215535544" style="zoom: 67%;" /></p>
+<p>​        注：图中方块表示任意的聚合函数。</p>
+<p>​        数学表示如下：</p>
+<script type="math/tex; mode=display">
+h_v^k = \sigma(W_k\sum_{u \in N(v)}\frac{h_u^{k-1}}{|N(v)|} + B_kh_v^{k-1}),k > 0</script><script type="math/tex; mode=display">
+h_v^0 = x_v</script><p>​        其中，k表示第k层（layer）；v表示节点；$\sigma$表示激活函数；$h_u$表示节点$u$的状态；$N(v)$表示节点$v$的邻接节点集合；$|N(v)|$即邻接节点数量；$W、B$分别为权重矩阵和偏置（bias）。</p>
+<p>​        因此，我们只需定义一个聚合函数（sum、mean、max-pooling等），以及损失函数（比如：基于节点分类的交叉熵损失函数等），就可以开始迭代训练，最终得到各个节点的embedding向量。</p>
+<h4 id="2-2-Graph-Convolution-Networks"><a href="#2-2-Graph-Convolution-Networks" class="headerlink" title="2.2 Graph Convolution Networks"></a>2.2 Graph Convolution Networks</h4><p>​        卷积网络大致分类如下图。</p>
+<p><img src="/images/image-20200707223107082.png" alt="image-20200707223107082"></p>
+<h5 id="2-2-1-Spatial-based"><a href="#2-2-1-Spatial-based" class="headerlink" title="2.2.1 Spatial-based"></a>2.2.1 Spatial-based</h5><p>​        空间卷积网络也是基于neighborhood aggravating的思想。</p>
+<ul>
+<li><p>Kipf T N, Welling M. Semi-supervised classification with graph convolutional networks[J]. arXiv preprint arXiv:1609.02907, 2016.</p>
+<p>这篇论文提出了著名的GCN模型，采用的图卷积网络在neighborhood aggravating上做出了一点改动。</p>
+</li>
+</ul>
+<script type="math/tex; mode=display">
+h_v^k = \sigma(W_k\sum_{u\in N(v)\cup v}\frac{h_u^{k-1}}{\sqrt{|N(u)||N(v)|}})</script><p>​        <strong>矩阵形式</strong>如下：</p>
+<script type="math/tex; mode=display">
+H^{(k+1)} = \sigma(D^{-\frac{1}{2}}\hat AD^{\frac{1}{2}}H^{(k)}W_k) \\
+\hat A = A + I</script><p>​        其中$A$为图邻接矩阵，$D$为度矩阵，$I$为单位矩阵。</p>
+<p>​        下面看一下具体的矩阵形式</p>
+<p><img src="/images/g2.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上面这张图的邻接矩阵如下</span></span><br><span class="line">&gt; A = torch.tensor(np.array([[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>]]))</span><br><span class="line"><span class="comment"># 度矩阵 D，即邻接矩阵每一行求和</span></span><br><span class="line">&gt; D = torch.diag(torch.sum(torch.tensor(adj),<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">&gt; X = torch.tensor(np.array([[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]]))</span><br><span class="line"><span class="comment"># 每个节点的邻居节点聚合等价于A*X</span></span><br><span class="line">&gt; torch.mm(A,X)</span><br><span class="line"><span class="comment">#Output</span></span><br><span class="line">tensor([[<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">        [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">        [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]], dtype=torch.int32)</span><br><span class="line"><span class="comment"># 从结果可以看出相当于对每个节点的所有邻居节点特征求和</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义权重矩阵 W，将input维度映射到output维度，本例input=3</span></span><br><span class="line">&gt; out = <span class="number">4</span></span><br><span class="line">&gt; W = W = torch.randn(<span class="number">3</span>,out)</span><br><span class="line"><span class="comment"># 完成聚合 AXW</span></span><br><span class="line">&gt; output = torch.mm(torch.mm(A,X).type_as(torch.FloatTensor()),W)</span><br><span class="line"><span class="comment"># 经过激活函数,得到这一阶段的hidden（下一阶段的输入）</span></span><br><span class="line">&gt; hidden = F.relu(output)</span><br><span class="line"><span class="comment"># hidden [num_of_vertex, hidden_dims]</span></span><br></pre></td></tr></table></figure>
+<p>​        但是Kipf等人在他的论文中，对邻接矩阵$A$进行了标准化。即上文采用的公式。下面实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义图卷积</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GCNConv</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, A, in_channels, out_channels)</span>:</span></span><br><span class="line">        super(GCNConv, self).__init__()</span><br><span class="line">        self.A_hat = A+torch.eye(A.size(<span class="number">0</span>))</span><br><span class="line">        self.D     = torch.diag(torch.sum(A,<span class="number">1</span>))</span><br><span class="line">        self.D     = self.D.inverse().sqrt() <span class="comment"># D是对角矩阵，对角线元素开根号</span></span><br><span class="line">        self.A_hat = torch.mm(torch.mm(self.D, self.A_hat), self.D)</span><br><span class="line">        self.W     = nn.Parameter(torch.rand(in_channels,out_channels, requires_grad=<span class="literal">True</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, X)</span>:</span></span><br><span class="line">        out = torch.relu(torch.mm(torch.mm(self.A_hat, X), self.W))</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"><span class="comment"># 定义GCN  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Net</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,A, input_dims, nhid, out_dims)</span>:</span></span><br><span class="line">        super(Net, self).__init__()</span><br><span class="line">        self.conv1 = GCNConv(A,input_dims, nhid)</span><br><span class="line">        self.conv2 = GCNConv(A,nhid, out_dims)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self,X)</span>:</span></span><br><span class="line">        H  = self.conv1(X)</span><br><span class="line">        H2 = self.conv2(H)</span><br><span class="line">        <span class="keyword">return</span> H2</span><br></pre></td></tr></table></figure>
+<h5 id="2-2-2-Spectral-based"><a href="#2-2-2-Spectral-based" class="headerlink" title="2.2.2 Spectral-based"></a>2.2.2 Spectral-based</h5><p>​         谱图卷积网络基于图的信号处理，即图的拉普拉斯矩阵进行傅里叶变化（Fourier Transform）与逆变化（Inverse Fourier Transform），</p>
+<p>​    <strong>图上的傅里叶变换</strong></p>
+<p>​        傅里叶变换可以将<strong>时域</strong>信号转为<strong>频域信号</strong>。时域即信号大小随时间而改变，其图像在二维平面中，横轴为时间，纵轴为信号大小，其图像是连续的；而频域图像，横轴代表频率大小，纵轴代表信号大小，其图像是离散的。频域图像本质上描述了一段信号中包含的具体成分（不同频率信号的叠加）如何。</p>
+<p>​        而图上的傅里叶变换用到了图的拉普拉斯矩阵$L$，因为$L$是半正定矩阵，因此其特征值都非负。对其进行特征值分解有：</p>
+<script type="math/tex; mode=display">
+L = U \Lambda U^T</script><p>，其中$U$为特征向量，$\Lambda$为特征值矩阵，是一个对角矩阵，$\lambda_1,\lambda_2…$即特征值，且$\lambda_1&lt;=\lambda_2&lt;=…&lt;=\lambda_n$。$\lambda$也代表了图上的频率。</p>
+<p>​        下面直接给出图上傅里叶变换公式，具体推导略去。</p>
+<p>​        给定图中某顶点$v$，其对应的信号（特征）为$x$，那么其傅里叶变换即：</p>
+<script type="math/tex; mode=display">
+\hat x = U^Tx</script><p>​        可知$\hat x$为频域上信号，要重新换变换顶点域，就需要逆傅里叶变换即：</p>
+<script type="math/tex; mode=display">
+y = U\hat x</script><p><strong>谱图卷积</strong></p>
+<p>​        要进行卷积，就需要在频域上进行卷积，即将顶点上的信号进行傅里叶变换后，定义对应的滤波器（滤波函数）$g_\theta(\lambda)$对其进行处理，再利用逆傅里叶变换还原为顶点域中。这里的滤波器或者说关于$\lambda$的滤波函数就是我们要通过训练学习的。说是关于$\lambda$的函数，就是说根据不同的$\lambda$给出不同的<strong>相应</strong>$\theta$。</p>
+<p>​        由此，图上信号卷积即：</p>
+<script type="math/tex; mode=display">
+x_{*\mathcal{G}}f=U((U^Tf)\otimes(U^Tx))</script><p>$f$即要学习的filter，$\otimes$即点积符号。因为最后$y$还是会和$U$运算，直接学习$U^Ty$并表示为：</p>
+<script type="math/tex; mode=display">
+y = U\hat x = Ug_{\theta}(\Lambda)U^Tx</script><p>，$g_{\theta}$是一个对角矩阵，就是要学习的参数。</p>
+<script type="math/tex; mode=display">
+g_{\theta} = diag\{\theta_1,...,\theta_n\}</script><p>​        但上面这样定义仍存在几个问题，一是当图太大时矩阵分解计算复杂度太高（a. 矩阵分解复杂度$O(n^3)$，b. 向量与矩阵相乘），二是这并非是局部的（localized）。进而又提出了ChebNet模型（Defferrard M, Bresson X, Vandergheynst P. Convolutional neural networks on graphs with fast localized spectral filtering[C]. Advances in neural information processing systems. 2016: 3844-3852.）。</p>
+<p>​        第一类切比雪夫多项式定义如下：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+T_0(x) &= 1 \\
+T_1(x) &= x \\
+T_n(x) &= 2xT_{n-1}(x) - T_{n-2}(x)
+\end{aligned}</script><script type="math/tex; mode=display">
+g_{\theta}(\Lambda) =\sum_{k=0}^{K-1} \theta_{k}\Lambda^k</script><p>$\Lambda^k$表示对角矩阵的$k$次幂。</p>
+<p>代码参考：<a href="https://github.com/dovelism/Traffic_Data_Projection_Using_GCN/" target="_blank" rel="noopener">https://github.com/dovelism/Traffic_Data_Projection_Using_GCN/</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChebConv</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    The ChebNet convolution operation.</span></span><br><span class="line"><span class="string">    :param in_c: int, number of input channels.</span></span><br><span class="line"><span class="string">    :param out_c: int, number of output channels.</span></span><br><span class="line"><span class="string">    :param K: int, the order of Chebyshev Polynomial.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_c, out_c, K, bias=True, normalize=True)</span>:</span></span><br><span class="line">        super(ChebConv, self).__init__()</span><br><span class="line">        self.normalize = normalize</span><br><span class="line"></span><br><span class="line">        self.weight = nn.Parameter(torch.Tensor(K + <span class="number">1</span>, <span class="number">1</span>, in_c, out_c))  <span class="comment"># [K+1, 1, in_c, out_c]</span></span><br><span class="line">        init.xavier_normal_(self.weight)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> bias:</span><br><span class="line">            self.bias = nn.Parameter(torch.Tensor(<span class="number">1</span>, <span class="number">1</span>, out_c))</span><br><span class="line">            init.zeros_(self.bias)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.register_parameter(<span class="string">"bias"</span>, <span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">        self.K = K + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, inputs, graph)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :param inputs: the input data, [B, N, C]</span></span><br><span class="line"><span class="string">        :param graph: the graph structure, [N, N]</span></span><br><span class="line"><span class="string">        :return: convolution result, [B, N, D]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        L = ChebConv.get_laplacian(graph, self.normalize)  <span class="comment"># [N, N]</span></span><br><span class="line">        mul_L = self.cheb_polynomial(L).unsqueeze(<span class="number">1</span>)   <span class="comment"># [K, 1, N, N]</span></span><br><span class="line"></span><br><span class="line">        result = torch.matmul(mul_L, inputs)  <span class="comment"># [K, B, N, C]</span></span><br><span class="line">        result = torch.matmul(result, self.weight)  <span class="comment"># [K, B, N, D]</span></span><br><span class="line">        result = torch.sum(result, dim=<span class="number">0</span>) + self.bias  <span class="comment"># [B, N, D]</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cheb_polynomial</span><span class="params">(self, laplacian)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Compute the Chebyshev Polynomial, according to the graph laplacian.</span></span><br><span class="line"><span class="string">        :param laplacian: the graph laplacian, [N, N].</span></span><br><span class="line"><span class="string">        :return: the multi order Chebyshev laplacian, [K, N, N].</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        N = laplacian.size(<span class="number">0</span>)  <span class="comment"># [N, N]</span></span><br><span class="line">        multi_order_laplacian = torch.zeros([self.K, N, N], device=laplacian.device, dtype=torch.float)  <span class="comment"># [K, N, N]</span></span><br><span class="line">        multi_order_laplacian[<span class="number">0</span>] = torch.eye(N, device=laplacian.device, dtype=torch.float)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.K == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> multi_order_laplacian</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            multi_order_laplacian[<span class="number">1</span>] = laplacian</span><br><span class="line">            <span class="keyword">if</span> self.K == <span class="number">2</span>:</span><br><span class="line">                <span class="keyword">return</span> multi_order_laplacian</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">2</span>, self.K):</span><br><span class="line">                    multi_order_laplacian[k] = <span class="number">2</span> * torch.mm(laplacian, multi_order_laplacian[k<span class="number">-1</span>]) - multi_order_laplacian[k<span class="number">-2</span>]</span><br><span class="line">        <span class="keyword">return</span> multi_order_laplacian</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_laplacian</span><span class="params">(graph, normalize)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        return the laplacian of the graph.</span></span><br><span class="line"><span class="string">        :param graph: the graph structure without self loop, [N, N].</span></span><br><span class="line"><span class="string">        :param normalize: whether to used the normalized laplacian.</span></span><br><span class="line"><span class="string">        :return: graph laplacian.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> normalize:</span><br><span class="line">            D = torch.diag(torch.sum(graph, dim=<span class="number">-1</span>) ** (<span class="number">-1</span> / <span class="number">2</span>))</span><br><span class="line">            L = torch.eye(graph.size(<span class="number">0</span>), device=graph.device, dtype=graph.dtype) - torch.mm(torch.mm(D, graph), D)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            D = torch.diag(torch.sum(graph, dim=<span class="number">-1</span>))</span><br><span class="line">            L = D - graph</span><br><span class="line">        <span class="keyword">return</span> L</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChebNet</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_c, hid_c, out_c, K)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :param in_c: int, number of input channels.</span></span><br><span class="line"><span class="string">        :param hid_c: int, number of hidden channels.</span></span><br><span class="line"><span class="string">        :param out_c: int, number of output channels.</span></span><br><span class="line"><span class="string">        :param K:</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        super(ChebNet, self).__init__()</span><br><span class="line">        self.conv1 = ChebConv(in_c=in_c, out_c=hid_c, K=K)</span><br><span class="line">        self.conv2 = ChebConv(in_c=hid_c, out_c=out_c, K=K)</span><br><span class="line">        self.act = nn.ReLU()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, data, device)</span>:</span></span><br><span class="line">        graph_data = data[<span class="string">"graph"</span>].to(device)[<span class="number">0</span>]  <span class="comment"># [N, N]</span></span><br><span class="line">        flow_x = data[<span class="string">"flow_x"</span>].to(device)  <span class="comment"># [B, N, H, D]</span></span><br><span class="line"></span><br><span class="line">        B, N = flow_x.size(<span class="number">0</span>), flow_x.size(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        flow_x = flow_x.view(B, N, <span class="number">-1</span>)  <span class="comment"># [B, N, H*D]</span></span><br><span class="line"></span><br><span class="line">        output_1 = self.act(self.conv1(flow_x, graph_data))</span><br><span class="line">        output_2 = self.act(self.conv2(output_1, graph_data))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> output_2.unsqueeze(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GCN</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_c, hid_c, out_c)</span>:</span></span><br><span class="line">        super(GCN, self).__init__()</span><br><span class="line">        self.linear_1 = nn.Linear(in_c, hid_c)</span><br><span class="line">        self.linear_2 = nn.Linear(hid_c, out_c)</span><br><span class="line">        self.act = nn.ReLU()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, data, device)</span>:</span></span><br><span class="line">        graph_data = data[<span class="string">"graph"</span>].to(device)[<span class="number">0</span>]  <span class="comment"># [N, N]</span></span><br><span class="line">        graph_data = GCN.process_graph(graph_data)</span><br><span class="line">        flow_x = data[<span class="string">"flow_x"</span>].to(device)  <span class="comment"># [B, N, H, D]</span></span><br><span class="line">        B, N = flow_x.size(<span class="number">0</span>), flow_x.size(<span class="number">1</span>)</span><br><span class="line">        flow_x = flow_x.view(B, N, <span class="number">-1</span>)  <span class="comment"># [B, N, H*D]  H = 6, D = 1</span></span><br><span class="line"></span><br><span class="line">        output_1 = self.linear_1(flow_x)  <span class="comment"># [B, N, hid_C]</span></span><br><span class="line">        output_1 = self.act(torch.matmul(graph_data, output_1))  <span class="comment"># [N, N], [B, N, Hid_C]</span></span><br><span class="line"></span><br><span class="line">        output_2 = self.linear_2(output_1)</span><br><span class="line">        output_2 = self.act(torch.matmul(graph_data, output_2))  <span class="comment"># [B, N, 1, Out_C]</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> output_2.unsqueeze(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_graph</span><span class="params">(graph_data)</span>:</span></span><br><span class="line">        N = graph_data.size(<span class="number">0</span>)</span><br><span class="line">        matrix_i = torch.eye(N, dtype=graph_data.dtype, device=graph_data.device)</span><br><span class="line">        graph_data += matrix_i  <span class="comment"># A~ [N, N]</span></span><br><span class="line"></span><br><span class="line">        degree_matrix = torch.sum(graph_data, dim=<span class="number">-1</span>, keepdim=<span class="literal">False</span>)  <span class="comment"># [N]</span></span><br><span class="line">        degree_matrix = degree_matrix.pow(<span class="number">-1</span>)</span><br><span class="line">        degree_matrix[degree_matrix == float(<span class="string">"inf"</span>)] = <span class="number">0.</span>  <span class="comment"># [N]</span></span><br><span class="line"></span><br><span class="line">        degree_matrix = torch.diag(degree_matrix)  <span class="comment"># [N, N]</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> torch.mm(degree_matrix, graph_data)  <span class="comment"># D^(-1) * A = \hat(A)</span></span><br></pre></td></tr></table></figure>
+<p>​        在推出ChebNet后，Kipf等人进一步将公式化简，推出一阶（k=1）ChebNet模型（Kipf T N, Welling M. Semi-supervised classification with graph convolutional networks[J]. arXiv preprint arXiv:1609.02907, 2016.），这就有了上面我们模型中采用的那个公式。</p>
+<script type="math/tex; mode=display">
+H^{(k+1)} = \sigma(D^{-\frac{1}{2}}\hat AD^{\frac{1}{2}}H^{(k)}W_k) \\
+\hat A = A + I</script><h4 id="2-2-Graph-Attention-Networks"><a href="#2-2-Graph-Attention-Networks" class="headerlink" title="2.2 Graph Attention Networks"></a>2.2 Graph Attention Networks</h4><p>Veličković P, Cucurull G, Casanova A, et al. Graph attention networks[J]. arXiv preprint arXiv:1710.10903, 2017.</p>
+<p>​        attention通俗的讲就是输入两个向量，然后输出一个分数；是一种思想，可以有不同的实现。</p>
+<p>​        GAT在空间卷积的基础上，引入了注意力机制，注意力机制也赋予了模型一定的可解释性。加入了attention后，我们aggravating的时候就需要计算当前节点和邻接节点的权重，然后进行聚合。</p>
+<p>​        节点v第k个状态更新公式如下：</p>
+<script type="math/tex; mode=display">
+h_v^k = \sigma (\sum_{u \in N(v)}\alpha_{vu}h_u)</script><p>​        其中$\alpha$就是计算得到的attention权重。</p>
+<p><img src="/images/image-20200707230726126.png" alt="image-20200707230726126" style="zoom:80%;" /></p>
+<h4 id="2-3-Graph-SAGE"><a href="#2-3-Graph-SAGE" class="headerlink" title="2.3 Graph SAGE"></a>2.3 Graph SAGE</h4><p>Hamilton W, Ying Z, Leskovec J. Inductive representation learning on large graphs[C]. Advances in neural information processing systems. 2017: 1024-1034.</p>
+<p>SAGE即Sample and Aggregate。GCN（Kipf.2016）模型存在如下缺点：</p>
+<ul>
+<li>对于静态图有效，当图结构发生改变（比如：节点的删除和更新）时，需重新训练模型。</li>
+<li>当训练数据集非常时，内存无法全部加载图数据。</li>
+</ul>
+<p>该篇论文提出了名为inductive learning的模型，能更好的适应动态图，同时针对新加入的节点也可以快速的生成node embedding。具体思想是不是去学习一个固定的embedding，而是学习一个聚合函数（aggregator），学习到的聚合函数需满足对称性（symmetry property），因为对称性确保了模型可以被训练而且可以应用于任意顺序的顶点邻居特征集合上。常见的聚合函数有：mean、lstm、pooling等。</p>
+<p><img src="/images/sage.png" alt=""></p>
+<p>可以看出模型针对每个节点每次聚合固定数量的邻居，而不必把所有数据加载到内存中。</p>
+<p><em>K**</em>是网络的层数，也代表着每个顶点能够聚合的邻接点的跳数，因为每增加一层，可以聚合更远的一层邻居的信息**。</p>
+<p><img src="/images/khops.png" alt="image-20200920183029770" style="zoom:67%;" /></p>
+<p>当新的节点加入到图中时，已经训练好的聚合函数（参数固定了）会聚合新节点的邻居然后生成该节点的embedding。</p>
+<p>值得注意的是，当图中大量的节点有更新行为，图结构改变较大时，已经训练好的模型也需要重新训练，即模型退化为静态模型了。</p>
+<p>具体实现代码参见：<a href="https://github.com/dsgiitr/graph_nets，具体架构就是三个组件：Aggregator、Encoder、SupervisedModel。Aggregator用来聚合邻居节点的信息，给定节点列表以及对应的邻居节点，首先进行采样然后使用feature函数进行聚合；Encoder包含图的一系列信息，比如邻接矩阵、采样大小等，根据GraphSAGE论文中提出的模型，需要concatenate自身节点信息与Aggregator聚合的邻居节点信息，然后矩阵相乘经过非线性激活函数完成对整个图节点的embedding；SupervisedModel即最终模型，包含一个encoder以及损失函数，完成最终的任务。代码中定义了2个aggregator和2个encoder，实际上是2层的一个编码网络（hops=2）。具体示意图如下：" target="_blank" rel="noopener">https://github.com/dsgiitr/graph_nets，具体架构就是三个组件：Aggregator、Encoder、SupervisedModel。Aggregator用来聚合邻居节点的信息，给定节点列表以及对应的邻居节点，首先进行采样然后使用feature函数进行聚合；Encoder包含图的一系列信息，比如邻接矩阵、采样大小等，根据GraphSAGE论文中提出的模型，需要concatenate自身节点信息与Aggregator聚合的邻居节点信息，然后矩阵相乘经过非线性激活函数完成对整个图节点的embedding；SupervisedModel即最终模型，包含一个encoder以及损失函数，完成最终的任务。代码中定义了2个aggregator和2个encoder，实际上是2层的一个编码网络（hops=2）。具体示意图如下：</a></p>
+<p><img  src="/images/GraphSAGE.png" style="zoom:50%;" /></p>
+<p>参考资料：</p>
+<p>李宏毅，深度学习</p>
+<p><a href="http://snap.stanford.edu/proj/embeddings-www/" target="_blank" rel="noopener">http://snap.stanford.edu/proj/embeddings-www/</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/56478167" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/56478167</a></p>
+<p><a href="https://github.com/shenweichen/GraphEmbedding" target="_blank" rel="noopener">https://github.com/shenweichen/GraphEmbedding</a></p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-交叉熵" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -968,133 +1182,13 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
 
 </article>
     
-    <article id="post-Java中多态和方法的重载和重写" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/"
-    >Java中多态和方法的重载和重写</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" class="article-date">
-  <time datetime="2020-06-06T02:45:23.060Z" itemprop="datePublished">2020-06-06</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="Java中多态和方法的重载和重写"><a href="#Java中多态和方法的重载和重写" class="headerlink" title="Java中多态和方法的重载和重写"></a>Java中多态和方法的重载和重写</h2><p>重载（Overload）：指在同一个类中，方法名相同，而<strong>参数列表</strong>不同，参数列表指参数的<strong>顺序、类型、个数</strong>。重载与方法的返回类型、可见类型无关（例1）。</p>
-<p>具体例子：</p>
-<p><img src="/images/ex1.png" alt="例1"></p>
-<p><img src="/images/ex1-1.png" alt="image-20200608221031279"></p>
-<center>
-    例1 重载与方法返回类型无关
-</center>
-
-
-
-<p>重写（Overwrite）：指的是在继承关系中，子类定义了与父类的同名方法且参数列表与父类方法完全一致。注意：子类的方法名、参数列表必须与父类（接口）定义的完全一致，否则不能称为覆写（例7）；确认重写关系后，当返回类型为基本类型时（<code>int、double、char、short、byte、float、bool、long、String</code>）子类覆写时<strong>不可以改变</strong>返回类型，当返回类型为引用型，子类返回的引用型只能为，父类返回类型的子类或相同类型，不可以为无关的引用类型。覆写不可以缩小父类方法的可见性！（例5）。</p>
-<p>总结起来就是，首先确认子类方法名和参数列表是否与父方法<strong>完全一致</strong>，如果是，那么就是重写，语法要求方法返回类型务必和父类方法相同，且不可以减小该方法可见性；如果不是，则不是重写。</p>
-<p>具体例子</p>
-<p><img src="/images/ex2.png" alt="例2-1"></p>
-<p><img src="/images/ex2-2.png" alt="例2-2"></p>
- <center> 
-     例2 重写时，返回类型务必相同<center>
- </center>
-
-
-
-<p><img src="/images/ex3.png" alt="image-20200608221852911"></p>
-<center>
-    例3 重写时，子类返回类型为父类方法返回类型的子类或实现类，参数列务必表完全相同
-</center>
-
-
-
-<p><img src="/images/ex4.png" alt="image-20200608221930946"></p>
-<center>
-    例4 重写时，子类返回类型不允许为与父类方法返回类型毫无关系的类型
-</center>
-
-
-
-<p><img src="/images/ex5.png" alt="image-20200608222225893"></p>
-<center>
-    例5 重写时，子类不允许减小父方法可见性
-</center>
-
-
-
-<p><img src="/images/ex6.png" alt="image-20200608223224765"></p>
-<center>
-    例6 重写时，子类重写的方法返回类型不能为
-</center>
-
-
-
-<p><img src="/images/ex7-1.png" alt="image-20200608223631425"></p>
-<p><img src="/images/ex7-2.png" alt="image-20200608223608764"></p>
-<center>
-    例7 当参数列表不同时，这两个方法不存在覆写关系，加上注解就会报错
-</center>
-
-<p>顺便提一下，多态指的是动态绑定方法，而非类内变量。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i + <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Father son = <span class="keyword">new</span> Son();</span><br><span class="line">		System.out.println(son.test()); <span class="comment">// 10 子类没有定义test，找到父类方法，由于多态不动态绑定变量，因此i取得是父类的</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> getI() + <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getI</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getI</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> i;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Father son = <span class="keyword">new</span> Son();</span><br><span class="line">		Son son2 = <span class="keyword">new</span> Son();</span><br><span class="line">		</span><br><span class="line">		System.out.println(son.test()); <span class="comment">// 20</span></span><br><span class="line">		System.out.println(son2.test());<span class="comment">// 20</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
   </article>
   
 
   
   <nav class="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
+    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
   </nav>
   
 </section>

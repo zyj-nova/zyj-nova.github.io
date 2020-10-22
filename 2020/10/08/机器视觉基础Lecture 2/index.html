@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.1k字</span>
+            <span class="post-count">1.3k字</span>
         </span>
     </span>
 
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">4分钟</span>
+            <span class="post-count">5分钟</span>
         </span>
     </span>
 </div>
@@ -117,9 +117,9 @@
 <script type="math/tex; mode=display">
 \frac{\partial f(x,y)}{\partial x} = \lim_{\epsilon \rightarrow 0} \frac{f(x + \epsilon,y) - f(x,y)}{\epsilon},\frac{\partial f(x,y)}{\partial y} = \lim_{\epsilon \rightarrow 0} \frac{f(x,y  + \epsilon) - f(x,y)}{\epsilon}</script><p>但是图像是按照像素来离散的，最小也就1像素，因此普通的微分形式变成了：</p>
 <script type="math/tex; mode=display">
-\frac{\partial f(x,y)}{\partial x} = f(x + 1,y) - f(x,y),\frac{\partial f(x,y)}{\partial y} =f(x,y+1) - f(x,y)</script><p>可以看出，图像的梯度本质上相当于2个相邻像素之间的差值。</p>
-<p>因此定义梯度算子（kernel）：水平$[-1,1]$ 右边像素 - 左边像素；垂直：$[1,-1]^T$或者$[-1,1]^T$</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">img = cv2.imread(<span class="string">"126007.jpg"</span>,<span class="number">0</span>)</span><br><span class="line">img = img.astype(<span class="string">'float'</span>)</span><br><span class="line"></span><br><span class="line">row = img.shape[<span class="number">0</span>]</span><br><span class="line">col = img.shape[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">gradient_x = np.zeros((row, col))</span><br><span class="line">gradient_y = np.zeros((row, col))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义沿row方向为y方向，沿col方向为x方向</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(row - <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(col - <span class="number">1</span>):</span><br><span class="line">        gy = abs(img[i + <span class="number">1</span>, j] - img[i, j])</span><br><span class="line">        gx = abs(img[i, j + <span class="number">1</span>] - img[i, j])</span><br><span class="line">        gradient_x[i, j] = gx</span><br><span class="line">        gradient_y[i, j] = gy</span><br><span class="line">gradient_x = gradient_x.astype(<span class="string">'uint8'</span>)</span><br><span class="line">gradient_y = gradient_y.astype(<span class="string">'uint8'</span>)</span><br><span class="line"></span><br><span class="line">cv2.imshow(<span class="string">"gradient_x"</span>, gradient_x)</span><br><span class="line">cv2.imshow(<span class="string">"gradient_y"</span>, gradient_y)</span><br><span class="line">cv2.waitKey()</span><br></pre></td></tr></table></figure>
+\frac{\partial f(x,y)}{\partial x} = f(x + 1,y) - f(x,y),\frac{\partial f(x,y)}{\partial y} =f(x,y+1) - f(x,y)</script><p><strong>可以看出，图像的梯度本质上相当于2个相邻像素之间的差值。</strong></p>
+<p>因此定义梯度算子（kernel）：水平$[-1,1]$ 右边像素 - 左边像素；垂直：$[-1,1]^T$下边像素-上边像素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">img = cv2.imread(<span class="string">"126007.jpg"</span>,<span class="number">0</span>)</span><br><span class="line">img = img.astype(<span class="string">'float'</span>)</span><br><span class="line"></span><br><span class="line">row = img.shape[<span class="number">0</span>]</span><br><span class="line">col = img.shape[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">gradient_x = np.zeros((row, col))</span><br><span class="line">gradient_y = np.zeros((row, col))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(row - <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(col - <span class="number">1</span>):</span><br><span class="line">        gy = abs(img[i + <span class="number">1</span>, j] - img[i, j]) <span class="comment">#下边像素-上边像素</span></span><br><span class="line">        gx = abs(img[i, j + <span class="number">1</span>] - img[i, j]) <span class="comment">#右边像素-左边像素</span></span><br><span class="line">        gradient_x[i, j] = gx</span><br><span class="line">        gradient_y[i, j] = gy</span><br><span class="line">gradient_x = gradient_x.astype(<span class="string">'uint8'</span>)</span><br><span class="line">gradient_y = gradient_y.astype(<span class="string">'uint8'</span>)</span><br><span class="line"></span><br><span class="line">cv2.imshow(<span class="string">"gradient_x"</span>, gradient_x)</span><br><span class="line">cv2.imshow(<span class="string">"gradient_y"</span>, gradient_y)</span><br><span class="line">cv2.waitKey()</span><br></pre></td></tr></table></figure>
 <p><img src="/images/grad_x.jpg" alt=""></p>
 <p>水平方向梯度</p>
 <p><img src="/images/grad_y.jpg" alt=""></p>
@@ -127,15 +127,25 @@
 <p>水平方向求偏导：$\frac{\partial f}{\partial x}$，竖直方向求偏导：$\frac{\partial f}{\partial y}$，图像梯度：$\nabla f = [\frac{\partial f}{\partial x},\frac{\partial f}{\partial y}]$。</p>
 <p>水平：$\nabla f = [\frac{\partial f}{\partial x},0]$，垂直：$\nabla f = [0,\frac{\partial f}{\partial y}]$</p>
 <p>梯度方向：$\theta = \tan^{-1}(\frac{\partial f}{\partial y}/\frac{\partial f}{\partial x})$</p>
+<p><strong>梯度幅值（gradient magnitude）</strong>：$||\nabla f||=\sqrt {(\frac{\partial f}{\partial x})^2+(\frac{\partial f}{\partial y})^2}$</p>
 <p>注意：求梯度之前先做平滑，否则噪声也是高频，求梯度后无法分辨哪里是噪声哪里是边缘。如下图。</p>
 <p><img src="/images/image-20201008191252006.png" alt="image-20201008191252006" style="zoom:67%;" /></p>
 <p><img src="/images/image-20201008191306409.png" alt="image-20201008191306409" style="zoom:67%;" /></p>
 <p>首先平滑图像后：</p>
 <p><img src="/images/image-20201008191404392.png" alt="image-20201008191404392" style="zoom:67%;" /></p>
+<p>$f:signal;g:kernel$</p>
+<script type="math/tex; mode=display">
+\frac{d}{dx}(f*g) = f*\frac{d}{dx}g</script><p>用高斯一阶导去和信号做卷积，干了两件事：一是平滑信号，二是求导。相当于先用高斯滤波平滑再求导。 同理高斯二阶导，用高斯二阶导去和信号卷积。</p>
+<ul>
+<li>高斯核求和为1，用途：平滑</li>
+<li>高斯一阶导核求和为0，用途：边缘提取</li>
+</ul>
 <p><strong>Canny边缘检测</strong></p>
 <p>代码参见同专题下另一篇博客。</p>
 <h4 id="1-3-模板匹配"><a href="#1-3-模板匹配" class="headerlink" title="1.3 模板匹配"></a>1.3 模板匹配</h4><p>滤波器的一个应用。</p>
-<h3 id="2-图像的特征"><a href="#2-图像的特征" class="headerlink" title="2. 图像的特征"></a>2. 图像的特征</h3><h4 id="2-1-图像纹理texture"><a href="#2-1-图像纹理texture" class="headerlink" title="2.1 图像纹理texture"></a>2.1 图像纹理texture</h4><p><strong>特征空间</strong></p>
+<h3 id="2-图像的特征"><a href="#2-图像的特征" class="headerlink" title="2. 图像的特征"></a>2. 图像的特征</h3><h4 id="2-1-图像纹理texture"><a href="#2-1-图像纹理texture" class="headerlink" title="2.1 图像纹理texture"></a>2.1 图像纹理texture</h4><p>纹理分类</p>
+<p>纹理是由重复的局部<strong>模式</strong>（local pattern）构成的。</p>
+<p>如何描述？多个卷积核卷积得到特征向量。</p>
 
       
       <!-- 打赏 -->

@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">158字</span>
+            <span class="post-count">245字</span>
         </span>
     </span>
 
@@ -104,12 +104,18 @@
       <h2 id="降维方法"><a href="#降维方法" class="headerlink" title="降维方法"></a>降维方法</h2><h3 id="1-主成分分析"><a href="#1-主成分分析" class="headerlink" title="1. 主成分分析"></a>1. 主成分分析</h3><p>参见我的另一篇博客：“主成分分析”。</p>
 <h3 id="2-非负矩阵分解"><a href="#2-非负矩阵分解" class="headerlink" title="2. 非负矩阵分解"></a>2. 非负矩阵分解</h3><p>非负矩阵分解：Nonnegative Matrix Factorization</p>
 <h3 id="3-局部线性嵌入"><a href="#3-局部线性嵌入" class="headerlink" title="3. 局部线性嵌入"></a>3. 局部线性嵌入</h3><p>局部线性嵌入：Locally Linear Embedding（LLE）</p>
-<p>参见： <a href="https://www.cnblogs.com/pinard/p/6266408.html" target="_blank" rel="noopener">https://www.cnblogs.com/pinard/p/6266408.html</a></p>
+<p>参考： <a href="https://www.cnblogs.com/pinard/p/6266408.html" target="_blank" rel="noopener">https://www.cnblogs.com/pinard/p/6266408.html</a></p>
 <p>流形学习（manifold learning）第一次听说”manifold”是在学习生成对抗网络的时候看到的。</p>
 <p>推导过程中需要注意的地方：</p>
 <p>下图中由$(1)\rightarrow(2)$过程中，因为$\sum_{j\in Q(i)}w_{ij} = 1$，所以$x_i = x_i \times 1 = \sum_{j\in Q(i)}w_{ij}x_i$。</p>
 <p><img src="E:\hexo\themes\ayer\source\images\image-20201013195547190.png" alt="image-20201013195547190"></p>
 <h3 id="4-线性判别分析"><a href="#4-线性判别分析" class="headerlink" title="4. 线性判别分析"></a>4. 线性判别分析</h3><p>线性判别分析：Linear Discriminate Analysis（LDA）</p>
+<p>降维原则：最小化类内方差，最大化类间方差。属于线性、有监督的降维方法。</p>
+<h3 id="5-多维尺度分析"><a href="#5-多维尺度分析" class="headerlink" title="5. 多维尺度分析"></a>5. 多维尺度分析</h3><p>Multidimensional Scaling</p>
+<p>基本思想：尽量满足原始高维度空间中样本之间的距离在低维空间中得以保持。</p>
+<p>“metric” or “non-metric”</p>
+<p>ISOMAP </p>
+<h3 id="6-典型关联分析"><a href="#6-典型关联分析" class="headerlink" title="6. 典型关联分析"></a>6. 典型关联分析</h3><p>Canonical correlation analysis</p>
 
       
       <!-- 打赏 -->

@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">715字</span>
+            <span class="post-count">757字</span>
         </span>
     </span>
 
@@ -111,9 +111,10 @@ E(u,v) = \sum_{x,y} w(x,y)[I(x + u, y + v) - I(x,y)]^2</script><p>说明：$x,y$
 E(u,v) \approx E(0,0) + [u,v]\begin{pmatrix}E_u(0,0)\\E_v(0,0)\end{pmatrix} +\frac{1}{2}[u,v]\begin{pmatrix}E_{uu}&E_{uv}\\E_{vu}&E_{vv}\end{pmatrix}\left [\begin{matrix}u\\v\end{matrix} \right]</script><script type="math/tex; mode=display">
 E(0,0) = 0</script><script type="math/tex; mode=display">
 E_{u}(u,v) = \sum_{x,y}2w(x,y)[I(x+u,y+v)-I(x,y)]I_x(x+u,y+v)</script><p>将(0,0)带入：得：$E_u(0,0) = 0$；同理可得$E_v(0,0)=0$；</p>
+<p>为了表示方便，令：$I(x+u,y+v)$简写为$I$，$I_x(x+u,y+v)$简写为$I_x$等</p>
 <script type="math/tex; mode=display">
-E_{uu}(u,v) = \sum_{x,y}2w(x,y)I_x(x+u,y+v)I_x(x+u,y+v)+\sum_{x,y}2w(x,y)[I(x+u,y+v)-I(x,y)]I_{xx}(x+u,y+v)</script><script type="math/tex; mode=display">
-E_{uv}(u,v) =\sum_{x,y}2w(x,y)I_y(x+u,y+v)I_x(x+u,y+v)+\sum_{x,y}2w(x,y)[I(x+u,y+v)-I(x,y)]I_{xy}(x+u,y+v)</script><p>带(0,0)有：</p>
+E_{uu}(u,v) = \sum_{x,y}2w(x,y)I_xI_x+\sum_{x,y}2w(x,y)[I-I(x,y)]I_{xx}</script><script type="math/tex; mode=display">
+E_{uv}(u,v) =\sum_{x,y}2w(x,y)I_yI_x+\sum_{x,y}2w(x,y)[I-I(x,y)]I_{xy}</script><p>带(0,0)有：</p>
 <script type="math/tex; mode=display">
 E_{uu}(0,0) = \sum_{x,y}2w(x,y)I_x(x,y)I_x(x,y)\\
 E_{vv}(0,0) = \sum_{x,y}2w(x,y)I_y(x,y)I_y(x,y)\\
@@ -129,7 +130,9 @@ E(u,v) = \lambda_1u^2 + \lambda_2v^2=C,C\in R</script><p>可知$E(u,v)$在几何
 R = \det(M) - \alpha *trace(M)^2 = \lambda_1\lambda_2-\alpha(\lambda_1+\lambda_2)^2</script><p><img src="/images/image-20201015212534161.png" alt="image-20201015212534161"></p>
 <p>优点：对光照、亮度不敏感</p>
 <p>缺点：对尺度（scale）变换敏感！</p>
-<h3 id="2-SIFT"><a href="#2-SIFT" class="headerlink" title="2. SIFT"></a>2. SIFT</h3><p>SIFT即尺度不变特征变换。</p>
+<h3 id="2-Blob-Detection"><a href="#2-Blob-Detection" class="headerlink" title="2. Blob Detection"></a>2. Blob Detection</h3><h3 id="3-SIFT"><a href="#3-SIFT" class="headerlink" title="3. SIFT"></a>3. SIFT</h3><p>SIFT即尺度不变特征变换。光照、尺度、旋转、平移。</p>
+<p>观察dog图像和log图像发现他俩走势几乎一致，可以用dog来代替log提高计算效率</p>
+<p>sift 4 <em> 4 </em> 8 = 128 维描述子</p>
 
       
       <!-- 打赏 -->
@@ -145,6 +148,15 @@ R = \det(M) - \alpha *trace(M)^2 = \lambda_1\lambda_2-\alpha(\lambda_1+\lambda_2
   
   
   <nav class="article-nav">
+    
+      <a href="/2020/10/21/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture1/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            机器视觉基础Lecture1
+          
+        </div>
+      </a>
     
     
       <a href="/2020/10/13/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/" class="article-nav-link">

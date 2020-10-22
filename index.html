@@ -41,6 +41,156 @@
     
     
     
+    <article id="post-机器视觉基础Lecture1" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/10/21/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture1/"
+    >机器视觉基础Lecture1</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/10/21/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture1/" class="article-date">
+  <time datetime="2020-10-21T12:34:34.100Z" itemprop="datePublished">2020-10-21</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/">机器视觉基础</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="机器视觉基础-Lecture-1"><a href="#机器视觉基础-Lecture-1" class="headerlink" title="机器视觉基础 Lecture 1"></a>机器视觉基础 Lecture 1</h2><h3 id="1-卷积"><a href="#1-卷积" class="headerlink" title="1. 卷积"></a>1. 卷积</h3><p>卷积操作即用一个窗口在图像上滑动，图像上的像素与窗口内的数值相乘再相加，最后得到新的图像的过程；这个窗口也被称为滤波器/核。</p>
+<p><strong>卷积运算的性质</strong>：</p>
+<ul>
+<li>交换律：$a <em> b = b </em> a$</li>
+<li>结合律：$a <em> (b </em> c) = (a <em> b) </em> c$</li>
+<li>分配律：$a<em>(b + c) = a</em>b + a*c$</li>
+<li>数乘：$ka<em>b = a </em> kb = k(a*b)$</li>
+</ul>
+<p>可以看出，卷积运算是一种<strong>线性</strong>运算。</p>
+<p><strong>Question</strong>：</p>
+<ul>
+<li><p>设计一个窗口，卷积过后图像保持不变</p>
+<p><img src="/images/k1.jpg" alt="image-20201019182152123"></p>
+</li>
+</ul>
+<ul>
+<li><p>设计一个窗口，卷积过后图像向左平移1像素</p>
+<p><img src="/images/k2.png" alt="image-20201019182236198"></p>
+</li>
+</ul>
+<p>  思考：为什么？对于每一个中心点像素，卷积过后更新为右边像素点像素值，整幅图卷积完就会向左平移。</p>
+<ul>
+<li><p>设计一个窗口，卷积过后达到锐化（sharpen）的效果</p>
+<p><img src="/images/k3.png" alt="image-20201019182428504"></p>
+</li>
+</ul>
+<p>  思考：为什么要这么设计？</p>
+<p>  步骤1：</p>
+<p>  <img src="/images/f1.png" alt="image-20201019182727419"></p>
+<p>  步骤2：</p>
+<p>  <img src="/images/f2.png" alt="image-20201019182746490"></p>
+<p>  综合步骤1、2可以看出，相当于将原来的像素值乘2再减去均值滤波平滑后的图像，就可以得到锐化后的图像。写成卷积核形式就是上述形式。</p>
+<h3 id="2-各种滤波器"><a href="#2-各种滤波器" class="headerlink" title="2. 各种滤波器"></a>2. 各种滤波器</h3><h4 id="2-1-均值滤波"><a href="#2-1-均值滤波" class="headerlink" title="2.1 均值滤波"></a>2.1 均值滤波</h4><p>会出现“振零”现象。</p>
+<h4 id="2-2-高斯滤波"><a href="#2-2-高斯滤波" class="headerlink" title="2.2 高斯滤波"></a>2.2 高斯滤波</h4><p>如何生成一个高斯滤波器？高斯函数（连续）：$G(x,y)=e^{-\frac{x^2+y^2}{\sigma^2}}$到卷积核（离散）。</p>
+<p>matlab生成$\sigma=1$和$\sigma=3$的高斯核（归一化后的）：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0.0030</span>    <span class="number">0.0133</span>    <span class="number">0.0219</span>    <span class="number">0.0133</span>    <span class="number">0.0030</span></span><br><span class="line"><span class="number">0.0133</span>    <span class="number">0.0596</span>    <span class="number">0.0983</span>    <span class="number">0.0596</span>    <span class="number">0.0133</span></span><br><span class="line"><span class="number">0.0219</span>    <span class="number">0.0983</span>    <span class="number">0.1621</span>    <span class="number">0.0983</span>    <span class="number">0.0219</span></span><br><span class="line"><span class="number">0.0133</span>    <span class="number">0.0596</span>    <span class="number">0.0983</span>    <span class="number">0.0596</span>    <span class="number">0.0133</span></span><br><span class="line"><span class="number">0.0030</span>    <span class="number">0.0133</span>    <span class="number">0.0219</span>    <span class="number">0.0133</span>    <span class="number">0.0030</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0.0318</span>    <span class="number">0.0375</span>    <span class="number">0.0397</span>    <span class="number">0.0375</span>    <span class="number">0.0318</span></span><br><span class="line"><span class="number">0.0375</span>    <span class="number">0.0443</span>    <span class="number">0.0469</span>    <span class="number">0.0443</span>    <span class="number">0.0375</span></span><br><span class="line"><span class="number">0.0397</span>    <span class="number">0.0469</span>    <span class="number">0.0495</span>    <span class="number">0.0469</span>    <span class="number">0.0397</span></span><br><span class="line"><span class="number">0.0375</span>    <span class="number">0.0443</span>    <span class="number">0.0469</span>    <span class="number">0.0443</span>    <span class="number">0.0375</span></span><br><span class="line"><span class="number">0.0318</span>    <span class="number">0.0375</span>    <span class="number">0.0397</span>    <span class="number">0.0375</span>    <span class="number">0.0318</span></span><br></pre></td></tr></table></figure>
+<p>一般设计的高斯滤波默认均值为0，并且根据“3$\sigma$原则”，窗口大小可以根据方差$\sigma$来设定，因此高斯滤波通常只指定一个参数：方差$\sigma$。</p>
+<p><strong>3$\sigma$原则</strong>：一维高斯函数我们可以发现，在以原点为中心，向左向右$3|\sigma|$距离内，函数积分可以达到$99.73\%$，也就是说$|x|&gt;3\sigma$的点几乎约等于0，对卷积没有什么贡献。因此设计卷积核的时候。</p>
+<p><strong>窗口大小一定，方差$\sigma$对平滑效果的影响：$\sigma$越大，平滑效果越明显。</strong></p>
+<p>高斯函数的特点是：$\sigma$越小越集中（函数图像越尖，中心点的权值越大），这样加权平均自身权重更大，当$\sigma$逐渐增大，自身权重变小，加权过后自身信息丧失更加严重。</p>
+<p><strong>方差一定且在3$\sigma$原则下，窗口大小对平滑效果的影响：窗口越大，平滑效果越明显。</strong></p>
+<p>下面两张图展示了$\sigma=3$的情况下，窗口值大小为$3、9$的滤波结果。</p>
+<p><img src="/images/var3_kernelsize_3.jpg" style="zoom:80%;" /></p>
+<p><img src="/images/var3_kernelsize_9.jpg" style="zoom:80%;" /></p>
+<p>窗口加大需要考虑的像素值越多自身信息丧失的也就越多。要求限定$3\sigma$原则原因是，超过这个范围，无论窗口多大平滑效果几乎一致（最外围差不多都是0了，对加权求和没有贡献）。</p>
+<p>高斯噪声：采样于均值为0，方差为$\sigma$的高斯函数的值加到源图像上。</p>
+<p>二维高斯函数（均值都是0）：</p>
+<script type="math/tex; mode=display">
+G(x,y) = \frac{1}{ {2\pi\sigma^2}}e^{-\frac{x^2+y^2}{2\sigma^2}} = G(x)G(y)</script><script type="math/tex; mode=display">
+G_x(x,y) = \frac{\partial G}{\partial x} =-\frac{1}{2\pi\sigma^2}\frac{x}{\sigma^2}e^{-\frac{x^2+y^2}{2\sigma^2}}</script><script type="math/tex; mode=display">
+G_y(x,y)=\frac{\partial G}{\partial y} =-\frac{1}{2\pi\sigma^2}\frac{y}{\sigma^2}e^{-\frac{x^2+y^2}{2\sigma^2}}</script><script type="math/tex; mode=display">
+G_{xx}(x,y) =-\frac{1}{2\pi\sigma^2}(\frac{1}{\sigma^2}-\frac{x^2}{\sigma^4})e^{-\frac{x^2+y^2}{2\sigma^2}}</script><script type="math/tex; mode=display">
+G_{yy}(x,y) =-\frac{1}{2\pi\sigma^2}(\frac{1}{\sigma^2}-\frac{y^2}{\sigma^4})e^{-\frac{x^2+y^2}{2\sigma^2}}</script><p>Laplacian of Gaussian (LoG)定义如下：</p>
+<script type="math/tex; mode=display">
+LoG = \frac{\partial^2 G}{\partial x^2} + \frac{\partial^2 G}{\partial y^2} = G_{xx}(x,y) + G_{yy}(x,y) = \frac{1}{2\pi\sigma^2}\frac{x^2 + y^2-2\sigma^2}{\sigma^4}e^{-\frac{x^2+y^2}{2\sigma^2}}</script><p>一个近似于该函数的离散卷积核($\sigma=1.4$)：</p>
+<p><img src="https://homepages.inf.ed.ac.uk/rbf/HIPR2/figs/logdisc.gif" alt=""></p>
+<p><strong>一维一阶</strong>高斯导数如下图所示（省略了系数$1/\sqrt{2\pi\sigma^2}$）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = np.linspace(<span class="number">-6</span>,<span class="number">6</span>,<span class="number">1000</span>)</span><br><span class="line">sigma_1 = <span class="number">1.0</span></span><br><span class="line">g_prime = -x/sigma_1**<span class="number">2</span> * np.exp(-x**<span class="number">2</span> / <span class="number">2</span> / sigma_1 ** <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/dergaussian.png" alt=""></p>
+<p>一维二阶高斯导数如下图所示：</p>
+<p><img src="C:\Users\zhang\Desktop\下载 (2" alt="">.png)</p>
+<p><strong>将高斯函数离散化就可以得到高斯卷积核、一阶高斯卷积核</strong>。</p>
+<p>在图像上，用高斯滤波就是取一个窗口，窗口内以中心点为（0,0）点然后给窗口内的不同坐标的窗口带入高斯函数中取值归一化后，在图像上滑动做卷积。</p>
+<p>用高斯一阶导去和信号做卷积，干了两件事：一是平滑信号，二是求导。相当于先用高斯滤波平滑再求导。 同理高斯二阶导 Laplacian of Gaussian，用高斯二阶导去和信号卷积。</p>
+<p>高斯差分 DoG （Difference of Gaussian）相当于一个核（滤波器）。下图显示两个正态分布（均值都为1）的函数图像以及二者的差值图像，即DoG。参考：<a href="http://fourier.eng.hmc.edu/e161/lectures/gradient/node9.html" target="_blank" rel="noopener">http://fourier.eng.hmc.edu/e161/lectures/gradient/node9.html</a></p>
+<p><img src="http://fourier.eng.hmc.edu/e161/lectures/gradient/img111.png" alt=""></p>
+<p><img src="http://fourier.eng.hmc.edu/e161/lectures/gradient/img112.png" alt=""></p>
+<p><img src="/images/dog.png" alt=""></p>
+<ul>
+<li>高斯核求和为1，用途：平滑</li>
+<li>高斯一阶导核求和为0，用途：边缘提取</li>
+</ul>
+<h4 id="2-3-中值滤波"><a href="#2-3-中值滤波" class="headerlink" title="2.3 中值滤波"></a>2.3 中值滤波</h4><p>中值滤波的窗口内没有权值，它的作用是把窗口内图像上所有像素值排序后取中值作为窗口中心点的像素值。</p>
+<p><strong>对椒盐噪声有效，是非线性滤波</strong>。</p>
+<h4 id="2-4-总结"><a href="#2-4-总结" class="headerlink" title="2.4 总结"></a>2.4 总结</h4><p>高斯滤波以及均值滤波都可以起到平滑图像的作用，高斯滤波可以视为有权的均值滤波，图像在平滑的时候不仅会把噪声，也会把图像边缘信息平滑掉（噪声、边缘都是高频成分，因为像素值通常会发生剧烈变化），两者都是低通滤波（low-pass filter）。</p>
+<p>而中值滤波能够保留边缘信息，是高通滤波（high-pass filter）。</p>
+<h3 id="3-其他滤波"><a href="#3-其他滤波" class="headerlink" title="3. 其他滤波"></a>3. 其他滤波</h3><p>双边滤波（bilateral filter）、导向滤波（guided filter）、拉普拉斯滤波等。</p>
+<p>拉普拉斯滤波（和LoG区分一下）：</p>
+<script type="math/tex; mode=display">
+L(x,y) = \frac{\partial^2I}{\partial x^2} + \frac{\partial^2I}{\partial y^2}</script><p>近似图像上二阶梯度的离散卷积核（拉普拉斯算子）：</p>
+<p><img src="https://homepages.inf.ed.ac.uk/rbf/HIPR2/figs/lapmask2.gif" alt=""></p>
+<p>拉普拉斯滤波用途：边缘检测等。</p>
+<p><img src="/images/Zly.jpg" alt=""></p>
+<p>经过拉普拉斯卷积后：</p>
+<p><img src="/images/edge.jpg" alt=""></p>
+<p>手动实现效果与<code>cv2.Laplacian</code>效果相同</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kernel = np.array([[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">-4</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>]])</span><br><span class="line"><span class="comment"># no padding 卷积</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, img.shape[<span class="number">0</span>] - <span class="number">2</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, img.shape[<span class="number">1</span>] - <span class="number">2</span>):</span><br><span class="line">        img[i,j] = np.sum(kernel * img[i:i+<span class="number">3</span>, j:j+<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-Lecture 3 局部特征" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -93,9 +243,10 @@ E(u,v) = \sum_{x,y} w(x,y)[I(x + u, y + v) - I(x,y)]^2</script><p>说明：$x,y$
 E(u,v) \approx E(0,0) + [u,v]\begin{pmatrix}E_u(0,0)\\E_v(0,0)\end{pmatrix} +\frac{1}{2}[u,v]\begin{pmatrix}E_{uu}&E_{uv}\\E_{vu}&E_{vv}\end{pmatrix}\left [\begin{matrix}u\\v\end{matrix} \right]</script><script type="math/tex; mode=display">
 E(0,0) = 0</script><script type="math/tex; mode=display">
 E_{u}(u,v) = \sum_{x,y}2w(x,y)[I(x+u,y+v)-I(x,y)]I_x(x+u,y+v)</script><p>将(0,0)带入：得：$E_u(0,0) = 0$；同理可得$E_v(0,0)=0$；</p>
+<p>为了表示方便，令：$I(x+u,y+v)$简写为$I$，$I_x(x+u,y+v)$简写为$I_x$等</p>
 <script type="math/tex; mode=display">
-E_{uu}(u,v) = \sum_{x,y}2w(x,y)I_x(x+u,y+v)I_x(x+u,y+v)+\sum_{x,y}2w(x,y)[I(x+u,y+v)-I(x,y)]I_{xx}(x+u,y+v)</script><script type="math/tex; mode=display">
-E_{uv}(u,v) =\sum_{x,y}2w(x,y)I_y(x+u,y+v)I_x(x+u,y+v)+\sum_{x,y}2w(x,y)[I(x+u,y+v)-I(x,y)]I_{xy}(x+u,y+v)</script><p>带(0,0)有：</p>
+E_{uu}(u,v) = \sum_{x,y}2w(x,y)I_xI_x+\sum_{x,y}2w(x,y)[I-I(x,y)]I_{xx}</script><script type="math/tex; mode=display">
+E_{uv}(u,v) =\sum_{x,y}2w(x,y)I_yI_x+\sum_{x,y}2w(x,y)[I-I(x,y)]I_{xy}</script><p>带(0,0)有：</p>
 <script type="math/tex; mode=display">
 E_{uu}(0,0) = \sum_{x,y}2w(x,y)I_x(x,y)I_x(x,y)\\
 E_{vv}(0,0) = \sum_{x,y}2w(x,y)I_y(x,y)I_y(x,y)\\
@@ -111,7 +262,9 @@ E(u,v) = \lambda_1u^2 + \lambda_2v^2=C,C\in R</script><p>可知$E(u,v)$在几何
 R = \det(M) - \alpha *trace(M)^2 = \lambda_1\lambda_2-\alpha(\lambda_1+\lambda_2)^2</script><p><img src="/images/image-20201015212534161.png" alt="image-20201015212534161"></p>
 <p>优点：对光照、亮度不敏感</p>
 <p>缺点：对尺度（scale）变换敏感！</p>
-<h3 id="2-SIFT"><a href="#2-SIFT" class="headerlink" title="2. SIFT"></a>2. SIFT</h3><p>SIFT即尺度不变特征变换。</p>
+<h3 id="2-Blob-Detection"><a href="#2-Blob-Detection" class="headerlink" title="2. Blob Detection"></a>2. Blob Detection</h3><h3 id="3-SIFT"><a href="#3-SIFT" class="headerlink" title="3. SIFT"></a>3. SIFT</h3><p>SIFT即尺度不变特征变换。光照、尺度、旋转、平移。</p>
+<p>观察dog图像和log图像发现他俩走势几乎一致，可以用dog来代替log提高计算效率</p>
+<p>sift 4 <em> 4 </em> 8 = 128 维描述子</p>
 
       
       <!-- 打赏 -->
@@ -177,12 +330,18 @@ R = \det(M) - \alpha *trace(M)^2 = \lambda_1\lambda_2-\alpha(\lambda_1+\lambda_2
       <h2 id="降维方法"><a href="#降维方法" class="headerlink" title="降维方法"></a>降维方法</h2><h3 id="1-主成分分析"><a href="#1-主成分分析" class="headerlink" title="1. 主成分分析"></a>1. 主成分分析</h3><p>参见我的另一篇博客：“主成分分析”。</p>
 <h3 id="2-非负矩阵分解"><a href="#2-非负矩阵分解" class="headerlink" title="2. 非负矩阵分解"></a>2. 非负矩阵分解</h3><p>非负矩阵分解：Nonnegative Matrix Factorization</p>
 <h3 id="3-局部线性嵌入"><a href="#3-局部线性嵌入" class="headerlink" title="3. 局部线性嵌入"></a>3. 局部线性嵌入</h3><p>局部线性嵌入：Locally Linear Embedding（LLE）</p>
-<p>参见： <a href="https://www.cnblogs.com/pinard/p/6266408.html" target="_blank" rel="noopener">https://www.cnblogs.com/pinard/p/6266408.html</a></p>
+<p>参考： <a href="https://www.cnblogs.com/pinard/p/6266408.html" target="_blank" rel="noopener">https://www.cnblogs.com/pinard/p/6266408.html</a></p>
 <p>流形学习（manifold learning）第一次听说”manifold”是在学习生成对抗网络的时候看到的。</p>
 <p>推导过程中需要注意的地方：</p>
 <p>下图中由$(1)\rightarrow(2)$过程中，因为$\sum_{j\in Q(i)}w_{ij} = 1$，所以$x_i = x_i \times 1 = \sum_{j\in Q(i)}w_{ij}x_i$。</p>
 <p><img src="E:\hexo\themes\ayer\source\images\image-20201013195547190.png" alt="image-20201013195547190"></p>
 <h3 id="4-线性判别分析"><a href="#4-线性判别分析" class="headerlink" title="4. 线性判别分析"></a>4. 线性判别分析</h3><p>线性判别分析：Linear Discriminate Analysis（LDA）</p>
+<p>降维原则：最小化类内方差，最大化类间方差。属于线性、有监督的降维方法。</p>
+<h3 id="5-多维尺度分析"><a href="#5-多维尺度分析" class="headerlink" title="5. 多维尺度分析"></a>5. 多维尺度分析</h3><p>Multidimensional Scaling</p>
+<p>基本思想：尽量满足原始高维度空间中样本之间的距离在低维空间中得以保持。</p>
+<p>“metric” or “non-metric”</p>
+<p>ISOMAP </p>
+<h3 id="6-典型关联分析"><a href="#6-典型关联分析" class="headerlink" title="6. 典型关联分析"></a>6. 典型关联分析</h3><p>Canonical correlation analysis</p>
 
       
       <!-- 打赏 -->
@@ -261,9 +420,9 @@ R = \det(M) - \alpha *trace(M)^2 = \lambda_1\lambda_2-\alpha(\lambda_1+\lambda_2
 <script type="math/tex; mode=display">
 \frac{\partial f(x,y)}{\partial x} = \lim_{\epsilon \rightarrow 0} \frac{f(x + \epsilon,y) - f(x,y)}{\epsilon},\frac{\partial f(x,y)}{\partial y} = \lim_{\epsilon \rightarrow 0} \frac{f(x,y  + \epsilon) - f(x,y)}{\epsilon}</script><p>但是图像是按照像素来离散的，最小也就1像素，因此普通的微分形式变成了：</p>
 <script type="math/tex; mode=display">
-\frac{\partial f(x,y)}{\partial x} = f(x + 1,y) - f(x,y),\frac{\partial f(x,y)}{\partial y} =f(x,y+1) - f(x,y)</script><p>可以看出，图像的梯度本质上相当于2个相邻像素之间的差值。</p>
-<p>因此定义梯度算子（kernel）：水平$[-1,1]$ 右边像素 - 左边像素；垂直：$[1,-1]^T$或者$[-1,1]^T$</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">img = cv2.imread(<span class="string">"126007.jpg"</span>,<span class="number">0</span>)</span><br><span class="line">img = img.astype(<span class="string">'float'</span>)</span><br><span class="line"></span><br><span class="line">row = img.shape[<span class="number">0</span>]</span><br><span class="line">col = img.shape[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">gradient_x = np.zeros((row, col))</span><br><span class="line">gradient_y = np.zeros((row, col))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义沿row方向为y方向，沿col方向为x方向</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(row - <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(col - <span class="number">1</span>):</span><br><span class="line">        gy = abs(img[i + <span class="number">1</span>, j] - img[i, j])</span><br><span class="line">        gx = abs(img[i, j + <span class="number">1</span>] - img[i, j])</span><br><span class="line">        gradient_x[i, j] = gx</span><br><span class="line">        gradient_y[i, j] = gy</span><br><span class="line">gradient_x = gradient_x.astype(<span class="string">'uint8'</span>)</span><br><span class="line">gradient_y = gradient_y.astype(<span class="string">'uint8'</span>)</span><br><span class="line"></span><br><span class="line">cv2.imshow(<span class="string">"gradient_x"</span>, gradient_x)</span><br><span class="line">cv2.imshow(<span class="string">"gradient_y"</span>, gradient_y)</span><br><span class="line">cv2.waitKey()</span><br></pre></td></tr></table></figure>
+\frac{\partial f(x,y)}{\partial x} = f(x + 1,y) - f(x,y),\frac{\partial f(x,y)}{\partial y} =f(x,y+1) - f(x,y)</script><p><strong>可以看出，图像的梯度本质上相当于2个相邻像素之间的差值。</strong></p>
+<p>因此定义梯度算子（kernel）：水平$[-1,1]$ 右边像素 - 左边像素；垂直：$[-1,1]^T$下边像素-上边像素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">img = cv2.imread(<span class="string">"126007.jpg"</span>,<span class="number">0</span>)</span><br><span class="line">img = img.astype(<span class="string">'float'</span>)</span><br><span class="line"></span><br><span class="line">row = img.shape[<span class="number">0</span>]</span><br><span class="line">col = img.shape[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">gradient_x = np.zeros((row, col))</span><br><span class="line">gradient_y = np.zeros((row, col))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(row - <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(col - <span class="number">1</span>):</span><br><span class="line">        gy = abs(img[i + <span class="number">1</span>, j] - img[i, j]) <span class="comment">#下边像素-上边像素</span></span><br><span class="line">        gx = abs(img[i, j + <span class="number">1</span>] - img[i, j]) <span class="comment">#右边像素-左边像素</span></span><br><span class="line">        gradient_x[i, j] = gx</span><br><span class="line">        gradient_y[i, j] = gy</span><br><span class="line">gradient_x = gradient_x.astype(<span class="string">'uint8'</span>)</span><br><span class="line">gradient_y = gradient_y.astype(<span class="string">'uint8'</span>)</span><br><span class="line"></span><br><span class="line">cv2.imshow(<span class="string">"gradient_x"</span>, gradient_x)</span><br><span class="line">cv2.imshow(<span class="string">"gradient_y"</span>, gradient_y)</span><br><span class="line">cv2.waitKey()</span><br></pre></td></tr></table></figure>
 <p><img src="/images/grad_x.jpg" alt=""></p>
 <p>水平方向梯度</p>
 <p><img src="/images/grad_y.jpg" alt=""></p>
@@ -271,15 +430,25 @@ R = \det(M) - \alpha *trace(M)^2 = \lambda_1\lambda_2-\alpha(\lambda_1+\lambda_2
 <p>水平方向求偏导：$\frac{\partial f}{\partial x}$，竖直方向求偏导：$\frac{\partial f}{\partial y}$，图像梯度：$\nabla f = [\frac{\partial f}{\partial x},\frac{\partial f}{\partial y}]$。</p>
 <p>水平：$\nabla f = [\frac{\partial f}{\partial x},0]$，垂直：$\nabla f = [0,\frac{\partial f}{\partial y}]$</p>
 <p>梯度方向：$\theta = \tan^{-1}(\frac{\partial f}{\partial y}/\frac{\partial f}{\partial x})$</p>
+<p><strong>梯度幅值（gradient magnitude）</strong>：$||\nabla f||=\sqrt {(\frac{\partial f}{\partial x})^2+(\frac{\partial f}{\partial y})^2}$</p>
 <p>注意：求梯度之前先做平滑，否则噪声也是高频，求梯度后无法分辨哪里是噪声哪里是边缘。如下图。</p>
 <p><img src="/images/image-20201008191252006.png" alt="image-20201008191252006" style="zoom:67%;" /></p>
 <p><img src="/images/image-20201008191306409.png" alt="image-20201008191306409" style="zoom:67%;" /></p>
 <p>首先平滑图像后：</p>
 <p><img src="/images/image-20201008191404392.png" alt="image-20201008191404392" style="zoom:67%;" /></p>
+<p>$f:signal;g:kernel$</p>
+<script type="math/tex; mode=display">
+\frac{d}{dx}(f*g) = f*\frac{d}{dx}g</script><p>用高斯一阶导去和信号做卷积，干了两件事：一是平滑信号，二是求导。相当于先用高斯滤波平滑再求导。 同理高斯二阶导，用高斯二阶导去和信号卷积。</p>
+<ul>
+<li>高斯核求和为1，用途：平滑</li>
+<li>高斯一阶导核求和为0，用途：边缘提取</li>
+</ul>
 <p><strong>Canny边缘检测</strong></p>
 <p>代码参见同专题下另一篇博客。</p>
 <h4 id="1-3-模板匹配"><a href="#1-3-模板匹配" class="headerlink" title="1.3 模板匹配"></a>1.3 模板匹配</h4><p>滤波器的一个应用。</p>
-<h3 id="2-图像的特征"><a href="#2-图像的特征" class="headerlink" title="2. 图像的特征"></a>2. 图像的特征</h3><h4 id="2-1-图像纹理texture"><a href="#2-1-图像纹理texture" class="headerlink" title="2.1 图像纹理texture"></a>2.1 图像纹理texture</h4><p><strong>特征空间</strong></p>
+<h3 id="2-图像的特征"><a href="#2-图像的特征" class="headerlink" title="2. 图像的特征"></a>2. 图像的特征</h3><h4 id="2-1-图像纹理texture"><a href="#2-1-图像纹理texture" class="headerlink" title="2.1 图像纹理texture"></a>2.1 图像纹理texture</h4><p>纹理分类</p>
+<p>纹理是由重复的局部<strong>模式</strong>（local pattern）构成的。</p>
+<p>如何描述？多个卷积核卷积得到特征向量。</p>
 
       
       <!-- 打赏 -->
@@ -901,227 +1070,13 @@ dp[i][j] = \max(dp[i-1][j],dp[i-1][j-c_i]+w_i)</script><figure class="highlight 
 
 </article>
     
-    <article id="post-Graph Neutral Network和Graph Embedding" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/"
-    >Graph Neutral Network和Graph Embedding</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/" class="article-date">
-  <time datetime="2020-07-07T09:14:50.127Z" itemprop="datePublished">2020-07-07</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="Graph-Neutral-Network和Graph-Embedding"><a href="#Graph-Neutral-Network和Graph-Embedding" class="headerlink" title="Graph Neutral Network和Graph Embedding"></a>Graph Neutral Network和Graph Embedding</h2><h3 id="0-概述"><a href="#0-概述" class="headerlink" title="0. 概述"></a>0. 概述</h3><h4 id="0-1-图的基础知识"><a href="#0-1-图的基础知识" class="headerlink" title="0.1 图的基础知识"></a>0.1 图的基础知识</h4><p>​        通常定义一个图 $G=(V,E)$，其中 $V$为 <strong>顶点（Vertices）</strong>集合，$E$为<strong>边（Edges）</strong>集合。对于一条边$e=(u,v)$ 包含两个<strong>端点（Endpoints）</strong> u 和 v，同时 u 可以称为 v 的<strong>邻居（Neighbor）</strong>。当所有的边为有向边时，图称之为<strong>有向（Directed）</strong>图，当所有边为无向边时，图称之为<strong>无向（Undirected）</strong>图。在无向图中，对于一个顶点 v，令$d(v) $表示连接的边的数量，称之为<strong>度（Degree）</strong>；有向图中又分为<strong>入度</strong>和<strong>出度</strong>。</p>
-<p>​        对于一个无向图 $G=(V,E)$，其<strong>邻接矩阵（Adjacency Matrix）</strong>$A$通常定义为：</p>
-<script type="math/tex; mode=display">
-A_{ij} = \left\{  
-             \begin{array}{**lr**}  
-             1，i\not=j&if\ vi\ is\ adjacent\ to\ vj\\
-             0, &otherwise 
-             \end{array}  
-\right.</script><p>​        <img src="/images/graph.png" alt="image-20200707174530868"></p>
-<p>​        对于上面这个无向图，其度矩阵（degree matrix）如下。度矩阵$D$是一个对角矩阵。</p>
-<p><img src="/images/image-20200707174724389.png" alt="image-20200707174724389"></p>
-<p>​        图的拉普拉斯矩阵$L$定义为，在图论中，作为一个图的矩阵表示。拉普拉斯矩阵是对称的（Symmetric）。</p>
-<script type="math/tex; mode=display">
-L = D - A</script><p>​        另外一种更为常用的的是正则化的拉普拉斯矩阵（Symmetric normalized Laplacian）。</p>
-<script type="math/tex; mode=display">
-L^{sym} = D^{-\frac{1}{2}}LD^{-\frac{1}{2}} = I - D^{-\frac{1}{2}}AD^{-\frac{1}{2}}</script><p>​        说明：$I$为单位矩阵；$D^{-\frac{1}{2}}$表示度矩阵对角线上的元素开平方根取倒数。</p>
-<h4 id="0-2-二者不同"><a href="#0-2-二者不同" class="headerlink" title="0.2 二者不同"></a>0.2 二者不同</h4><p>​        图嵌入旨在通过保留图的网络<strong>拓扑结构和节点内容信息</strong>，将图中顶点表示为低维向量，以便使用简单的机器学习算法（例如，支持向量机分类）进行处理（摘自知乎：图神经网络（Graph Neural Networks）综述，作者：苏一。<a href="https://zhuanlan.zhihu.com/p/75307407）。" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/75307407）。</a></p>
-<p>​        图神经网络是用于处理图数据（非欧式空间）的神经网络结构。</p>
-<p>​        图嵌入和图神经网络的区别与联系。</p>
-<p><img src="https://d33wubrfki0l68.cloudfront.net/3c5b07652ee4f2012f3ce1b9cf25bf8282a4f9f4/abdc9/images/cn/2020-04-11-graph-embedding-and-gnn/graph-embedding-vs-graph-neural-networks.png" alt=""></p>
-<h3 id="1-Graph-Embedding"><a href="#1-Graph-Embedding" class="headerlink" title="1. Graph Embedding"></a>1. Graph Embedding</h3><p>​        Embedding在数学上是一个函数，将一个空间的点映射到另一个空间，通常是从高维抽象的空间映射到低维具象的空间，并且在低维空间保持原有的语义。早在2003年，Bengio就发表论文论述word embedding想法，将词汇映射到实数向量空间。而2013年google连发两篇论文推出word embedding的神经网咯工具包：skip-gram、cbow（连续词袋模型），使得embedding技术成为深度学习的基本操作，进而导致万物皆可embedding。</p>
-<p>​        而基于图的embedding又可以分为基于顶点（vertex）和基于图（graph）。前者主要是将给定的图数据中的vertex表示为单独的向量（vector），后者将整个图进行embedding表示，之后可以进行图的分类等工作。下面分别介绍。</p>
-<h4 id="1-1-Vertex-Embedding"><a href="#1-1-Vertex-Embedding" class="headerlink" title="1.1 Vertex Embedding"></a>1.1 Vertex Embedding</h4><h5 id="1-1-1-DeepWalk"><a href="#1-1-1-DeepWalk" class="headerlink" title="1.1.1 DeepWalk"></a>1.1.1 DeepWalk</h5><p>Perozzi B, Al-Rfou R, Skiena S. Deepwalk: Online learning of social representations[C]//Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining. 2014: 701-710.</p>
-<p><img src="/images/image-20200708200747355.png" alt="image-20200708200747355"></p>
-<p>即：基于图上的随机游走进行节点采样，之后将采样到的节点集（每个节点feature使用one-hot表示或者随机向量）输入到skip-gram模型进行训练，得到节点的embedding。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">RandomWalk</span><span class="params">(node,t)</span>:</span></span><br><span class="line">    walk = [node]        <span class="comment"># Walk starts from this node</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(t<span class="number">-1</span>):</span><br><span class="line">        <span class="comment"># 应先统计adj_list[node]对应的为1表示相邻的节点索引列表，从该列表中随机选取索引</span></span><br><span class="line">        adj_nodes = np.array(adj_list[node]).nonzero()[<span class="number">0</span>]<span class="comment"># nonzero返回一个元组</span></span><br><span class="line">        </span><br><span class="line">        node = adj_list[node][adj_nodes[random.randint(<span class="number">0</span>,len(adj_nodes)<span class="number">-1</span>)]]</span><br><span class="line">        walk.append(node)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> walk</span><br></pre></td></tr></table></figure>
-<h5 id="1-1-2-LINE"><a href="#1-1-2-LINE" class="headerlink" title="1.1.2 LINE"></a>1.1.2 LINE</h5><p>Tang J, Qu M, Wang M, et al. Line: Large-scale information network embedding[C]//Proceedings of the 24th international conference on world wide web. 2015: 1067-1077.</p>
-<p>​        相似度定义</p>
-<p><strong>first-order proximity</strong></p>
-<p>​        <img src="/images/image-20200709225053851.png" alt="image-20200709225053851"></p>
-<p>​        1阶相似度用于描述图中成对顶点之间的局部相似度，形式化描述为若$u,v$之间存在直连边，则边权$w_{uv}$即为两个顶点的相似度，若不存在直连边，则1阶相似度为0。 如上图，6和7之间存在直连边，且边权较大，则认为两者相似且1阶相似度较高，而5和6之间不存在直连边，则两者间1阶相似度为0。</p>
-<p><strong>second-order proximity</strong></p>
-<p>​        仅有1阶相似度就够了吗？显然不够，如上图，虽然5和6之间不存在直连边，但是他们有很多相同的邻居顶点(1,2,3,4)，这其实也可以表明5和6是相似的，而2阶相似度就是用来描述这种关系的。 形式化定义为，令$p_u = (w_{u,1},…,w_{u,|V|})$ 表示顶点$u$与<strong>所有其他</strong>顶点间的1阶相似度，则  $u$ 与 $v$ 的2阶相似度可以通过 $p_{u}$ 和  $p_v$ 的相似度表示（两个顶点他们的邻居集合的相似程度）。若$u$与$v$之间不存在相同的邻居顶点，则2阶相似度为0。</p>
-<p><strong>目标函数</strong></p>
-<p>​        <strong>1st-order</strong>（用于无向图）</p>
-<p>​        对于每条边集$E$中的任一条边$(i,j)$，邻接的两个节点$p_i,p_j$的联合分布定义为：</p>
-<script type="math/tex; mode=display">
-p(v_i,v_j) = \frac{1}{1 + \exp(-u_i·u_j)}</script><p>​        $u_i,u_j$即节点$v_i,v_j$的低维embedding表示。同时定义经验分布$\hat p$：</p>
-<script type="math/tex; mode=display">
-\hat p(i,j) = \frac{w_{ij}}{W},W = \sum_{(i,j)\in E}w_{ij}</script><p>​        那么，目标函数就是尽可能地减小这两个分布的差异，衡量两个分布差异可以使用KL散度来衡量，进而：</p>
-<script type="math/tex; mode=display">
-O_1 = - \sum_{(i,j)\in E}w_{ij}\log p(v_i,v_j)</script><p>​        <strong>2nd-order</strong></p>
-<script type="math/tex; mode=display">
-O_2 = - \sum_{(i,j)\in E} w_{ij}\log p(v_j|v_i)</script><p>​        当然也可以使用二者的结合。</p>
-<h5 id="1-1-3-Node2Vec"><a href="#1-1-3-Node2Vec" class="headerlink" title="1.1.3 Node2Vec"></a>1.1.3 Node2Vec</h5><p>Grover A, Leskovec J. node2vec: Scalable feature learning for networks[C]//Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining. 2016: 855-864.</p>
-<p>​        本质上也是基于随机游走，提出了一种新的节点采样策略，有“导向”的游走，即加入了参数来控制从某个节点到其他节点的概率。采样得到的节点集，<strong>仍使用word2vec形式进行训练</strong>。</p>
-<p>​        如下图。p（return parameter）、q（in-out parameter）为超参数。</p>
-<p>​        下图中，现处于节点v，上一个节点是t，那么从节点v到节点$t$、$x_1$、$x_2$、$x_3$的概率$\pi_{vx}$计算公式如下：</p>
-<script type="math/tex; mode=display">
-\alpha(t,x) = \frac{1}{p},d_{t,x} = 0</script><script type="math/tex; mode=display">
-\alpha(t,x) = 1,d_{t,x} = 1</script><script type="math/tex; mode=display">
-\alpha(t,x) = \frac{1}{q},d_{t,x} = 2</script><script type="math/tex; mode=display">
-\pi_{vx}=\alpha(t,x) w_{v,x}</script><p>​        其中，$d_{tx}$表示<strong>上一节点和下一个能到达的节点的距离</strong>，$w_{vx}$即节点v与next节点连接边的权重（无向图中为1）。下图中，节点$t$与$x_1$直接有边相连接，$d$为1；$t$与$x_2$、$x_3$距离为2（不相邻）；特别的，与上一个节点距离为0，概率为$\frac{1}{p}$。</p>
-<p><img src="/images/image-20200709201700829.png" alt="image-20200709201700829"></p>
-<p>​        基于这种随机游走策略，使得该模型可以体现网络的同质性（homophily）或结构性（structural equivalence）。网络的“同质性”指<strong>距离相近</strong>的节点的embedding应尽量相似；“结构性”指的是<strong>结构上相似</strong>的节点的embedding应尽量相似。</p>
-<p>​        为了能让graph embedding的结果能够表达网络的“结构性”，需要让游走的过程更倾向与<strong>BFS</strong>，因为BFS会更多的在当前节点的领域中游走遍历；为了表达”同质性”，则需要让游走过程倾向于<strong>DFS</strong>。</p>
-<p>​        现在讨论超参数p、q，q越大，则随机游走到远方节点的可能性更大，随机游走策略就近似于DFS；反之，近似于BFS。</p>
-<h5 id="1-1-4-SDNE"><a href="#1-1-4-SDNE" class="headerlink" title="1.1.4 SDNE"></a>1.1.4 SDNE</h5><p>Wang D, Cui P, Zhu W. Structural deep network embedding[C]//Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining. 2016: 1225-1234.</p>
-<p>​        SDNE基于LINE研究的基础上，采用deep encoder-decoder模型进行embedding。</p>
-<p>​        </p>
-<h4 id="1-2-Graph-Embedding"><a href="#1-2-Graph-Embedding" class="headerlink" title="1.2 Graph Embedding"></a>1.2 Graph Embedding</h4><h3 id="2-Graph-Neural-Network"><a href="#2-Graph-Neural-Network" class="headerlink" title="2. Graph Neural Network"></a>2. Graph Neural Network</h3><p>​        图神经网络目前主要的任务包括：节点分类（node classification）、图分类（graph classification）、graph representation、link predication等等。</p>
-<h4 id="2-1-Neighborhood-Aggravating"><a href="#2-1-Neighborhood-Aggravating" class="headerlink" title="2.1 Neighborhood Aggravating"></a>2.1 Neighborhood Aggravating</h4><p>​        <strong>neighborhood aggravating即用节点的neighbor feature更新下一个的hidden state。</strong></p>
-<p>​        给定一张图，我们可以用与与节点邻接的节点集去表示该节点。下图中，A与B、C、D相邻接，而B又与A、C邻接等等，每个节点都可以使用与其相邻接的节点进行表示（aggravating）（每个节点都有一个初始状态【特征】，当前节点状态用其他节点的上一个状态【特征】表示）。通过其邻接节点聚合，这个节点就可以学到图的结构。</p>
-<p><img src="/images/g1.png" alt="image-20200707215031730" style="zoom:67%;" /></p>
-<p><img src="E:\hexo\themes\ayer\source\images\image-20200707215123250.png" alt="image-20200707215123250" style="zoom:67%;" /></p>
-<p><img src="/images/image-20200707215155395.png" alt="image-20200707215155395" style="zoom:67%;" /></p>
-<p>​        因此，我们可以定义任意层的网络来聚合各个节点的信息。（如下图，注：并非完整）</p>
-<p><img src="/images/image-20200707215535544.png" alt="image-20200707215535544" style="zoom: 67%;" /></p>
-<p>​        注：图中方块表示任意的聚合函数。</p>
-<p>​        数学表示如下：</p>
-<script type="math/tex; mode=display">
-h_v^k = \sigma(W_k\sum_{u \in N(v)}\frac{h_u^{k-1}}{|N(v)|} + B_kh_v^{k-1}),k > 0</script><script type="math/tex; mode=display">
-h_v^0 = x_v</script><p>​        其中，k表示第k层（layer）；v表示节点；$\sigma$表示激活函数；$h_u$表示节点$u$的状态；$N(v)$表示节点$v$的邻接节点集合；$|N(v)|$即邻接节点数量；$W、B$分别为权重矩阵和偏置（bias）。</p>
-<p>​        因此，我们只需定义一个聚合函数（sum、mean、max-pooling等），以及损失函数（比如：基于节点分类的交叉熵损失函数等），就可以开始迭代训练，最终得到各个节点的embedding向量。</p>
-<h4 id="2-2-Graph-Convolution-Networks"><a href="#2-2-Graph-Convolution-Networks" class="headerlink" title="2.2 Graph Convolution Networks"></a>2.2 Graph Convolution Networks</h4><p>​        卷积网络大致分类如下图。</p>
-<p><img src="/images/image-20200707223107082.png" alt="image-20200707223107082"></p>
-<h5 id="2-2-1-Spatial-based"><a href="#2-2-1-Spatial-based" class="headerlink" title="2.2.1 Spatial-based"></a>2.2.1 Spatial-based</h5><p>​        空间卷积网络也是基于neighborhood aggravating的思想。</p>
-<ul>
-<li><p>Kipf T N, Welling M. Semi-supervised classification with graph convolutional networks[J]. arXiv preprint arXiv:1609.02907, 2016.</p>
-<p>这篇论文提出了著名的GCN模型，采用的图卷积网络在neighborhood aggravating上做出了一点改动。</p>
-</li>
-</ul>
-<script type="math/tex; mode=display">
-h_v^k = \sigma(W_k\sum_{u\in N(v)\cup v}\frac{h_u^{k-1}}{\sqrt{|N(u)||N(v)|}})</script><p>​        <strong>矩阵形式</strong>如下：</p>
-<script type="math/tex; mode=display">
-H^{(k+1)} = \sigma(D^{-\frac{1}{2}}\hat AD^{\frac{1}{2}}H^{(k)}W_k) \\
-\hat A = A + I</script><p>​        其中$A$为图邻接矩阵，$D$为度矩阵，$I$为单位矩阵。</p>
-<p>​        下面看一下具体的矩阵形式</p>
-<p><img src="/images/g2.png" alt=""></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上面这张图的邻接矩阵如下</span></span><br><span class="line">&gt; A = torch.tensor(np.array([[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>]]))</span><br><span class="line"><span class="comment"># 度矩阵 D，即邻接矩阵每一行求和</span></span><br><span class="line">&gt; D = torch.diag(torch.sum(torch.tensor(adj),<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">&gt; X = torch.tensor(np.array([[<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]]))</span><br><span class="line"><span class="comment"># 每个节点的邻居节点聚合等价于A*X</span></span><br><span class="line">&gt; torch.mm(A,X)</span><br><span class="line"><span class="comment">#Output</span></span><br><span class="line">tensor([[<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">        [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">        [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]], dtype=torch.int32)</span><br><span class="line"><span class="comment"># 从结果可以看出相当于对每个节点的所有邻居节点特征求和</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义权重矩阵 W，将input维度映射到output维度，本例input=3</span></span><br><span class="line">&gt; out = <span class="number">4</span></span><br><span class="line">&gt; W = W = torch.randn(<span class="number">3</span>,out)</span><br><span class="line"><span class="comment"># 完成聚合 AXW</span></span><br><span class="line">&gt; output = torch.mm(torch.mm(A,X).type_as(torch.FloatTensor()),W)</span><br><span class="line"><span class="comment"># 经过激活函数,得到这一阶段的hidden（下一阶段的输入）</span></span><br><span class="line">&gt; hidden = F.relu(output)</span><br><span class="line"><span class="comment"># hidden [num_of_vertex, hidden_dims]</span></span><br></pre></td></tr></table></figure>
-<p>​        但是Kipf等人在他的论文中，对邻接矩阵$A$进行了标准化。即上文采用的公式。下面实现。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义图卷积</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GCNConv</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, A, in_channels, out_channels)</span>:</span></span><br><span class="line">        super(GCNConv, self).__init__()</span><br><span class="line">        self.A_hat = A+torch.eye(A.size(<span class="number">0</span>))</span><br><span class="line">        self.D     = torch.diag(torch.sum(A,<span class="number">1</span>))</span><br><span class="line">        self.D     = self.D.inverse().sqrt() <span class="comment"># D是对角矩阵，对角线元素开根号</span></span><br><span class="line">        self.A_hat = torch.mm(torch.mm(self.D, self.A_hat), self.D)</span><br><span class="line">        self.W     = nn.Parameter(torch.rand(in_channels,out_channels, requires_grad=<span class="literal">True</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, X)</span>:</span></span><br><span class="line">        out = torch.relu(torch.mm(torch.mm(self.A_hat, X), self.W))</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"><span class="comment"># 定义GCN  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Net</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,A, input_dims, nhid, out_dims)</span>:</span></span><br><span class="line">        super(Net, self).__init__()</span><br><span class="line">        self.conv1 = GCNConv(A,input_dims, nhid)</span><br><span class="line">        self.conv2 = GCNConv(A,nhid, out_dims)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self,X)</span>:</span></span><br><span class="line">        H  = self.conv1(X)</span><br><span class="line">        H2 = self.conv2(H)</span><br><span class="line">        <span class="keyword">return</span> H2</span><br></pre></td></tr></table></figure>
-<h5 id="2-2-2-Spectral-based"><a href="#2-2-2-Spectral-based" class="headerlink" title="2.2.2 Spectral-based"></a>2.2.2 Spectral-based</h5><p>​         谱图卷积网络基于图的信号处理，即图的拉普拉斯矩阵进行傅里叶变化（Fourier Transform）与逆变化（Inverse Fourier Transform），</p>
-<p>​    <strong>图上的傅里叶变换</strong></p>
-<p>​        傅里叶变换可以将<strong>时域</strong>信号转为<strong>频域信号</strong>。时域即信号大小随时间而改变，其图像在二维平面中，横轴为时间，纵轴为信号大小，其图像是连续的；而频域图像，横轴代表频率大小，纵轴代表信号大小，其图像是离散的。频域图像本质上描述了一段信号中包含的具体成分（不同频率信号的叠加）如何。</p>
-<p>​        而图上的傅里叶变换用到了图的拉普拉斯矩阵$L$，因为$L$是半正定矩阵，因此其特征值都非负。对其进行特征值分解有：</p>
-<script type="math/tex; mode=display">
-L = U \Lambda U^T</script><p>，其中$U$为特征向量，$\Lambda$为特征值矩阵，是一个对角矩阵，$\lambda_1,\lambda_2…$即特征值，且$\lambda_1&lt;=\lambda_2&lt;=…&lt;=\lambda_n$。$\lambda$也代表了图上的频率。</p>
-<p>​        下面直接给出图上傅里叶变换公式，具体推导略去。</p>
-<p>​        给定图中某顶点$v$，其对应的信号（特征）为$x$，那么其傅里叶变换即：</p>
-<script type="math/tex; mode=display">
-\hat x = U^Tx</script><p>​        可知$\hat x$为频域上信号，要重新换变换顶点域，就需要逆傅里叶变换即：</p>
-<script type="math/tex; mode=display">
-y = U\hat x</script><p><strong>谱图卷积</strong></p>
-<p>​        要进行卷积，就需要在频域上进行卷积，即将顶点上的信号进行傅里叶变换后，定义对应的滤波器（滤波函数）$g_\theta(\lambda)$对其进行处理，再利用逆傅里叶变换还原为顶点域中。这里的滤波器或者说关于$\lambda$的滤波函数就是我们要通过训练学习的。说是关于$\lambda$的函数，就是说根据不同的$\lambda$给出不同的<strong>相应</strong>$\theta$。</p>
-<p>​        由此，图上信号卷积即：</p>
-<script type="math/tex; mode=display">
-x_{*\mathcal{G}}f=U((U^Tf)\otimes(U^Tx))</script><p>$f$即要学习的filter，$\otimes$即点积符号。因为最后$y$还是会和$U$运算，直接学习$U^Ty$并表示为：</p>
-<script type="math/tex; mode=display">
-y = U\hat x = Ug_{\theta}(\Lambda)U^Tx</script><p>，$g_{\theta}$是一个对角矩阵，就是要学习的参数。</p>
-<script type="math/tex; mode=display">
-g_{\theta} = diag\{\theta_1,...,\theta_n\}</script><p>​        但上面这样定义仍存在几个问题，一是当图太大时矩阵分解计算复杂度太高（a. 矩阵分解复杂度$O(n^3)$，b. 向量与矩阵相乘），二是这并非是局部的（localized）。进而又提出了ChebNet模型（Defferrard M, Bresson X, Vandergheynst P. Convolutional neural networks on graphs with fast localized spectral filtering[C]. Advances in neural information processing systems. 2016: 3844-3852.）。</p>
-<p>​        第一类切比雪夫多项式定义如下：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-T_0(x) &= 1 \\
-T_1(x) &= x \\
-T_n(x) &= 2xT_{n-1}(x) - T_{n-2}(x)
-\end{aligned}</script><script type="math/tex; mode=display">
-g_{\theta}(\Lambda) =\sum_{k=0}^{K-1} \theta_{k}\Lambda^k</script><p>$\Lambda^k$表示对角矩阵的$k$次幂。</p>
-<p>代码参考：<a href="https://github.com/dovelism/Traffic_Data_Projection_Using_GCN/" target="_blank" rel="noopener">https://github.com/dovelism/Traffic_Data_Projection_Using_GCN/</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChebConv</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    The ChebNet convolution operation.</span></span><br><span class="line"><span class="string">    :param in_c: int, number of input channels.</span></span><br><span class="line"><span class="string">    :param out_c: int, number of output channels.</span></span><br><span class="line"><span class="string">    :param K: int, the order of Chebyshev Polynomial.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_c, out_c, K, bias=True, normalize=True)</span>:</span></span><br><span class="line">        super(ChebConv, self).__init__()</span><br><span class="line">        self.normalize = normalize</span><br><span class="line"></span><br><span class="line">        self.weight = nn.Parameter(torch.Tensor(K + <span class="number">1</span>, <span class="number">1</span>, in_c, out_c))  <span class="comment"># [K+1, 1, in_c, out_c]</span></span><br><span class="line">        init.xavier_normal_(self.weight)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> bias:</span><br><span class="line">            self.bias = nn.Parameter(torch.Tensor(<span class="number">1</span>, <span class="number">1</span>, out_c))</span><br><span class="line">            init.zeros_(self.bias)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.register_parameter(<span class="string">"bias"</span>, <span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">        self.K = K + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, inputs, graph)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :param inputs: the input data, [B, N, C]</span></span><br><span class="line"><span class="string">        :param graph: the graph structure, [N, N]</span></span><br><span class="line"><span class="string">        :return: convolution result, [B, N, D]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        L = ChebConv.get_laplacian(graph, self.normalize)  <span class="comment"># [N, N]</span></span><br><span class="line">        mul_L = self.cheb_polynomial(L).unsqueeze(<span class="number">1</span>)   <span class="comment"># [K, 1, N, N]</span></span><br><span class="line"></span><br><span class="line">        result = torch.matmul(mul_L, inputs)  <span class="comment"># [K, B, N, C]</span></span><br><span class="line">        result = torch.matmul(result, self.weight)  <span class="comment"># [K, B, N, D]</span></span><br><span class="line">        result = torch.sum(result, dim=<span class="number">0</span>) + self.bias  <span class="comment"># [B, N, D]</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cheb_polynomial</span><span class="params">(self, laplacian)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Compute the Chebyshev Polynomial, according to the graph laplacian.</span></span><br><span class="line"><span class="string">        :param laplacian: the graph laplacian, [N, N].</span></span><br><span class="line"><span class="string">        :return: the multi order Chebyshev laplacian, [K, N, N].</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        N = laplacian.size(<span class="number">0</span>)  <span class="comment"># [N, N]</span></span><br><span class="line">        multi_order_laplacian = torch.zeros([self.K, N, N], device=laplacian.device, dtype=torch.float)  <span class="comment"># [K, N, N]</span></span><br><span class="line">        multi_order_laplacian[<span class="number">0</span>] = torch.eye(N, device=laplacian.device, dtype=torch.float)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.K == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> multi_order_laplacian</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            multi_order_laplacian[<span class="number">1</span>] = laplacian</span><br><span class="line">            <span class="keyword">if</span> self.K == <span class="number">2</span>:</span><br><span class="line">                <span class="keyword">return</span> multi_order_laplacian</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">2</span>, self.K):</span><br><span class="line">                    multi_order_laplacian[k] = <span class="number">2</span> * torch.mm(laplacian, multi_order_laplacian[k<span class="number">-1</span>]) - multi_order_laplacian[k<span class="number">-2</span>]</span><br><span class="line">        <span class="keyword">return</span> multi_order_laplacian</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_laplacian</span><span class="params">(graph, normalize)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        return the laplacian of the graph.</span></span><br><span class="line"><span class="string">        :param graph: the graph structure without self loop, [N, N].</span></span><br><span class="line"><span class="string">        :param normalize: whether to used the normalized laplacian.</span></span><br><span class="line"><span class="string">        :return: graph laplacian.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> normalize:</span><br><span class="line">            D = torch.diag(torch.sum(graph, dim=<span class="number">-1</span>) ** (<span class="number">-1</span> / <span class="number">2</span>))</span><br><span class="line">            L = torch.eye(graph.size(<span class="number">0</span>), device=graph.device, dtype=graph.dtype) - torch.mm(torch.mm(D, graph), D)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            D = torch.diag(torch.sum(graph, dim=<span class="number">-1</span>))</span><br><span class="line">            L = D - graph</span><br><span class="line">        <span class="keyword">return</span> L</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChebNet</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_c, hid_c, out_c, K)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :param in_c: int, number of input channels.</span></span><br><span class="line"><span class="string">        :param hid_c: int, number of hidden channels.</span></span><br><span class="line"><span class="string">        :param out_c: int, number of output channels.</span></span><br><span class="line"><span class="string">        :param K:</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        super(ChebNet, self).__init__()</span><br><span class="line">        self.conv1 = ChebConv(in_c=in_c, out_c=hid_c, K=K)</span><br><span class="line">        self.conv2 = ChebConv(in_c=hid_c, out_c=out_c, K=K)</span><br><span class="line">        self.act = nn.ReLU()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, data, device)</span>:</span></span><br><span class="line">        graph_data = data[<span class="string">"graph"</span>].to(device)[<span class="number">0</span>]  <span class="comment"># [N, N]</span></span><br><span class="line">        flow_x = data[<span class="string">"flow_x"</span>].to(device)  <span class="comment"># [B, N, H, D]</span></span><br><span class="line"></span><br><span class="line">        B, N = flow_x.size(<span class="number">0</span>), flow_x.size(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        flow_x = flow_x.view(B, N, <span class="number">-1</span>)  <span class="comment"># [B, N, H*D]</span></span><br><span class="line"></span><br><span class="line">        output_1 = self.act(self.conv1(flow_x, graph_data))</span><br><span class="line">        output_2 = self.act(self.conv2(output_1, graph_data))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> output_2.unsqueeze(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GCN</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, in_c, hid_c, out_c)</span>:</span></span><br><span class="line">        super(GCN, self).__init__()</span><br><span class="line">        self.linear_1 = nn.Linear(in_c, hid_c)</span><br><span class="line">        self.linear_2 = nn.Linear(hid_c, out_c)</span><br><span class="line">        self.act = nn.ReLU()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, data, device)</span>:</span></span><br><span class="line">        graph_data = data[<span class="string">"graph"</span>].to(device)[<span class="number">0</span>]  <span class="comment"># [N, N]</span></span><br><span class="line">        graph_data = GCN.process_graph(graph_data)</span><br><span class="line">        flow_x = data[<span class="string">"flow_x"</span>].to(device)  <span class="comment"># [B, N, H, D]</span></span><br><span class="line">        B, N = flow_x.size(<span class="number">0</span>), flow_x.size(<span class="number">1</span>)</span><br><span class="line">        flow_x = flow_x.view(B, N, <span class="number">-1</span>)  <span class="comment"># [B, N, H*D]  H = 6, D = 1</span></span><br><span class="line"></span><br><span class="line">        output_1 = self.linear_1(flow_x)  <span class="comment"># [B, N, hid_C]</span></span><br><span class="line">        output_1 = self.act(torch.matmul(graph_data, output_1))  <span class="comment"># [N, N], [B, N, Hid_C]</span></span><br><span class="line"></span><br><span class="line">        output_2 = self.linear_2(output_1)</span><br><span class="line">        output_2 = self.act(torch.matmul(graph_data, output_2))  <span class="comment"># [B, N, 1, Out_C]</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> output_2.unsqueeze(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_graph</span><span class="params">(graph_data)</span>:</span></span><br><span class="line">        N = graph_data.size(<span class="number">0</span>)</span><br><span class="line">        matrix_i = torch.eye(N, dtype=graph_data.dtype, device=graph_data.device)</span><br><span class="line">        graph_data += matrix_i  <span class="comment"># A~ [N, N]</span></span><br><span class="line"></span><br><span class="line">        degree_matrix = torch.sum(graph_data, dim=<span class="number">-1</span>, keepdim=<span class="literal">False</span>)  <span class="comment"># [N]</span></span><br><span class="line">        degree_matrix = degree_matrix.pow(<span class="number">-1</span>)</span><br><span class="line">        degree_matrix[degree_matrix == float(<span class="string">"inf"</span>)] = <span class="number">0.</span>  <span class="comment"># [N]</span></span><br><span class="line"></span><br><span class="line">        degree_matrix = torch.diag(degree_matrix)  <span class="comment"># [N, N]</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> torch.mm(degree_matrix, graph_data)  <span class="comment"># D^(-1) * A = \hat(A)</span></span><br></pre></td></tr></table></figure>
-<p>​        在推出ChebNet后，Kipf等人进一步将公式化简，推出一阶（k=1）ChebNet模型（Kipf T N, Welling M. Semi-supervised classification with graph convolutional networks[J]. arXiv preprint arXiv:1609.02907, 2016.），这就有了上面我们模型中采用的那个公式。</p>
-<script type="math/tex; mode=display">
-H^{(k+1)} = \sigma(D^{-\frac{1}{2}}\hat AD^{\frac{1}{2}}H^{(k)}W_k) \\
-\hat A = A + I</script><h4 id="2-2-Graph-Attention-Networks"><a href="#2-2-Graph-Attention-Networks" class="headerlink" title="2.2 Graph Attention Networks"></a>2.2 Graph Attention Networks</h4><p>Veličković P, Cucurull G, Casanova A, et al. Graph attention networks[J]. arXiv preprint arXiv:1710.10903, 2017.</p>
-<p>​        attention通俗的讲就是输入两个向量，然后输出一个分数；是一种思想，可以有不同的实现。</p>
-<p>​        GAT在空间卷积的基础上，引入了注意力机制，注意力机制也赋予了模型一定的可解释性。加入了attention后，我们aggravating的时候就需要计算当前节点和邻接节点的权重，然后进行聚合。</p>
-<p>​        节点v第k个状态更新公式如下：</p>
-<script type="math/tex; mode=display">
-h_v^k = \sigma (\sum_{u \in N(v)}\alpha_{vu}h_u)</script><p>​        其中$\alpha$就是计算得到的attention权重。</p>
-<p><img src="/images/image-20200707230726126.png" alt="image-20200707230726126" style="zoom:80%;" /></p>
-<h4 id="2-3-Graph-SAGE"><a href="#2-3-Graph-SAGE" class="headerlink" title="2.3 Graph SAGE"></a>2.3 Graph SAGE</h4><p>Hamilton W, Ying Z, Leskovec J. Inductive representation learning on large graphs[C]. Advances in neural information processing systems. 2017: 1024-1034.</p>
-<p>SAGE即Sample and Aggregate。GCN（Kipf.2016）模型存在如下缺点：</p>
-<ul>
-<li>对于静态图有效，当图结构发生改变（比如：节点的删除和更新）时，需重新训练模型。</li>
-<li>当训练数据集非常时，内存无法全部加载图数据。</li>
-</ul>
-<p>该篇论文提出了名为inductive learning的模型，能更好的适应动态图，同时针对新加入的节点也可以快速的生成node embedding。具体思想是不是去学习一个固定的embedding，而是学习一个聚合函数（aggregator），学习到的聚合函数需满足对称性（symmetry property），因为对称性确保了模型可以被训练而且可以应用于任意顺序的顶点邻居特征集合上。常见的聚合函数有：mean、lstm、pooling等。</p>
-<p><img src="/images/sage.png" alt=""></p>
-<p>可以看出模型针对每个节点每次聚合固定数量的邻居，而不必把所有数据加载到内存中。</p>
-<p><em>K**</em>是网络的层数，也代表着每个顶点能够聚合的邻接点的跳数，因为每增加一层，可以聚合更远的一层邻居的信息**。</p>
-<p><img src="/images/khops.png" alt="image-20200920183029770" style="zoom:67%;" /></p>
-<p>当新的节点加入到图中时，已经训练好的聚合函数（参数固定了）会聚合新节点的邻居然后生成该节点的embedding。</p>
-<p>值得注意的是，当图中大量的节点有更新行为，图结构改变较大时，已经训练好的模型也需要重新训练，即模型退化为静态模型了。</p>
-<p>具体实现代码参见：<a href="https://github.com/dsgiitr/graph_nets，具体架构就是三个组件：Aggregator、Encoder、SupervisedModel。Aggregator用来聚合邻居节点的信息，给定节点列表以及对应的邻居节点，首先进行采样然后使用feature函数进行聚合；Encoder包含图的一系列信息，比如邻接矩阵、采样大小等，根据GraphSAGE论文中提出的模型，需要concatenate自身节点信息与Aggregator聚合的邻居节点信息，然后矩阵相乘经过非线性激活函数完成对整个图节点的embedding；SupervisedModel即最终模型，包含一个encoder以及损失函数，完成最终的任务。代码中定义了2个aggregator和2个encoder，实际上是2层的一个编码网络（hops=2）。具体示意图如下：" target="_blank" rel="noopener">https://github.com/dsgiitr/graph_nets，具体架构就是三个组件：Aggregator、Encoder、SupervisedModel。Aggregator用来聚合邻居节点的信息，给定节点列表以及对应的邻居节点，首先进行采样然后使用feature函数进行聚合；Encoder包含图的一系列信息，比如邻接矩阵、采样大小等，根据GraphSAGE论文中提出的模型，需要concatenate自身节点信息与Aggregator聚合的邻居节点信息，然后矩阵相乘经过非线性激活函数完成对整个图节点的embedding；SupervisedModel即最终模型，包含一个encoder以及损失函数，完成最终的任务。代码中定义了2个aggregator和2个encoder，实际上是2层的一个编码网络（hops=2）。具体示意图如下：</a></p>
-<p><img  src="/images/GraphSAGE.png" style="zoom:50%;" /></p>
-<p>参考资料：</p>
-<p>李宏毅，深度学习</p>
-<p><a href="http://snap.stanford.edu/proj/embeddings-www/" target="_blank" rel="noopener">http://snap.stanford.edu/proj/embeddings-www/</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/56478167" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/56478167</a></p>
-<p><a href="https://github.com/shenweichen/GraphEmbedding" target="_blank" rel="noopener">https://github.com/shenweichen/GraphEmbedding</a></p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
   </article>
   
 
   
   <nav class="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
   </nav>
   
 </section>
