@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    主成分分析 |  张永剑的博客
+    动态规划 |  张永剑的博客
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -34,7 +34,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-主成分分析" class="article article-type-post" itemscope
+  <article id="post-动态规划" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -42,7 +42,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  主成分分析
+  动态规划
 </h1>
   
 
@@ -51,12 +51,12 @@
 
     
     <div class="article-meta">
-      <a href="/2019/11/10/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90/" class="article-date">
-  <time datetime="2019-11-10T11:55:25.000Z" itemprop="datePublished">2019-11-10</time>
+      <a href="/2020/10/25/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="article-date">
+  <time datetime="2020-10-25T05:41:25.443Z" itemprop="datePublished">2020-10-25</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
   </div>
 
       
@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">695字</span>
+            <span class="post-count">63字</span>
         </span>
     </span>
 
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3分钟</span>
+            <span class="post-count">1分钟</span>
         </span>
     </span>
 </div>
@@ -101,35 +101,7 @@
       
 
       
-      <h3 id="主成分分析与奇异值分解"><a href="#主成分分析与奇异值分解" class="headerlink" title="主成分分析与奇异值分解"></a>主成分分析与奇异值分解</h3><h4 id="1-奇异值分解"><a href="#1-奇异值分解" class="headerlink" title="1 奇异值分解"></a>1 奇异值分解</h4><p>参见：<a href="https://github.com/zyj-nova/LinearAlgebraNotes" target="_blank" rel="noopener">https://github.com/zyj-nova/LinearAlgebraNotes</a></p>
-<h4 id="2-主成分分析"><a href="#2-主成分分析" class="headerlink" title="2 主成分分析"></a>2 主成分分析</h4><h5 id="2-1-算法分析"><a href="#2-1-算法分析" class="headerlink" title="2.1 算法分析"></a>2.1 算法分析</h5><p>已知样本$\pmb a_1,\pmb a_2,…,\pmb a_N,\pmb a_i \in \mathbb{R}^n$，则按列组成的矩阵:</p>
-<script type="math/tex; mode=display">
-A_{n \times m} = \begin{pmatrix}\pmb a_1,&\pmb a_2,...&,\pmb a_N\end{pmatrix}</script><p><strong>矩阵的弗罗贝尼乌斯范数</strong>：</p>
-<script type="math/tex; mode=display">
-||A||_2 = \sqrt {tr (A^TA)} = \sqrt{\sum_{i=1}^m\sum_{j=1}^na_{ij}^2}</script><p>$tr$代表矩阵的迹函数$trace$（主对角线元素求和，$A^TA$一定是个方阵）。</p>
-<p>给定一组标准正交基$\pmb w_1,\pmb w_2,…,\pmb w_N,\pmb w_i \in \mathbb{R}^n$，$\mathbb{R}^n$中的某个向量$\pmb a$可以表示为：</p>
-<script type="math/tex; mode=display">
-\pmb a = \sum_{j = 1}^n <\pmb a,\pmb w_j>\pmb w_j</script><p>$&lt;,&gt;$表示向量的内积操作，可以看出$&lt;\pmb a,\pmb w_j&gt;$即$\pmb a$在空间中的坐标。现在我们考虑，是否可以将$\pmb a$表示在由$\pmb w_1,\pmb w_2,…,\pmb w_m,m \mathbb{&lt;&lt;} n$，生成的子空间$\mathbb{R}^m$中，使得$&lt;\pmb a,\pmb w_{k+1}&gt;=0,…,&lt;\pmb a, \pmb w_n&gt; = 0$ ?</p>
-<p><strong>注意：</strong>$\pmb w_i$仍然是包含$n$个分量的向量，$m$个包含$n$个元素基向量构成了$n$维空间的一个$m$维子空间（空间的维数等于基向量个数）。</p>
-<p>这就可以将问题转化为一个优化问题：</p>
-<script type="math/tex; mode=display">
-\min_{\pmb w_1,\pmb w_2,...,\pmb w_m} = \sum_{i=1}^N ||\pmb a_i - \sum_{j=1}^m<\pmb a_i,\pmb w_j>\pmb w_j||_2^2\\
-s.t.<\pmb w_i,\pmb w_j> = \delta_{ij},i=j,\delta_{ij}=1;i\not=j,\delta_{ij}=0</script><p>写为矩阵形式即：</p>
-<script type="math/tex; mode=display">
-\arg \min_{\pmb w_1,\pmb w_2,...,\pmb w_m} = ||A-WW^TA||_2^2\\
-s.t. W^TW = I_{m \times m}</script><p>其中，$A$为数据的特征矩阵，$W_{n \times m}$为前$m$个正交基按列组成的矩阵，它是半正交的。</p>
-<p><strong>tips：</strong>因为有$m$个基向量，两两相乘，最后矩阵是一个$m \times m$的单位阵。</p>
-<script type="math/tex; mode=display">
-||A-WW^TA||_2^2 = tr\{(A-WW^TA)^T(A-WW^TA)\} = tr(A^TA) - tr(A^TWW^TA)</script><p>由于$tr(A^TA)$这一项与优化目标无关，因此目标函数变为：</p>
-<script type="math/tex; mode=display">
-\arg\min_{W}-tr(A^TWW^TA) = -tr\{(W^TA)^T(W^TA)\} = -||W^TA||^2_2\\s.t: W^TW = I</script><p>求出最忧$W$后，降维数据：</p>
-<script type="math/tex; mode=display">
-Y_{m \times N} = W_{m \times n}^TX_{n\times N}</script><p>以上推导过程从<strong>基向量</strong>、最优化角度解释了主成分分析算法。</p>
-<p><strong>注意：</strong>主成分分析是无监督、线性的降维方法。线性判别分析是有监督的线性降维方法。</p>
-<h5 id="2-2-算法描述"><a href="#2-2-算法描述" class="headerlink" title="2.2 算法描述"></a>2.2 算法描述</h5><p><img src="https://img-blog.csdnimg.cn/20191109182949751.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
-<p><img src="https://img-blog.csdnimg.cn/20191109191048929.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def my_pca(X, k):</span><br><span class="line">    #X 行：样本量，列：样本维度</span><br><span class="line">    #函数默认对每一列进行demean处理</span><br><span class="line">    cov &#x3D; np.cov(X,rowvar&#x3D;0)</span><br><span class="line">    mean &#x3D; np.mean(X,axis &#x3D; 0)</span><br><span class="line">    X_ &#x3D; X - mean</span><br><span class="line">    #求协方差矩阵的特征向量</span><br><span class="line">    eigenvalue, eigenfuture &#x3D; np.linalg.eig(cov)</span><br><span class="line">    #选取前k个特征向量 n * k</span><br><span class="line">    eigenselect &#x3D; eigenfuture[:,:k]</span><br><span class="line">    return np.dot(X_, eigenselect), eigenfuture</span><br></pre></td></tr></table></figure>
-
+      <h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><h3 id="1-最大子段和"><a href="#1-最大子段和" class="headerlink" title="1. 最大子段和"></a>1. 最大子段和</h3><h3 id="2-最长上升子序列"><a href="#2-最长上升子序列" class="headerlink" title="2. 最长上升子序列"></a>2. 最长上升子序列</h3><h3 id="3-最长公共子序列"><a href="#3-最长公共子序列" class="headerlink" title="3. 最长公共子序列"></a>3. 最长公共子序列</h3><h3 id="4-最长公共子串"><a href="#4-最长公共子串" class="headerlink" title="4. 最长公共子串"></a>4. 最长公共子串</h3><h3 id="5-背包问题"><a href="#5-背包问题" class="headerlink" title="5. 背包问题"></a>5. 背包问题</h3><h3 id="6-编辑距离"><a href="#6-编辑距离" class="headerlink" title="6. 编辑距离"></a>6. 编辑距离</h3><h3 id="7-其他"><a href="#7-其他" class="headerlink" title="7. 其他"></a>7. 其他</h3><h4 id="7-1-矩阵相乘的最少次数"><a href="#7-1-矩阵相乘的最少次数" class="headerlink" title="7.1 矩阵相乘的最少次数"></a>7.1 矩阵相乘的最少次数</h4><h4 id="7-2-零钱兑换"><a href="#7-2-零钱兑换" class="headerlink" title="7.2 零钱兑换"></a>7.2 零钱兑换</h4>
       
       <!-- 打赏 -->
       
@@ -145,19 +117,10 @@ Y_{m \times N} = W_{m \times n}^TX_{n\times N}</script><p>以上推导过程从<
   
   <nav class="article-nav">
     
-      <a href="/2020/02/04/Faster%20R-CNN%E4%B8%ADanchor%E7%9A%84%E7%90%86%E8%A7%A3/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            Faster R-CNN中anchor的理解
-          
-        </div>
-      </a>
     
-    
-      <a href="/2019/11/09/Hashap-LoadFactor/" class="article-nav-link">
+      <a href="/2020/10/21/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture1/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">HashMap LoadFactor</div>
+        <div class="article-nav-title">机器视觉基础Lecture1</div>
       </a>
     
   </nav>

@@ -41,6 +41,144 @@
     
     
     
+    <article id="post-数据分析之Pandas" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/"
+    >数据分析之Pandas</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" class="article-date">
+  <time datetime="2020-06-09T16:22:30.243Z" itemprop="datePublished">2020-06-10</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="数据分析之Pandas"><a href="#数据分析之Pandas" class="headerlink" title="数据分析之Pandas"></a>数据分析之Pandas</h2><p>​    Pandas中两大数据结构：DataFrame、Series。</p>
+<ol>
+<li><p>数据文件的读取。可以读取excel、csv、tsv等数据文件。下面以csv文件为例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">df = pd.read_csv(<span class="string">'https://bitly.com/imdbratings'</span>)</span><br></pre></td></tr></table></figure>
+<p>具体可以指定的参数有：</p>
+<ul>
+<li><p>encoding，文件编码方式，如：<code>GBK/ANSI/UTF-8</code></p>
+</li>
+<li><p>names，指定数据文件的各个列的名称，传入的是list类型</p>
+</li>
+<li><p>seq，指定文件的分隔符</p>
+</li>
+</ul>
+</li>
+<li><p>查看数据相关信息</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pandas-1.png" alt=""></p>
+</li>
+</ol>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">df.info()</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">RangeIndex</span>:</span> <span class="number">979</span> entries, <span class="number">0</span> to <span class="number">978</span></span><br><span class="line">Data columns (total <span class="number">6</span> columns):</span><br><span class="line"> <span class="comment">#   Column          Non-Null Count  Dtype  </span></span><br><span class="line">---  ------          --------------  -----  </span><br><span class="line"> <span class="number">0</span>   star_rating     <span class="number">979</span> non-null    float64</span><br><span class="line"> <span class="number">1</span>   title           <span class="number">979</span> non-null    object </span><br><span class="line"> <span class="number">2</span>   content_rating  <span class="number">976</span> non-null    object </span><br><span class="line"> <span class="number">3</span>   genre           <span class="number">979</span> non-null    object </span><br><span class="line"> <span class="number">4</span>   duration        <span class="number">979</span> non-null    int64  </span><br><span class="line"> <span class="number">5</span>   actors_list     <span class="number">979</span> non-null    object </span><br><span class="line">dtypes: float64(<span class="number">1</span>), int64(<span class="number">1</span>), object(<span class="number">4</span>)</span><br><span class="line">memory usage: <span class="number">46.0</span>+ KB</span><br></pre></td></tr></table></figure>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">df.describe()</span><br><span class="line">	  star_rating	duration</span><br><span class="line">count	<span class="number">979.000000</span>	<span class="number">979.000000</span></span><br><span class="line">mean	<span class="number">7.889785</span>	<span class="number">120.979571</span></span><br><span class="line">std		<span class="number">0.336069</span>	<span class="number">26.218010</span></span><br><span class="line">min		<span class="number">7.400000</span>	<span class="number">64.000000</span></span><br><span class="line"><span class="number">25</span>%		<span class="number">7.600000</span>	<span class="number">102.000000</span></span><br><span class="line"><span class="number">50</span>%		<span class="number">7.800000</span>	<span class="number">117.000000</span></span><br><span class="line"><span class="number">75</span>%		<span class="number">8.100000</span>	<span class="number">134.000000</span></span><br><span class="line">max		<span class="number">9.300000</span>	<span class="number">242.000000</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>获取某一列或多个列的值</p>
+<p>通常将要获取的多个列名包装到list中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#获取评分这一列的值，返回一个Series对象</span></span><br><span class="line">df[<span class="string">'star_rating'</span>]</span><br><span class="line"><span class="comment">#或者</span></span><br><span class="line">df.star_rating</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取评分、电影时长两列的值</span></span><br><span class="line">df[[<span class="string">'star_rating'</span>,<span class="string">'duration'</span>]]</span><br></pre></td></tr></table></figure>
+<p>注意：不能这么写：<code>df[[0,1,2,3]]</code></p>
+</li>
+<li><p>获取某一行或多行的数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#直接切片获取 </span></span><br><span class="line">df[:<span class="number">1</span>]</span><br><span class="line"><span class="comment">#Output</span></span><br><span class="line">star_rating                                                     <span class="number">9.3</span></span><br><span class="line">title                                      The Shawshank Redemption</span><br><span class="line">content_rating                                                    R</span><br><span class="line">genre                                                         Crime</span><br><span class="line">duration                                                        <span class="number">142</span></span><br><span class="line">actors_list       [<span class="string">u'Tim Robbins'</span>, <span class="string">u'Morgan Freeman'</span>, <span class="string">u'Bob Gunt...</span></span><br><span class="line"><span class="string">Name: 0, dtype: object</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#获取前10部电影的时长</span></span><br><span class="line"><span class="string">df[:10]['</span>duration<span class="string">'] </span></span><br><span class="line"><span class="string">df[:10][['</span>star_rating<span class="string">','</span>duration<span class="string">']]</span></span><br></pre></td></tr></table></figure>
+<p>还是推荐使用loc或者iloc来进行行的获取。这样更加直观。</p>
+</li>
+<li><p><strong>iloc和loc</strong></p>
+<p>使用形式：<code>loc[,]/iloc[,]</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取指定索引的数据，比如获取第10部电影的数据</span></span><br><span class="line">df.loc[<span class="number">10</span>] <span class="comment"># 默认取全部列（不建议这么写） 相当于 ） </span></span><br><span class="line">df.loc[<span class="number">10</span>,:] <span class="comment">#（推荐）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 取第1、5、10部电影</span></span><br><span class="line">df.loc[[<span class="number">1</span>,<span class="number">5</span>,<span class="number">10</span>], :]</span><br><span class="line"></span><br><span class="line"><span class="comment"># loc函数支持切片, 取前10部电影, 注意是：前闭后闭的</span></span><br><span class="line">df.loc[:<span class="number">10</span>,:] <span class="comment">#获取前10行的数据，返回一个DataFrame</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下面讲解列操作</span></span><br><span class="line"><span class="comment"># 取前10部电影的时长</span></span><br><span class="line">df.loc[:<span class="number">10</span>,<span class="string">'duration'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取前10部电影的时长和名字</span></span><br><span class="line">df.loc[:<span class="number">10</span>,[<span class="string">'star_rating'</span>,<span class="string">'title'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取前10部电影评分到时长列</span></span><br><span class="line">df.loc[:<span class="number">10</span>,[<span class="string">'star_rating'</span>:<span class="string">'duration'</span>]]                   </span><br><span class="line">              </span><br><span class="line"><span class="comment"># 下面全部是错误的写法！</span></span><br><span class="line">df[:<span class="number">10</span>][<span class="string">'star_rating'</span>:<span class="string">'duration'</span>]   </span><br><span class="line">df.loc[:,<span class="number">0</span>:<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>注意：获取某一特定index行，不可以直接<code>df[index]</code>，需借助<code>df.loc[index,:]</code>函数。</strong></p>
+<p>loc不仅可以传入索引、列表、切片获得指定数据，还可以传入条件进行筛选，具体参见下一小节。</p>
+<p>iloc在列的选取上与loc不同，loc传入的是列名；而iloc传入的是列的索引。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#介绍df.iloc使用， iloc是按位置选取的,传入的参数都是整数</span></span><br><span class="line"><span class="comment"># 传入的切片是前闭后开的！</span></span><br><span class="line"><span class="comment">#选取索引为1、4、5的电影</span></span><br><span class="line">df.iloc[[<span class="number">1</span>,<span class="number">4</span>,<span class="number">5</span>],:]</span><br><span class="line"></span><br><span class="line">df.iloc[:<span class="number">100</span>,:<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 选择第0、2列</span></span><br><span class="line">df.iloc[[<span class="number">1</span>,<span class="number">4</span>,<span class="number">5</span>],[<span class="number">0</span>,<span class="number">2</span>]]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取满足特定条件的行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取电影时长在120min以上的电影，返回一个DataFrame</span></span><br><span class="line">df[df[<span class="string">'duration'</span>] &gt; <span class="number">120</span>]</span><br><span class="line">df[df[<span class="string">'duration'</span>] &gt; <span class="number">120</span>].duration</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取电影时长在120min以上的电影且评分高于8的电影,多条件要用括号括起来</span></span><br><span class="line">df[(df[<span class="string">'duration'</span>] &gt; <span class="number">120</span>) &amp; (df[<span class="string">'star_rating'</span>] &gt; <span class="number">8</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">df.loc[(df[<span class="string">'duration'</span>] &gt; <span class="number">120</span>) &amp; (df[<span class="string">'star_rating'</span>] &gt; <span class="number">8</span>), :]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取电影时长在120min以上的电影且评分高于8的电影的名字</span></span><br><span class="line">df.loc[(df[<span class="string">'duration'</span>] &gt; <span class="number">120</span>) &amp; (df[<span class="string">'star_rating'</span>] &gt; <span class="number">8</span>),<span class="string">'title'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取电影时长在120min以上的电影且评分高于8的电影的名字和评分</span></span><br><span class="line">df.loc[(df[<span class="string">'duration'</span>] &gt; <span class="number">120</span>) &amp; (df[<span class="string">'star_rating'</span>] &gt; <span class="number">8</span>),[<span class="string">'title'</span>,<span class="string">'star_rating'</span>]]</span><br><span class="line"></span><br><span class="line">df.loc[(df[<span class="string">'duration'</span>] &gt; <span class="number">120</span>) &amp; (df[<span class="string">'star_rating'</span>] &gt; <span class="number">8</span>),<span class="string">'star_rating'</span>:<span class="string">'genre'</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看不同分级的电影数量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取电影具体的分级级别</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].unique()</span><br><span class="line"><span class="comment"># Output</span></span><br><span class="line">array([<span class="string">'R'</span>, <span class="string">'PG-13'</span>, <span class="string">'NOT RATED'</span>, <span class="string">'PG'</span>, <span class="string">'UNRATED'</span>, <span class="string">'APPROVED'</span>, <span class="string">'PASSED'</span>,</span><br><span class="line">       <span class="string">'G'</span>, <span class="string">'X'</span>, nan, <span class="string">'TV-MA'</span>, <span class="string">'GP'</span>, <span class="string">'NC-17'</span>], dtype=object)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看不同分级类别的电影数量</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].value_counts()</span><br><span class="line"><span class="comment"># Output</span></span><br><span class="line">R            <span class="number">460</span></span><br><span class="line">PG<span class="number">-13</span>        <span class="number">189</span></span><br><span class="line">PG           <span class="number">123</span></span><br><span class="line">NOT RATED     <span class="number">65</span></span><br><span class="line">APPROVED      <span class="number">47</span></span><br><span class="line">UNRATED       <span class="number">38</span></span><br><span class="line">G             <span class="number">32</span></span><br><span class="line">PASSED         <span class="number">7</span></span><br><span class="line">NC<span class="number">-17</span>          <span class="number">7</span></span><br><span class="line">X              <span class="number">4</span></span><br><span class="line">GP             <span class="number">3</span></span><br><span class="line">TV-MA          <span class="number">1</span></span><br><span class="line">Name: content_rating, dtype: int64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以柱状图形式展示</span></span><br><span class="line">df[<span class="string">'content_rating'</span>].value_counts().plot(kind=<span class="string">'bar'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/content-rating.png" alt=""></p>
+</li>
+<li><p>groupby的应用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看不同题材的电影的平均时长</span></span><br><span class="line">df.groupby(<span class="string">'genre'</span>).duration.mean()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>apply、map、applymap</p>
+<p>apply传入一个函数，会将该函数应用于选中的列</p>
+<p>applymap是指将函数应用于DataFrame的所有元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">df[<span class="string">'int_rating'</span>] = df.star_rating.apply(np.ceil) <span class="comment"># 默认为 0</span></span><br><span class="line">df.loc[:<span class="number">5</span>,[<span class="string">'int_rating'</span>,<span class="string">'star_rating'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment">#Output</span></span><br><span class="line">	int_rating	star_rating</span><br><span class="line"><span class="number">0</span>			<span class="number">10.0</span> 		<span class="number">9.3</span></span><br><span class="line"><span class="number">1</span>			<span class="number">10.0</span>		<span class="number">9.2</span></span><br><span class="line"><span class="number">2</span>			<span class="number">10.0</span>		<span class="number">9.1</span></span><br><span class="line"><span class="number">3</span>			<span class="number">9.0</span>			<span class="number">9.0</span></span><br><span class="line"><span class="number">4</span>			<span class="number">9.0</span>			<span class="number">8.9</span></span><br><span class="line"><span class="number">5</span>			<span class="number">9.0</span>			<span class="number">8.9</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#获取电影主演的第一个演员的名字</span></span><br><span class="line">df.actors_list.apply(<span class="keyword">lambda</span> x:eval(x)[<span class="number">0</span>])</span><br><span class="line"><span class="comment">#Outputs</span></span><br><span class="line"><span class="number">0</span>          Tim Robbins</span><br><span class="line"><span class="number">1</span>        Marlon Brando</span><br><span class="line"><span class="number">2</span>            Al Pacino</span><br><span class="line"><span class="number">3</span>       Christian Bale</span><br><span class="line"><span class="number">4</span>        John Travolta</span><br></pre></td></tr></table></figure>
+<p>下面引入一个新的数据集</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">drinks = pd.read_csv(<span class="string">'http://bit.ly/drinksbycountry'</span>)</span><br><span class="line">drinks.head()</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pandas-2.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在DataFrame中，可通过axis指定appply作用在行或者列上</span></span><br><span class="line">res = drinks.loc[:,<span class="string">'beer_servings'</span>:<span class="string">'wine_servings'</span>].apply(np.argmax,axis=<span class="number">0</span>)</span><br><span class="line">res</span><br><span class="line"><span class="comment"># Outputs</span></span><br><span class="line">beer_servings      <span class="number">117</span></span><br><span class="line">spirit_servings     <span class="number">68</span></span><br><span class="line">wine_servings       <span class="number">61</span></span><br><span class="line">dtype: int64</span><br><span class="line">    </span><br><span class="line">drinks.loc[res,<span class="string">'country'</span>]</span><br><span class="line"><span class="number">117</span>    Namibia</span><br><span class="line"><span class="number">68</span>     Grenada</span><br><span class="line"><span class="number">61</span>      France</span><br><span class="line"><span class="comment"># 即beer_servings 最大的国家是Namibia，spirit_servings大的国家Grenada等等</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在DataFrame中删除行或者列</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除一列或多列</span></span><br><span class="line">df.drop([<span class="string">'int_rating'</span>],axis=<span class="number">1</span>,inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除一行或多行</span></span><br><span class="line">df.drop([<span class="number">0</span>,<span class="number">1</span>], axis = <span class="number">0</span>, inplace = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol>
+<li><p>在DataFrame中给某一列重命名</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取所有列名</span></span><br><span class="line">df.columns</span><br><span class="line"><span class="comment"># 替换全部列名</span></span><br><span class="line">df_cols = [<span class="string">'Star rating'</span>,<span class="string">'Title'</span>, <span class="string">'Content rating'</span>,<span class="string">'Genre'</span>, <span class="string">'Duration'</span>, <span class="string">'Actors list'</span>]</span><br><span class="line">df.columns = df_cols</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改指定列名</span></span><br><span class="line">df.rename(columns = &#123;<span class="string">'star_rating'</span>:<span class="string">'star rating'</span>&#125;)</span><br></pre></td></tr></table></figure>
+<p>也可以通过在read数据时，指定names参数来指定列名（<code>names = df_cols</code>）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 也可以.str来使用Series中封装的字符串方法</span></span><br><span class="line">df.columns.str.[replace(<span class="string">'_'</span>,<span class="string">' '</span>)/lower()/upper()]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>给某一列进行排序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pandas.Series.sort_values(ascending=True, inplace=False) 默认升序,且不改变原Series结果</span></span><br><span class="line"><span class="comment"># 按照电影时长从大倒小排序</span></span><br><span class="line">df.duration.sort_values(ascending=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># pandas.DataFrame.sort_values(by='columns_name')</span></span><br><span class="line">df.sort_values(by=<span class="string">'duration'</span>,ascending=<span class="literal">False</span>,inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按照电影评分从大到小排列，若评分相同，则时长长的在前</span></span><br><span class="line">df.sort_values([<span class="string">'star_rating'</span>,<span class="string">'duration'</span>],ascending=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>发现并删除重复行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pandas.Series.duplicated() 返回bool的series</span></span><br><span class="line">df.title.duplicated().sum()</span><br><span class="line"></span><br><span class="line">df.duplicated()</span><br><span class="line"></span><br><span class="line">df.drop_duplicates(keep=<span class="string">'first'</span>)</span><br><span class="line"><span class="comment"># keep = first即保存第一个重复的元素，keep = False，不保留重复元素</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-Java中多态和方法的重载和重写" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -1102,108 +1240,6 @@ weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</scr
 <li><p>支持互补配置</p>
 </li>
 </ul>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-Word Embedding" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/04/17/Word%20Embedding/"
-    >Word Embedding</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/04/17/Word%20Embedding/" class="article-date">
-  <time datetime="2020-04-16T16:06:20.840Z" itemprop="datePublished">2020-04-17</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="Word-Embedding之skip-gram"><a href="#Word-Embedding之skip-gram" class="headerlink" title="Word Embedding之skip-gram"></a>Word Embedding之skip-gram</h2><h3 id="1-Word-Embedding"><a href="#1-Word-Embedding" class="headerlink" title="1.Word Embedding"></a>1.Word Embedding</h3><p>​        词的分布式表示大致可以分为基于矩阵、基于聚类、基于神经网络等表示方法。1986年，Hinton就提出了分布式表示想法；2003年，Bengio也发表论文表达了相关想法。基于神经网络的分布式表示一般称为词向量、词嵌入（word embedding）、分布式表示（ distributed representation）。词嵌入就是指将<strong>词汇映射到实数向量</strong>空间的概念（模型）。神经网络词向量表示技术通过神经网络技术对上下文，以及上下文与目标词之间的关系进行建模。神经网络模型有skip-gram和Continous Bag of Words Model(CBOW)模型。</p>
-<p>​        word2vec是谷歌2013年提出一种word embedding 的工具或者算法集合，在word2vec中给出了这skip-gram和cbow模型的训练和生成方式。</p>
-<h3 id="2-skip-gram"><a href="#2-skip-gram" class="headerlink" title="2. skip gram"></a>2. skip gram</h3><p>​        由于词为字符串，而输入到网络中的是向量，因此传统常用one-hot表示，把每个词表示为一个很长的向量，但这个向量是非常稀疏的，且向量不包含其他含义，因此，word embedding就是找到n个属性来表示这个词，这种表示方法不仅可以大大降低维度，而且可以通过向量计算两个词的“距离”。比如少年、男人、少女这几个词，就可以选择年龄、性别这两个属性来描述。</p>
-<p>​        skip-gram其实就是训练一个小型神经网络，将单词映射到向量空间只是其中的一步。<strong>该神经网络最后的输出，其实是词库中各个单词出现在给定输入单词附近的概率——给定中心词，预测附近单词。</strong></p>
-<p>​        整体网络架构为三层（输入层、隐藏层、输出层）。假设有一个词汇量为10000的词库。</p>
-<p>输入层为单词的one-hot表示向量（10000维），隐藏层没有激活函数，输出层采用softmax函数，输出一个概率分布（10000维向量），表示词汇表各个单词在输入词附近（nearby）的概率。隐藏层的神经元数量就是单词映射到实数空间属性个数。<strong>输入层和隐藏层之间的权重就是我们需要的，也就是作为词汇最后的映射空间。</strong></p>
-<p><strong>网络模型</strong>：</p>
-<p>输入：$word_{1\times v}、target$</p>
-<p>参数：$W_{v \times N}$、$W_{N\times V}$</p>
-<p>输出：$P_{1\times V}$</p>
-<p><img src="/images/model.jpg" alt=""></p>
-<p><strong>训练过程</strong>：</p>
-<ol>
-<li><p>训练数据的产生</p>
-<p>训练数据采用滑动窗口，在一个句子中滑动，窗口大小是一个超参数。比如：</p>
-</li>
-</ol>
-<p>   <img src="/images/word2vec.jpg" alt=""></p>
-<p>   中心单词not，窗口大小为2。此次滑动产生的数据为：</p>
-<p>   <img src="/images/2.jpg" alt=""></p>
-<p>   以此类推。</p>
-<p>   <img src="/images/3.jpg" alt=""></p>
-<ol>
-<li><p>训练</p>
-<p>将产生的数据输入网络，计算输出层产生的概率向量和target word的one-hot向量的loss，然后反向传播更新参数矩阵。</p>
-</li>
-</ol>
-<p>   <img src="/images/4.png" alt=""></p>
-<h3 id="3-Negative-Sampling和Hierarchical-softmax"><a href="#3-Negative-Sampling和Hierarchical-softmax" class="headerlink" title="3. Negative Sampling和Hierarchical softmax"></a>3. Negative Sampling和Hierarchical softmax</h3><p>​        在2013年初<code>word2vec</code>论文发表后，10月谷歌又发了一篇文章，提出了negative sampling和Hierarchical softmax，两种方法都可以加速网络的收敛过程和训练速度。</p>
-<h4 id="3-1-Negative-Sampling"><a href="#3-1-Negative-Sampling" class="headerlink" title="3.1 Negative Sampling"></a>3.1 Negative Sampling</h4><p>​        以上过程有助于了解网络是如何运作的，但是该网络采用softmax激活函数，每次训练都要计算隐藏层向量和参数矩阵2相乘并反向计算梯度，训练成本较高，因此word2vec中使用了基于负例采样（negative sampling）的skip gram以此来降低计算成本。具体就是将softmax函数转化为逻辑回归（二分类），将预测概率问题转为一个二分类问题，输出target是否为input的nearby。负采样就是在数据集中加入target不是input的nearby的样本。</p>
-<p>​        采用negative sampling的skip-gram大致训练过程如下：</p>
-<p>​        选择与input word相邻的单词作为output word，target为1，表示相邻，再随机选择5-20个不相邻单词作为output word，target为0，将input word输入到网络中经过隐藏层得到embedding后的vector，与output word对应的weight（参数矩阵2的某一列）点乘得到向量积，再经过sigmod函数，得到一个分数，与target的差即为loss，反向传播然后更新参数矩阵1（Embedding矩阵）中input word对应的weight，和参数矩阵2（Context矩阵）中output word对应的weight，这样每次训练只需要更新部分权重（负例对应的Context权重、input word对应的Embedding权重），而非整个权重，从而加快收敛过程。</p>
-<p><img src="/images/word2vec-training-update.png" alt=""></p>
-<h4 id="3-2-Hierarchical-softmax"><a href="#3-2-Hierarchical-softmax" class="headerlink" title="3.2 Hierarchical softmax"></a>3.2 Hierarchical softmax</h4><p>​        Hierarchical softmax利用词汇建立一棵哈夫曼树，树中每个结点除了包含指向左右子树结点的指针，还有对应结点的权重向量。树中每个节点都相当于一个二分类模型，计算左右结点的概率，最终到达叶子节点。</p>
-<p><img src="/images/Hierarchical-Softmax.jpg" alt=""></p>
-<h3 id="4-后续"><a href="#4-后续" class="headerlink" title="4. 后续"></a>4. 后续</h3><p>​        word2vec不仅可以用来处理nlp问题，而且基本已经成为深度学习中的一个基本模型。</p>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>强烈推荐！！！</p>
-<p>[1]. <a href="http://jalammar.github.io/illustrated-word2vec/" target="_blank" rel="noopener">http://jalammar.github.io/illustrated-word2vec/</a></p>
-<p>[2]. <a href="https://mp.weixin.qq.com/s?__biz=MjM5MTQzNzU2NA==&amp;mid=2651669277&amp;idx=2&amp;sn=bc8f0590f9e340c1f1359982726c5a30&amp;chksm=bd4c648e8a3bed9817f30c5a512e79fe0cc6fbc58544f97c857c30b120e76508fef37cae49bc&amp;scene=0&amp;xtrack=1#rd（[1]中文翻译版）" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MjM5MTQzNzU2NA==&amp;mid=2651669277&amp;idx=2&amp;sn=bc8f0590f9e340c1f1359982726c5a30&amp;chksm=bd4c648e8a3bed9817f30c5a512e79fe0cc6fbc58544f97c857c30b120e76508fef37cae49bc&amp;scene=0&amp;xtrack=1#rd（[1]中文翻译版）</a></p>
-<p>[3]. <a href="http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/" target="_blank" rel="noopener">http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/</a></p>
 
       
       <!-- 打赏 -->

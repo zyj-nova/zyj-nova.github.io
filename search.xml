@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>动态规划</title>
+    <url>/2020/10/25/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</url>
+    <content><![CDATA[<h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><h3 id="1-最大子段和"><a href="#1-最大子段和" class="headerlink" title="1. 最大子段和"></a>1. 最大子段和</h3><h3 id="2-最长上升子序列"><a href="#2-最长上升子序列" class="headerlink" title="2. 最长上升子序列"></a>2. 最长上升子序列</h3><h3 id="3-最长公共子序列"><a href="#3-最长公共子序列" class="headerlink" title="3. 最长公共子序列"></a>3. 最长公共子序列</h3><h3 id="4-最长公共子串"><a href="#4-最长公共子串" class="headerlink" title="4. 最长公共子串"></a>4. 最长公共子串</h3><h3 id="5-背包问题"><a href="#5-背包问题" class="headerlink" title="5. 背包问题"></a>5. 背包问题</h3><h3 id="6-编辑距离"><a href="#6-编辑距离" class="headerlink" title="6. 编辑距离"></a>6. 编辑距离</h3><h3 id="7-其他"><a href="#7-其他" class="headerlink" title="7. 其他"></a>7. 其他</h3><h4 id="7-1-矩阵相乘的最少次数"><a href="#7-1-矩阵相乘的最少次数" class="headerlink" title="7.1 矩阵相乘的最少次数"></a>7.1 矩阵相乘的最少次数</h4><h4 id="7-2-零钱兑换"><a href="#7-2-零钱兑换" class="headerlink" title="7.2 零钱兑换"></a>7.2 零钱兑换</h4>]]></content>
+      <categories>
+        <category>Leetcode</category>
+      </categories>
+  </entry>
+  <entry>
     <title>机器视觉基础Lecture1</title>
     <url>/2020/10/21/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture1/</url>
     <content><![CDATA[<h2 id="机器视觉基础-Lecture-1"><a href="#机器视觉基础-Lecture-1" class="headerlink" title="机器视觉基础 Lecture 1"></a>机器视觉基础 Lecture 1</h2><h3 id="1-卷积"><a href="#1-卷积" class="headerlink" title="1. 卷积"></a>1. 卷积</h3><p>卷积操作即用一个窗口在图像上滑动，图像上的像素与窗口内的数值相乘再相加，最后得到新的图像的过程；这个窗口也被称为滤波器/核。</p>
@@ -139,21 +147,123 @@ R = \det(M) - \alpha *trace(M)^2 = \lambda_1\lambda_2-\alpha(\lambda_1+\lambda_2
   <entry>
     <title>降维方法</title>
     <url>/2020/10/13/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<h2 id="降维方法"><a href="#降维方法" class="headerlink" title="降维方法"></a>降维方法</h2><h3 id="1-主成分分析"><a href="#1-主成分分析" class="headerlink" title="1. 主成分分析"></a>1. 主成分分析</h3><p>参见我的另一篇博客：“主成分分析”。</p>
+    <content><![CDATA[<h2 id="降维方法"><a href="#降维方法" class="headerlink" title="降维方法"></a>降维方法</h2><h3 id="1-主成分分析"><a href="#1-主成分分析" class="headerlink" title="1. 主成分分析"></a>1. 主成分分析</h3><h4 id="1-1-算法分析"><a href="#1-1-算法分析" class="headerlink" title="1.1 算法分析"></a>1.1 算法分析</h4><p>已知样本$\pmb a_1,\pmb a_2,…,\pmb a_N,\pmb a_i \in \mathbb{R}^n$，则按列组成的矩阵:</p>
+<script type="math/tex; mode=display">
+A_{n \times m} = \begin{pmatrix}\pmb a_1,&\pmb a_2,...&,\pmb a_N\end{pmatrix}</script><p><strong>矩阵的弗罗贝尼乌斯范数</strong>：</p>
+<script type="math/tex; mode=display">
+||A||_2 = \sqrt {tr (A^TA)} = \sqrt{\sum_{i=1}^m\sum_{j=1}^na_{ij}^2}</script><p>$tr$代表矩阵的迹函数$trace$（主对角线元素求和，$A^TA$一定是个方阵）。</p>
+<p>给定一组标准正交基$\pmb w_1,\pmb w_2,…,\pmb w_N,\pmb w_i \in \mathbb{R}^n$，$\mathbb{R}^n$中的某个向量$\pmb a$可以表示为：</p>
+<script type="math/tex; mode=display">
+\pmb a = \sum_{j = 1}^n <\pmb a,\pmb w_j>\pmb w_j</script><p>$&lt;,&gt;$表示向量的内积操作，可以看出$&lt;\pmb a,\pmb w_j&gt;$即$\pmb a$在空间中的坐标。现在我们考虑，是否可以将$\pmb a$表示在由$\pmb w_1,\pmb w_2,…,\pmb w_m,m \mathbb{&lt;&lt;} n$，生成的子空间$\mathbb{R}^m$中，使得$&lt;\pmb a,\pmb w_{m+1}&gt;=0,…,&lt;\pmb a, \pmb w_n&gt; = 0$ ?也就是说只需要前$m$个基就可以表示$\pmb a$。</p>
+<p><strong>降维准则：</strong> 找到一组基，使得数据在这组基表示下，$m+1,…n$维的坐标都是0。</p>
+<p><strong>注意：</strong>$\pmb w_i$仍然是包含$n$个分量的向量，$m$个包含$n$个元素基向量构成了$n$维空间的一个$m$维子空间（空间的维数等于基向量个数）。</p>
+<p>这就可以将问题转化为一个优化问题：</p>
+<script type="math/tex; mode=display">
+\min_{\pmb w_1,\pmb w_2,...,\pmb w_m} = \sum_{i=1}^N ||\pmb a_i - \sum_{j=1}^m<\pmb a_i,\pmb w_j>\pmb w_j||_2^2\\
+s.t.<\pmb w_i,\pmb w_j> = \delta_{ij},i=j,\delta_{ij}=1;i\not=j,\delta_{ij}=0</script><p>写为矩阵形式即：</p>
+<script type="math/tex; mode=display">
+\arg \min_{\pmb w_1,\pmb w_2,...,\pmb w_m} = ||A-WW^TA||_2^2\\
+s.t. W^TW = I_{m \times m}</script><p>其中，$A$为数据的特征矩阵，$W_{n \times m}$为前$m$个正交基按列组成的矩阵，它是半正交的。</p>
+<p><strong>tips：</strong>因为有$m$个基向量，两两相乘，最后矩阵是一个$m \times m$的单位阵。</p>
+<script type="math/tex; mode=display">
+||A-WW^TA||_2^2 = tr\{(A-WW^TA)^T(A-WW^TA)\} = tr(A^TA) - tr(A^TWW^TA)</script><p>由于$tr(A^TA)$这一项与优化目标无关，因此目标函数变为：</p>
+<script type="math/tex; mode=display">
+\arg\min_{W}-tr(A^TWW^TA) = -tr\{(W^TA)^T(W^TA)\} = -||W^TA||^2_2\\s.t: W^TW = I</script><p>求出最忧$W$后，降维数据：</p>
+<script type="math/tex; mode=display">
+Y_{m \times N} = W_{m \times n}^TX_{n\times N}</script><p>以上推导过程从<strong>基向量</strong>、最优化角度解释了主成分分析算法。</p>
+<p><strong>注意：</strong>主成分分析是无监督、线性的降维方法。线性判别分析是有监督的线性降维方法。</p>
+<p><strong>说明：</strong>降维后的空间与原空间没有对应关系，主成分是原始维度的线性组合得到。</p>
+<h4 id="1-2-算法描述"><a href="#1-2-算法描述" class="headerlink" title="1.2 算法描述"></a>1.2 算法描述</h4><p><img src="https://img-blog.csdnimg.cn/20191109182949751.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p><img src="https://img-blog.csdnimg.cn/20191109191048929.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
+<h4 id="1-3-sklearn中的PCA"><a href="#1-3-sklearn中的PCA" class="headerlink" title="1.3 sklearn中的PCA"></a>1.3 sklearn中的PCA</h4><p>PCA位于$sklearn.decomposition$包下。</p>
+<p>注意“explained_variance_ratio_”这个指标，表示了原始数据在不同主成分上的方差占比（保留了多少原始数据的方差信息）。</p>
+<p>扩展的PCA：Incremental PCA，当数据量特别大无法一次性加载至内存进行奇异值分解时，可以将数据划分为多个mini-batch，然后进行降维。</p>
+<p>Kernel PCA：非线性降维。</p>
+<p><strong>Question: Can PCA  be used to reduce the dimensionality of a highly nonlinear dataset？</strong></p>
+<p><strong>Answer</strong>: PCA can be used to significantly reduce the dimensionality of most datasets, even if they are highly nonlinear, because it can at least get rid of useless dimensions. However, if there are no useless dimensions — for example, the Swiss roll — then reducing dimensionality with PCA will lose too much information. You want to unroll the Swiss roll, not squash it</p>
 <h3 id="2-非负矩阵分解"><a href="#2-非负矩阵分解" class="headerlink" title="2. 非负矩阵分解"></a>2. 非负矩阵分解</h3><p>非负矩阵分解：Nonnegative Matrix Factorization</p>
-<h3 id="3-局部线性嵌入"><a href="#3-局部线性嵌入" class="headerlink" title="3. 局部线性嵌入"></a>3. 局部线性嵌入</h3><p>局部线性嵌入：Locally Linear Embedding（LLE）</p>
+<script type="math/tex; mode=display">
+\min ||X - WH||^2\\
+s.t.W>=0,H>=0</script><h3 id="3-局部线性嵌入"><a href="#3-局部线性嵌入" class="headerlink" title="3. 局部线性嵌入"></a>3. 局部线性嵌入</h3><p>局部线性嵌入：Locally Linear Embedding（LLE），<strong>属于非线性降维</strong></p>
 <p>参考： <a href="https://www.cnblogs.com/pinard/p/6266408.html" target="_blank" rel="noopener">https://www.cnblogs.com/pinard/p/6266408.html</a></p>
 <p>流形学习（manifold learning）第一次听说”manifold”是在学习生成对抗网络的时候看到的。</p>
 <p>推导过程中需要注意的地方：</p>
 <p>下图中由$(1)\rightarrow(2)$过程中，因为$\sum_{j\in Q(i)}w_{ij} = 1$，所以$x_i = x_i \times 1 = \sum_{j\in Q(i)}w_{ij}x_i$。</p>
 <p><img src="E:\hexo\themes\ayer\source\images\image-20201013195547190.png" alt="image-20201013195547190"></p>
 <h3 id="4-线性判别分析"><a href="#4-线性判别分析" class="headerlink" title="4. 线性判别分析"></a>4. 线性判别分析</h3><p>线性判别分析：Linear Discriminate Analysis（LDA）</p>
-<p>降维原则：最小化类内方差，最大化类间方差。属于线性、有监督的降维方法。</p>
-<h3 id="5-多维尺度分析"><a href="#5-多维尺度分析" class="headerlink" title="5. 多维尺度分析"></a>5. 多维尺度分析</h3><p>Multidimensional Scaling</p>
+<p>降维原则：<strong>投影后</strong>最小化类内方差，最大化类间方差。属于线性、有监督的降维方法。</p>
+<p>参考：<a href="https://www.jianshu.com/p/13ec606fdd5f" target="_blank" rel="noopener">https://www.jianshu.com/p/13ec606fdd5f</a> （二分类为例）</p>
+<p>样本集：$\{(\pmb x_1,y_1),(\pmb x_2,y_2),…,(\pmb x_N,y_N)\},\pmb x_i \in \mathbb{R}^n$形成的样本矩阵$X_{n \times N}$，降维后数据$\pmb y$是一个$N \times 1$的向量</p>
+<p>各个类的均值向量：</p>
+<script type="math/tex; mode=display">
+\pmb \mu_0 = \frac{1}{N_0}\sum_{\pmb x\in {0}}\pmb x\\
+\pmb \mu_1 = \frac{1}{N_1}\sum_{\pmb x\in {1}}\pmb x</script><p>降维后的均值向量：</p>
+<script type="math/tex; mode=display">
+\tilde {\pmb \mu_0} = \frac{1}{N_0}\sum_{\pmb y\in 0}\pmb y =\frac{1}{N_0}\sum_{\pmb y\in 0}\pmb w^T\pmb x = \pmb w^T\pmb \mu_0</script><p>$\pmb w_{n \times 1}$就是我们要求的降维变换，同理：</p>
+<script type="math/tex; mode=display">
+\tilde {\pmb \mu_1} = \pmb w^T\pmb \mu_1</script><p>类内方差：</p>
+<script type="math/tex; mode=display">
+\tilde s_i^2 = \sum (\pmb y - \tilde{\pmb {\mu_i})^2}) = \sum (\pmb w^T\pmb x - \pmb w^T\pmb \mu_i)^2</script><p>即：</p>
+<script type="math/tex; mode=display">
+\tilde s_i^2 = \sum_{\pmb x\in i}[\pmb w^T(\pmb x - \pmb \mu_i)]^2 = \sum_{\pmb x\in i} [\pmb w^T(\pmb x-\pmb \mu_i)]^T[\pmb w^T(\pmb x-\pmb \mu_i)] = \sum_{\pmb x\in i} (\pmb x -\pmb \mu_i)^T\pmb w\pmb w^T(\pmb x-\pmb \mu_i)\\=\sum_{\pmb x\in i}\pmb w^T(\pmb x - \pmb \mu_i)(\pmb x - \pmb \mu_i)^T\pmb w</script><p><strong>说明：</strong>因为$(\pmb x -\pmb \mu_i)^T\pmb w$与$\pmb w^T(\pmb x-\pmb \mu_i)$ 结果分别是两个实数，可以交换。</p>
+<p>令</p>
+<script type="math/tex; mode=display">
+\sum_{\pmb x\in i}(\pmb x - \pmb \mu_i)(\pmb x - \pmb \mu_i)^T = S_i</script><p>根据投影后类内方差小（$\tilde s_1^2 + \tilde s_0^2$ 两个都要小总体才能小），类间方差大（$||\pmb \mu_1 - \pmb \mu_2||^2$）。可以写出目标函数：</p>
+<script type="math/tex; mode=display">
+\max J(\pmb w) = \max \frac{||\pmb \mu_1 - \pmb \mu_2||^2}{\tilde s_1^2 + \tilde s_0^2}</script><p>并且根据上面的式子有：</p>
+<script type="math/tex; mode=display">
+\tilde s_1^2 + \tilde s_0^2 = \pmb w^T(S_0 + S_1)\pmb w =\pmb w^TS_W\pmb w = \tilde S_w</script><p>$S_W$：类内方差（with class）维度：$n \times n$</p>
+<p>对于分子，我们有：</p>
+<script type="math/tex; mode=display">
+||\pmb \mu_1 - \pmb \mu_2||^2 = (\pmb w^T\pmb \mu_1 - \pmb w^T\pmb \mu_2)^2=\pmb w^T(\pmb \mu_1-\pmb \mu_2)(\pmb \mu_1-\pmb \mu_2)^T\pmb w</script><p>令：</p>
+<script type="math/tex; mode=display">
+(\pmb \mu_1-\pmb \mu_2)(\pmb \mu_1-\pmb \mu_2)^T = S_B</script><p>$S_B$：类间方差（between class）维度：$n \times n$</p>
+<p>所以：</p>
+<script type="math/tex; mode=display">
+||\pmb \mu_1 - \pmb \mu_2||^2  = \pmb w^TS_B\pmb w = \tilde S_B</script><p>目标函数变为：</p>
+<script type="math/tex; mode=display">
+\max_{\pmb w} \frac{\pmb w^TS_B\pmb w}{\pmb w^TS_W\pmb w }</script><p>对$J(\pmb w)$对$\pmb w$求导并令其等于0即：</p>
+<script type="math/tex; mode=display">
+2S_B\pmb w(\pmb w^TS_W\pmb w)-2S_W\pmb w(\pmb w^TS_B\pmb w) = 0</script><p>注意：$\pmb w^TS_W\pmb w,\pmb w^TS_B\pmb w$结果都是实数，因此等式两边同除$\pmb w^TS_B\pmb w$可得：</p>
+<script type="math/tex; mode=display">
+S_W\pmb w =\frac{\pmb w^TS_W\pmb w}{\pmb w^TS_B\pmb w} S_B\pmb w</script><script type="math/tex; mode=display">
+\pmb w = CS_W^{-1}S_B\pmb w</script><p>注意到：</p>
+<script type="math/tex; mode=display">
+S_B\pmb w =(\pmb \mu_1-\pmb \mu_2)(\pmb \mu_1-\pmb \mu_2)^T\pmb w</script><p>且$(\pmb \mu_1-\pmb \mu_2)^T\pmb w$结果是一个实数，C也是实数，我们要求的最关键的是$\pmb w$的方向，这些实数并不会改变方向，因此</p>
+<script type="math/tex; mode=display">
+\pmb w^* = S_W^{-1}(\pmb \mu_1 - \pmb \mu_2)</script><h3 id="5-多维尺度分析"><a href="#5-多维尺度分析" class="headerlink" title="5. 多维尺度分析"></a>5. 多维尺度分析</h3><p>Multidimensional Scaling</p>
 <p>基本思想：尽量满足原始高维度空间中样本之间的距离在低维空间中得以保持。</p>
 <p>“metric” or “non-metric”</p>
-<p>ISOMAP </p>
+<p>给定样本$(\pmb x_1,\pmb x_2,…,\pmb x_N),\pmb x_i \in \mathbb{R}^n$构成的样本矩阵$X_{n \times N}$，降维后的样本矩阵$Y_{m \times N}$。根据多维尺度分析的基本思想：保持样本间距离不变，原始样本间距离$d_{ij}=||\pmb x_i - \pmb x_j||$构成的矩阵$D_{N \times N}$。</p>
+<p>可知$X^TX = -\frac{1}{2}HD_xH, Y^TY = \frac{1}{2}HD_yH$，我们想让$D_x=D_y$，等价的可以通过以下目标函数来求得：</p>
+<p>目标函数：</p>
+<script type="math/tex; mode=display">
+\min ||X^TX - Y^TY||^2</script><p>特征值分解：</p>
+<script type="math/tex; mode=display">
+X^TX = U^T\Lambda U</script><p>那么降维后的数据$Y$：</p>
+<script type="math/tex; mode=display">
+Y = \Lambda^{1/2}U</script><p>ISOMAP </p>
 <h3 id="6-典型关联分析"><a href="#6-典型关联分析" class="headerlink" title="6. 典型关联分析"></a>6. 典型关联分析</h3><p>Canonical correlation analysis</p>
+<p>参考：<a href="https://www.cnblogs.com/pinard/articles/6288716.html" target="_blank" rel="noopener">https://www.cnblogs.com/pinard/articles/6288716.html</a></p>
+<p>具体思想：相关系数 $\rho$ 可以分析两组一维数据$X,Y$的线性相关性，$\rho$取值越接近1则$X,Y$的线性相关性越高。虽然相关系数可以很好的帮我们分析一维数据的相关性，但是对于高维数据就不能直接使用了。比如$X$是2维数据，$Y$是三维数据，就不能用相关系数进行分析。那么有没有变通的方法呢？典型关联分析给出了思路，具体就是将多维的$X,Y$分别用线性变换为1维的$X^\prime,Y^\prime$，然后使用相关系数分析1维$X^\prime,Y^\prime$的相关性。问题又来了，如何把$X,Y$变换为$X^\prime，Y^\prime$呢？也就是说降维的准则是什么？<strong>典型关联分析使用的准则是变换到1维后，$X^\prime,Y^\prime$的相关系数最大。</strong></p>
+<p>亦即：</p>
+<script type="math/tex; mode=display">
+arg \max_{\pmb a,\pmb b} ||X^T\pmb a - Y^T\pmb b||^2</script><h3 id="7-字典学习"><a href="#7-字典学习" class="headerlink" title="7. 字典学习"></a>7. 字典学习</h3><p>参考：<a href="https://zhuanlan.zhihu.com/p/46085035" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/46085035</a></p>
+<p><strong>基本思想：</strong></p>
+<p>在人类发展的近几千年历史中，文字对人类文明的推动起着举足轻重的作用。人类用文字记述了千年的历史，用文字留下了各种思想火花，用文字抒发了各种各样的情感等等。但是这一切的内容，只需要一本字典就能表述完。因为人在这环节中的功能，无非就是使用字典当中的字词进行了适当的排列了而已。</p>
+<p>基于这种思想，先前的大佬提出了字典学习——Dictionary Learning。</p>
+<p>字典学习的目标，就是提取事物<strong>最本质的特征（类似于字典当中的字或词语）。</strong>如果我们能都获取这本包括<strong>最本质的特征</strong>的字典，那我们就掌握了这个事物的最本质的内涵。换言之，字典学习将我们的到的对于物体的信息降维，减少了该物体一些无关紧要信息对我们定义这个物体的干扰。</p>
+<p><strong>模型建立：</strong></p>
+<script type="math/tex; mode=display">
+\pmb x = \sum_{i=1}^m \lambda_i\pmb w_i</script><p>$\lambda_i$称为表示系数，要求尽可能稀疏；$\pmb w_i$被称为”字典“。</p>
+<p>问题是如何找到表示系数与字典？可转化为如下优化问题：</p>
+<script type="math/tex; mode=display">
+\min \sum_{i=1}^N||\pmb x_i - \sum_{j=1}^m y_{ij}\pmb w_j||^2 \\
+s.t. ||\pmb y_i|| <= C</script><p>其中：$y$即为表示系数，约束条件对应要求表示系数尽可能稀疏。$m &gt;&gt;N$。</p>
+<p>写成矩阵形式：</p>
+<script type="math/tex; mode=display">
+\min ||X - WY||^2\\
+s.t.||Y|| <= C</script><p>由于上述优化问题含有两个优化变量，可采用坐标优化方法，即先固定系数$y$，求出最优的$\pmb w$；然后在求出系数。</p>
 ]]></content>
       <categories>
         <category>机器学习</category>
@@ -256,7 +366,7 @@ arg\max_{\pmb \mu,\Sigma}\ln\prod_{i=1}^Nf_{\mu,\Sigma}(\pmb x_i)</script><ul>
     <content><![CDATA[<h2 id="Transformer模型介绍"><a href="#Transformer模型介绍" class="headerlink" title="Transformer模型介绍"></a>Transformer模型介绍</h2><p>文献：Vaswani A,  Shazeer N,  Parmar N,  et al.  Attention is all you need[C]. Advances in neural information processing systems. 2017: 5998-6008.</p>
 <p>详解：<a href="http://nlp.seas.harvard.edu/2018/04/03/attention.html" target="_blank" rel="noopener">http://nlp.seas.harvard.edu/2018/04/03/attention.html</a>  The Annotated Transformer.</p>
 <p>视频：<a href="https://www.youtube.com/watch?v=ugWDIIOHtPA" target="_blank" rel="noopener">https://www.youtube.com/watch?v=ugWDIIOHtPA</a>  李宏毅：Transformer</p>
-<h3 id="1-encoder-decoder"><a href="#1-encoder-decoder" class="headerlink" title="1. encoder-decoder"></a>1. encoder-decoder</h3><h3 id="2-self-attention"><a href="#2-self-attention" class="headerlink" title="2. self attention"></a>2. self attention</h3><h3 id="3-multi-head-attention"><a href="#3-multi-head-attention" class="headerlink" title="3. multi head attention"></a>3. multi head attention</h3>]]></content>
+<h3 id="1-encoder-decoder"><a href="#1-encoder-decoder" class="headerlink" title="1. encoder-decoder"></a>1. encoder-decoder</h3><h3 id="2-self-attention"><a href="#2-self-attention" class="headerlink" title="2. self attention"></a>2. self attention</h3><h3 id="3-multi-head-attention"><a href="#3-multi-head-attention" class="headerlink" title="3. multi head attention"></a>3. multi head attention</h3><h3 id="4-attention和self-attention区别"><a href="#4-attention和self-attention区别" class="headerlink" title="4. attention和self-attention区别"></a>4. attention和self-attention区别</h3>]]></content>
       <categories>
         <category>深度学习</category>
       </categories>
@@ -2094,14 +2204,25 @@ v_t = \gamma v_{t-1} + \alpha \nabla J(\theta)</script><script type="math/tex; m
   <entry>
     <title>链表</title>
     <url>/2020/02/15/%E9%93%BE%E8%A1%A8/</url>
-    <content><![CDATA[<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> val;</span><br><span class="line">	ListNode next;</span><br><span class="line">	ListNode(<span class="keyword">int</span> x) &#123;</span><br><span class="line">		val = x;</span><br><span class="line">		next = <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><p>Java</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> val;</span><br><span class="line">	ListNode next;</span><br><span class="line">	ListNode(<span class="keyword">int</span> x) &#123;</span><br><span class="line">		val = x;</span><br><span class="line">		next = <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>C++</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> val;</span><br><span class="line"> 	ListNode *next;</span><br><span class="line"> 	ListNode() : val(<span class="number">0</span>), next(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line"> 	ListNode(<span class="keyword">int</span> x) : val(x), next(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line"> 	ListNode(<span class="keyword">int</span> x, ListNode *next) : val(x), next(next) &#123;&#125;</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure>
 <h3 id="1-反转链表"><a href="#1-反转链表" class="headerlink" title="1. 反转链表"></a>1. 反转链表</h3><p>​         反转一个单链表。 这是<code>Leetcode 206</code>号问题。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 头插法</span></span><br><span class="line">        ListNode dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode cur = <span class="keyword">null</span>, next = <span class="keyword">null</span>;</span><br><span class="line">      <span class="comment">//cur指向dummy结点后的第一个节点，在dummy和cur之间添加节点</span></span><br><span class="line">        <span class="keyword">while</span>(head!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            next = head.next;<span class="comment">//保存原链表下一个节点</span></span><br><span class="line">            dummy.next = head;</span><br><span class="line">            head.next = cur;</span><br><span class="line">            cur = head;<span class="comment">//更新cur结点，将其指向刚插入的结点head</span></span><br><span class="line">            <span class="comment">//原链表指向下一个节点</span></span><br><span class="line">            head = next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummy.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">reverseList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="literal">NULL</span> || head-&gt;next == <span class="literal">NULL</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode *dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>), *tmp;</span><br><span class="line">        <span class="keyword">while</span>(head != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            tmp = head-&gt;next;</span><br><span class="line">            head-&gt;next = dummy-&gt;next;</span><br><span class="line">            dummy-&gt;next = head;</span><br><span class="line">            head = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummy-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p><img src="/images/reverse-node.png" alt=""></p>
 <h3 id="2-环形链表"><a href="#2-环形链表" class="headerlink" title="2. 环形链表"></a>2. 环形链表</h3><p>​         给定一个链表，判断链表中是否有环。 这是<code>Leetcode 141</code>号问题。</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCycle</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">if</span> (head == <span class="keyword">null</span> || head.next == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        ListNode slow = head, fast = head.next;</span><br><span class="line">        <span class="keyword">while</span> (slow != fast) &#123;</span><br><span class="line">            <span class="keyword">if</span> (fast == <span class="keyword">null</span> || fast.next == <span class="keyword">null</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            slow = slow.next;</span><br><span class="line">            fast = fast.next.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="3-相交链表"><a href="#3-相交链表" class="headerlink" title="3. 相交链表"></a>3. 相交链表</h3><p>​         编写一个程序，找到两个单链表相交的起始节点。 这是<code>Leetcode 160</code>号问题。</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">getIntersectionNode</span><span class="params">(ListNode headA, ListNode headB)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">if</span> (headA == <span class="keyword">null</span> || headB == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">int</span> lena = <span class="number">0</span>, lenb = <span class="number">0</span>;</span><br><span class="line">        ListNode heada = headA, headb = headB;</span><br><span class="line">        <span class="keyword">while</span>(heada!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            heada = heada.next;</span><br><span class="line">            lena++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(headb!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            headb = headb.next;</span><br><span class="line">            lenb++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(lena &gt; lenb)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= lena - lenb; i++ )</span><br><span class="line">                headA = headA.next;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= lenb - lena; i++)</span><br><span class="line">                headB = headB.next;</span><br><span class="line">        &#125;</span><br><span class="line">      <span class="keyword">while</span>(headA != <span class="keyword">null</span> &amp;&amp; headB != <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(headA == headB)&#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            headA = headA.next;</span><br><span class="line">            headB = headB.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> headA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-链表的中间节点"><a href="#4-链表的中间节点" class="headerlink" title="4. 链表的中间节点"></a>4. 链表的中间节点</h3><p>快慢指针</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">middleNode</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="literal">NULL</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode *slow = head, *fast = head;</span><br><span class="line">        <span class="keyword">while</span>(slow != <span class="literal">NULL</span> &amp;&amp; fast != <span class="literal">NULL</span> &amp;&amp; fast-&gt;next != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">            fast = fast-&gt;next-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> slow;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>值得注意的是：当链表长度为奇数时，fast最后指向最后一个节点:1-&gt;3-&gt;5…；当链表长度为偶数，fast最后为空</strong>.</p>
+<h3 id="5-链表的倒数第k个节点"><a href="#5-链表的倒数第k个节点" class="headerlink" title="5. 链表的倒数第k个节点"></a>5. 链表的倒数第k个节点</h3><p>快慢指针，先让快指针走k步，之后快慢指针一起走，当快指针为空时，慢指针恰好走到倒数第k个节点。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">getKthFromEnd</span><span class="params">(ListNode head, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        ListNode fast = head;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= k &amp;&amp; fast != <span class="keyword">null</span>; i++)&#123;</span><br><span class="line">            fast = fast.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(head != <span class="keyword">null</span> &amp;&amp; fast != <span class="keyword">null</span>)&#123;</span><br><span class="line">            head = head.next;</span><br><span class="line">            fast = fast.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-重排链表"><a href="#6-重排链表" class="headerlink" title="6. 重排链表"></a>6. 重排链表</h3><p>链表中间节点+反转后半个链表+合并两个链表（基本包含了常用的对链表的操作，具有代表性）</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">reorderList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(head == <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 长度为1或者2</span></span><br><span class="line">    <span class="keyword">if</span>(head-&gt;next == <span class="literal">NULL</span> || head-&gt;next-&gt;next == <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 1.快慢指针找到链表的中间节点</span></span><br><span class="line">    <span class="comment">// 2.反转中间节点以后的链表</span></span><br><span class="line">    <span class="comment">// 3.将反转后的链表插入前半个链表</span></span><br><span class="line">    ListNode *slow = head, *fast = head;</span><br><span class="line">    <span class="keyword">while</span>(slow != <span class="literal">NULL</span> &amp;&amp; fast != <span class="literal">NULL</span> &amp;&amp; fast-&gt;next != <span class="literal">NULL</span>)&#123;</span><br><span class="line">        slow = slow-&gt;next;</span><br><span class="line">        fast = fast-&gt;next-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// slow 指针指向中间节点,反转</span></span><br><span class="line">    ListNode *dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>), *tmp;</span><br><span class="line">    <span class="comment">// 断开中间节点与后半部分链表的链接，可能会出现环</span></span><br><span class="line">    tmp = slow-&gt;next;</span><br><span class="line">    slow-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    slow = tmp;</span><br><span class="line">    <span class="keyword">while</span>(slow != <span class="literal">NULL</span>)&#123;</span><br><span class="line">        tmp = slow-&gt;next;</span><br><span class="line">        slow-&gt;next = dummy-&gt;next;</span><br><span class="line">        dummy-&gt;next = slow;</span><br><span class="line">        slow = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">    dummy = dummy-&gt;next;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 合并两端长度相差不超过1的链表</span></span><br><span class="line">    ListNode *tmp1 = <span class="literal">NULL</span>, *tmp2 = <span class="literal">NULL</span>, *cur = head;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(cur &amp;&amp; dummy)&#123;</span><br><span class="line">        tmp1 = cur-&gt;next;</span><br><span class="line">        tmp2 = dummy-&gt;next;</span><br><span class="line"></span><br><span class="line">        cur-&gt;next = dummy;</span><br><span class="line"></span><br><span class="line">        dummy-&gt;next = tmp1;</span><br><span class="line"></span><br><span class="line">        cur = tmp1;</span><br><span class="line">        dummy = tmp2;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="7-排序链表"><a href="#7-排序链表" class="headerlink" title="7. 排序链表"></a>7. 排序链表</h3><p>归并排序链表版，相比数组，空间复杂度只需要O(1)。</p>
 ]]></content>
       <categories>
         <category>Leetcode</category>
@@ -2858,42 +2979,6 @@ B = [b_{ik}]_{M \times N}</script><p>$b_{ik}$表示时刻$t$处于状态$q_i$生
       <tags>
         <tag>CV</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>主成分分析</title>
-    <url>/2019/11/10/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<h3 id="主成分分析与奇异值分解"><a href="#主成分分析与奇异值分解" class="headerlink" title="主成分分析与奇异值分解"></a>主成分分析与奇异值分解</h3><h4 id="1-奇异值分解"><a href="#1-奇异值分解" class="headerlink" title="1 奇异值分解"></a>1 奇异值分解</h4><p>参见：<a href="https://github.com/zyj-nova/LinearAlgebraNotes" target="_blank" rel="noopener">https://github.com/zyj-nova/LinearAlgebraNotes</a></p>
-<h4 id="2-主成分分析"><a href="#2-主成分分析" class="headerlink" title="2 主成分分析"></a>2 主成分分析</h4><h5 id="2-1-算法分析"><a href="#2-1-算法分析" class="headerlink" title="2.1 算法分析"></a>2.1 算法分析</h5><p>已知样本$\pmb a_1,\pmb a_2,…,\pmb a_N,\pmb a_i \in \mathbb{R}^n$，则按列组成的矩阵:</p>
-<script type="math/tex; mode=display">
-A_{n \times m} = \begin{pmatrix}\pmb a_1,&\pmb a_2,...&,\pmb a_N\end{pmatrix}</script><p><strong>矩阵的弗罗贝尼乌斯范数</strong>：</p>
-<script type="math/tex; mode=display">
-||A||_2 = \sqrt {tr (A^TA)} = \sqrt{\sum_{i=1}^m\sum_{j=1}^na_{ij}^2}</script><p>$tr$代表矩阵的迹函数$trace$（主对角线元素求和，$A^TA$一定是个方阵）。</p>
-<p>给定一组标准正交基$\pmb w_1,\pmb w_2,…,\pmb w_N,\pmb w_i \in \mathbb{R}^n$，$\mathbb{R}^n$中的某个向量$\pmb a$可以表示为：</p>
-<script type="math/tex; mode=display">
-\pmb a = \sum_{j = 1}^n <\pmb a,\pmb w_j>\pmb w_j</script><p>$&lt;,&gt;$表示向量的内积操作，可以看出$&lt;\pmb a,\pmb w_j&gt;$即$\pmb a$在空间中的坐标。现在我们考虑，是否可以将$\pmb a$表示在由$\pmb w_1,\pmb w_2,…,\pmb w_m,m \mathbb{&lt;&lt;} n$，生成的子空间$\mathbb{R}^m$中，使得$&lt;\pmb a,\pmb w_{k+1}&gt;=0,…,&lt;\pmb a, \pmb w_n&gt; = 0$ ?</p>
-<p><strong>注意：</strong>$\pmb w_i$仍然是包含$n$个分量的向量，$m$个包含$n$个元素基向量构成了$n$维空间的一个$m$维子空间（空间的维数等于基向量个数）。</p>
-<p>这就可以将问题转化为一个优化问题：</p>
-<script type="math/tex; mode=display">
-\min_{\pmb w_1,\pmb w_2,...,\pmb w_m} = \sum_{i=1}^N ||\pmb a_i - \sum_{j=1}^m<\pmb a_i,\pmb w_j>\pmb w_j||_2^2\\
-s.t.<\pmb w_i,\pmb w_j> = \delta_{ij},i=j,\delta_{ij}=1;i\not=j,\delta_{ij}=0</script><p>写为矩阵形式即：</p>
-<script type="math/tex; mode=display">
-\arg \min_{\pmb w_1,\pmb w_2,...,\pmb w_m} = ||A-WW^TA||_2^2\\
-s.t. W^TW = I_{m \times m}</script><p>其中，$A$为数据的特征矩阵，$W_{n \times m}$为前$m$个正交基按列组成的矩阵，它是半正交的。</p>
-<p><strong>tips：</strong>因为有$m$个基向量，两两相乘，最后矩阵是一个$m \times m$的单位阵。</p>
-<script type="math/tex; mode=display">
-||A-WW^TA||_2^2 = tr\{(A-WW^TA)^T(A-WW^TA)\} = tr(A^TA) - tr(A^TWW^TA)</script><p>由于$tr(A^TA)$这一项与优化目标无关，因此目标函数变为：</p>
-<script type="math/tex; mode=display">
-\arg\min_{W}-tr(A^TWW^TA) = -tr\{(W^TA)^T(W^TA)\} = -||W^TA||^2_2\\s.t: W^TW = I</script><p>求出最忧$W$后，降维数据：</p>
-<script type="math/tex; mode=display">
-Y_{m \times N} = W_{m \times n}^TX_{n\times N}</script><p>以上推导过程从<strong>基向量</strong>、最优化角度解释了主成分分析算法。</p>
-<p><strong>注意：</strong>主成分分析是无监督、线性的降维方法。线性判别分析是有监督的线性降维方法。</p>
-<h5 id="2-2-算法描述"><a href="#2-2-算法描述" class="headerlink" title="2.2 算法描述"></a>2.2 算法描述</h5><p><img src="https://img-blog.csdnimg.cn/20191109182949751.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
-<p><img src="https://img-blog.csdnimg.cn/20191109191048929.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L05FRlVaWUo=,size_16,color_FFFFFF,t_70" alt="img"></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def my_pca(X, k):</span><br><span class="line">    #X 行：样本量，列：样本维度</span><br><span class="line">    #函数默认对每一列进行demean处理</span><br><span class="line">    cov &#x3D; np.cov(X,rowvar&#x3D;0)</span><br><span class="line">    mean &#x3D; np.mean(X,axis &#x3D; 0)</span><br><span class="line">    X_ &#x3D; X - mean</span><br><span class="line">    #求协方差矩阵的特征向量</span><br><span class="line">    eigenvalue, eigenfuture &#x3D; np.linalg.eig(cov)</span><br><span class="line">    #选取前k个特征向量 n * k</span><br><span class="line">    eigenselect &#x3D; eigenfuture[:,:k]</span><br><span class="line">    return np.dot(X_, eigenselect), eigenfuture</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
   </entry>
   <entry>
     <title>HashMap LoadFactor</title>
