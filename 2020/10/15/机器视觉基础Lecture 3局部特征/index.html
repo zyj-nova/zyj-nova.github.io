@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Lecture 3 局部特征 |  张永剑的博客
+    机器视觉基础Lecture 3局部特征 |  张永剑的博客
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -34,7 +34,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-Lecture 3 局部特征" class="article article-type-post" itemscope
+  <article id="post-机器视觉基础Lecture 3局部特征" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -42,7 +42,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Lecture 3 局部特征
+  机器视觉基础Lecture 3局部特征
 </h1>
   
 
@@ -51,7 +51,7 @@
 
     
     <div class="article-meta">
-      <a href="/2020/10/15/Lecture%203%20%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/" class="article-date">
+      <a href="/2020/10/15/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%203%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/" class="article-date">
   <time datetime="2020-10-15T12:20:42.841Z" itemprop="datePublished">2020-10-15</time>
 </a>
       
@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">757字</span>
+            <span class="post-count">1k字</span>
         </span>
     </span>
 
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3分钟</span>
+            <span class="post-count">4分钟</span>
         </span>
     </span>
 </div>
@@ -131,8 +131,12 @@ R = \det(M) - \alpha *trace(M)^2 = \lambda_1\lambda_2-\alpha(\lambda_1+\lambda_2
 <p>优点：对光照、亮度不敏感</p>
 <p>缺点：对尺度（scale）变换敏感！</p>
 <h3 id="2-Blob-Detection"><a href="#2-Blob-Detection" class="headerlink" title="2. Blob Detection"></a>2. Blob Detection</h3><h3 id="3-SIFT"><a href="#3-SIFT" class="headerlink" title="3. SIFT"></a>3. SIFT</h3><p>SIFT即尺度不变特征变换。光照、尺度、旋转、平移。</p>
+<p>添加仿射自适应：更好的处理视角</p>
 <p>观察dog图像和log图像发现他俩走势几乎一致，可以用dog来代替log提高计算效率</p>
-<p>sift 4 <em> 4 </em> 8 = 128 维描述子</p>
+<p>sift $4 \times 4 \times 8=128$ 维描述子，sift算法将邻域内像素划分为 $16×16$ 个子域，进一步将其划分为 $4×4$ 块（每个块又是由 $4×4$ 小域组成），具体见下，分别计算每个块内8个方向的梯度方向直方图。所以最终得到 $4×4×8=128$ 4×4×8=128 的描述子向量。</p>
+<p><strong>梯度强度直方图</strong>：将$[0,2\pi]$划分为8份，也就是说$[0,\frac{\pi}{4}],[\frac{\pi}{4},\frac{\pi}{2}]，…,[\frac{7\pi}{4},2\pi]$。然后在这些小区域（16个像素）的范围内，根据每个像素点的梯度方向所在范围，将该像素点的梯度幅值加到对应的bin上，最后就形成了小区域一个梯度强度直方图（8个数字描述）。16个小区域的整体特征就可以用这个$4 \times 4 \times 8$的特征向量来描述。</p>
+<p><img src="https://img-blog.csdn.net/20171025223351016?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2hpeW9uZ3Jhb3c=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
+<p>在小区域上（16个像素）统计梯度幅值直方图能更好的捕捉局部特征。</p>
 
       
       <!-- 打赏 -->

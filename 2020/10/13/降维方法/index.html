@@ -144,6 +144,7 @@ s.t.W>=0,H>=0</script><h3 id="3-局部线性嵌入"><a href="#3-局部线性嵌�
 <p>推导过程中需要注意的地方：</p>
 <p>下图中由$(1)\rightarrow(2)$过程中，因为$\sum_{j\in Q(i)}w_{ij} = 1$，所以$x_i = x_i \times 1 = \sum_{j\in Q(i)}w_{ij}x_i$。</p>
 <p><img src="E:\hexo\themes\ayer\source\images\image-20201013195547190.png" alt="image-20201013195547190"></p>
+<p><strong>算法描述</strong>：</p>
 <h3 id="4-线性判别分析"><a href="#4-线性判别分析" class="headerlink" title="4. 线性判别分析"></a>4. 线性判别分析</h3><p>线性判别分析：Linear Discriminate Analysis（LDA）</p>
 <p>降维原则：<strong>投影后</strong>最小化类内方差，最大化类间方差。属于线性、有监督的降维方法。</p>
 <p>参考：<a href="https://www.jianshu.com/p/13ec606fdd5f" target="_blank" rel="noopener">https://www.jianshu.com/p/13ec606fdd5f</a> （二分类为例）</p>
@@ -196,13 +197,13 @@ S_B\pmb w =(\pmb \mu_1-\pmb \mu_2)(\pmb \mu_1-\pmb \mu_2)^T\pmb w</script><p>且
 <script type="math/tex; mode=display">
 X^TX = U^T\Lambda U</script><p>那么降维后的数据$Y$：</p>
 <script type="math/tex; mode=display">
-Y = \Lambda^{1/2}U</script><p>ISOMAP </p>
-<h3 id="6-典型关联分析"><a href="#6-典型关联分析" class="headerlink" title="6. 典型关联分析"></a>6. 典型关联分析</h3><p>Canonical correlation analysis</p>
+Y = \Lambda^{1/2}U</script><h3 id="6-典型关联分析"><a href="#6-典型关联分析" class="headerlink" title="6. 典型关联分析"></a>6. 典型关联分析</h3><p>Canonical correlation analysis</p>
 <p>参考：<a href="https://www.cnblogs.com/pinard/articles/6288716.html" target="_blank" rel="noopener">https://www.cnblogs.com/pinard/articles/6288716.html</a></p>
 <p>具体思想：相关系数 $\rho$ 可以分析两组一维数据$X,Y$的线性相关性，$\rho$取值越接近1则$X,Y$的线性相关性越高。虽然相关系数可以很好的帮我们分析一维数据的相关性，但是对于高维数据就不能直接使用了。比如$X$是2维数据，$Y$是三维数据，就不能用相关系数进行分析。那么有没有变通的方法呢？典型关联分析给出了思路，具体就是将多维的$X,Y$分别用线性变换为1维的$X^\prime,Y^\prime$，然后使用相关系数分析1维$X^\prime,Y^\prime$的相关性。问题又来了，如何把$X,Y$变换为$X^\prime，Y^\prime$呢？也就是说降维的准则是什么？<strong>典型关联分析使用的准则是变换到1维后，$X^\prime,Y^\prime$的相关系数最大。</strong></p>
 <p>亦即：</p>
 <script type="math/tex; mode=display">
-arg \max_{\pmb a,\pmb b} ||X^T\pmb a - Y^T\pmb b||^2</script><h3 id="7-字典学习"><a href="#7-字典学习" class="headerlink" title="7. 字典学习"></a>7. 字典学习</h3><p>参考：<a href="https://zhuanlan.zhihu.com/p/46085035" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/46085035</a></p>
+arg \max_{\pmb a,\pmb b} ||X^T\pmb a - Y^T\pmb b||^2</script><p><strong>算法描述</strong>：</p>
+<h3 id="7-字典学习"><a href="#7-字典学习" class="headerlink" title="7. 字典学习"></a>7. 字典学习</h3><p>参考：<a href="https://zhuanlan.zhihu.com/p/46085035" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/46085035</a></p>
 <p><strong>基本思想：</strong></p>
 <p>在人类发展的近几千年历史中，文字对人类文明的推动起着举足轻重的作用。人类用文字记述了千年的历史，用文字留下了各种思想火花，用文字抒发了各种各样的情感等等。但是这一切的内容，只需要一本字典就能表述完。因为人在这环节中的功能，无非就是使用字典当中的字词进行了适当的排列了而已。</p>
 <p>基于这种思想，先前的大佬提出了字典学习——Dictionary Learning。</p>
@@ -214,7 +215,7 @@ arg \max_{\pmb a,\pmb b} ||X^T\pmb a - Y^T\pmb b||^2</script><h3 id="7-字典学
 <script type="math/tex; mode=display">
 \min \sum_{i=1}^N||\pmb x_i - \sum_{j=1}^m y_{ij}\pmb w_j||^2 \\
 s.t. ||\pmb y_i|| <= C</script><p>其中：$y$即为表示系数，约束条件对应要求表示系数尽可能稀疏。$m &gt;&gt;N$。</p>
-<p>写成矩阵形式：</p>
+<p>写成矩阵形式（有点类似非负矩阵分解形式，W是基，Y是系数）：</p>
 <script type="math/tex; mode=display">
 \min ||X - WY||^2\\
 s.t.||Y|| <= C</script><p>由于上述优化问题含有两个优化变量，可采用坐标优化方法，即先固定系数$y$，求出最优的$\pmb w$；然后在求出系数。</p>
@@ -234,11 +235,11 @@ s.t.||Y|| <= C</script><p>由于上述优化问题含有两个优化变量，可
   
   <nav class="article-nav">
     
-      <a href="/2020/10/15/Lecture%203%20%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/" class="article-nav-link">
+      <a href="/2020/10/15/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%203%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            Lecture 3 局部特征
+            机器视觉基础Lecture 3局部特征
           
         </div>
       </a>

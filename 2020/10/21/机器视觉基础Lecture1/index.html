@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.7k字</span>
+            <span class="post-count">1.8k字</span>
         </span>
     </span>
 
@@ -156,7 +156,8 @@ G_y(x,y)=\frac{\partial G}{\partial y} =-\frac{1}{2\pi\sigma^2}\frac{y}{\sigma^2
 G_{xx}(x,y) =-\frac{1}{2\pi\sigma^2}(\frac{1}{\sigma^2}-\frac{x^2}{\sigma^4})e^{-\frac{x^2+y^2}{2\sigma^2}}</script><script type="math/tex; mode=display">
 G_{yy}(x,y) =-\frac{1}{2\pi\sigma^2}(\frac{1}{\sigma^2}-\frac{y^2}{\sigma^4})e^{-\frac{x^2+y^2}{2\sigma^2}}</script><p>Laplacian of Gaussian (LoG)定义如下：</p>
 <script type="math/tex; mode=display">
-LoG = \frac{\partial^2 G}{\partial x^2} + \frac{\partial^2 G}{\partial y^2} = G_{xx}(x,y) + G_{yy}(x,y) = \frac{1}{2\pi\sigma^2}\frac{x^2 + y^2-2\sigma^2}{\sigma^4}e^{-\frac{x^2+y^2}{2\sigma^2}}</script><p>一个近似于该函数的离散卷积核($\sigma=1.4$)：</p>
+LoG = \frac{\partial^2 G}{\partial x^2} + \frac{\partial^2 G}{\partial y^2} = G_{xx}(x,y) + G_{yy}(x,y) = \frac{1}{2\pi\sigma^2}\frac{x^2 + y^2-2\sigma^2}{\sigma^4}e^{-\frac{x^2+y^2}{2\sigma^2}}</script><p>当用LoG核与图像做卷积会发现信号衰减，因此通常乘以$\sigma^2$ 做一下scale normaliz ation。</p>
+<p>一个近似于该函数的离散卷积核($\sigma=1.4$)：</p>
 <p><img src="https://homepages.inf.ed.ac.uk/rbf/HIPR2/figs/logdisc.gif" alt=""></p>
 <p><strong>一维一阶</strong>高斯导数如下图所示（省略了系数$1/\sqrt{2\pi\sigma^2}$）：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = np.linspace(<span class="number">-6</span>,<span class="number">6</span>,<span class="number">1000</span>)</span><br><span class="line">sigma_1 = <span class="number">1.0</span></span><br><span class="line">g_prime = -x/sigma_1**<span class="number">2</span> * np.exp(-x**<span class="number">2</span> / <span class="number">2</span> / sigma_1 ** <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
@@ -174,6 +175,7 @@ LoG = \frac{\partial^2 G}{\partial x^2} + \frac{\partial^2 G}{\partial y^2} = G_
 <li>高斯核求和为1，用途：平滑</li>
 <li>高斯一阶导核求和为0，用途：边缘提取</li>
 </ul>
+<p>可以发现LoG与DoG的函数图像近似，因此为了提高计算效率（当 $\sigma$ 变大，模板尺寸随之也变大，计算开销增大）常用DoG核来替代LoG核（SIFT就是这么干的）。</p>
 <h4 id="2-3-中值滤波"><a href="#2-3-中值滤波" class="headerlink" title="2.3 中值滤波"></a>2.3 中值滤波</h4><p>中值滤波的窗口内没有权值，它的作用是把窗口内图像上所有像素值排序后取中值作为窗口中心点的像素值。</p>
 <p><strong>对椒盐噪声有效，是非线性滤波</strong>。</p>
 <h4 id="2-4-总结"><a href="#2-4-总结" class="headerlink" title="2.4 总结"></a>2.4 总结</h4><p>高斯滤波以及均值滤波都可以起到平滑图像的作用，高斯滤波可以视为有权的均值滤波，图像在平滑的时候不仅会把噪声，也会把图像边缘信息平滑掉（噪声、边缘都是高频成分，因为像素值通常会发生剧烈变化），两者都是低通滤波（low-pass filter）。</p>
@@ -215,9 +217,9 @@ L(x,y) = \frac{\partial^2I}{\partial x^2} + \frac{\partial^2I}{\partial y^2}</sc
       </a>
     
     
-      <a href="/2020/10/15/Lecture%203%20%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/" class="article-nav-link">
+      <a href="/2020/10/15/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%203%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Lecture 3 局部特征</div>
+        <div class="article-nav-title">机器视觉基础Lecture 3局部特征</div>
       </a>
     
   </nav>

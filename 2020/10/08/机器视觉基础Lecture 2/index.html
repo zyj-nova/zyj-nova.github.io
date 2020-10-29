@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.3k字</span>
+            <span class="post-count">1.5k字</span>
         </span>
     </span>
 
@@ -143,9 +143,13 @@
 <p><strong>Canny边缘检测</strong></p>
 <p>代码参见同专题下另一篇博客。</p>
 <h4 id="1-3-模板匹配"><a href="#1-3-模板匹配" class="headerlink" title="1.3 模板匹配"></a>1.3 模板匹配</h4><p>滤波器的一个应用。</p>
-<h3 id="2-图像的特征"><a href="#2-图像的特征" class="headerlink" title="2. 图像的特征"></a>2. 图像的特征</h3><h4 id="2-1-图像纹理texture"><a href="#2-1-图像纹理texture" class="headerlink" title="2.1 图像纹理texture"></a>2.1 图像纹理texture</h4><p>纹理分类</p>
+<h3 id="2-图像的特征"><a href="#2-图像的特征" class="headerlink" title="2. 图像的特征"></a>2. 图像的特征</h3><h4 id="图像纹理texture"><a href="#图像纹理texture" class="headerlink" title="图像纹理texture"></a>图像纹理texture</h4><p>纹理分类</p>
 <p>纹理是由重复的局部<strong>模式</strong>（local pattern）构成的。</p>
-<p>如何描述？多个卷积核卷积得到特征向量。</p>
+<p>如何描述纹理？最简单的就是用图像上x方向、y方向的梯度这两个维度来描述某一window的纹理特征；但这显然是不够的，因此可以使用多个不同的卷积核去与图像卷积，若采用 $d$ 个不同的卷积核，则特征向量的维度就是 $d$ 维。（可以看到卷积神经网络的前身，这里的卷积核是我们设计好的，神经网络中的核是学习到的）。下图中，使用48个卷积核，卷积过后可以得到48维的特征向量。（其实就是48张feature map）</p>
+<p><img src="/images/kernels.png" alt="image-20201029180022688" style="zoom:80%;" /></p>
+<p>不同的核卷积过后会得到不同的response。</p>
+<p><img src="/images/texture-response.png" alt="image-20201029180511558"></p>
+<p>注意：方块对应的颜色代表数值强弱，白色说明数值最大，黑色说明数值最小，这个数值是怎么来的呢？其实就是用一个模板卷积过后得到一幅图像，将卷积后图像中的数值全部相加再取<strong>平均</strong>得到一个数值（mean response）。上图中一幅图像就可以表示成7维的向量。</p>
 
       
       <!-- 打赏 -->
