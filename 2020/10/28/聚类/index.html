@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">669字</span>
+            <span class="post-count">704字</span>
         </span>
     </span>
 
@@ -102,7 +102,14 @@
 
       
       <h2 id="聚类"><a href="#聚类" class="headerlink" title="聚类"></a>聚类</h2><p>参考：《机器学习》，2016，周志华</p>
-<h3 id="1-聚类指标度量"><a href="#1-聚类指标度量" class="headerlink" title="1. 聚类指标度量"></a>1. 聚类指标度量</h3><h3 id="2-原型聚类"><a href="#2-原型聚类" class="headerlink" title="2. 原型聚类"></a>2. 原型聚类</h3><h4 id="2-1-K均值聚类"><a href="#2-1-K均值聚类" class="headerlink" title="2.1 K均值聚类"></a>2.1 K均值聚类</h4><h4 id="2-2-高斯混合聚类"><a href="#2-2-高斯混合聚类" class="headerlink" title="2.2 高斯混合聚类"></a>2.2 高斯混合聚类</h4><h3 id="3-层次聚类"><a href="#3-层次聚类" class="headerlink" title="3. 层次聚类"></a>3. 层次聚类</h3><p><strong>算法描述</strong></p>
+<h3 id="1-聚类指标度量"><a href="#1-聚类指标度量" class="headerlink" title="1. 聚类指标度量"></a>1. 聚类指标度量</h3><h3 id="2-原型聚类"><a href="#2-原型聚类" class="headerlink" title="2. 原型聚类"></a>2. 原型聚类</h3><h4 id="2-1-K均值聚类"><a href="#2-1-K均值聚类" class="headerlink" title="2.1 K均值聚类"></a>2.1 K均值聚类</h4><p><strong>缺点</strong>：</p>
+<ul>
+<li>对初始化聚类中心敏感</li>
+<li>K值难以指定</li>
+<li>只能收敛于局部极小</li>
+<li>对 outliers 噪声点敏感</li>
+</ul>
+<h4 id="2-2-高斯混合聚类"><a href="#2-2-高斯混合聚类" class="headerlink" title="2.2 高斯混合聚类"></a>2.2 高斯混合聚类</h4><h3 id="3-层次聚类"><a href="#3-层次聚类" class="headerlink" title="3. 层次聚类"></a>3. 层次聚类</h3><p><strong>算法描述</strong></p>
 <h3 id="4-密度聚类"><a href="#4-密度聚类" class="headerlink" title="4. 密度聚类"></a>4. 密度聚类</h3><p><strong>Density Based Spatial Clustering Applications with Noises</strong>（简称$\tt DBSCAN$）。</p>
 <p>模型可视化：<a href="https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/" target="_blank" rel="noopener">https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/</a></p>
 <h4 id="4-1-基本概念（白话版）"><a href="#4-1-基本概念（白话版）" class="headerlink" title="4.1 基本概念（白话版）"></a>4.1 基本概念（白话版）</h4><p><strong>参数</strong>：$\epsilon$ （阈值），$min Points$（点数量）</p>
