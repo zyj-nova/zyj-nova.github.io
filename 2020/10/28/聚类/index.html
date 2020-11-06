@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">704字</span>
+            <span class="post-count">880字</span>
         </span>
     </span>
 
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2分钟</span>
+            <span class="post-count">3分钟</span>
         </span>
     </span>
 </div>
@@ -101,8 +101,16 @@
       
 
       
-      <h2 id="聚类"><a href="#聚类" class="headerlink" title="聚类"></a>聚类</h2><p>参考：《机器学习》，2016，周志华</p>
-<h3 id="1-聚类指标度量"><a href="#1-聚类指标度量" class="headerlink" title="1. 聚类指标度量"></a>1. 聚类指标度量</h3><h3 id="2-原型聚类"><a href="#2-原型聚类" class="headerlink" title="2. 原型聚类"></a>2. 原型聚类</h3><h4 id="2-1-K均值聚类"><a href="#2-1-K均值聚类" class="headerlink" title="2.1 K均值聚类"></a>2.1 K均值聚类</h4><p><strong>缺点</strong>：</p>
+      <h2 id="聚类"><a href="#聚类" class="headerlink" title="聚类"></a>聚类</h2><p>参考：《机器学习》，2016，周志华；统计学习方法，李航。</p>
+<h3 id="1-聚类指标度量"><a href="#1-聚类指标度量" class="headerlink" title="1. 聚类指标度量"></a>1. 聚类指标度量</h3><p>如何衡量簇（类）与簇之间的距离？</p>
+<ul>
+<li>平均距离（average linkage）</li>
+<li>最大距离（complete linkage）</li>
+<li>最小距离（single linkage）</li>
+<li>中心距离</li>
+</ul>
+<p>如何衡量聚类效果的好坏？</p>
+<h3 id="2-原型聚类"><a href="#2-原型聚类" class="headerlink" title="2. 原型聚类"></a>2. 原型聚类</h3><h4 id="2-1-K均值聚类"><a href="#2-1-K均值聚类" class="headerlink" title="2.1 K均值聚类"></a>2.1 K均值聚类</h4><p><strong>缺点</strong>：</p>
 <ul>
 <li>对初始化聚类中心敏感</li>
 <li>K值难以指定</li>
@@ -110,6 +118,12 @@
 <li>对 outliers 噪声点敏感</li>
 </ul>
 <h4 id="2-2-高斯混合聚类"><a href="#2-2-高斯混合聚类" class="headerlink" title="2.2 高斯混合聚类"></a>2.2 高斯混合聚类</h4><h3 id="3-层次聚类"><a href="#3-层次聚类" class="headerlink" title="3. 层次聚类"></a>3. 层次聚类</h3><p><strong>算法描述</strong></p>
+<ol>
+<li>构造n个类，每个类只包含一个样本</li>
+<li>计算n个类之间的距离，得到$n \times n$的距离矩阵$D$</li>
+<li><strong>合并</strong>类间距离最小的两个类（注意：类间距离有不同的计算方式，可以根据情形来指定），形成一个新类。</li>
+<li>计算新类与剩余类之间的距离，构造距离矩阵，若类别数等于k则算法结束，否则继续执行（3）。</li>
+</ol>
 <h3 id="4-密度聚类"><a href="#4-密度聚类" class="headerlink" title="4. 密度聚类"></a>4. 密度聚类</h3><p><strong>Density Based Spatial Clustering Applications with Noises</strong>（简称$\tt DBSCAN$）。</p>
 <p>模型可视化：<a href="https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/" target="_blank" rel="noopener">https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/</a></p>
 <h4 id="4-1-基本概念（白话版）"><a href="#4-1-基本概念（白话版）" class="headerlink" title="4.1 基本概念（白话版）"></a>4.1 基本概念（白话版）</h4><p><strong>参数</strong>：$\epsilon$ （阈值），$min Points$（点数量）</p>
@@ -139,9 +153,9 @@
 </li>
 <li>否则如果 q 为unvisited：<ol>
 <li>标记q为visited</li>
+<li>将q加入到C</li>
 </ol>
 </li>
-<li>将q加入到C</li>
 </ol>
 </li>
 </ol>
@@ -166,7 +180,7 @@
 <li>高维数据有些困难</li>
 <li>参数难以选择</li>
 </ol>
-
+<h3 id="5-均值漂移（Mean-Shift）"><a href="#5-均值漂移（Mean-Shift）" class="headerlink" title="5. 均值漂移（Mean Shift）"></a>5. 均值漂移（Mean Shift）</h3>
       
       <!-- 打赏 -->
       
