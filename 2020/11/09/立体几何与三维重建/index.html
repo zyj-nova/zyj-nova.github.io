@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    聚类 |  张永剑的博客
+    立体几何与三维重建 |  张永剑的博客
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -34,7 +34,7 @@
   <div id="app">
     <main class="content">
       <section class="outer">
-  <article id="post-聚类" class="article article-type-post" itemscope
+  <article id="post-立体几何与三维重建" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -42,7 +42,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  聚类
+  立体几何与三维重建
 </h1>
   
 
@@ -51,12 +51,12 @@
 
     
     <div class="article-meta">
-      <a href="/2020/10/28/%E8%81%9A%E7%B1%BB/" class="article-date">
-  <time datetime="2020-10-28T11:11:58.654Z" itemprop="datePublished">2020-10-28</time>
+      <a href="/2020/11/09/%E7%AB%8B%E4%BD%93%E5%87%A0%E4%BD%95%E4%B8%8E%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/" class="article-date">
+  <time datetime="2020-11-09T12:05:07.590Z" itemprop="datePublished">2020-11-09</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/">机器视觉基础</a>
   </div>
 
       
@@ -66,7 +66,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">880字</span>
+            <span class="post-count">1.4k字</span>
         </span>
     </span>
 
@@ -75,7 +75,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3分钟</span>
+            <span class="post-count">5分钟</span>
         </span>
     </span>
 </div>
@@ -101,86 +101,62 @@
       
 
       
-      <h2 id="聚类"><a href="#聚类" class="headerlink" title="聚类"></a>聚类</h2><p>参考：《机器学习》，2016，周志华；统计学习方法，李航。</p>
-<h3 id="1-聚类指标度量"><a href="#1-聚类指标度量" class="headerlink" title="1. 聚类指标度量"></a>1. 聚类指标度量</h3><p>如何衡量簇（类）与簇之间的距离？</p>
-<ul>
-<li>平均距离（average linkage）</li>
-<li>最大距离（complete linkage）</li>
-<li>最小距离（single linkage）</li>
-<li>中心距离</li>
-</ul>
-<p>如何衡量聚类效果的好坏？</p>
-<h3 id="2-原型聚类"><a href="#2-原型聚类" class="headerlink" title="2. 原型聚类"></a>2. 原型聚类</h3><h4 id="2-1-K均值聚类"><a href="#2-1-K均值聚类" class="headerlink" title="2.1 K均值聚类"></a>2.1 K均值聚类</h4><p><strong>缺点</strong>：</p>
-<ul>
-<li>对初始化聚类中心敏感</li>
-<li>K值难以指定</li>
-<li>只能收敛于局部极小</li>
-<li>对 outliers 噪声点敏感</li>
-</ul>
-<h4 id="2-2-高斯混合聚类"><a href="#2-2-高斯混合聚类" class="headerlink" title="2.2 高斯混合聚类"></a>2.2 高斯混合聚类</h4><h3 id="3-层次聚类"><a href="#3-层次聚类" class="headerlink" title="3. 层次聚类"></a>3. 层次聚类</h3><p><strong>算法描述</strong></p>
-<ol>
-<li>构造n个类，每个类只包含一个样本</li>
-<li>计算n个类之间的距离，得到$n \times n$的距离矩阵$D$</li>
-<li><strong>合并</strong>类间距离最小的两个类（注意：类间距离有不同的计算方式，可以根据情形来指定），形成一个新类。</li>
-<li>计算新类与剩余类之间的距离，构造距离矩阵，若类别数等于k则算法结束，否则继续执行（3）。</li>
-</ol>
-<h3 id="4-密度聚类"><a href="#4-密度聚类" class="headerlink" title="4. 密度聚类"></a>4. 密度聚类</h3><p><strong>Density Based Spatial Clustering Applications with Noises</strong>（简称$\tt DBSCAN$）。</p>
-<p>模型可视化：<a href="https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/" target="_blank" rel="noopener">https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/</a></p>
-<h4 id="4-1-基本概念（白话版）"><a href="#4-1-基本概念（白话版）" class="headerlink" title="4.1 基本概念（白话版）"></a>4.1 基本概念（白话版）</h4><p><strong>参数</strong>：$\epsilon$ （阈值），$min Points$（点数量）</p>
-<p><strong>核心对象：</strong>对于任一样本 $\pmb x\in D$，以 $\pmb x$ 为中心，半径为 $\epsilon$ 的圆内（领域）存在的其他样本数大于$min Points$，则 $\pmb x$ 为一个核心对象。（当然这里的“圆’指的是维数为2时，3维是球，更高维….反正就是与$\pmb x$距离小于$\epsilon$ 的）。</p>
-<p><strong>直接密度可达（密度直达）：</strong>对于核心对象点 $\pmb x_i$，若 $\pmb x_j$ 在以 $\pmb x_i$ 为中心的圆内，则称 $\pmb x_j$ 由 $\pmb x_i$ 密度直达。</p>
-<p><strong>密度可达：</strong> 若有一个样本序列，$\pmb x_0,\pmb x_1,…,\pmb x_k$，对任意$\pmb x_i, \pmb x_{i-1}$是<strong>密度直达</strong>的，则称从$\pmb x_0$ 到 $\pmb x_k$ 密度可达。</p>
-<p>可以看出这条序列上的所有样本都是核心对象。这句话说的就是密度可达的传递性。图示：</p>
-<p><img src="/images/dbscan.png" alt="image-20201028200926586"></p>
-<p>上图中，红色的点都是密度直达的。$B、C$ 是密度相连的。</p>
-<p>噪声点：从任何一个核心点都不密度可达。</p>
-<h4 id="4-2-算法描述"><a href="#4-2-算法描述" class="headerlink" title="4.2 算法描述"></a>4.2 算法描述</h4><p>具体过程就像病毒的扩散过程一样，尽可能感染邻域内的点，当没有点可以感染，就再选一个没被感染的<strong>核心对象</strong>点继续感染，直到没有核心对象点了或者所有点都被感染了，算法停止。</p>
-<p>输入：样本集$D=\{\pmb x_1,\pmb x_2,…,\pmb x_m\}$，领域参数$(\epsilon,min Points)$</p>
-<p>输出：簇划分$C$</p>
-<ol>
-<li>标记所有样本D为unvisited</li>
-<li>遍历所有样本点，初始化每个样本的邻域信息若某个对象邻域内样本数量大于minPoints, 加入核心对象集合$\Gamma$。</li>
-<li>从核心对象集合随机选取一个核心对象p：<ol>
-<li>创建一个核心对象队列$\Omega$，将$p$加入到其中</li>
-<li>标记p为visited</li>
-<li>创建一个簇C，将p添加到C中</li>
-<li>当$\Omega$不为空：<ol>
-<li>取出一个核心对象</li>
-<li>遍历其邻域集合：<ol>
-<li>若邻域内某样本q是核心对象<ol>
-<li>将q加入到$\Omega$，从$\Gamma$中删去q</li>
-</ol>
-</li>
-<li>否则如果 q 为unvisited：<ol>
-<li>标记q为visited</li>
-<li>将q加入到C</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>输出C</li>
-</ol>
-</li>
-<li>D中unvisited的为噪声点</li>
-</ol>
-<ul>
-<li>优势：</li>
-</ul>
-<ol>
-<li>不需要指定簇的个数</li>
-<li>擅长找到离群点</li>
-<li>可以检测任意形状的簇</li>
-</ol>
-<ul>
-<li>缺点：</li>
-</ul>
-<ol>
-<li>高维数据有些困难</li>
-<li>参数难以选择</li>
-</ol>
-<h3 id="5-均值漂移（Mean-Shift）"><a href="#5-均值漂移（Mean-Shift）" class="headerlink" title="5. 均值漂移（Mean Shift）"></a>5. 均值漂移（Mean Shift）</h3>
+      <h2 id="立体几何与三维重建"><a href="#立体几何与三维重建" class="headerlink" title="立体几何与三维重建"></a>立体几何与三维重建</h2><p>参考：计算机视觉，鲁鹏，北京邮电大学。<a href="https://www.bilibili.com/video/BV1nz4y197Qv" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1nz4y197Qv</a></p>
+<p>课间：<a href="https://gitee.com/cv-xueba/A01_cvclass_basic" target="_blank" rel="noopener">https://gitee.com/cv-xueba/A01_cvclass_basic</a></p>
+<h3 id="1-摄像机模型"><a href="#1-摄像机模型" class="headerlink" title="1 摄像机模型"></a>1 摄像机模型</h3><h4 id="1-1-针孔模型"><a href="#1-1-针孔模型" class="headerlink" title="1.1 针孔模型"></a>1.1 针孔模型</h4><p><strong>Q: 如果直接将胶片放置在物体前面，能否成像？</strong>不可以，胶片上的某个点汇集了现实世界中各个点的光线，形成的像是模糊的。</p>
+<p><img src="/images/cv_6_1.png" alt="image-20201109203029646"></p>
+<p>现实中我们发现了小孔成像原理，实现了三维世界到二维的映射。</p>
+<p><img src="/images/cv_6_2.png" alt="image-20201109203043448"></p>
+<p>在摄像机中，<strong>光圈</strong>充当了小孔的作用。</p>
+<p><img src="/images/cv_6_3.png" alt="image-20201109203103179"></p>
+<p><strong>光圈的作用？</strong>：光圈越大，进光量越大，成像亮度越大，但是模糊；光圈越小，成像亮度越小，但是清晰。如何折衷？<strong>加透镜，聚光</strong>！</p>
+<p><img src="/images/cv_6_4.png" alt="image-20201109203126719"></p>
+<p><img src="/images/cv_6_5.png" alt="image-20201109203146046"></p>
+<p>透镜将多条光线聚焦到胶片上，增加了照片的亮度；所有平行于光轴的光线都会会聚到焦点，焦点到透镜中心的距离称为焦距；穿过透镜中心（光心）的光线的传播方向不发生改变。</p>
+<p><img src="/images/cv_6_6.png" alt="image-20201109203932970"></p>
+<p><strong>透镜存在问题</strong>：当像距（景深）不合适的话会失焦、径向畸变。</p>
+<p><img src="/images/cv_6_7.png" alt="image-20201109204441898"></p>
+<h4 id="1-2-摄像机几何"><a href="#1-2-摄像机几何" class="headerlink" title="1.2 摄像机几何"></a>1.2 摄像机几何</h4><p>本节要介绍的坐标系：摄像机坐标系、像平面坐标系、像素坐标系、世界坐标系，齐次坐标。</p>
+<h5 id="1-2-1-摄像机坐标系和像平面之间的坐标变换关系"><a href="#1-2-1-摄像机坐标系和像平面之间的坐标变换关系" class="headerlink" title="1.2.1 摄像机坐标系和像平面之间的坐标变换关系"></a>1.2.1 摄像机坐标系和像平面之间的坐标变换关系</h5><p><img src="/images/cv_6_9.png" alt="image-20201109205608545"></p>
+<p><img src="/images/cv_6_10.png" alt="image-20201109205831959"></p>
+<p><img src="/images/cv_6_11.png" alt="image-20201109210802051"></p>
+<p>加了透镜之后的相机模型：</p>
+<p><img src="/images/cv_6_12.png" alt="image-20201109210935448"></p>
+<h5 id="1-2-2-像平面坐标系和像素坐标系之间的变换关系"><a href="#1-2-2-像平面坐标系和像素坐标系之间的变换关系" class="headerlink" title="1.2.2 像平面坐标系和像素坐标系之间的变换关系"></a>1.2.2 像平面坐标系和像素坐标系之间的变换关系</h5><p><img src="/images/cv_6_13.png" alt="image-20201109211000936"></p>
+<p>在像平面坐标系中，原点是在中心点（$C^\prime $）；而在像素平面中，一般以左下角为原点。因此，从像平面坐标系到像素平面有$x,y$方向上的两个偏置$c_x,c_y$。</p>
+<p><img src="/images/cv_6_14.png" alt="image-20201109212804704"></p>
+<p>上图中我们可以看出，在摄像机坐标系平面中的点$(x,y,z)$在像平面中的坐标是$(f\frac{x}{z},f\frac{y}{z})$，在<strong>像素平面</strong>中，像平面原点坐标是$(c_x,c_y)$，因此摄像机坐标系的点到像素坐标系坐标变换为：$(f\frac{x}{z} + c_x,f\frac{y}{z}+c_y)$。</p>
+<p>但还有一个问题是，$x,y$都是现实世界中的点，单位都是米/厘米等（$m/cm$）我们想转换为像素单位（$pixel$）。这就涉及到相机成像元器件（CCD/CMOS等）的分辨率 $k,l$ （垂直方向、水平方向各向异性）决定了一个像素可以代表现实世界中多少距离。</p>
+<p>因此，有单位变换：</p>
+<script type="math/tex; mode=display">
+(x,y,z) \Rightarrow (fk\frac{x}{z},fl\frac{y}{z})</script><p>$f$ 的单位是$m$，那么$k,l$ 的单位是$pixel/m$，令$\alpha = fk,\beta = fl$，有：</p>
+<script type="math/tex; mode=display">
+P=(x,y,z) \rightarrow P^\prime=(\alpha\frac{x}{z},\beta\frac{y}{z})</script><p>$P^\prime$ 的单位就是像素了，表示像素平面坐标中的点。</p>
+<p>注意：这个变换<strong>不是线性的</strong>（$z$ 是变换的）。</p>
+<h5 id="1-2-3-摄像机坐标系和像素平面坐标系之间的关系"><a href="#1-2-3-摄像机坐标系和像素平面坐标系之间的关系" class="headerlink" title="1.2.3 摄像机坐标系和像素平面坐标系之间的关系"></a>1.2.3 摄像机坐标系和像素平面坐标系之间的关系</h5><p>我们想把这个变换表示为线性形式，这时就需要引入<strong>齐次坐标</strong>。齐次坐标就是将一个原本是 $n$ 维的向量用一个 $n+1$ 维向量来表示。二维笛卡尔坐标系的点 $(x,y)$ 变换到齐次坐标就是 $(x,y,1)$；而齐次坐标系中的点 $(x,y,z)$变换到二维笛卡尔坐标中就是 $(x/z,y/z)$，$(x,y,z,w)\rightarrow (x/w,y/w,z/w)$。</p>
+<p><strong>齐次坐标系中的投影变换</strong></p>
+<p>引入齐次坐标后，把$P=(x,y,z)$表示为齐次坐标，即$P_h=(x,y,z,1)$，通过下面变换</p>
+<script type="math/tex; mode=display">
+P_h^\prime = \begin{pmatrix}\alpha x + c_xz\\\beta x + c_yz\\z\end{pmatrix}=\begin{pmatrix}\alpha&0&c_X&0\\0&\beta&c_y&0\\0&0&1&0\end{pmatrix}\begin{pmatrix}x\\y\\z\\1\end{pmatrix}</script><p>欧式点$(\alpha\frac{x}{z},\beta\frac{y}{z})$变换到齐次坐标对应$\begin{pmatrix}\alpha x + c_xz\\\beta x + c_yz\\z\end{pmatrix}$（同除 $z$ 就变回去了），有了上式中的投影矩阵，可以直接进行变换并且是线性的。</p>
+<script type="math/tex; mode=display">
+M =\begin{pmatrix}\alpha&0&c_X&0\\0&\beta&c_y&0\\0&0&1&0\end{pmatrix}</script><p><strong>称 $M$ 即投影矩阵</strong>。考虑倾角$\theta$，</p>
+<p><img src="/images/cv_6_15.png" alt="image-20201109222148747"></p>
+<p>$M$ 就变成了：</p>
+<script type="math/tex; mode=display">
+M =\begin{pmatrix}\alpha&-\alpha\cot\theta &c_x&0\\0&\frac{\beta}{\sin \theta}&c_y&0\\0&0&1&0\end{pmatrix}</script><p>这就是摄像机世界和像素平面的映射关系。</p>
+<script type="math/tex; mode=display">
+K =\begin{pmatrix}\alpha&-\alpha\cot\theta &c_x\\0&\frac{\beta}{\sin \theta}&c_y\\0&0&1\end{pmatrix}</script><p>K为被称为摄像机内参数矩阵，内参数决定了摄像机坐标系下空间点到图像点的映射。</p>
+<script type="math/tex; mode=display">
+M = K[I\ O]</script><p><strong>注意：</strong>上面是在齐次坐标下的表示。</p>
+<h5 id="1-2-4-世界坐标系与摄像机坐标系之间的关系"><a href="#1-2-4-世界坐标系与摄像机坐标系之间的关系" class="headerlink" title="1.2.4 世界坐标系与摄像机坐标系之间的关系"></a>1.2.4 世界坐标系与摄像机坐标系之间的关系</h5><p><strong>齐次坐标表示</strong>：</p>
+<script type="math/tex; mode=display">
+P = RPw + T = \begin{pmatrix}R&T\\O&1\end{pmatrix}P_w</script><p>$R_{3\times3}$表示三维空间的旋转矩阵，$T_{3\times1}$表示三维空间平移向量。$P_w=(x_w,y_w,z_w,1)$表示世界坐标系下的点，$P$表示摄像机坐标系下的点。</p>
+<script type="math/tex; mode=display">
+P^\prime =K(I\ O)P = K(I\ O) \begin{pmatrix}R&T\\O&1 \end{pmatrix}P_w =K(R\ T)P_w</script><p>上面就是世界坐标系下的点到像素平面坐标系的变换，最后的$P^\prime_{3\times1}$是像素点的<strong>齐次坐标向量</strong>。与摄像机内参矩阵相对应，我们称$\begin{pmatrix}R&amp;T\\0&amp;1 \end{pmatrix}$为外参数矩阵。</p>
+<p><img src="/images/cv_6_16.png" alt="image-20201110105642906"></p>
+<p><strong>Q：投影矩阵$M$有多少个自由度（参数）？</strong> A：$R$ 有三个自由度，$T$ 有三个自由度，$K$ 有五个自由度，因此$M$ 有十一个自由度。</p>
+<p><img src="/images/cv_6_17.png" alt="image-20201110110523358"></p>
+<h3 id="2-立体几何"><a href="#2-立体几何" class="headerlink" title="2 立体几何"></a>2 立体几何</h3>
       
       <!-- 打赏 -->
       
@@ -196,19 +172,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/11/08/%E7%A5%9E%E5%A5%87%E7%9A%84%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            神奇的矩阵乘法
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/10/25/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="article-nav-link">
+      <a href="/2020/11/09/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E4%B8%8E%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">动态规划</div>
+        <div class="article-nav-title">图像分割与目标检测</div>
       </a>
     
   </nav>

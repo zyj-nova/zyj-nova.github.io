@@ -41,6 +41,443 @@
     
     
     
+    <article id="post-PyTorch学习笔记之循环神经网络" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"
+    >PyTorch学习笔记之循环神经网络</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/05/18/PyTorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="article-date">
+  <time datetime="2020-05-18T02:52:24.487Z" itemprop="datePublished">2020-05-18</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="PyTorch学习笔记之循环神经网络"><a href="#PyTorch学习笔记之循环神经网络" class="headerlink" title="PyTorch学习笔记之循环神经网络"></a>PyTorch学习笔记之循环神经网络</h2><p>循环神经网络的提出是为了解决序列数据。如：翻译、语言识别、时间序列问题等。</p>
+<h3 id="1-基本结构"><a href="#1-基本结构" class="headerlink" title="1 基本结构"></a>1 基本结构</h3><p>循环神经网络（Recurrent Neutral Network）不同于卷积网络，刚开始接触时个人感觉比较抽象。</p>
+<p>在每个 cell 中，激活函数输入的不仅包含这个时序内输入的数据$x^{<t>}$，而且还包括上个时序的输出 $a^{t-1}$(隐藏态)。因此，可以表示为：</p>
+<script type="math/tex; mode=display">
+a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)</script><p>其中，$W_{aa}$表示 $t-1$ 时段输出的权重，$W_{ax}$表示 $t$ 时段输入的权重。之后，$a^{\langle t \rangle}$再向 $t+1$ 时段传播，或者经过$soft\max$函数，作为 $t$ 时段的输出。</p>
+<p><img src="/images/RNN.png" alt=""></p>
+<p><img src="/images/LSTM1.png" alt=""></p>
+<center>基本RNN结构</center>
+
+<p><strong>多层 RNN 结构</strong>：</p>
+<p><img src="/images/multi_rnn.png" alt=""></p>
+<p><strong>双向RNN结构</strong></p>
+<p><img src="https://d2l.ai/_images/birnn.svg" alt=""></p>
+<p>需要注意的是：前向和后向的隐藏态互不干扰和影响，每个时间步的输出由前向和后向的隐藏态共同决定。</p>
+<p><strong>RNN 的特点</strong>：</p>
+<ol>
+<li>RNNs 主要用于处理序列数据。对于传统神经网络模型，从输入层到隐含层再到输出层，层与层之间一般为全连接，每层之间神经元是无连接的。但是传统神经网络无法处理数据间的前后关联问题。例如，为了预测句子的下一个单词，一般需要该词之前的语义信息。这是因为一个句子中前后单词是存在语义联系的。</li>
+<li>RNNs 中当前单元的输出与之前步骤输出也有关，因此称之为循环神经网络。具体的表现形式为当前单元会对之前步骤信息进行储存并应用于当前输出的计算中。隐藏层之间的节点连接起来，隐藏层当前输出由当前时刻输入向量和之前时刻隐藏层状态共同决定。</li>
+<li>标准的 RNNs 结构图，图中每个箭头代表做一次变换，也就是说箭头连接带有权值。</li>
+<li>在标准的 RNN 结构中，隐层的神经元之间也是带有权值的，且权值共享。</li>
+</ol>
+<h3 id="2-LSTM-和-GRU"><a href="#2-LSTM-和-GRU" class="headerlink" title="2 LSTM 和 GRU"></a>2 LSTM 和 GRU</h3><h4 id="2-1-LSTM"><a href="#2-1-LSTM" class="headerlink" title="2.1 LSTM"></a>2.1 LSTM</h4><p><strong>三个门控：遗忘门、输入门、输出门</strong></p>
+<p><img src="/images/LSTM.png" alt=""></p>
+<p><img src="/images/LSTM2.png" alt=""></p>
+<p><img src="/images/lstm-simple.jpg" alt=""></p>
+<p><img src="/images/lstm-normal.jpg" alt=""></p>
+<p><img src="/images/lstm-peephole.jpg" alt=""></p>
+<center>基本LSTM结构</center>
+
+<p><strong>提出原因</strong>：</p>
+<p>$RNN$ 在处理长期依赖（时间序列上距离较远的节点）时会遇到巨大的困难，因为计算距离较远的节点之间的联系时会涉及雅可比矩阵的多次相乘，会造成<strong>梯度消失或者梯度膨胀</strong>的现象。为了解决该问题，研究人员提出了许多解决办法，例如 ESN（Echo State Network），增加有漏单元（Leaky Units）等等。其中最成功应用最广泛的就是门限 RNN（Gated RNN），而 LSTM 就是门限 RNN 中最著名的一种。有漏单元通过设计连接间的权重系数，从而允许 RNN 累积距离较远节点间的长期联系；而门限 RNN 则泛化了这样的思想，允许在不同时刻改变该系数，且允许网络忘记当前已经累积的信息。</p>
+<p>在<code>torch.nn.LSTM</code>中，返回两个值，一个是<code>cell</code>，一个是<code>hidden</code>。cell即记忆值，hidden即最后一个时间步的隐藏态。</p>
+<h4 id="2-2-GRU"><a href="#2-2-GRU" class="headerlink" title="2.2 GRU"></a>2.2 GRU</h4><p><strong>提出原因</strong></p>
+<p>解决长距离梯度消失的问题</p>
+<p><strong>具体结构</strong></p>
+<p><strong>两个门：update gate和reset gate</strong></p>
+<p><strong>Update gate</strong></p>
+<p><img src="https://cdn-images-1.medium.com/max/800/1*9aIpAyB1Jlubq0ktVEmKmw.png" alt=""></p>
+<p><strong>Reset gate</strong></p>
+<p><img src="https://cdn-images-1.medium.com/max/800/1*ifB-DfmokJKQqNzMjDpMQQ.png" alt=""></p>
+<p><code>torch.nn.GRU</code> 具体参数和<code>nn.RNN</code>类似</p>
+<h3 id="3-Pytorch-构建-RNN"><a href="#3-Pytorch-构建-RNN" class="headerlink" title="3 Pytorch 构建 RNN"></a>3 Pytorch 构建 RNN</h3><script type="math/tex; mode=display">
+a^{\langle t \rangle} = g(W_{aa} a^{\langle t-1 \rangle} + W_{ax} x^{\langle t \rangle} + b_a)</script><p>根据计算公式，为了提高运算速度，在具体实现经常采用矩阵相乘的形式。一般来说，可以分解为如下形式：</p>
+<script type="math/tex; mode=display">
+\left[
+ \begin{matrix}
+ a^{\langle t-1 \rangle} & x^{\langle t \rangle}
+  \end{matrix}
+\right]*
+\left[
+ \begin{matrix}
+  W_{aa} \\
+  W_{ax}
+  \end{matrix}
+\right]</script><p>即，将$W_{aa},W_{ax}$按照<strong>列</strong>进行拼接，将$a^{\langle t-1 \rangle},x^{\langle t \rangle}$ 按照<strong>行</strong>进行拼接。下面确定两个权重矩阵的维度。</p>
+<p>如果假设输入($input$)的维度为 $x_m$，$hidden$ 的维度为$h_n$。可知$W_{aa},W_{ax}$ 的列维度一定是相同的，否则不能按$1*D$的大小，经过激活函数成为隐藏态，那么$D$的大小必然要和$hidden$的维度相同。因此$W_{aa},W_{ax}$的维度分别为：</p>
+<script type="math/tex; mode=display">
+W_{aa} \rightarrow \left[h_n, h_n\right],W_{ax} \rightarrow [x_m, h_n]</script><p>在<code>Pytorch</code>中，使用<code>torch.nn.RNN</code>来完成<code>RNN</code>的设计。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line">&gt; rnn = nn.RNN(input_size=<span class="number">5</span>,hidden_size=<span class="number">10</span>,num_layers=<span class="number">1</span>)</span><br><span class="line">&gt; rnn.weight_hh_l0.shape <span class="comment">#hidden to hidden 即W_aa</span></span><br><span class="line">torch.Size([<span class="number">10</span>, <span class="number">10</span>])</span><br><span class="line">&gt; rnn.weight_ih_l0.shape <span class="comment"># input to hidden 即W_ax</span></span><br><span class="line">torch.Size([<span class="number">10</span>, <span class="number">5</span>])</span><br><span class="line">&gt; input = torch.randn(<span class="number">6</span>,<span class="number">12</span>,<span class="number">5</span>) <span class="comment"># 构造一个批次为10，input_dim为5,序列长度为6的矩阵，即每个序列长6，共有12个这样的序列，序列中每个时间步的dim为5</span></span><br><span class="line"><span class="comment"># input [src_len, batch, dim]</span></span><br><span class="line">&gt; output,hidden = rnn(input)</span><br><span class="line">&gt; output.shape</span><br><span class="line">(torch.Size([<span class="number">6</span>, <span class="number">12</span>, <span class="number">10</span>])</span><br><span class="line"> <span class="comment">#[src_len, batch, num_directions * hidden_size]</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong>在循环神经网络中，</p>
+<script type="math/tex; mode=display">
+h_t = \tanh(w_{ih}x_t + b_{ih} + w_{hh}h_{t-1}+b_{hh})</script><p>每个时间步都会输出一个<code>hid</code>向量，<code>output</code>就是所有<code>hid</code>向量形成的矩阵，而<code>hidden</code>向量是最后一个时间步产生的<code>hid</code>向量。将<code>hid</code>向量经过全连接或<code>tanh</code>等函数就会得到这个时间步的输出。</p>
+<p>要构建双向循环神经网络，将<code>bidirectional</code>参数设为<code>True</code>即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; input = torch.randn(<span class="number">20</span>,<span class="number">128</span>,<span class="number">12</span>) <span class="comment">#[src_len, batch_size, embedded_dim]</span></span><br><span class="line">&gt; gru = nn.GRU(<span class="number">12</span>, <span class="number">512</span>, bidirectional = <span class="literal">True</span>)</span><br><span class="line">&gt; outputs,hidden = gru(input)</span><br><span class="line">&gt; outputs.shape,hidden.shape</span><br><span class="line">torch.Size([<span class="number">20</span>, <span class="number">128</span>, <span class="number">1024</span>]),torch.Size([<span class="number">2</span>, <span class="number">128</span>, <span class="number">512</span>])</span><br></pre></td></tr></table></figure>
+<p><strong>输出维度解释</strong>：</p>
+<p><code>output</code>：<code>[src len, batch size, hid dim * num directions]</code>，注意第三个维度，因为是双向，因此从前向后会产生hidden，而从后向前也会产生hidden，即一个时间步由两个hidden产生，第三个维度就是<code>[hid*2]</code>。单向的话就是<code>[hid*1]</code>。</p>
+<p><code>output[:,:,0]</code>代表前向产生的hidden，<code>output[:,:,1]代表后向产生的hidden</code>。</p>
+<p><code>hidden</code>：<code>[n layers * num directions, batch size, hid dim]</code>。</p>
+<p><code>hidden[0,:,:]</code>所有前向产生的最后一个hidden向量，即到了序列的最后一个state，<code>hidden[1,:,:]</code>所有后向产生的第一个hidden向量，即到了序列的第一个state。</p>
+<p>同<code>nn.Conv2d</code>不同的是，<code>rnn</code>的<code>batch_size</code>是第2个维度。</p>
+<p>下面实际看一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt; a = torch.randint(<span class="number">10</span>,(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))<span class="comment"># 假设这是hidden hid dim = 4, batch = 3, 前向3个hidden </span></span><br><span class="line">&gt; a</span><br><span class="line">tensor([[[<span class="number">0</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">5</span>],</span><br><span class="line">         [<span class="number">8</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">1</span>],</span><br><span class="line">         [<span class="number">5</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">6</span>]],</span><br><span class="line"></span><br><span class="line">        [[<span class="number">2</span>, <span class="number">7</span>, <span class="number">7</span>, <span class="number">1</span>],</span><br><span class="line">         [<span class="number">1</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">9</span>],</span><br><span class="line">         [<span class="number">7</span>, <span class="number">9</span>, <span class="number">4</span>, <span class="number">6</span>]]])</span><br><span class="line">&gt; a[<span class="number">0</span>,:,:] <span class="comment"># 前向产生的hidden</span></span><br><span class="line">tensor([[<span class="number">0</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">5</span>],</span><br><span class="line">        [<span class="number">8</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">1</span>],</span><br><span class="line">        [<span class="number">5</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">6</span>]])</span><br><span class="line">&gt; torch.cat((a[<span class="number">-2</span>,:,:], a[<span class="number">-1</span>,:,:]), dim = <span class="number">1</span>).shape</span><br><span class="line">torch.Size([<span class="number">3</span>, <span class="number">8</span>])</span><br><span class="line">&gt; torch.cat((a[<span class="number">-2</span>,:,:], a[<span class="number">-1</span>,:,:]), dim = <span class="number">1</span>)</span><br><span class="line"><span class="comment"># 即将每个句子的前向和后向合并成一个vector，经过合并后的hidden经过线性变换和激活函数可以传入decoder作为context向量或计算attention权重</span></span><br><span class="line">tensor([[<span class="number">0</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">7</span>, <span class="number">1</span>],</span><br><span class="line">        [<span class="number">8</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">9</span>],</span><br><span class="line">        [<span class="number">5</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">4</span>, <span class="number">6</span>]])</span><br></pre></td></tr></table></figure>
+<p>attention权重生成的一种方式：</p>
+<script type="math/tex; mode=display">
+weights = soft\max(W_1\tanh(W_2[h_{decoder\_hidden},h_{encoder\_hiddens}]))</script><p>$W_1$、$W_2$可以是全连接层得到（<code>nn.Linear</code>）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Attention</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, enc_hid_dim, dec_hid_dim)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        </span><br><span class="line">        self.attn = nn.Linear((enc_hid_dim * <span class="number">2</span>) + dec_hid_dim, dec_hid_dim)</span><br><span class="line">        self.v = nn.Linear(dec_hid_dim, <span class="number">1</span>, bias = <span class="literal">False</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, hidden, encoder_outputs)</span>:</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">#hidden = [batch size, dec hid dim]</span></span><br><span class="line">        <span class="comment">#encoder_outputs = [src len, batch size, enc hid dim * 2]</span></span><br><span class="line">        </span><br><span class="line">        batch_size = encoder_outputs.shape[<span class="number">1</span>]</span><br><span class="line">        src_len = encoder_outputs.shape[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#repeat decoder hidden state src_len times</span></span><br><span class="line">        hidden = hidden.unsqueeze(<span class="number">1</span>).repeat(<span class="number">1</span>, src_len, <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        encoder_outputs = encoder_outputs.permute(<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#hidden = [batch size, src len, dec hid dim]</span></span><br><span class="line">        <span class="comment">#encoder_outputs = [batch size, src len, enc hid dim * 2]</span></span><br><span class="line">        </span><br><span class="line">        energy = torch.tanh(self.attn(torch.cat((hidden, encoder_outputs), dim = <span class="number">2</span>))) </span><br><span class="line">        </span><br><span class="line">        <span class="comment">#energy = [batch size, src len, dec hid dim]</span></span><br><span class="line"></span><br><span class="line">        attention = self.v(energy).squeeze(<span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#attention= [batch size, src len]</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> F.softmax(attention, dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment">#在每一行上进行softmax，即每一个单词的权重</span></span><br></pre></td></tr></table></figure>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-微信小程序开发入门指南" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/"
+    >微信小程序开发入门指南</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" class="article-date">
+  <time datetime="2020-05-13T12:37:33.779Z" itemprop="datePublished">2020-05-13</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/">小程序开发</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="微信小程序开发入门指南"><a href="#微信小程序开发入门指南" class="headerlink" title="微信小程序开发入门指南"></a>微信小程序开发入门指南</h2><h3 id="0-概述"><a href="#0-概述" class="headerlink" title="0. 概述"></a>0. 概述</h3><p>​        小程序是典型的前后端分离开发的架构，前端界面使用微信官方推出的<code>wxml</code>、<code>wxss</code>、<code>js</code>进行开发，发布时这些代码被微信官方托管，而后端开发可以使用任意语言，如：<code>Node.js</code>、<code>Python</code>、<code>PHP</code>、<code>Java</code>等，只需提供数据交互的<code>api</code>接口即可。需要注意的是，后端服务器必须有合法的域名才可以与前端界面提供数据交（微信强制要求），具体配置在微信公众平台 （小程序）=&gt; 开发 =&gt; 开发设置 =&gt; 服务器域名中，进行配置。</p>
+<h3 id="1-入门"><a href="#1-入门" class="headerlink" title="1. 入门"></a>1. 入门</h3><p>​        小程序的项目架构大致如下：</p>
+<p><img src="/images/project-structure.png" alt="image-20200517000550738"></p>
+<p>pages主要存放各个页面的<code>wxss/wxml/js/json</code>文件，pages下一个文件夹即代表一个具体页面，文件命名应和页面文件夹名称相同（如：<code>login-&gt;login.wxml,login.js,login.json,login.wxss</code>）。</p>
+<p>images存放系统所需图片资源。</p>
+<p><code>app.js/app.json/app.wxss</code>都是创建项目时自动生成的，<code>app.json</code>用于配置前端路由，小程序整体设置等信息（例如tab bar、导航栏颜色和标题等），<code>app.wxss</code>用于配置全局样式。</p>
+<p><strong>前端组件</strong>：详情参见微信官方文档</p>
+<p><strong>数据绑定</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">index.js:</span><br><span class="line"></span><br><span class="line">Page(&#123;</span><br><span class="line">    data:&#123;</span><br><span class="line">        msg:<span class="string">"hello world"</span>,</span><br><span class="line">        number: <span class="number">5</span>,</span><br><span class="line">        person:&#123;</span><br><span class="line">            name:<span class="string">'bill'</span>,</span><br><span class="line">            age:<span class="string">'25'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    func1()&#123;&#125;,</span><br><span class="line">    func2()&#123;&#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">index.wxml:</span><br><span class="line">&lt;!--编译后页面显示 hello world--&gt;</span><br><span class="line">&lt;text&gt;&#123;&#123;msg&#125;&#125;&lt;<span class="regexp">/text&gt;</span></span><br><span class="line"><span class="regexp">&lt;!--属性绑定--&gt;</span></span><br><span class="line"><span class="regexp">&lt;view class="num-&#123;&#123;number&#125;&#125;"&gt;&lt;/</span>view&gt;</span><br><span class="line">&lt;view&gt;</span><br><span class="line">	姓名：&lt;text&gt;&#123;&#123;person.name&#125;&#125;&lt;<span class="regexp">/text&gt;</span></span><br><span class="line"><span class="regexp">	年龄：&lt;text&gt;&#123;&#123;person.age&#125;&#125;&lt;/</span>text&gt;</span><br><span class="line">&lt;<span class="regexp">/view&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>网络请求</strong>：</p>
+<p><code>wx.request</code>可以实现异步请求，具体格式如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">wx.request(&#123;</span><br><span class="line">    url:<span class="string">'http://www.xxx.com'</span>,</span><br><span class="line">    data:&#123;<span class="comment">//请求提交的具体参数</span></span><br><span class="line">        </span><br><span class="line">    &#125;,</span><br><span class="line">    method:<span class="string">'post'</span>,</span><br><span class="line">    header: &#123;</span><br><span class="line">    	<span class="string">'content-type'</span>: <span class="string">'application/json'</span> <span class="comment">// 默认值</span></span><br><span class="line">  	&#125;,</span><br><span class="line">    success()&#123;<span class="comment">//请求成功的回调函数</span></span><br><span class="line">        </span><br><span class="line">    &#125;,</span><br><span class="line">    fail()&#123;<span class="comment">//请求失败的回调函数</span></span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-Spark学习笔记" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"
+    >Spark学习笔记</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/05/13/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time datetime="2020-05-13T12:30:01.261Z" itemprop="datePublished">2020-05-13</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="Spark学习笔记"><a href="#Spark学习笔记" class="headerlink" title="Spark学习笔记"></a>Spark学习笔记</h2><h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h3><p>​        Spark是一个计算框架，可以整合Hadoop的HDFS和其他资源调度器s（YARN、Mesos、K8s）。</p>
+<h3 id="2-Spark安装"><a href="#2-Spark安装" class="headerlink" title="2. Spark安装"></a>2. Spark安装</h3><h4 id="2-1-Local模式"><a href="#2-1-Local模式" class="headerlink" title="2.1 Local模式"></a>2.1 Local模式</h4><h4 id="2-2-Standalone模式"><a href="#2-2-Standalone模式" class="headerlink" title="2.2 Standalone模式"></a>2.2 Standalone模式</h4><h4 id="2-3-Yarn模式"><a href="#2-3-Yarn模式" class="headerlink" title="2.3 Yarn模式"></a>2.3 Yarn模式</h4><h3 id="3-Spark设计与运行流程"><a href="#3-Spark设计与运行流程" class="headerlink" title="3. Spark设计与运行流程"></a>3. Spark设计与运行流程</h3><h4 id="3-1-Spark基本概念"><a href="#3-1-Spark基本概念" class="headerlink" title="3.1 Spark基本概念"></a>3.1 Spark基本概念</h4><p>Driver、Master、Worker、Executor、RDD、DAG、Application、Job、Stage、Tasks、Partition</p>
+<p><strong>一个Application可以划分为多个Job，当遇到一个Action操作后就会触发一个Job的计算；一个Job可划分为多个Stage，出现shuffle就划分一个阶段（ShuffleMapStage）；一个Stage包含多个Partition，一个Partition对应一个Task，因此一个Stage就是一个TaskSet</strong>。</p>
+<p>划分Job依据：</p>
+<p>注：有的Transformation算子也会被划分为一个Job。</p>
+<p>application -&gt; jobs -&gt; stage -&gt; tasks。</p>
+<h4 id="3-2-Spark架构"><a href="#3-2-Spark架构" class="headerlink" title="3.2 Spark架构"></a>3.2 Spark架构</h4><p><img src="C:\Users\ASUS\Pictures\spark.jpg" alt=""></p>
+<h4 id="3-3-Spark运行流程"><a href="#3-3-Spark运行流程" class="headerlink" title="3.3 Spark运行流程"></a>3.3 Spark运行流程</h4><p>宽依赖：发生了Shuffle，就是宽依赖（不可以并行处理）一个父RDD对应多个儿子RDD分区，这些所有儿子RDD在没有得到父RDD分区数据时，不能干别的，只能等待。比如groupByKey操作。Shuffle会引发写磁盘操作(spill to disk)。</p>
+<p>窄依赖： 一个父RDD对应一个儿子RDD，或多个父RDD对应一个儿子RDD。可以进行流水线优化（不发生磁盘写操作），对其中一个父RDD传过来的数据就可以处理，儿子RDD无需等待所有父RDD数据到达。filter、map操作。</p>
+<p>Spark的DAGScheduler会根据程序生成的DAG确定宽依赖、窄依赖，进而划分作业到不同的阶段。</p>
+<h4 id="3-4-Scheduler模块源码分析"><a href="#3-4-Scheduler模块源码分析" class="headerlink" title="3.4 Scheduler模块源码分析"></a>3.4 Scheduler模块源码分析</h4><p>​        Spark的任务调度是从DAG切割开始，主要是由DAGScheduler来完成。当遇到一个Action操作后就会触发一个Job的计算，并交给DAGScheduler来提交，下图是涉及到Job提交的相关方法调用流程图。</p>
+<p>Stage的调度</p>
+<p><img src="/images/spark-scheduler-dag-process.png" alt=""></p>
+<p>Task级的调度</p>
+<p><img src="/images/spark-scheduler-task-process.png" alt=""></p>
+<p>​        DAGScheduler将Stage打包到TaskSet交给TaskScheduler，TaskScheduler会将其封装为TaskSetManager加入到调度队列中，TaskSetManager负责监控管理同一个Stage中的Tasks，TaskScheduler就是以TaskSetManager为单元来调度任务。</p>
+<p>​        TaskScheduler支持两种调度策略，一种是FIFO，也是默认的调度策略，另一种是FAIR。</p>
+<p>​        从调度队列中拿到TaskSetManager后，那么接下来的工作就是TaskSetManager按照一定的规则一个个取出Task给TaskScheduler，TaskScheduler再交给SchedulerBackend去发到Executor上执行。前面也提到，TaskSetManager封装了一个Stage的所有Task，并负责管理调度这些Task。(<a href="http://sharkdtu.com/posts/spark-scheduler.htm" target="_blank" rel="noopener">http://sharkdtu.com/posts/spark-scheduler.htm</a>)</p>
+<h4 id="3-5-1-单机模式"><a href="#3-5-1-单机模式" class="headerlink" title="3.5.1 单机模式"></a>3.5.1 单机模式</h4><p>独立集群（stand alone）模式：该模式，Spark既负责计算，也负责资源的调度。有Master结点和Slaves结点，Master负责资源调度，Slaves负责执行计算（Executor）。</p>
+<p>Yarn模式：Yarn负责资源调度，Spark负责计算。</p>
+<p>yarn-client：driver位于提交job的机器上，实时展示job运行情况</p>
+<p><img src="C:\Users\ASUS\Pictures\yarn-client.png" alt=""></p>
+<p><strong>执行流程：</strong></p>
+<p>1.客户端提交一个Application，在客户端启动一个Driver进程。</p>
+<p>2.Driver进程会向RS(ResourceManager)发送请求，启动AM(ApplicationMaster)。</p>
+<p>3.RS收到请求，随机选择一台NM(NodeManager)启动AM。这里的NM相当于Standalone中的Worker节点。</p>
+<p>4.AM启动后，会向RS请求一批container资源，用于启动Executor。</p>
+<p>5.RS会找到一批NM返回给AM,用于启动Executor。AM会向NM发送命令启动Executor。</p>
+<p>6.Executor启动后，会反向注册给Driver，Driver发送task到Executor,执行情况和结果返回给Driver端。</p>
+<p>yarn-cluster：driver位于集群中某个结点。</p>
+<p><img src="/images/spark-submit-time.png" alt=""></p>
+<p><strong>执行流程：</strong></p>
+<p>1.客户机提交Application应用程序，发送请求到RS(ResourceManager),请求启动AM(ApplicationMaster)。</p>
+<p>2.RS收到请求后随机在一台NM(NodeManager)上启动AM，</p>
+<p>3.AM启动，AM拿到客户机提交的程序的代码，运行Driver进程；AM发送请求到RS，请求一批container用于启动Executor。</p>
+<p>3.RS返回一批NM节点给AM，。</p>
+<p>4.AM连接到NM,发送请求到NM在Container启动Executor。</p>
+<p>5.Executor反向注册到AM所在的节点的Driver。Driver发送task到Executor。</p>
+<p>NodeManager会向AM报告container资源情况，而Executor会向Driver报告计算情况。AM一个负责资源调度、一个负责计算，在cluster模式时。</p>
+<h4 id="3-6-RDD编程"><a href="#3-6-RDD编程" class="headerlink" title="3.6 RDD编程"></a>3.6 RDD编程</h4><p>​        Resilient Distributed Dataset（弹性分布式数据集）是多个分区（Partition）的集合。一个RDD对象包含一个或多个Partition。</p>
+<p>​        RDD操作（算子）类型：transformations和actions，前者不会进行计算（只生成新的RDD对象），后者会引起真正的计算（runJob进而划分阶段提交task，driver分发task给Executor去计算）。</p>
+<p>RDD创建：</p>
+<p>1.集合中创建：<code>parallelize</code>/<code>makeRDD</code></p>
+<p>2.外部存储：<code>textFile</code></p>
+<p>3.其他RDD转换</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="keyword">val</span> rdd = sc.makeRDD(<span class="type">List</span>(<span class="string">"a_b"</span>,<span class="string">"c_d"</span>,<span class="string">"e_f"</span>))</span><br><span class="line">&gt;rdd.flatMap(_.split(<span class="string">"_"</span>)).foreach(println)</span><br><span class="line">a</span><br><span class="line">b</span><br><span class="line">c</span><br><span class="line">d</span><br><span class="line">e</span><br><span class="line">f</span><br><span class="line">&gt;rdd.map(_.split(<span class="string">"_"</span>)).foreach(println)</span><br><span class="line">a,b</span><br><span class="line">c,d</span><br><span class="line">e,f</span><br></pre></td></tr></table></figure>
+<p><code>mapPartition</code>、<code>foreachPartiton</code> 容易造成内存溢出（OOM）。</p>
+<p><code>collect</code>会把所有数据拉取到Driver结点上。</p>
+<p><strong>广播变量</strong></p>
+<p>​        广播变量用来高效分发较大的对象。向所有工作节点发送一个较大的只读值，以供一个或多个Spark操作使用，减少网络传输开销，优化性能。比如，如果你的应用需要向所有节点发送一个较大的只读查询表，甚至是机器学习算法中的一个很大的特征向量，广播变量用起来都很顺手。 在多个并行操作中使用同一个变量，但是 Spark会为每个任务分别发送。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> broadcastVar = sc.broadcast(<span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>))</span><br><span class="line">broadcastVar: org.apache.spark.broadcast.<span class="type">Broadcast</span>[<span class="type">Array</span>[<span class="type">Int</span>]] = <span class="type">Broadcast</span>(<span class="number">35</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; broadcastVar.value</span><br><span class="line">res33: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>​        使用广播变量的过程如下：</p>
+<p>​        (1) 通过对一个类型 T 的对象调用 SparkContext.broadcast 创建出一个 Broadcast[T] 对象。 任何可序列化的类型都可以这么实现。 </p>
+<p>​        (2) 通过 value 属性访问该对象的值(在 Java 中为 value() 方法)。 </p>
+<p>​        (3) 变量只会被发到各个节点一次，应作为只读值处理(修改这个值不会影响到别的节点)。</p>
+<p><strong>多文件排序</strong></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.&#123;<span class="type">HashPartitioner</span>, <span class="type">SparkConf</span>, <span class="type">SparkContext</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Spark03</span> </span>&#123;</span><br><span class="line">  <span class="comment">//实现多文件排序</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setAppName(<span class="string">"demo"</span>).setMaster(<span class="string">"local"</span>)</span><br><span class="line">    <span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> files = sc.textFile(<span class="string">"data/input2/*"</span>)</span><br><span class="line">    <span class="comment">//有多少个文件就会有多少个分区</span></span><br><span class="line">    println(<span class="string">"分区数量："</span>+files.partitions.size)</span><br><span class="line">    <span class="keyword">val</span> result = files.filter(_.trim.length &gt; <span class="number">0</span>)</span><br><span class="line">      .map(x =&gt; (x.toInt,<span class="number">1</span>))</span><br><span class="line">      .partitionBy(<span class="keyword">new</span> <span class="type">HashPartitioner</span>(<span class="number">1</span>))<span class="comment">//转化为一个分区,没有的话就会各个文件分开排序</span></span><br><span class="line">      .sortBy(x=&gt;x)</span><br><span class="line">      .map(_._1)</span><br><span class="line"></span><br><span class="line">    result.saveAsTextFile(<span class="string">"result"</span>)</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>找出多个文件中的最大值和最小值</strong></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.&#123;<span class="type">SparkConf</span>, <span class="type">SparkContext</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Spark02</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setAppName(<span class="string">"demo"</span>).setMaster(<span class="string">"local"</span>)</span><br><span class="line">    <span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> files = sc.textFile(<span class="string">"data/input2/*"</span>)</span><br><span class="line"></span><br><span class="line">    files.map(x=&gt; (<span class="string">"key"</span>,x.toInt))</span><br><span class="line">      .groupByKey()<span class="comment">//转到一个分区上</span></span><br><span class="line">      .map(x =&gt; &#123;</span><br><span class="line">        <span class="keyword">var</span> min = <span class="type">Integer</span>.<span class="type">MAX_VALUE</span></span><br><span class="line">        <span class="keyword">var</span> max = <span class="type">Integer</span>.<span class="type">MIN_VALUE</span></span><br><span class="line">        <span class="keyword">for</span>(num &lt;- x._2)&#123;</span><br><span class="line">          <span class="keyword">if</span> (num &gt; max)&#123;</span><br><span class="line">            max = num</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">if</span> (num &lt; min)&#123;</span><br><span class="line">            min = num</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        (min,max)</span><br><span class="line">      &#125;)</span><br><span class="line">      .foreach(println)</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Transformation</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>map</strong>(<em>func</em>)</td>
+<td>Return a new distributed dataset formed by passing each element of the source through a function <em>func</em>.</td>
+</tr>
+<tr>
+<td><strong>filter</strong>(<em>func</em>)</td>
+<td>Return a new dataset formed by selecting those elements of the source on which <em>func</em> returns true.</td>
+</tr>
+<tr>
+<td><strong>flatMap</strong>(<em>func</em>)</td>
+<td>Similar to map, but each input item can be mapped to 0 or more output items (so <em>func</em> should return a Seq rather than a single item).</td>
+</tr>
+<tr>
+<td><strong>mapPartitions</strong>(<em>func</em>)</td>
+<td>Similar to map, but runs separately on each partition (block) of the RDD, so <em>func</em> must be of type Iterator<T> =&gt; Iterator<U> when running on an RDD of type T.</td>
+</tr>
+<tr>
+<td><strong>mapPartitionsWithIndex</strong>(<em>func</em>)</td>
+<td>Similar to mapPartitions, but also provides <em>func</em> with an integer value representing the index of the partition, so <em>func</em> must be of type (Int, Iterator<T>) =&gt; Iterator<U> when running on an RDD of type T.</td>
+</tr>
+<tr>
+<td><strong>sample</strong>(<em>withReplacement</em>, <em>fraction</em>, <em>seed</em>)</td>
+<td>Sample a fraction <em>fraction</em> of the data, with or without replacement, using a given random number generator seed.</td>
+</tr>
+<tr>
+<td><strong>distinct</strong>([<em>numPartitions</em>]))</td>
+<td>Return a new dataset that contains the distinct elements of the source dataset.</td>
+</tr>
+<tr>
+<td><strong>groupByKey</strong>([<em>numPartitions</em>])</td>
+<td>When called on a dataset of (K, V) pairs, returns a dataset of (K, Iterable<V>) pairs. <strong>Note:</strong> If you are grouping in order to perform an aggregation (such as a sum or average) over each key, using <code>reduceByKey</code> or <code>aggregateByKey</code> will yield much better performance. <strong>Note:</strong> By default, the level of parallelism in the output depends on the number of partitions of the parent RDD. You can pass an optional <code>numPartitions</code> argument to set a different number of tasks.</td>
+</tr>
+<tr>
+<td><strong>reduceByKey</strong>(<em>func</em>, [<em>numPartitions</em>])</td>
+<td>When called on a dataset of (K, V) pairs, returns a dataset of (K, V) pairs where the values for each key are aggregated using the given reduce function <em>func</em>, which must be of type (V,V) =&gt; V. Like in <code>groupByKey</code>, the number of reduce tasks is configurable through an optional second argument.</td>
+</tr>
+<tr>
+<td><strong>sortByKey</strong>([<em>ascending</em>], [<em>numPartitions</em>])</td>
+<td>When called on a dataset of (K, V) pairs where K implements Ordered, returns a dataset of (K, V) pairs sorted by keys in ascending or descending order, as specified in the boolean <code>ascending</code> argument.</td>
+</tr>
+<tr>
+<td><strong>join</strong>(<em>otherDataset</em>, [<em>numPartitions</em>])</td>
+<td>When called on datasets of type (K, V) and (K, W), returns a dataset of (K, (V, W)) pairs with all pairs of elements for each key. Outer joins are supported through <code>leftOuterJoin</code>, <code>rightOuterJoin</code>, and <code>fullOuterJoin</code>.</td>
+</tr>
+<tr>
+<td><strong>repartition</strong>(<em>numPartitions</em>)</td>
+<td>Reshuffle the data in the RDD randomly to create either more or fewer partitions and balance it across them. This always shuffles all data over the network.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>reduce</strong>(<em>func</em>)</td>
+<td>Aggregate the elements of the dataset using a function <em>func</em> (which takes two arguments and returns one). The function should be commutative and associative so that it can be computed correctly in parallel.</td>
+</tr>
+<tr>
+<td><strong>collect</strong>()</td>
+<td>Return all the elements of the dataset as an array at the driver program. This is usually useful after a filter or other operation that returns a sufficiently small subset of the data.</td>
+</tr>
+<tr>
+<td><strong>first</strong>()</td>
+<td>Return the first element of the dataset (similar to take(1)).</td>
+</tr>
+<tr>
+<td><strong>take</strong>(<em>n</em>)</td>
+<td>Return an array with the first <em>n</em> elements of the dataset.</td>
+</tr>
+<tr>
+<td><strong>saveAsTextFile</strong>(<em>path</em>)</td>
+<td>Write the elements of the dataset as a text file (or set of text files) in a given directory in the local filesystem, HDFS or any other Hadoop-supported file system. Spark will call toString on each element to convert it to a line of text in the file.</td>
+</tr>
+<tr>
+<td><strong>countByKey</strong>()</td>
+<td>Only available on RDDs of type (K, V). Returns a hashmap of (K, Int) pairs with the count of each key.</td>
+</tr>
+<tr>
+<td><strong>foreach</strong>(<em>func</em>)</td>
+<td>Run a function <em>func</em> on each element of the dataset. This is usually done for side effects such as updating an <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#accumulators" target="_blank" rel="noopener">Accumulator</a> or interacting with external storage systems. <strong>Note</strong>: modifying variables other than Accumulators outside of the <code>foreach()</code> may result in undefined behavior. See <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#understanding-closures-a-nameclosureslinka" target="_blank" rel="noopener">Understanding closures </a>for more details.</td>
+</tr>
+<tr>
+<td><strong>count</strong>()</td>
+<td>Return the number of elements in the dataset.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-Spring Boot配置文件的加载位置" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -347,7 +784,7 @@ f(x+\Delta x) \approx f(x) + f^{\\'}(x)\Delta x + \frac{1}{2}\ddot{f(x)}\Delta x
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+    <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/">基础算法</a>
   </div>
 
       
@@ -739,286 +1176,6 @@ v_t = \gamma v_{t-1} + \alpha \nabla J(\theta)</script><script type="math/tex; m
 <p>相比于之前的<strong>AdaGrad</strong>，采用了指数加权平均来更新每个参数的历史梯度(近期的梯度比重较大，历史梯度指数减小)，增加了一个衰减系数来控制历史信息的获取多少。</p>
 <p><img src="/images/momprop2-2.png" alt=""></p>
 <h3 id="7-Adam"><a href="#7-Adam" class="headerlink" title="7. Adam"></a>7. Adam</h3><p><img src="/images/adam.png" alt=""></p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-GitHub的骚操作" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/"
-    >GitHub的骚操作</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/27/GitHub%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C/" class="article-date">
-  <time datetime="2020-02-27T04:57:10.082Z" itemprop="datePublished">2020-02-27</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="GitHub的骚操作"><a href="#GitHub的骚操作" class="headerlink" title="GitHub的骚操作"></a>GitHub的骚操作</h2><h3 id="1-in-限制搜索"><a href="#1-in-限制搜索" class="headerlink" title="1. in 限制搜索"></a>1. in 限制搜索</h3><p><strong>用法</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gnn <span class="keyword">in</span>:name</span><br><span class="line">spring <span class="keyword">in</span>:readme,name,description</span><br></pre></td></tr></table></figure>
-<h3 id="2-starts-forks范围搜索"><a href="#2-starts-forks范围搜索" class="headerlink" title="2. starts/forks范围搜索"></a>2. starts/forks范围搜索</h3><p><strong>用法</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name stars/forks:&gt;500</span><br><span class="line">name stars/forks:500..600</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">组合命令</span></span><br><span class="line">redis starts:&gt;5000 forks:6000..10000 in:name</span><br></pre></td></tr></table></figure>
-<h3 id="3-awesome搜索"><a href="#3-awesome搜索" class="headerlink" title="3. awesome搜索"></a>3. awesome搜索</h3><p><strong>用法</strong>：展示站点上较好的项目</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awesome gan</span><br></pre></td></tr></table></figure>
-<h3 id="4-高亮显示代码"><a href="#4-高亮显示代码" class="headerlink" title="4.高亮显示代码"></a>4.高亮显示代码</h3><p><strong>用法</strong>：在代码链接后加<code>#Lnum</code>，将高亮该行代码；<code>#L5-L50</code>高亮<code>5-50</code>行的代码。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/JeffLi1993/springboot-learning-example/blob/master/chapter-2-spring-boot-config/src/main/java/demo/springboot/web/HelloBookController.java#L1</span><br><span class="line"></span><br><span class="line">https://github.com/JeffLi1993/springboot-learning-example/blob/master/chapter-2-spring-boot-config/src/main/java/demo/springboot/web/HelloBookController.java#L1-L15</span><br></pre></td></tr></table></figure>
-<h3 id="5-t搜索"><a href="#5-t搜索" class="headerlink" title="5. t搜索"></a>5. t搜索</h3><p>在某个项目首页下，<code>t</code>键可以查看该项目所有代码文件。</p>
-<p>还有其他快捷键，可参考官方文档。</p>
-<p><img src="/images/image-20200227130114291.png" alt="image-20200227130114291"></p>
-<p><img src="/images/image-20200227130247176.png" alt="image-20200227130247176"></p>
-<h3 id="6-关于git的一些知识"><a href="#6-关于git的一些知识" class="headerlink" title="6. 关于git的一些知识"></a>6. 关于git的一些知识</h3><ul>
-<li><p><code>git</code>分为工作区、暂存区、版本库。将工作区的文件<code>add</code>到暂存区，<code>git</code>才可以对改文件进行版本管理，<code>add</code>之后就可以<code>commit</code>到版本库</p>
-</li>
-<li><p>已经<code>add</code>到暂存区的文件，又对其进行了修改，务必再次执行<code>add</code>操作，否则<code>commit</code>时，这个修改不会被提交到版本库。第一次修改 -&gt; <code>git add</code> -&gt; 第二次修改 -&gt; <code>git add</code> -&gt; <code>git commit</code>，两次修改合并为一次<code>commit</code></p>
-</li>
-<li><p>撤销修改：</p>
-<ul>
-<li><p>已经执行<code>add</code>的文件，现在在工作区区又进行了一次修改（这次修改还没<code>add</code>），<code>git checkout -- filename</code>可放弃工作区的这次修改</p>
-</li>
-<li><p>做了修改，并且已经<code>add</code>到暂存区，现在不想要这次修改了，先</p>
-<p><code>git reset HEAD filename</code>，从暂存区中拉回到工作区，然后<code>git checkout -- filename</code>放弃这次修改。</p>
-</li>
-</ul>
-</li>
-<li><p>版本回退</p>
-<ul>
-<li><code>git reset --hard commitId</code>，可回退到之前的版本。可采用<code>git log</code>来查看每次<code>commit</code>的详细情况</li>
-<li>要重新返回到最新版本，用<code>git reflog</code>查看命令历史，获取<code>commitId</code>，以便确定要回到未来的哪个版本。然后采用<code>reset</code>命令。</li>
-</ul>
-</li>
-<li><p>分支管理</p>
-<p>参考<a href="https://www.liaoxuefeng.com/wiki/896043488029600/900003767775424" target="_blank" rel="noopener">https://www.liaoxuefeng.com/wiki/896043488029600/900003767775424</a></p>
-</li>
-</ul>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-Java 反射和动态代理" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"
-    >Java 反射和动态代理</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" class="article-date">
-  <time datetime="2020-02-23T03:34:51.877Z" itemprop="datePublished">2020-02-23</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="Java-反射和动态代理"><a href="#Java-反射和动态代理" class="headerlink" title="Java 反射和动态代理"></a>Java 反射和动态代理</h2><h3 id="1-类加载机制"><a href="#1-类加载机制" class="headerlink" title="1. 类加载机制"></a>1. 类加载机制</h3><h4 id="1-1-类加载过程"><a href="#1-1-类加载过程" class="headerlink" title="1.1 类加载过程"></a>1.1 类加载过程</h4><p>大体来说，可以分为三个阶段：<strong>加载 $\rightarrow$ 链接 $\rightarrow$ 初始化</strong>。具体过程如图：1</p>
-<p><img src="/images/loader.png" alt=""></p>
-<p><strong>类加载时机</strong>:</p>
-<p>1.创建类的实例，也就是new一个对象</p>
-<p>2.访问某个类或接口的静态变量，或者对该静态变量赋值</p>
-<p>3.调用类的静态方法</p>
-<p>4.反射</p>
-<p>5.初始化一个类的子类（会首先初始化子类的父类）</p>
-<p>6.虚拟机启动时标明的启动类，即文件名和类名相同的那个类</p>
-<h4 id="1-2-加载"><a href="#1-2-加载" class="headerlink" title="1.2 加载"></a>1.2 加载</h4><p>​        将<code>class</code>字节码文件内容加载到内存中，并将这些静态数据转换为方法区的运行时数据结构，然后在堆中生成一个代表这个类的<code>java.lang.Class</code>对象，作为方法区中<strong>类数据（Class Metadata）</strong>的返回入口。</p>
-<p><strong><code>Class</code></strong>对象代表啥：</p>
-<p>​        每当一个类加载到内存中后，这个类便成为运行时类，虚拟机会在<strong>堆区</strong>创建一个有关这个类的<code>Class</code>对象。</p>
-<h4 id="1-1-类加载过程-1"><a href="#1-1-类加载过程-1" class="headerlink" title="1.1 类加载过程"></a>1.1 类加载过程</h4><h4 id="1-3-类加载器"><a href="#1-3-类加载器" class="headerlink" title="1.3 类加载器"></a>1.3 类加载器</h4><ul>
-<li><code>Bootstrap  Class loader</code></li>
-<li><code>Extension Class loader</code></li>
-<li><code>Application Class loader</code></li>
-</ul>
-<p><strong>双亲委托模型</strong>：</p>
-<p>​         如果一个类加载器收到了类加载请求，它并不会自己先去加载，而是把这个请求委托给父类的加载器去执行，如果父类加载器还存在其父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的启动类加载器，如果父类加载器可以完成类加载任务，就成功返回，倘若父类加载器无法完成此加载任务，子加载器才会尝试自己去加载，这就是双亲委派模式。</p>
-<p>​        即每个儿子都很懒，每次有活就丢给父亲去干，直到父亲说这件事我也干不了时，儿子自己才想办法去完成。 </p>
-<p><strong>为什么采用这种模式</strong>：</p>
-<ul>
-<li>避免类的重复加载 </li>
-<li>保证安全， Java中定义的核心类不会被随意替换 </li>
-</ul>
-<p><img src="/images/classloder.jpg" alt=""></p>
-<h3 id="2-反射"><a href="#2-反射" class="headerlink" title="2. 反射"></a>2. 反射</h3><p>​        反射到底是干啥的？答：不用new也可以获取到一个对象的实例。可以在运行时构造任意一个类的对象，可以在运行时处理注解、获取泛型信息等。</p>
-<p>​        反射相关的<code>api</code>在<code>java.lang.reflect</code>包下。以下是通过反射调用<code>show</code>方法的代码清单。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.nefu.reflect;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException </span>&#123;</span><br><span class="line">        <span class="comment">//1. 获取Class对象实例</span></span><br><span class="line">		Class&lt;?&gt; clazz = Class.forName(<span class="string">"com.nefu.reflect.Main"</span>);</span><br><span class="line">        <span class="comment">//2. 创建一个Main类的实例对象</span></span><br><span class="line">		Object obj = clazz.getDeclaredConstructor().newInstance();</span><br><span class="line">		Method show = clazz.getDeclaredMethod(<span class="string">"show"</span>);</span><br><span class="line">        <span class="comment">//3. 避免权限不够</span></span><br><span class="line">		show.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">		System.out.println(show.getReturnType());</span><br><span class="line">        <span class="comment">//4. 调用obj的show方法</span></span><br><span class="line">		show.invoke(obj);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"hello world"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-动态代理"><a href="#3-动态代理" class="headerlink" title="3. 动态代理"></a>3. 动态代理</h3><p>​        代理类可以增强被代理类对象方法。</p>
-<h4 id="3-1-静态代理"><a href="#3-1-静态代理" class="headerlink" title="3.1 静态代理"></a>3.1 静态代理</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test01</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		NikeClothFactory nikeClothFactory = <span class="keyword">new</span> NikeClothFactory();</span><br><span class="line">		NikeClothFactoryProxy proxy = <span class="keyword">new</span> NikeClothFactoryProxy(nikeClothFactory);</span><br><span class="line">		proxy.invoke();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ClothFactory</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">product</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">///被代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NikeClothFactory</span> <span class="keyword">implements</span> <span class="title">ClothFactory</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">product</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"Nike 开始生产...."</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NikeClothFactoryProxy</span></span>&#123;</span><br><span class="line">	ClothFactory clothFactory;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">NikeClothFactoryProxy</span><span class="params">(ClothFactory clothFactory)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">this</span>.clothFactory = clothFactory;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">invoke</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"前置处理"</span>);</span><br><span class="line">		clothFactory.product();</span><br><span class="line">		System.out.println(<span class="string">"后置处理"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>​        以上代码可以看出，当再有一个类实现<code>ClothFactory</code>接口，我们得继续编写一个对应的代理类进行增强处理。<strong>静态代理在编译期就确定了代理对象</strong>。</p>
-<h4 id="3-2-动态代理"><a href="#3-2-动态代理" class="headerlink" title="3.2 动态代理"></a>3.2 动态代理</h4><p>​        在Java中，动态代理实现有<code>JDK</code>自带的动态代理，<code>CGLib</code>动态代理。 通过动态代理，可以无需声明代理类。是使用反射和字节码的技术，在运行期创建指定接口或类的子类（即动态代理类）以及其实例对象的技术。通过动态代理技术可以无侵入地对代码进行增强。 </p>
-<p>​        两种动态代理的最大的区别是：<code>JDK</code>动态代理要求被代理对象必须基于接口来实现。动态代理类和被代理类必须实现同一个接口。动态代理只能对接口中声明的方法进行代理。对那些没有实现接口的bean。<code>JDK</code>动态代理无法代理。而<code>CGLib</code>通过继承被代理类的方式实现代理。</p>
-<p>​        在<code>JDK</code>动态代理中，主要调用<code>java.lang.reflect.Proxy</code>类和<code>java.lang.reflect.InvocationHandler</code>接口。依然以静态代理中的<code>ClothFactory</code>为例，编写动态代理。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Proxy;</span><br><span class="line"></span><br><span class="line"><span class="comment">//被代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PumaClothFactory</span> <span class="keyword">implements</span> <span class="title">ClothFactory</span></span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">product</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"Puma 源自南美！"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//测试类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test02</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		PumaClothFactory obj = <span class="keyword">new</span> PumaClothFactory();</span><br><span class="line">		ClothFactory proxy = (ClothFactory)Proxy</span><br><span class="line">				.newProxyInstance(obj.getClass().getClassLoader(), </span><br><span class="line">						obj.getClass().getInterfaces(),</span><br><span class="line">						<span class="keyword">new</span> PumaInvocationHandler(obj));</span><br><span class="line">		proxy.product();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//每一个动态代理实例都有一个关联的InvocationHandler</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PumaInvocationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span></span>&#123;</span><br><span class="line">	ClothFactory obj;</span><br><span class="line">	 <span class="function"><span class="keyword">public</span> <span class="title">PumaInvocationHandler</span><span class="params">(ClothFactory clothFactory)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">		 <span class="keyword">this</span>.obj = clothFactory;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		System.out.println(<span class="string">"前置处理"</span>);</span><br><span class="line">		<span class="comment">//真正调用被代理类的方法</span></span><br><span class="line">		method.invoke(obj, args);</span><br><span class="line">		System.out.println(<span class="string">"后置处理"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>​        可以看出，上述代码中并没有显示的编写代理类，而是调用了<code>Proxy.newProxyInstance</code>方法来动态创建代理类。</p>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-链表" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/02/15/%E9%93%BE%E8%A1%A8/"
-    >链表</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/02/15/%E9%93%BE%E8%A1%A8/" class="article-date">
-  <time datetime="2020-02-15T09:18:26.225Z" itemprop="datePublished">2020-02-15</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><p>Java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> val;</span><br><span class="line">	ListNode next;</span><br><span class="line">	ListNode(<span class="keyword">int</span> x) &#123;</span><br><span class="line">		val = x;</span><br><span class="line">		next = <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>C++</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> val;</span><br><span class="line"> 	ListNode *next;</span><br><span class="line"> 	ListNode() : val(<span class="number">0</span>), next(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line"> 	ListNode(<span class="keyword">int</span> x) : val(x), next(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line"> 	ListNode(<span class="keyword">int</span> x, ListNode *next) : val(x), next(next) &#123;&#125;</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="1-反转链表"><a href="#1-反转链表" class="headerlink" title="1. 反转链表"></a>1. 反转链表</h3><p>​         反转一个单链表。 这是<code>Leetcode 206</code>号问题。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">reverseList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="literal">NULL</span> || head-&gt;next == <span class="literal">NULL</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode *dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>), *tmp;</span><br><span class="line">        <span class="keyword">while</span>(head != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            tmp = head-&gt;next;</span><br><span class="line">            head-&gt;next = dummy-&gt;next;</span><br><span class="line">            dummy-&gt;next = head;</span><br><span class="line">            head = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummy-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><img src="/images/reverse-node.png" alt=""></p>
-<h3 id="2-环形链表"><a href="#2-环形链表" class="headerlink" title="2. 环形链表"></a>2. 环形链表</h3><p>​         给定一个链表，判断链表中是否有环。 这是<code>Leetcode 141</code>号问题。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCycle</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">if</span> (head == <span class="keyword">null</span> || head.next == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        ListNode slow = head, fast = head.next;</span><br><span class="line">        <span class="keyword">while</span> (slow != fast) &#123;</span><br><span class="line">            <span class="keyword">if</span> (fast == <span class="keyword">null</span> || fast.next == <span class="keyword">null</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            slow = slow.next;</span><br><span class="line">            fast = fast.next.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-相交链表"><a href="#3-相交链表" class="headerlink" title="3. 相交链表"></a>3. 相交链表</h3><p>​         编写一个程序，找到两个单链表相交的起始节点。 这是<code>Leetcode 160</code>号问题。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">getIntersectionNode</span><span class="params">(ListNode headA, ListNode headB)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">if</span> (headA == <span class="keyword">null</span> || headB == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">int</span> lena = <span class="number">0</span>, lenb = <span class="number">0</span>;</span><br><span class="line">        ListNode heada = headA, headb = headB;</span><br><span class="line">        <span class="keyword">while</span>(heada!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            heada = heada.next;</span><br><span class="line">            lena++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(headb!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            headb = headb.next;</span><br><span class="line">            lenb++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(lena &gt; lenb)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= lena - lenb; i++ )</span><br><span class="line">                headA = headA.next;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= lenb - lena; i++)</span><br><span class="line">                headB = headB.next;</span><br><span class="line">        &#125;</span><br><span class="line">      <span class="keyword">while</span>(headA != <span class="keyword">null</span> &amp;&amp; headB != <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(headA == headB)&#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            headA = headA.next;</span><br><span class="line">            headB = headB.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> headA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="4-链表的中间节点"><a href="#4-链表的中间节点" class="headerlink" title="4. 链表的中间节点"></a>4. 链表的中间节点</h3><p>快慢指针</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">middleNode</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="literal">NULL</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode *slow = head, *fast = head;</span><br><span class="line">        <span class="keyword">while</span>(slow != <span class="literal">NULL</span> &amp;&amp; fast != <span class="literal">NULL</span> &amp;&amp; fast-&gt;next != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">            fast = fast-&gt;next-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> slow;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><strong>值得注意的是：当链表长度为奇数时，fast最后指向最后一个节点:1-&gt;3-&gt;5…；当链表长度为偶数，fast最后为空</strong>.</p>
-<h3 id="5-链表的倒数第k个节点"><a href="#5-链表的倒数第k个节点" class="headerlink" title="5. 链表的倒数第k个节点"></a>5. 链表的倒数第k个节点</h3><p>快慢指针，先让快指针走k步，之后快慢指针一起走，当快指针为空时，慢指针恰好走到倒数第k个节点。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">getKthFromEnd</span><span class="params">(ListNode head, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        ListNode fast = head;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= k &amp;&amp; fast != <span class="keyword">null</span>; i++)&#123;</span><br><span class="line">            fast = fast.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(head != <span class="keyword">null</span> &amp;&amp; fast != <span class="keyword">null</span>)&#123;</span><br><span class="line">            head = head.next;</span><br><span class="line">            fast = fast.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="6-重排链表"><a href="#6-重排链表" class="headerlink" title="6. 重排链表"></a>6. 重排链表</h3><p>链表中间节点+反转后半个链表+合并两个链表（基本包含了常用的对链表的操作，具有代表性）</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">reorderList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(head == <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 长度为1或者2</span></span><br><span class="line">    <span class="keyword">if</span>(head-&gt;next == <span class="literal">NULL</span> || head-&gt;next-&gt;next == <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 1.快慢指针找到链表的中间节点</span></span><br><span class="line">    <span class="comment">// 2.反转中间节点以后的链表</span></span><br><span class="line">    <span class="comment">// 3.将反转后的链表插入前半个链表</span></span><br><span class="line">    ListNode *slow = head, *fast = head;</span><br><span class="line">    <span class="keyword">while</span>(slow != <span class="literal">NULL</span> &amp;&amp; fast != <span class="literal">NULL</span> &amp;&amp; fast-&gt;next != <span class="literal">NULL</span>)&#123;</span><br><span class="line">        slow = slow-&gt;next;</span><br><span class="line">        fast = fast-&gt;next-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// slow 指针指向中间节点,反转</span></span><br><span class="line">    ListNode *dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>), *tmp;</span><br><span class="line">    <span class="comment">// 断开中间节点与后半部分链表的链接，可能会出现环</span></span><br><span class="line">    tmp = slow-&gt;next;</span><br><span class="line">    slow-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    slow = tmp;</span><br><span class="line">    <span class="keyword">while</span>(slow != <span class="literal">NULL</span>)&#123;</span><br><span class="line">        tmp = slow-&gt;next;</span><br><span class="line">        slow-&gt;next = dummy-&gt;next;</span><br><span class="line">        dummy-&gt;next = slow;</span><br><span class="line">        slow = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">    dummy = dummy-&gt;next;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 合并两端长度相差不超过1的链表</span></span><br><span class="line">    ListNode *tmp1 = <span class="literal">NULL</span>, *tmp2 = <span class="literal">NULL</span>, *cur = head;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(cur &amp;&amp; dummy)&#123;</span><br><span class="line">        tmp1 = cur-&gt;next;</span><br><span class="line">        tmp2 = dummy-&gt;next;</span><br><span class="line"></span><br><span class="line">        cur-&gt;next = dummy;</span><br><span class="line"></span><br><span class="line">        dummy-&gt;next = tmp1;</span><br><span class="line"></span><br><span class="line">        cur = tmp1;</span><br><span class="line">        dummy = tmp2;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="7-排序链表"><a href="#7-排序链表" class="headerlink" title="7. 排序链表"></a>7. 排序链表</h3><p>Leetcode 148号问题。</p>
-<p>归并排序链表版，相比数组，空间复杂度只需要O(1)。思想其实比较简单，关键是分的过程中，注意找到中间节点后断掉后半部分链表以及边界的处理问题。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> ListNode <span class="title">sortList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 链表的归并排序</span></span><br><span class="line">        <span class="keyword">if</span> (head == <span class="keyword">null</span> || head.next == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode mid = findMidNode(head);</span><br><span class="line">        ListNode rightNode = mid.next;</span><br><span class="line">        mid.next = <span class="keyword">null</span>;</span><br><span class="line">        ListNode left = sortList(head);</span><br><span class="line">        ListNode right = sortList(rightNode);</span><br><span class="line">        <span class="keyword">return</span> merge(left,right);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 找到链表中间节点</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">findMidNode</span><span class="params">(ListNode head)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (head == <span class="keyword">null</span> || head.next == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        ListNode slow = head, fast = head.next;</span><br><span class="line">        <span class="keyword">while</span> (slow != <span class="keyword">null</span> &amp;&amp; fast != <span class="keyword">null</span> &amp;&amp; fast.next != <span class="keyword">null</span>)&#123;</span><br><span class="line">            slow = slow.next;</span><br><span class="line">            fast = fast.next.next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> slow;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">merge</span><span class="params">(ListNode p, ListNode q)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 合并两个有序链表</span></span><br><span class="line">        ListNode head = <span class="keyword">new</span> ListNode(<span class="number">0</span>), dummy = head;</span><br><span class="line">        <span class="keyword">while</span> (p != <span class="keyword">null</span> &amp;&amp; q != <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span> (p.val &lt; q.val)&#123;</span><br><span class="line">                head.next = p;</span><br><span class="line">                p = p.next;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                head.next = q;</span><br><span class="line">                q = q.next;</span><br><span class="line">            &#125;</span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        head.next = p == <span class="keyword">null</span> ? q:p;</span><br><span class="line">        <span class="keyword">return</span> dummy.next;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
       <!-- 打赏 -->

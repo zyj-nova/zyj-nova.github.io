@@ -41,6 +41,269 @@
     
     
     
+    <article id="post-立体几何与三维重建" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/11/09/%E7%AB%8B%E4%BD%93%E5%87%A0%E4%BD%95%E4%B8%8E%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/"
+    >立体几何与三维重建</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/11/09/%E7%AB%8B%E4%BD%93%E5%87%A0%E4%BD%95%E4%B8%8E%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/" class="article-date">
+  <time datetime="2020-11-09T12:05:07.590Z" itemprop="datePublished">2020-11-09</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/">机器视觉基础</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="立体几何与三维重建"><a href="#立体几何与三维重建" class="headerlink" title="立体几何与三维重建"></a>立体几何与三维重建</h2><p>参考：计算机视觉，鲁鹏，北京邮电大学。<a href="https://www.bilibili.com/video/BV1nz4y197Qv" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1nz4y197Qv</a></p>
+<p>课间：<a href="https://gitee.com/cv-xueba/A01_cvclass_basic" target="_blank" rel="noopener">https://gitee.com/cv-xueba/A01_cvclass_basic</a></p>
+<h3 id="1-摄像机模型"><a href="#1-摄像机模型" class="headerlink" title="1 摄像机模型"></a>1 摄像机模型</h3><h4 id="1-1-针孔模型"><a href="#1-1-针孔模型" class="headerlink" title="1.1 针孔模型"></a>1.1 针孔模型</h4><p><strong>Q: 如果直接将胶片放置在物体前面，能否成像？</strong>不可以，胶片上的某个点汇集了现实世界中各个点的光线，形成的像是模糊的。</p>
+<p><img src="/images/cv_6_1.png" alt="image-20201109203029646"></p>
+<p>现实中我们发现了小孔成像原理，实现了三维世界到二维的映射。</p>
+<p><img src="/images/cv_6_2.png" alt="image-20201109203043448"></p>
+<p>在摄像机中，<strong>光圈</strong>充当了小孔的作用。</p>
+<p><img src="/images/cv_6_3.png" alt="image-20201109203103179"></p>
+<p><strong>光圈的作用？</strong>：光圈越大，进光量越大，成像亮度越大，但是模糊；光圈越小，成像亮度越小，但是清晰。如何折衷？<strong>加透镜，聚光</strong>！</p>
+<p><img src="/images/cv_6_4.png" alt="image-20201109203126719"></p>
+<p><img src="/images/cv_6_5.png" alt="image-20201109203146046"></p>
+<p>透镜将多条光线聚焦到胶片上，增加了照片的亮度；所有平行于光轴的光线都会会聚到焦点，焦点到透镜中心的距离称为焦距；穿过透镜中心（光心）的光线的传播方向不发生改变。</p>
+<p><img src="/images/cv_6_6.png" alt="image-20201109203932970"></p>
+<p><strong>透镜存在问题</strong>：当像距（景深）不合适的话会失焦、径向畸变。</p>
+<p><img src="/images/cv_6_7.png" alt="image-20201109204441898"></p>
+<h4 id="1-2-摄像机几何"><a href="#1-2-摄像机几何" class="headerlink" title="1.2 摄像机几何"></a>1.2 摄像机几何</h4><p>本节要介绍的坐标系：摄像机坐标系、像平面坐标系、像素坐标系、世界坐标系，齐次坐标。</p>
+<h5 id="1-2-1-摄像机坐标系和像平面之间的坐标变换关系"><a href="#1-2-1-摄像机坐标系和像平面之间的坐标变换关系" class="headerlink" title="1.2.1 摄像机坐标系和像平面之间的坐标变换关系"></a>1.2.1 摄像机坐标系和像平面之间的坐标变换关系</h5><p><img src="/images/cv_6_9.png" alt="image-20201109205608545"></p>
+<p><img src="/images/cv_6_10.png" alt="image-20201109205831959"></p>
+<p><img src="/images/cv_6_11.png" alt="image-20201109210802051"></p>
+<p>加了透镜之后的相机模型：</p>
+<p><img src="/images/cv_6_12.png" alt="image-20201109210935448"></p>
+<h5 id="1-2-2-像平面坐标系和像素坐标系之间的变换关系"><a href="#1-2-2-像平面坐标系和像素坐标系之间的变换关系" class="headerlink" title="1.2.2 像平面坐标系和像素坐标系之间的变换关系"></a>1.2.2 像平面坐标系和像素坐标系之间的变换关系</h5><p><img src="/images/cv_6_13.png" alt="image-20201109211000936"></p>
+<p>在像平面坐标系中，原点是在中心点（$C^\prime $）；而在像素平面中，一般以左下角为原点。因此，从像平面坐标系到像素平面有$x,y$方向上的两个偏置$c_x,c_y$。</p>
+<p><img src="/images/cv_6_14.png" alt="image-20201109212804704"></p>
+<p>上图中我们可以看出，在摄像机坐标系平面中的点$(x,y,z)$在像平面中的坐标是$(f\frac{x}{z},f\frac{y}{z})$，在<strong>像素平面</strong>中，像平面原点坐标是$(c_x,c_y)$，因此摄像机坐标系的点到像素坐标系坐标变换为：$(f\frac{x}{z} + c_x,f\frac{y}{z}+c_y)$。</p>
+<p>但还有一个问题是，$x,y$都是现实世界中的点，单位都是米/厘米等（$m/cm$）我们想转换为像素单位（$pixel$）。这就涉及到相机成像元器件（CCD/CMOS等）的分辨率 $k,l$ （垂直方向、水平方向各向异性）决定了一个像素可以代表现实世界中多少距离。</p>
+<p>因此，有单位变换：</p>
+<script type="math/tex; mode=display">
+(x,y,z) \Rightarrow (fk\frac{x}{z},fl\frac{y}{z})</script><p>$f$ 的单位是$m$，那么$k,l$ 的单位是$pixel/m$，令$\alpha = fk,\beta = fl$，有：</p>
+<script type="math/tex; mode=display">
+P=(x,y,z) \rightarrow P^\prime=(\alpha\frac{x}{z},\beta\frac{y}{z})</script><p>$P^\prime$ 的单位就是像素了，表示像素平面坐标中的点。</p>
+<p>注意：这个变换<strong>不是线性的</strong>（$z$ 是变换的）。</p>
+<h5 id="1-2-3-摄像机坐标系和像素平面坐标系之间的关系"><a href="#1-2-3-摄像机坐标系和像素平面坐标系之间的关系" class="headerlink" title="1.2.3 摄像机坐标系和像素平面坐标系之间的关系"></a>1.2.3 摄像机坐标系和像素平面坐标系之间的关系</h5><p>我们想把这个变换表示为线性形式，这时就需要引入<strong>齐次坐标</strong>。齐次坐标就是将一个原本是 $n$ 维的向量用一个 $n+1$ 维向量来表示。二维笛卡尔坐标系的点 $(x,y)$ 变换到齐次坐标就是 $(x,y,1)$；而齐次坐标系中的点 $(x,y,z)$变换到二维笛卡尔坐标中就是 $(x/z,y/z)$，$(x,y,z,w)\rightarrow (x/w,y/w,z/w)$。</p>
+<p><strong>齐次坐标系中的投影变换</strong></p>
+<p>引入齐次坐标后，把$P=(x,y,z)$表示为齐次坐标，即$P_h=(x,y,z,1)$，通过下面变换</p>
+<script type="math/tex; mode=display">
+P_h^\prime = \begin{pmatrix}\alpha x + c_xz\\\beta x + c_yz\\z\end{pmatrix}=\begin{pmatrix}\alpha&0&c_X&0\\0&\beta&c_y&0\\0&0&1&0\end{pmatrix}\begin{pmatrix}x\\y\\z\\1\end{pmatrix}</script><p>欧式点$(\alpha\frac{x}{z},\beta\frac{y}{z})$变换到齐次坐标对应$\begin{pmatrix}\alpha x + c_xz\\\beta x + c_yz\\z\end{pmatrix}$（同除 $z$ 就变回去了），有了上式中的投影矩阵，可以直接进行变换并且是线性的。</p>
+<script type="math/tex; mode=display">
+M =\begin{pmatrix}\alpha&0&c_X&0\\0&\beta&c_y&0\\0&0&1&0\end{pmatrix}</script><p><strong>称 $M$ 即投影矩阵</strong>。考虑倾角$\theta$，</p>
+<p><img src="/images/cv_6_15.png" alt="image-20201109222148747"></p>
+<p>$M$ 就变成了：</p>
+<script type="math/tex; mode=display">
+M =\begin{pmatrix}\alpha&-\alpha\cot\theta &c_x&0\\0&\frac{\beta}{\sin \theta}&c_y&0\\0&0&1&0\end{pmatrix}</script><p>这就是摄像机世界和像素平面的映射关系。</p>
+<script type="math/tex; mode=display">
+K =\begin{pmatrix}\alpha&-\alpha\cot\theta &c_x\\0&\frac{\beta}{\sin \theta}&c_y\\0&0&1\end{pmatrix}</script><p>K为被称为摄像机内参数矩阵，内参数决定了摄像机坐标系下空间点到图像点的映射。</p>
+<script type="math/tex; mode=display">
+M = K[I\ O]</script><p><strong>注意：</strong>上面是在齐次坐标下的表示。</p>
+<h5 id="1-2-4-世界坐标系与摄像机坐标系之间的关系"><a href="#1-2-4-世界坐标系与摄像机坐标系之间的关系" class="headerlink" title="1.2.4 世界坐标系与摄像机坐标系之间的关系"></a>1.2.4 世界坐标系与摄像机坐标系之间的关系</h5><p><strong>齐次坐标表示</strong>：</p>
+<script type="math/tex; mode=display">
+P = RPw + T = \begin{pmatrix}R&T\\O&1\end{pmatrix}P_w</script><p>$R_{3\times3}$表示三维空间的旋转矩阵，$T_{3\times1}$表示三维空间平移向量。$P_w=(x_w,y_w,z_w,1)$表示世界坐标系下的点，$P$表示摄像机坐标系下的点。</p>
+<script type="math/tex; mode=display">
+P^\prime =K(I\ O)P = K(I\ O) \begin{pmatrix}R&T\\O&1 \end{pmatrix}P_w =K(R\ T)P_w</script><p>上面就是世界坐标系下的点到像素平面坐标系的变换，最后的$P^\prime_{3\times1}$是像素点的<strong>齐次坐标向量</strong>。与摄像机内参矩阵相对应，我们称$\begin{pmatrix}R&amp;T\\0&amp;1 \end{pmatrix}$为外参数矩阵。</p>
+<p><img src="/images/cv_6_16.png" alt="image-20201110105642906"></p>
+<p><strong>Q：投影矩阵$M$有多少个自由度（参数）？</strong> A：$R$ 有三个自由度，$T$ 有三个自由度，$K$ 有五个自由度，因此$M$ 有十一个自由度。</p>
+<p><img src="/images/cv_6_17.png" alt="image-20201110110523358"></p>
+<h3 id="2-立体几何"><a href="#2-立体几何" class="headerlink" title="2 立体几何"></a>2 立体几何</h3>
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-图像分割与目标检测" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/11/09/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E4%B8%8E%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/"
+    >图像分割与目标检测</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/11/09/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E4%B8%8E%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" class="article-date">
+  <time datetime="2020-11-09T12:01:25.493Z" itemprop="datePublished">2020-11-09</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/">机器视觉基础</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="图像分割与目标检测"><a href="#图像分割与目标检测" class="headerlink" title="图像分割与目标检测"></a>图像分割与目标检测</h2><p><strong>名词解释</strong></p>
+<ul>
+<li>语义分割：像素级分类，给定一张含有一个人、两条狗、三只猫的图像，语义分割需要正确的将背景分为一类，两条狗分为一类，三只猫分为一类。</li>
+<li>实例分割：还是上面的那张图片，实例分割不仅需要分出猫、狗、人以及背景，还要分出猫1、2、3，狗1、2，以及人和背景。</li>
+</ul>
+<h3 id="1-图像分割"><a href="#1-图像分割" class="headerlink" title="1 图像分割"></a>1 图像分割</h3><h4 id="1-1-传统方法"><a href="#1-1-传统方法" class="headerlink" title="1.1 传统方法"></a>1.1 传统方法</h4><h5 id="1-1-1-种子区域增长"><a href="#1-1-1-种子区域增长" class="headerlink" title="1.1.1 种子区域增长"></a>1.1.1 种子区域增长</h5><h5 id="1-1-2-聚类"><a href="#1-1-2-聚类" class="headerlink" title="1.1.2 聚类"></a>1.1.2 聚类</h5><h5 id="1-1-3-图割"><a href="#1-1-3-图割" class="headerlink" title="1.1.3 图割"></a>1.1.3 图割</h5><h4 id="1-2-深度学习方法"><a href="#1-2-深度学习方法" class="headerlink" title="1.2 深度学习方法"></a>1.2 深度学习方法</h4><p>U-Net（加入转置卷积实现上采样）、SegNet（全卷积神经网络）</p>
+<h3 id="2-目标检测"><a href="#2-目标检测" class="headerlink" title="2 目标检测"></a>2 目标检测</h3><p>Region-CNN、Fast R-CNN、Faster R-CNN、Mask R-CNN。</p>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
+    <article id="post-神奇的矩阵乘法" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/11/08/%E7%A5%9E%E5%A5%87%E7%9A%84%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/"
+    >神奇的矩阵乘法</a
+  >
+</h2>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/11/08/%E7%A5%9E%E5%A5%87%E7%9A%84%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/" class="article-date">
+  <time datetime="2020-11-08T09:03:37.884Z" itemprop="datePublished">2020-11-08</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/">基础算法</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <h2 id="神奇的矩阵乘法"><a href="#神奇的矩阵乘法" class="headerlink" title="神奇的矩阵乘法"></a>神奇的矩阵乘法</h2><h3 id="矩阵快速幂"><a href="#矩阵快速幂" class="headerlink" title="矩阵快速幂"></a>矩阵快速幂</h3><p>啊其实非常简单只需要在实数的快速幂基础上，重新定义针对矩阵的乘法即可。看代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> n, k;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> mod = <span class="number">1000000007</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Matrix</span>&#123;</span></span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> m[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line">&#125;A, I; <span class="comment">// I表示单位阵</span></span><br><span class="line"><span class="comment">//针对 struct Matrix 重载运算符*</span></span><br><span class="line">Matrix <span class="keyword">operator</span>*(<span class="keyword">const</span> Matrix &amp;a, <span class="keyword">const</span> Matrix &amp;b)&#123;</span><br><span class="line">    Matrix tmp;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++)&#123;</span><br><span class="line">            tmp.m[i][j] = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//很normal的矩阵相乘</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">1</span>; k &lt;= n; k++)&#123;</span><br><span class="line">                tmp.m[i][j] += a.m[i][k] * b.m[k][j] % mod;</span><br><span class="line">                tmp.m[i][j] %= mod;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> tmp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; n &gt;&gt; k;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++)</span><br><span class="line">            <span class="built_in">cin</span> &gt;&gt; A.m[i][j];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        I.m[i][i] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(k &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(k % <span class="number">2</span>)&#123;</span><br><span class="line">            I = I * A;</span><br><span class="line">        &#125;</span><br><span class="line">        A = A * A;</span><br><span class="line">        k = k &gt;&gt; <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++)&#123;</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; I.m[i][j] &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="矩阵乘法的大用处"><a href="#矩阵乘法的大用处" class="headerlink" title="矩阵乘法的大用处"></a>矩阵乘法的大用处</h3><p>跳台阶很熟悉了，一般无非给定一个台阶数 $n$，一次最多能跳 $k$ 次，然后递推方程<code>dp[n] = dp[n - 1] + dp[n - 2] + ... + dp[n - k]</code>，当 $n$ 不是很大的时候我们可以直接开数组算出来，但是当 $n$ 很大（$1 to  2^{31}-1$），直接开数组直接内存爆炸，而且 $k$ 也不是固定的时候，该怎么求？这就是这个题：<a href="https://vijos.org/p/1067" target="_blank" rel="noopener">https://vijos.org/p/1067</a></p>
+<p>参考链接：<a href="http://www.matrix67.com/blog/archives/276" target="_blank" rel="noopener">http://www.matrix67.com/blog/archives/276</a></p>
+<p>举个例子当 $k = 3$ 的时候，$n \le3$是初始状态，当$n &gt; 3$时候初始状态</p>
+<script type="math/tex; mode=display">
+\pmb x = (1,2,3)^T</script><p>继续递推：</p>
+<script type="math/tex; mode=display">
+\pmb x = (2,3,5)^T,(3,5,8)^T,...</script><p>向量的最后一个元素代表到达$n$的方案数，我们需要构造一个矩阵 $M$ ，使得每 $\pmb x$ 与 $M$ 相乘一次，就相当于一次递推。我们观察上面发现，与矩阵 $M$ 相乘后，第$k$个元素是向量前$k-1$个元素的和，然后$1-(k-1)$个元素是原向量的 $2 - k$ 个元素。由此得出当$k = 3$时，</p>
+<script type="math/tex; mode=display">
+M = \begin{pmatrix}0&1&0\\0&0&1\\1&1&1\end{pmatrix}</script><p>当$k = 4$时，</p>
+<script type="math/tex; mode=display">
+M = \begin{pmatrix}0&1&0&0\\0&0&1&0\\0&0&0&1\\1&1&1&1\end{pmatrix}</script><p>可知最终答案为：</p>
+<script type="math/tex; mode=display">
+\pmb y_k,\pmb y = M^{n-k}\pmb x</script><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> mod = <span class="number">7777777</span>;</span><br><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> k,n,dp[<span class="number">15</span>], ans[<span class="number">15</span>];</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Matrix</span>&#123;</span></span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> mat[<span class="number">12</span>][<span class="number">12</span>];</span><br><span class="line">&#125;A,I;</span><br><span class="line"><span class="comment">// 重载运算符</span></span><br><span class="line">Matrix <span class="keyword">operator</span>*(<span class="keyword">const</span> Matrix &amp;a, <span class="keyword">const</span> Matrix &amp;b)&#123;</span><br><span class="line">    Matrix tmp;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= k; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= k; j++)</span><br><span class="line">            tmp.mat[i][j] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 很normal的矩阵相乘</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= k; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= k; j++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> q = <span class="number">1</span>; q &lt;= k; q++)&#123;</span><br><span class="line">                tmp.mat[i][j] += a.mat[i][q]*b.mat[q][j] % mod;</span><br><span class="line">                tmp.mat[i][j] %= mod;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> tmp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; k &gt;&gt; n;</span><br><span class="line">    <span class="comment">// 构造初始矩阵,大小:k*k</span></span><br><span class="line">    <span class="comment">// 最后一行最为1 右上角(k-1)*(k-1)的单位矩阵</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= k; i++)&#123;</span><br><span class="line">        A.mat[k][i] = <span class="number">1</span>;</span><br><span class="line">        A.mat[i][i + <span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">        I.mat[i][i] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 初始化dp数组</span></span><br><span class="line">    dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= k; i++)&#123;</span><br><span class="line">        dp[i] = sum;</span><br><span class="line">        sum += dp[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//矩阵快速幂 n-k 次幂,</span></span><br><span class="line">    <span class="keyword">int</span> p = n - k;</span><br><span class="line">    <span class="keyword">while</span>(p &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(p % <span class="number">2</span>)&#123;</span><br><span class="line">            I = I * A;</span><br><span class="line">        &#125;</span><br><span class="line">        A = A * A;</span><br><span class="line">        p = p &gt;&gt; <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//然后再与dp向量相乘</span></span><br><span class="line">    <span class="keyword">int</span> row = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= k; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= k; j++)&#123;</span><br><span class="line">           ans[row] += I.mat[i][j] * dp[j] % mod;</span><br><span class="line">           ans[row] %= mod;</span><br><span class="line">        &#125;</span><br><span class="line">        row++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; ans[k] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+      <!-- 打赏 -->
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+  
+
+</article>
+    
     <article id="post-聚类" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -206,7 +469,7 @@
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Leetcode/">Leetcode</a>
+    <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/">基础算法</a>
   </div>
 
       
@@ -253,6 +516,10 @@ W(a-1,b-1)+W(a-1,b)&     & {a\ge b}\\
 \tt dp[i] = \max(\tt num[i],\tt dp[i-1]+num[i])</script><p>$\tt dp[i]$表示到以第 $\tt i$ 个元素结尾的最大子连续段和。</p>
 <p>leetcode 53号问题。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxSubArray</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = nums.length;</span><br><span class="line">        <span class="keyword">int</span> dp[] = <span class="keyword">new</span> <span class="keyword">int</span>[len];</span><br><span class="line">        dp[<span class="number">0</span>] = nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> ans = dp[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; len; i++)&#123;</span><br><span class="line">            <span class="comment">//第i个dp元素代表以i结尾的最大连续子序和</span></span><br><span class="line">            dp[i] = Math.max(dp[i-<span class="number">1</span>] + nums[i],nums[i]);</span><br><span class="line">            ans = Math.max(ans,dp[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>进阶1：</strong>现在给定一个正整数、负整数和 0 组成的 N × M 矩阵，编写代码找出元素总和最大的子矩阵，输出最大的元素总和。题目链接：<a href="http://acm.hdu.edu.cn/showproblem.php?pid=1081（杭电这个数据有点水....）" target="_blank" rel="noopener">http://acm.hdu.edu.cn/showproblem.php?pid=1081（杭电这个数据有点水....）</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;climits&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n, matrix[<span class="number">105</span>][<span class="number">105</span>], dp[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    思路: 前缀和 + 动态规划</span></span><br><span class="line"><span class="comment">    遍历每一个"行对",然后扫描1-n列</span></span><br><span class="line"><span class="comment">    数组dp[m][n]保存的是第n列，前m行的所有数的和，这样就把列压缩了成了一维的最大子段和</span></span><br><span class="line"><span class="comment">    这样只要扫描所有行对就能找到最大的子矩阵的和。</span></span><br><span class="line"><span class="comment">    时间复杂度：O(r^2c);</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; n)&#123;</span><br><span class="line">        <span class="built_in">memset</span>(dp,<span class="number">0</span>,<span class="keyword">sizeof</span>(dp));</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++)&#123;</span><br><span class="line">                <span class="built_in">cin</span> &gt;&gt; matrix[i][j];</span><br><span class="line">                <span class="keyword">if</span>(i == <span class="number">1</span>)&#123;<span class="comment">//第一行</span></span><br><span class="line">                    dp[i][j] = matrix[i][j];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; j++)&#123;</span><br><span class="line">                dp[i][j] = dp[i<span class="number">-1</span>][j] + matrix[i][j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> maxn = INT_MIN;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;<span class="comment">//遍历所有行对</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i; j &lt;= n; j++)&#123;</span><br><span class="line">                <span class="comment">//一维的最大子段和</span></span><br><span class="line">                <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> c = <span class="number">1</span>; c &lt;= n; c++)&#123;<span class="comment">//注意数组的意义</span></span><br><span class="line">                    <span class="comment">//第c列的前i行到j行的前缀和</span></span><br><span class="line">                    <span class="keyword">int</span> tmp = dp[j][c] - dp[i<span class="number">-1</span>][c];</span><br><span class="line">                    <span class="keyword">if</span>(sum &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">                        sum = tmp;</span><br><span class="line">                    &#125;<span class="keyword">else</span></span><br><span class="line">                        sum += tmp;</span><br><span class="line">                    maxn = <span class="built_in">max</span>(sum, maxn);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; maxn &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>变形：</strong>题目同上，不同的是最后输出最大子矩阵的左上角的行号和列号以及右下角的行号和列号。题目链接：<a href="https://leetcode-cn.com/problems/max-submatrix-lcci/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/max-submatrix-lcci/</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] getMaxMatrix(<span class="keyword">int</span>[][] matrix) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> row = matrix.length;</span><br><span class="line">        <span class="keyword">int</span> col = matrix[<span class="number">0</span>].length;</span><br><span class="line">        <span class="keyword">int</span> ans[] = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">4</span>];</span><br><span class="line">        <span class="keyword">int</span> dp[][] = <span class="keyword">new</span> <span class="keyword">int</span>[row + <span class="number">1</span>][col + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; row; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; col; j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(i == <span class="number">0</span>)&#123;</span><br><span class="line">                    dp[i+<span class="number">1</span>][j+<span class="number">1</span>] = matrix[i][j];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; row; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; col; j++)&#123;</span><br><span class="line">                dp[i+<span class="number">1</span>][j+<span class="number">1</span>] = dp[i- <span class="number">1</span> + <span class="number">1</span>][j + <span class="number">1</span>] + matrix[i][j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> maxn = Integer.MIN_VALUE;</span><br><span class="line">        <span class="keyword">int</span> begin = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= row; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i; j &lt;= row; j++)&#123;</span><br><span class="line">                <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> cc = <span class="number">1</span>; cc &lt;= col; cc++)&#123;</span><br><span class="line">                    <span class="keyword">int</span> tmp = dp[j][cc] - dp[i-<span class="number">1</span>][cc];</span><br><span class="line">                    <span class="comment">//还需记录最大子段和的起止点</span></span><br><span class="line">                    <span class="keyword">if</span>(sum &lt;= <span class="number">0</span>)&#123;<span class="comment">//这个判断条件坑死我了....</span></span><br><span class="line">                        sum = tmp;</span><br><span class="line">                        begin = cc;</span><br><span class="line">                    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                        sum += tmp;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span>(sum &gt; maxn)&#123;</span><br><span class="line">                        maxn = sum;</span><br><span class="line">                        ans[<span class="number">0</span>] = i - <span class="number">1</span>;<span class="comment">//左上角行号</span></span><br><span class="line">                        ans[<span class="number">1</span>] = begin - <span class="number">1</span>;</span><br><span class="line">                        ans[<span class="number">2</span>] = j - <span class="number">1</span>;<span class="comment">//右下角行号</span></span><br><span class="line">                        ans[<span class="number">3</span>] = cc - <span class="number">1</span>;<span class="comment">//右下角列号</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="2-最长上升子序列"><a href="#2-最长上升子序列" class="headerlink" title="2. 最长上升子序列"></a>2. 最长上升子序列</h3><p>状态转移方程：</p>
 <script type="math/tex; mode=display">
 \tt dp[i] = max(\tt dp[j]+1,dp[i]),\tt  if\ j < i\ and\ num[j] < num[i]</script><p>$\tt dp[i]$表示以第 $\tt i$ 个元素结尾的序列的最长上升子序列。</p>
@@ -994,207 +1261,6 @@ arg\max_{\pmb \mu,\Sigma}\ln\prod_{i=1}^Nf_{\mu,\Sigma}(\pmb x_i)</script><ul>
 \frac{\partial \ln L(\pmb \mu, \Sigma)}{\partial \Sigma} = 0</script><p>解得：</p>
 <script type="math/tex; mode=display">
 \bar \Sigma = \frac{1}{N} \sum_{i=1}^N(\pmb x_i - \bar{\pmb \mu})(\pmb x_i - \bar{\pmb \mu})^T</script>
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-Transformer模型介绍" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/10/03/Transformer%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D/"
-    >Transformer模型介绍</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/10/03/Transformer%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D/" class="article-date">
-  <time datetime="2020-10-03T06:58:05.171Z" itemprop="datePublished">2020-10-03</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="Transformer模型介绍"><a href="#Transformer模型介绍" class="headerlink" title="Transformer模型介绍"></a>Transformer模型介绍</h2><p>文献：Vaswani A,  Shazeer N,  Parmar N,  et al.  Attention is all you need[C]. Advances in neural information processing systems. 2017: 5998-6008.</p>
-<p>详解：<a href="http://nlp.seas.harvard.edu/2018/04/03/attention.html" target="_blank" rel="noopener">http://nlp.seas.harvard.edu/2018/04/03/attention.html</a>  The Annotated Transformer.</p>
-<p>视频：<a href="https://www.youtube.com/watch?v=ugWDIIOHtPA" target="_blank" rel="noopener">https://www.youtube.com/watch?v=ugWDIIOHtPA</a>  李宏毅：Transformer</p>
-<h3 id="1-encoder-decoder"><a href="#1-encoder-decoder" class="headerlink" title="1. encoder-decoder"></a>1. encoder-decoder</h3><h3 id="2-self-attention"><a href="#2-self-attention" class="headerlink" title="2. self attention"></a>2. self attention</h3><h3 id="3-multi-head-attention"><a href="#3-multi-head-attention" class="headerlink" title="3. multi head attention"></a>3. multi head attention</h3><h3 id="4-attention和self-attention区别"><a href="#4-attention和self-attention区别" class="headerlink" title="4. attention和self-attention区别"></a>4. attention和self-attention区别</h3>
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-贝叶斯垃圾邮件分类器" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/09/29/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%9E%83%E5%9C%BE%E9%82%AE%E4%BB%B6%E5%88%86%E7%B1%BB%E5%99%A8/"
-    >贝叶斯垃圾邮件分类器</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/09/29/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%9E%83%E5%9C%BE%E9%82%AE%E4%BB%B6%E5%88%86%E7%B1%BB%E5%99%A8/" class="article-date">
-  <time datetime="2020-09-29T03:06:11.061Z" itemprop="datePublished">2020-09-29</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-  </div>
-
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h2 id="贝叶斯垃圾邮件分类器"><a href="#贝叶斯垃圾邮件分类器" class="headerlink" title="贝叶斯垃圾邮件分类器"></a>贝叶斯垃圾邮件分类器</h2><p>利用朴素贝叶斯算法，在给定训练数据上，训练一个垃圾分类器。有关朴素贝叶斯的基本思想，可以参见另一篇博客：<a href="https://zyj-nova.github.io/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/" target="_blank" rel="noopener">https://zyj-nova.github.io/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/</a></p>
-<h3 id="0-数据集获取"><a href="#0-数据集获取" class="headerlink" title="0 数据集获取"></a>0 数据集获取</h3><p>链接：<a href="https://pan.baidu.com/s/1P3Jg67nerg63GVbCkc1YJg" target="_blank" rel="noopener">https://pan.baidu.com/s/1P3Jg67nerg63GVbCkc1YJg</a> ，提取码：576u 。</p>
-<p>数据集为英文语料，分为训练集和测试集。训练集包含351封垃圾邮件（文件名标有“spmsg”）、351封正常邮件；测试集包含130封正常邮件和130封垃圾邮件。</p>
-<h3 id="1-特征提取"><a href="#1-特征提取" class="headerlink" title="1 特征提取"></a>1 特征提取</h3><p>由于每一封邮件都不是数值型的特征，因此我们需要把他们编码。首先需要构建一个字典，统计所有邮件中单词出现的频率，同时删除字典中的非字母字符、长度为1的字符，之后取前3000个出现频率最高的作为最终的字典。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">n_dim = <span class="number">3000</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_Dictionary</span><span class="params">(train_dir)</span>:</span></span><br><span class="line">    emails = [os.path.join(train_dir, f) <span class="keyword">for</span> f <span class="keyword">in</span> os.listdir(train_dir)]</span><br><span class="line">    all_words = []</span><br><span class="line">    <span class="keyword">for</span> mail <span class="keyword">in</span> emails:</span><br><span class="line">        <span class="keyword">with</span> open(mail) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="comment"># 遍历每一行</span></span><br><span class="line">            <span class="keyword">for</span> i,line <span class="keyword">in</span> enumerate(f):</span><br><span class="line">                <span class="keyword">if</span>(i == <span class="number">2</span>):</span><br><span class="line">                    <span class="comment">#正文开始</span></span><br><span class="line">                    words = line.split()<span class="comment">#默认按照空格分词</span></span><br><span class="line">                    all_words += words</span><br><span class="line">    dictionary = Counter(all_words)</span><br><span class="line">    <span class="comment"># 词典构建好，删除多余的词汇</span></span><br><span class="line">    list_to_remove = list(dictionary.keys())</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> list_to_remove:</span><br><span class="line">        <span class="keyword">if</span> item.isalpha() == <span class="literal">False</span>:</span><br><span class="line">            <span class="keyword">del</span> dictionary[item]</span><br><span class="line">        <span class="keyword">elif</span> len(item) == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">del</span> dictionary[item]</span><br><span class="line">    dictionary = dictionary.most_common(n_dim)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> dictionary</span><br></pre></td></tr></table></figure>
-<p>构建完字典以后，就可以对每一封邮件进行编码了。特征向量的每一个分量即邮件中出现的对应词频。例如邮件“do over，do again”可以被编码为$[0,0,…,2,…,1,…,1]$。每一个分量都代表对应的词频。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将每个邮件转化为词频向量</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">extract_features</span><span class="params">(mail_dir)</span>:</span></span><br><span class="line">    </span><br><span class="line">    files = [os.path.join(mail_dir, f) <span class="keyword">for</span> f <span class="keyword">in</span> os.listdir(mail_dir)]</span><br><span class="line">    labels = np.ones(len(files))</span><br><span class="line">    feature_matrix = np.zeros((len(files), n_dim))</span><br><span class="line">    docID = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> file <span class="keyword">in</span> files:</span><br><span class="line">        <span class="keyword">with</span> open(file) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">if</span> f.name[<span class="number">30</span>:].find(<span class="string">"sp"</span>) != <span class="number">-1</span>:</span><br><span class="line">                <span class="comment">#垃圾邮件</span></span><br><span class="line">                labels[docID] = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(f):</span><br><span class="line">                <span class="keyword">if</span> i == <span class="number">2</span>:</span><br><span class="line">                    words = line.split()</span><br><span class="line">                    <span class="keyword">for</span> w <span class="keyword">in</span> words:</span><br><span class="line">                        wordID = <span class="number">0</span></span><br><span class="line">                        <span class="keyword">for</span> i,d <span class="keyword">in</span> enumerate(dictionary):</span><br><span class="line">                            <span class="keyword">if</span>(d[<span class="number">0</span>] == w):</span><br><span class="line">                                wordID = i</span><br><span class="line">                                feature_matrix[docID, wordID] += <span class="number">1</span></span><br><span class="line">        docID += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> feature_matrix, labels</span><br></pre></td></tr></table></figure>
-<h3 id="2-计算概率"><a href="#2-计算概率" class="headerlink" title="2 计算概率"></a>2 计算概率</h3><p>$P(word|y =spam) = P(word, spam) / P(spam)$，$P(word, spam)$即每个单词在垃圾邮件中出现的频数，$P(spam)$即垃圾邮件中所有单词的词频总和。正常邮件同理，得到概率矩阵。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 统计垃圾邮件中的所有词频和，以及各个词的频数</span></span><br><span class="line">spam_words = <span class="number">0</span></span><br><span class="line">non_spam_words = <span class="number">0</span></span><br><span class="line">spam_mails = []</span><br><span class="line">non_spam_mails = []</span><br><span class="line"><span class="keyword">for</span> i,line <span class="keyword">in</span> enumerate(feature_matrix):</span><br><span class="line">    <span class="keyword">if</span> labels[i] == <span class="number">1</span>:</span><br><span class="line">        non_spam_words += int(feature_matrix[i].sum())</span><br><span class="line">        non_spam_mails.append(feature_matrix[i])</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        spam_mails.append(feature_matrix[i])</span><br><span class="line">        spam_words += int(feature_matrix[i].sum())</span><br><span class="line">print(<span class="string">"spam total words are &#123;&#125;, non-spam total words are &#123;&#125;"</span>.format(spam_words, non_spam_words))</span><br><span class="line"></span><br><span class="line">spam_mails = np.array(spam_mails)</span><br><span class="line">non_spam_mails = np.array(non_spam_mails)</span><br><span class="line"></span><br><span class="line">weight_matrix = np.zeros((<span class="number">2</span>,n_dim))</span><br><span class="line">weight_matrix[<span class="number">0</span>, :] = spam_mails.sum(axis = <span class="number">0</span>) / spam_words</span><br><span class="line">weight_matrix[<span class="number">1</span>, :] = non_spam_mails.sum(axis = <span class="number">0</span>) / non_spam_words</span><br></pre></td></tr></table></figure>
-<p>为了避免概率矩阵中出现0的情况，使得计算概率时出现乘0，最后让权重矩阵每个分量加一个非常小的扰动</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sigma = <span class="number">1e-8</span></span><br><span class="line">weight_matrix += sigma</span><br></pre></td></tr></table></figure>
-<h3 id="3-模型预测与评估"><a href="#3-模型预测与评估" class="headerlink" title="3 模型预测与评估"></a>3 模型预测与评估</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">pred_labels = []</span><br><span class="line"><span class="keyword">for</span> feature <span class="keyword">in</span> test_feature:</span><br><span class="line">    spam_prob = <span class="number">1.0</span></span><br><span class="line">    non_spam_prob = <span class="number">1.0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i,w <span class="keyword">in</span> enumerate(feature):</span><br><span class="line">        <span class="keyword">if</span> w != <span class="number">0</span>:</span><br><span class="line">            <span class="comment"># 计算P(w|spam) P(w|non-spam)</span></span><br><span class="line">            spam_prob += np.log10(weight_matrix[<span class="number">0</span>, i])</span><br><span class="line">            non_spam_prob += np.log10(weight_matrix[<span class="number">1</span>, i])</span><br><span class="line">    print(spam_prob, non_spam_prob)</span><br><span class="line">    <span class="keyword">if</span> spam_prob &gt; non_spam_prob:</span><br><span class="line">        pred_labels.append(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        pred_labels.append(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-<p><strong>注意：</strong>在计算概率的时候用到了一个trick，由于非常小的数不断连乘最后会趋于0，因此利用取对数的方法将乘法化为加法（极大似然估计就是这么干的）。同时取对数时不可以为0，上面加的非常小的扰动是很有必要的。</p>
-<p>模型在测试集上的准确率、召回率、f1_score如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">recall_score : <span class="number">0.9923076923076923</span></span><br><span class="line">accuracy_score : <span class="number">0.9846153846153847</span></span><br><span class="line">f1_score : <span class="number">0.9847328244274809</span></span><br></pre></td></tr></table></figure>
-
-      
-      <!-- 打赏 -->
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-  
-
-</article>
-    
-    <article id="post-Strang教授线性代数笔记" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/09/23/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/"
-    >Strang教授线性代数笔记</a
-  >
-</h2>
-  
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/09/23/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/" class="article-date">
-  <time datetime="2020-09-23T02:44:37.995Z" itemprop="datePublished">2020-09-23</time>
-</a>
-      
-      
-      
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-
-
-      
-
-      
-      <h3 id="Strang教授线性代数笔记"><a href="#Strang教授线性代数笔记" class="headerlink" title="Strang教授线性代数笔记"></a>Strang教授线性代数笔记</h3><p>具体参见：<a href="https://github.com/zyj-nova/LinearAlgebraNotes" target="_blank" rel="noopener">https://github.com/zyj-nova/LinearAlgebraNotes</a></p>
-
       
       <!-- 打赏 -->
       
