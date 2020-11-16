@@ -6,16 +6,41 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Category: 机器视觉基础 | 张永剑的博客</title>
+  <title>摄像机模型与标定 | 张永剑的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="天空如此辽阔，大地不过是必经之路">
-<meta property="og:type" content="website">
-<meta property="og:title" content="张永剑的博客">
-<meta property="og:url" content="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/index.html">
+  <meta name="description" content="摄像机模型与标定参考：计算机视觉，鲁鹏，北京邮电大学。https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1nz4y197Qv 课件：https:&#x2F;&#x2F;gitee.com&#x2F;cv-xueba&#x2F;A01_cvclass_basic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="摄像机模型与标定">
+<meta property="og:url" content="http://yoursite.com/2020/11/09/%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%A0%87%E5%AE%9A/index.html">
 <meta property="og:site_name" content="张永剑的博客">
-<meta property="og:description" content="天空如此辽阔，大地不过是必经之路">
+<meta property="og:description" content="摄像机模型与标定参考：计算机视觉，鲁鹏，北京邮电大学。https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1nz4y197Qv 课件：https:&#x2F;&#x2F;gitee.com&#x2F;cv-xueba&#x2F;A01_cvclass_basic">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_1.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_2.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_3.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_4.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_5.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_6.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_7.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_9.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_10.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_11.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_12.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_13.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_14.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_15.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_16.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_17.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_18.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_19.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_20.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_21.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_22.png">
+<meta property="og:image" content="http://yoursite.com/images/cv_6_23.png">
+<meta property="article:published_time" content="2020-11-09T12:05:07.590Z">
+<meta property="article:modified_time" content="2020-11-16T13:59:30.697Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/cv_6_1.png">
   
     <link rel="alternative" href="/atom.xml" title="张永剑的博客" type="application/atom+xml">
   
@@ -203,275 +228,109 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-摄像机模型与标定" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/11/16/%E6%9E%81%E5%87%A0%E4%BD%95%E4%B8%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/" class="archive-article-date">
-  	<time datetime="2020-11-16T14:01:59.865Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-16</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/16/%E6%9E%81%E5%87%A0%E4%BD%95%E4%B8%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/">极几何与多视图几何</a>
+    <h1 class="article-title" itemprop="name">
+      摄像机模型与标定
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器视觉基础//" class="article-tag-list-link color2">机器视觉基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/11/09/%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%A0%87%E5%AE%9A/" class="archive-article-date">
+        
+        <a href="/2020/11/09/%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%A0%87%E5%AE%9A/" class="archive-article-date">
   	<time datetime="2020-11-09T12:05:07.590Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-09</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/09/%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%A0%87%E5%AE%9A/">摄像机模型与标定</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器视觉基础//" class="article-tag-list-link color2">机器视觉基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
+        
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/11/09/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E4%B8%8E%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" class="archive-article-date">
-  	<time datetime="2020-11-09T12:01:25.493Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/09/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E4%B8%8E%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">图像分割与目标检测</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器视觉基础//" class="article-tag-list-link color2">机器视觉基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/21/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture1/" class="archive-article-date">
-  	<time datetime="2020-10-21T12:34:34.100Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-21</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/21/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture1/">机器视觉基础Lecture1</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器视觉基础//" class="article-tag-list-link color2">机器视觉基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/15/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%203%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/" class="archive-article-date">
-  	<time datetime="2020-10-15T12:20:42.841Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/15/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%203%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/">机器视觉基础Lecture 3局部特征</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器视觉基础//" class="article-tag-list-link color2">机器视觉基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/08/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%202/" class="archive-article-date">
-  	<time datetime="2020-10-08T09:28:38.672Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/08/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%202/">机器视觉基础Lecture 2</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器视觉基础//" class="article-tag-list-link color2">机器视觉基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
+    <div class="article-entry" itemprop="articleBody">
       
-        </div></section>
+        
+          
+            <h2 id="摄像机模型与标定"><a href="#摄像机模型与标定" class="headerlink" title="摄像机模型与标定"></a>摄像机模型与标定</h2><p>参考：计算机视觉，鲁鹏，北京邮电大学。<a href="https://www.bilibili.com/video/BV1nz4y197Qv" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1nz4y197Qv</a></p>
+<p>课件：<a href="https://gitee.com/cv-xueba/A01_cvclass_basic" target="_blank" rel="noopener">https://gitee.com/cv-xueba/A01_cvclass_basic</a></p>
+<a id="more"></a>
+<h3 id="1-摄像机模型"><a href="#1-摄像机模型" class="headerlink" title="1 摄像机模型"></a>1 摄像机模型</h3><h4 id="1-1-针孔模型"><a href="#1-1-针孔模型" class="headerlink" title="1.1 针孔模型"></a>1.1 针孔模型</h4><p><strong>Q: 如果直接将胶片放置在物体前面，能否成像？</strong>不可以，胶片上的某个点汇集了现实世界中各个点的光线，形成的像是模糊的。</p>
+<p><img src="/images/cv_6_1.png" alt="图1"></p>
+<p>现实中我们发现了小孔成像原理，实现了三维世界到二维的映射。</p>
+<p><img src="/images/cv_6_2.png" alt="图2"></p>
+<p>在摄像机中，<strong>光圈</strong>充当了小孔的作用。</p>
+<p><img src="/images/cv_6_3.png" alt="图3"></p>
+<p><strong>光圈的作用？</strong>：光圈越大，进光量越大，成像亮度越大，但是模糊；光圈越小，成像亮度越小，但是清晰。如何折衷？<strong>加透镜，聚光</strong>！</p>
+<p><img src="/images/cv_6_4.png" alt="图4"></p>
+<p><img src="/images/cv_6_5.png" alt="图5"></p>
+<p>透镜将多条光线聚焦到胶片上，增加了照片的亮度；所有平行于光轴的光线都会会聚到焦点，焦点到透镜中心的距离称为焦距；穿过透镜中心（光心）的光线的传播方向不发生改变。</p>
+<p><img src="/images/cv_6_6.png" alt="图6"></p>
+<p><strong>透镜存在问题</strong>：当像距（景深）不合适的话会失焦、径向畸变。</p>
+<p><img src="/images/cv_6_7.png" alt="图7"></p>
+<h4 id="1-2-摄像机几何"><a href="#1-2-摄像机几何" class="headerlink" title="1.2 摄像机几何"></a>1.2 摄像机几何</h4><p>本节要介绍的坐标系：摄像机坐标系、像平面坐标系、像素坐标系、世界坐标系，齐次坐标。</p>
+<h5 id="1-2-1-摄像机坐标系和像平面之间的坐标变换关系"><a href="#1-2-1-摄像机坐标系和像平面之间的坐标变换关系" class="headerlink" title="1.2.1 摄像机坐标系和像平面之间的坐标变换关系"></a>1.2.1 摄像机坐标系和像平面之间的坐标变换关系</h5><p><img src="/images/cv_6_9.png" alt="图8"></p>
+<p><img src="/images/cv_6_10.png" alt="图9"></p>
+<p><img src="/images/cv_6_11.png" alt="图10"></p>
+<p>加了透镜之后的相机模型：</p>
+<p><img src="/images/cv_6_12.png" alt="图11"></p>
+<h5 id="1-2-2-像平面坐标系和像素坐标系之间的变换关系"><a href="#1-2-2-像平面坐标系和像素坐标系之间的变换关系" class="headerlink" title="1.2.2 像平面坐标系和像素坐标系之间的变换关系"></a>1.2.2 像平面坐标系和像素坐标系之间的变换关系</h5><p><img src="/images/cv_6_13.png" alt="图12"></p>
+<p>在像平面坐标系中，原点是在中心点（$C^\prime $）；而在像素平面中，一般以左下角为原点。因此，从像平面坐标系到像素平面有$x,y$方向上的两个偏置$c_x,c_y$。</p>
+<p><img src="/images/cv_6_14.png" alt="图13"></p>
+<p>上图中我们可以看出，在摄像机坐标系平面中的点$(x,y,z)$在像平面中的坐标是$(f\frac{x}{z},f\frac{y}{z})$，在<strong>像素平面</strong>中，像平面原点坐标是$(c_x,c_y)$，因此摄像机坐标系的点到像素坐标系坐标变换为：$(f\frac{x}{z} + c_x,f\frac{y}{z}+c_y)$。</p>
+<p>但还有一个问题是，$x,y$都是现实世界中的点，单位都是米/厘米等（$m/cm$）我们想转换为像素单位（$pixel$）。这就涉及到相机成像元器件（CCD/CMOS等）的分辨率 $k,l$ （垂直方向、水平方向各向异性）决定了一个像素可以代表现实世界中多少距离。</p>
+<p>因此，有单位变换：</p>
+<script type="math/tex; mode=display">
+(x,y,z) \Rightarrow (fk\frac{x}{z},fl\frac{y}{z})</script><p>$f$ 的单位是$m$，那么$k,l$ 的单位是$pixel/m$，令$\alpha = fk,\beta = fl$，有：</p>
+<script type="math/tex; mode=display">
+P=(x,y,z) \rightarrow P^\prime=(\alpha\frac{x}{z},\beta\frac{y}{z})</script><p>$P^\prime$ 的单位就是像素了，表示像素平面坐标中的点。</p>
+<p>注意：这个变换<strong>不是线性的</strong>（$z$ 是变换的）。</p>
+<h5 id="1-2-3-摄像机坐标系和像素平面坐标系之间的关系"><a href="#1-2-3-摄像机坐标系和像素平面坐标系之间的关系" class="headerlink" title="1.2.3 摄像机坐标系和像素平面坐标系之间的关系"></a>1.2.3 摄像机坐标系和像素平面坐标系之间的关系</h5><p>我们想把这个变换表示为线性形式，这时就需要引入<strong>齐次坐标</strong>。齐次坐标就是将一个原本是 $n$ 维的向量用一个 $n+1$ 维向量来表示。二维笛卡尔坐标系的点 $(x,y)$ 变换到齐次坐标就是 $(x,y,1)$；而齐次坐标系中的点 $(x,y,z)$变换到二维笛卡尔坐标中就是 $(x/z,y/z)$，$(x,y,z,w)\rightarrow (x/w,y/w,z/w)$。</p>
+<p><strong>齐次坐标系中的投影变换</strong></p>
+<p>引入齐次坐标后，把$P=(x,y,z)$表示为齐次坐标，即$P_h=(x,y,z,1)$，通过下面变换</p>
+<script type="math/tex; mode=display">
+P_h^\prime = \begin{pmatrix}\alpha x + c_xz\\\beta x + c_yz\\z\end{pmatrix}=\begin{pmatrix}\alpha&0&c_X&0\\0&\beta&c_y&0\\0&0&1&0\end{pmatrix}\begin{pmatrix}x\\y\\z\\1\end{pmatrix}</script><p>欧式点$(\alpha\frac{x}{z},\beta\frac{y}{z})$变换到齐次坐标对应$\begin{pmatrix}\alpha x + c_xz\\\beta x + c_yz\\z\end{pmatrix}$（同除 $z$ 就变回去了），有了上式中的投影矩阵，可以直接进行变换并且是线性的。</p>
+<script type="math/tex; mode=display">
+M =\begin{pmatrix}\alpha&0&c_X&0\\0&\beta&c_y&0\\0&0&1&0\end{pmatrix}</script><p><strong>称 $M$ 即投影矩阵</strong>。考虑倾角$\theta$，</p>
+<p><img src="/images/cv_6_15.png" alt="图14"></p>
+<p>$M$ 就变成了：</p>
+<script type="math/tex; mode=display">
+M =\begin{pmatrix}\alpha&-\alpha\cot\theta &c_x&0\\0&\frac{\beta}{\sin \theta}&c_y&0\\0&0&1&0\end{pmatrix}</script><p>这就是摄像机世界和像素平面的映射关系。</p>
+<script type="math/tex; mode=display">
+K =\begin{pmatrix}\alpha&-\alpha\cot\theta &c_x\\0&\frac{\beta}{\sin \theta}&c_y\\0&0&1\end{pmatrix}</script><p>K为被称为摄像机内参数矩阵，内参数决定了摄像机坐标系下空间点到图像点的映射。</p>
+<script type="math/tex; mode=display">
+M = K[I\ O]</script><p><strong>注意：</strong>上面是在齐次坐标下的表示。</p>
+<h5 id="1-2-4-世界坐标系与摄像机坐标系之间的关系"><a href="#1-2-4-世界坐标系与摄像机坐标系之间的关系" class="headerlink" title="1.2.4 世界坐标系与摄像机坐标系之间的关系"></a>1.2.4 世界坐标系与摄像机坐标系之间的关系</h5><p><strong>齐次坐标表示</strong>：</p>
+<script type="math/tex; mode=display">
+P = RPw + T = \begin{pmatrix}R&T\\O&1\end{pmatrix}P_w</script><p>$R_{3\times3}$表示三维空间的旋转矩阵，$T_{3\times1}$表示三维空间平移向量。$P_w=(x_w,y_w,z_w,1)$表示世界坐标系下的点，$P$表示摄像机坐标系下的点。</p>
+<script type="math/tex; mode=display">
+P^\prime =K(I\ O)P = K(I\ O) \begin{pmatrix}R&T\\O&1 \end{pmatrix}P_w =K(R\ T)P_w</script><p>上面就是世界坐标系下的点到像素平面坐标系的变换，最后的$P^\prime_{3\times1}$是像素点的<strong>齐次坐标向量</strong>。与摄像机内参矩阵相对应，我们称$\begin{pmatrix}R&amp;T\\0&amp;1 \end{pmatrix}$为外参数矩阵。</p>
+<p><img src="/images/cv_6_16.png" alt="图15"></p>
+<p><strong>Q：投影矩阵$M$有多少个自由度（参数）？</strong> A：$R$ 有三个自由度，$T$ 有三个自由度，$K$ 有五个自由度，因此$M$ 有十一个自由度。</p>
+<p><img src="/images/cv_6_17.png" alt="图16"></p>
+<h3 id="2-摄像机的标定"><a href="#2-摄像机的标定" class="headerlink" title="2 摄像机的标定"></a>2 摄像机的标定</h3><p>任务：给定图像数据集，求解摄像机的内参数。</p>
+<p>重要性：摄像机内、外参数描述了三维世界到二素的映射关系。</p>
+<p><img src="/images/cv_6_18.png" alt="图17"></p>
+<p>像素平面的点非齐次坐标$p = \begin{pmatrix}u\\v\end{pmatrix}$，世界坐标系中的点齐次坐标$P=\begin{pmatrix}x\\y\\z\\1\end{pmatrix}$，投影矩阵$M=\begin{pmatrix}\pmb m_1\\\pmb m_2\\\pmb m_3\end{pmatrix}$，可知 $\pmb m$ 是$1\times 4$的行向量。因此有：</p>
+<script type="math/tex; mode=display">
+p^\prime =MP=\begin{pmatrix}\pmb m_1\\\pmb m_2\\\pmb m_3\end{pmatrix}P=\begin{pmatrix}\pmb m_1P\\\pmb m_2P\\\pmb m_3P\end{pmatrix}</script><p>注意$p^\prime$是齐次坐标形式，因此有：    </p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}u\\v\end{pmatrix} = \begin{pmatrix}\frac{\pmb m_1P}{\pmb m_3P}&\frac{\pmb m_2P}{\pmb m_3P}\end{pmatrix}^T</script><p>在实际标定中，每一个点的$u,v,P$我们都是可以知道的，那么求解的未知量就只剩下了$\pmb m_1,\pmb m_2,\pmb m_3$这三个向量（<strong>共包含11个未知量</strong>）。</p>
+<p><img src="/images/cv_6_19.png" alt="图18"></p>
+<p>也就是说给定一个点，就可以得到两个方程。</p>
+<p>进而：</p>
+<p><img src="/images/cv_6_20.png" alt="图19"></p>
+<p>由于有11个未知量，因此至少采用大于6个点（组成12个方程）才可以求解方程组。</p>
+<p><img src="/images/cv_6_21.png" alt="图20"></p>
+<p>这时就可以利用最小二乘的方法来求解$\pmb m$。</p>
+<p><img src="/images/cv_6_22.png" alt="图21"></p>
+<p><img src="/images/cv_6_23.png" alt="图22"></p>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/11/07/canny/" class="archive-article-date">
-  	<time datetime="2019-11-07T12:20:41.304Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/11/07/canny/">Canny 边缘检测</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -484,17 +343,126 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/11/09/%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%A0%87%E5%AE%9A/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2020/11/12/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          动态规划（二）
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2020/11/09/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E4%B8%8E%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">图像分割与目标检测</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#摄像机模型与标定"><span class="toc-number">1.</span> <span class="toc-text">摄像机模型与标定</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-摄像机模型"><span class="toc-number">1.1.</span> <span class="toc-text">1 摄像机模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-针孔模型"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 针孔模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-摄像机几何"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 摄像机几何</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-1-摄像机坐标系和像平面之间的坐标变换关系"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">1.2.1 摄像机坐标系和像平面之间的坐标变换关系</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-2-像平面坐标系和像素坐标系之间的变换关系"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">1.2.2 像平面坐标系和像素坐标系之间的变换关系</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-3-摄像机坐标系和像素平面坐标系之间的关系"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">1.2.3 摄像机坐标系和像素平面坐标系之间的关系</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-4-世界坐标系与摄像机坐标系之间的关系"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">1.2.4 世界坐标系与摄像机坐标系之间的关系</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-摄像机的标定"><span class="toc-number">1.2.</span> <span class="toc-text">2 摄像机的标定</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -517,10 +485,10 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
