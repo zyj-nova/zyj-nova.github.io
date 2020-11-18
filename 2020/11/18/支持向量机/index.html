@@ -6,21 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>聚类 | 张永剑的博客</title>
+  <title>支持向量机 | 张永剑的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="聚类参考：《机器学习》，2016，周志华；统计学习方法，李航。">
+  <meta name="description" content="支持向量机1. 拉格朗日乘子法2. 线性可分支持向量机3. 线性支持向量机4. 核函数5. 非线性支持向量机">
 <meta property="og:type" content="article">
-<meta property="og:title" content="聚类">
-<meta property="og:url" content="http://yoursite.com/2020/10/28/%E8%81%9A%E7%B1%BB/index.html">
+<meta property="og:title" content="支持向量机">
+<meta property="og:url" content="http://yoursite.com/2020/11/18/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/index.html">
 <meta property="og:site_name" content="张永剑的博客">
-<meta property="og:description" content="聚类参考：《机器学习》，2016，周志华；统计学习方法，李航。">
-<meta property="og:image" content="http://yoursite.com/images/kmeans.jpg">
-<meta property="og:image" content="http://yoursite.com/images/dbscan.png">
-<meta property="article:published_time" content="2020-10-28T11:11:58.654Z">
-<meta property="article:modified_time" content="2020-11-17T08:41:06.590Z">
+<meta property="og:description" content="支持向量机1. 拉格朗日乘子法2. 线性可分支持向量机3. 线性支持向量机4. 核函数5. 非线性支持向量机">
+<meta property="article:published_time" content="2020-11-18T07:44:48.306Z">
+<meta property="article:modified_time" content="2020-11-18T07:44:48.307Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/images/kmeans.jpg">
   
     <link rel="alternative" href="/atom.xml" title="张永剑的博客" type="application/atom+xml">
   
@@ -208,20 +205,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-聚类" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-支持向量机" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      聚类
+      支持向量机
     </h1>
   
 
         
-        <a href="/2020/10/28/%E8%81%9A%E7%B1%BB/" class="archive-article-date">
-  	<time datetime="2020-10-28T11:11:58.654Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-28</time>
+        <a href="/2020/11/18/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" class="archive-article-date">
+  	<time datetime="2020-11-18T07:44:48.306Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-18</time>
 </a>
         
       </header>
@@ -230,149 +227,7 @@
       
         
           
-            <h2 id="聚类"><a href="#聚类" class="headerlink" title="聚类"></a>聚类</h2><p>参考：《机器学习》，2016，周志华；统计学习方法，李航。</p>
-<a id="more"></a>
-<h3 id="1-聚类指标度量"><a href="#1-聚类指标度量" class="headerlink" title="1. 聚类指标度量"></a>1. 聚类指标度量</h3><p>如何衡量簇（类）与簇之间的距离？</p>
-<ul>
-<li>平均距离（average linkage）</li>
-<li>最大距离（complete linkage）</li>
-<li>最小距离（single linkage）</li>
-<li>中心距离</li>
-</ul>
-<p>如何衡量聚类效果的好坏？</p>
-<h3 id="2-原型聚类"><a href="#2-原型聚类" class="headerlink" title="2. 原型聚类"></a>2. 原型聚类</h3><h4 id="2-1-K均值聚类"><a href="#2-1-K均值聚类" class="headerlink" title="2.1 K均值聚类"></a>2.1 K均值聚类</h4><p><strong>K均值聚类算法</strong>：</p>
-<p>K均值算法的思想很简单，对于给定的样本集，将样本集划分为K个簇。让簇内的点尽量紧密的连在一起（类内方差最小），而让簇间的距离尽量的大。注意到，采用到不同的距离可以得到不同的K均值聚类算法。最简单的就是使用欧氏距离，其他距离有： $Mahalanobis distance$，$L1 distance$等等。</p>
-<p>给定包含有 $N$ 个样本的样本集 $D=\{\pmb x_1,\pmb x_2,…,\pmb x_N\}$ ，每个样本的维数为 $d$，即 $\pmb x_i \in \mathbb{R}^d$，K均值算法要将 $n$ 个样本划分为 $k$ 个类（簇）$C_1,C_2,…,C_k$，每一个类的中心（质心）可以用其均值向量表示：</p>
-<script type="math/tex; mode=display">
-\pmb \mu_k = \frac{1}{|C_k|}\sum_{\pmb x \in C_k} \pmb x</script><p>$|C_k|$表示第$k$个簇中所包含的样本个数。注意到这是个<strong>虚拟点</strong>。</p>
-<p>举个例子：$\pmb x_1 = (1,2,3)^T,\pmb x_2=(3,2,5)^T$，则：$\pmb \mu = (2,2,4)^T$。</p>
-<script type="math/tex; mode=display">
-J(C_k)=\sum_{\pmb x\in C_k}||\pmb x_i -\pmb \mu _k||^2</script><script type="math/tex; mode=display">
-J(C) = \sum_{k=1}^K\sum_{\pmb x_i\in C_k}||\pmb x_i -\pmb \mu _k||^2</script><p>这就是K均值算法的优化函数（目标函数），但是优化这个问题是个NP难问题，通常采用贪心迭代求解，直到$J$的变化小于某个阈值或者每个类的质心不在发生改变，算法结束。</p>
-<p><strong>算法描述</strong>：</p>
-<ol>
-<li>随机选择k个样本点作为初始聚类中心，</li>
-<li>对于每个样本，将其划分到距离最近的聚类中心的那个类中（聚类）</li>
-<li>更新k个类的聚类中心</li>
-<li>若聚类中心没有发生改变或者$J$收敛到某一阈值，算法结束，否则，执行2。</li>
-</ol>
-<p><strong>例子</strong>：</p>
-<p><img src="/images/kmeans.jpg" alt="聚类例子"></p>
-<p><strong>缺点</strong>：</p>
-<ul>
-<li>对初始化聚类中心敏感</li>
-<li>K值难以指定</li>
-<li>只能收敛于局部极小</li>
-<li>对 outliers 噪声点敏感</li>
-</ul>
-<p><strong>注意</strong>：K-means与K近邻算法的区别</p>
-<p>最大的区别K-means是<strong>无监督学习的聚类算法</strong>，没有样本输出；而K近邻是<strong>监督学习的分类算法</strong>，有对应的类别输出。K近邻<strong>基本不需要训练</strong>，对测试集里面的点，只需要找到在训练集中最近的k个点，用这最近的k个点的类别来决定测试点的类别。而K-means则有明显的训练过程，找到k个类别的最佳质心，从而决定样本的簇类别。</p>
-<p><strong>总结</strong>：</p>
-<ol>
-<li><p>K均值聚类基本思想，将数据划分为 $k$ 个类，同时最小化每个类的类内方差。可得目标函数：</p>
-<script type="math/tex; mode=display">
-J(C) = \sum_{k=1}^K\sum_{\pmb x_i\in C_k}||\pmb x_i -\pmb \mu _k||^2</script></li>
-<li><p>优化目标函数，但是NP难问题，怎么近似求解？回答：a. 将所有样本点划分到距离最近的类中心对应的类（assignment step）；b. 更新类中心为类均值向量（refitting step）如此迭代。</p>
-</li>
-<li>但是以上过程能保证收敛吗？回答：可以。以上两个步骤都可以保证损失函数 $J$ 在每次迭代中都逐渐减小最后收敛，但不能保证一定收敛到全局极小值（可能收敛到局部极小）。证明略，可以自行谷歌。</li>
-<li>本质上，k均值的迭代是一个运用EM算法的过程。</li>
-</ol>
-<p><strong>拓展1：</strong>当损失函数为：</p>
-<script type="math/tex; mode=display">
-J(C) = \sum_{k=1}^K\sum_{\pmb x_i\in C_k}||\pmb x_i -\pmb \beta _k||_1</script><p>即度量取为L1范数时，此时是什么聚类？</p>
-<p>答：K中值聚类（K medians clustering）。很明显，此时向量 $\pmb \beta_k$已经不是均值向量了，而是<strong>中值向量</strong>。</p>
-<p><strong>拓展2</strong>：用另一种角度去看待K均值聚类</p>
-<script type="math/tex; mode=display">
-J = \sum_{i=1}^k\sum_{j=1}^Nu_{ij}||\pmb x_j-\pmb \mu_i||^2</script><p>可知对于，每个样本$\pmb x_j$，都有 $k$ 个 $u$，且</p>
-<script type="math/tex; mode=display">
-\sum_{i=1}^ku_{ij}=1</script><p>这是含有等式约束的优化问题，且含有两组变量$\pmb \mu,u$，常用的办法是交替优化（固定一组，优化另一组）。</p>
-<ul>
-<li>当固定 $u$ 优化 $\pmb \mu$ 时，有：</li>
-</ul>
-<script type="math/tex; mode=display">
-\frac{\partial J}{\partial \pmb \mu_i} = -2\sum_{j=1}^Nu_{ij}(\pmb x_j -\pmb \mu_i) = 0</script><p>得：</p>
-<script type="math/tex; mode=display">
-\pmb \mu_i = \frac{\sum_{j=1}^Nu_{ij}\pmb x_j}{\sum_{j=1}^Nu_{ij}}</script><ul>
-<li>当固定 $\pmb \mu_i$求 $u$ 得时候，</li>
-</ul>
-<p>此时，各个簇的中心已经固定，要最小化 $J$，只需让每个样本划归到距离自己最近的类中心（贪心思想）即可（保证了所有样本和其所属类的中心之间的距离总和最小），对于样本$\pmb x_j$有：</p>
-<script type="math/tex; mode=display">
-\forall i, u_{ij}=\left\{ \begin{array}{rcl}
-1&\pmb x_i\in C_i\\
-0
-\end{array}
-\right.</script><p>$u\in\{0,1\}$，也就是说，每个样本只属于某个簇，明显是个硬划分聚类。</p>
-<p>再回头看$\pmb \mu$更新公式，其实就是均值向量。</p>
-<h4 id="2-2-高斯混合聚类"><a href="#2-2-高斯混合聚类" class="headerlink" title="2.2 高斯混合聚类"></a>2.2 高斯混合聚类</h4><p>高斯混合模型进行聚类的思想就是用多个概率分布函数来描述每一个簇（类）的信息。</p>
-<h3 id="3-层次聚类"><a href="#3-层次聚类" class="headerlink" title="3. 层次聚类"></a>3. 层次聚类</h3><p><strong>算法描述</strong></p>
-<ol>
-<li>构造n个类，每个类只包含一个样本</li>
-<li>计算n个类之间的距离，得到$n \times n$的距离矩阵$D$</li>
-<li><strong>合并</strong>类间距离最小的两个类（注意：类间距离有不同的计算方式，可以根据情形来指定），形成一个新类。</li>
-<li>计算新类与剩余类之间的距离，构造距离矩阵，若类别数等于k则算法结束，否则继续执行（3）。</li>
-</ol>
-<h3 id="4-密度聚类"><a href="#4-密度聚类" class="headerlink" title="4. 密度聚类"></a>4. 密度聚类</h3><p><strong>Density Based Spatial Clustering Applications with Noises</strong>（简称$\tt DBSCAN$）。</p>
-<p>模型可视化：<a href="https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/" target="_blank" rel="noopener">https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/</a></p>
-<h4 id="4-1-基本概念（白话版）"><a href="#4-1-基本概念（白话版）" class="headerlink" title="4.1 基本概念（白话版）"></a>4.1 基本概念（白话版）</h4><p><strong>参数</strong>：$\epsilon$ （阈值），$min Points$（点数量）</p>
-<p><strong>核心对象：</strong>对于任一样本 $\pmb x\in D$，以 $\pmb x$ 为中心，半径为 $\epsilon$ 的圆内（领域）存在的其他样本数大于$min Points$，则 $\pmb x$ 为一个核心对象。（当然这里的“圆’指的是维数为2时，3维是球，更高维….反正就是与$\pmb x$距离小于$\epsilon$ 的）。</p>
-<p><strong>直接密度可达（密度直达）：</strong>对于核心对象点 $\pmb x_i$，若 $\pmb x_j$ 在以 $\pmb x_i$ 为中心的圆内，则称 $\pmb x_j$ 由 $\pmb x_i$ 密度直达。</p>
-<p><strong>密度可达：</strong> 若有一个样本序列，$\pmb x_0,\pmb x_1,…,\pmb x_k$，对任意$\pmb x_i, \pmb x_{i-1}$是<strong>密度直达</strong>的，则称从$\pmb x_0$ 到 $\pmb x_k$ 密度可达。</p>
-<p>可以看出这条序列上的所有样本都是核心对象。这句话说的就是密度可达的传递性。图示：</p>
-<p><img src="/images/dbscan.png" alt="image-20201028200926586"></p>
-<p>上图中，红色的点都是密度直达的。$B、C$ 是密度相连的。</p>
-<p>噪声点：从任何一个核心点都不密度可达。</p>
-<h4 id="4-2-算法描述"><a href="#4-2-算法描述" class="headerlink" title="4.2 算法描述"></a>4.2 算法描述</h4><p>具体过程就像病毒的扩散过程一样，尽可能感染邻域内的点，当没有点可以感染，就再选一个没被感染的<strong>核心对象</strong>点继续感染，直到没有核心对象点了或者所有点都被感染了，算法停止。</p>
-<p>输入：样本集$D=\{\pmb x_1,\pmb x_2,…,\pmb x_m\}$，领域参数$(\epsilon,min Points)$</p>
-<p>输出：簇划分$C$</p>
-<ol>
-<li>标记所有样本D为unvisited</li>
-<li>遍历所有样本点，初始化每个样本的邻域信息若某个对象邻域内样本数量大于minPoints, 加入核心对象集合$\Gamma$。</li>
-<li>从核心对象集合随机选取一个核心对象p：<ol>
-<li>创建一个核心对象队列$\Omega$，将$p$加入到其中</li>
-<li>标记p为visited</li>
-<li>创建一个簇C，将p添加到C中</li>
-<li>当$\Omega$不为空：<ol>
-<li>取出一个核心对象</li>
-<li>遍历其邻域集合：<ol>
-<li>若邻域内某样本q是核心对象<ol>
-<li>将q加入到$\Omega$，从$\Gamma$中删去q</li>
-</ol>
-</li>
-<li>否则如果 q 为unvisited：<ol>
-<li>标记q为visited</li>
-<li>将q加入到C</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>输出C</li>
-</ol>
-</li>
-<li>D中unvisited的为噪声点</li>
-</ol>
-<ul>
-<li>优势：</li>
-</ul>
-<ol>
-<li>不需要指定簇的个数</li>
-<li>擅长找到离群点</li>
-<li>可以检测任意形状的簇</li>
-</ol>
-<ul>
-<li>缺点：</li>
-</ul>
-<ol>
-<li>高维数据有些困难</li>
-<li>参数难以选择</li>
-</ol>
-<h3 id="5-均值漂移（Mean-Shift）"><a href="#5-均值漂移（Mean-Shift）" class="headerlink" title="5. 均值漂移（Mean Shift）"></a>5. 均值漂移（Mean Shift）</h3><p>入门参考：<a href="https://www.zhihu.com/question/67943169/answer/412092644" target="_blank" rel="noopener">https://www.zhihu.com/question/67943169/answer/412092644</a></p>
-<p>文献：Fukunaga K, Hostetler L. The estimation of the gradient of a density function, with applications in pattern recognition[J]. IEEE Transactions on information theory, 1975, 21(1): 32-40.（表示很难~）</p>
-<p>代码：<a href="https://github.com/mattnedrich/MeanShift_py" target="_blank" rel="noopener">https://github.com/mattnedrich/MeanShift_py</a></p>
-<p>上面这个代码用到了高斯核函数。</p>
-<p>在不用核函数时，均值漂移其实就是选取一个样本，再设置一个窗口（bandwidth），然后计算窗口内所有样本的均值，该均值作为一个新的中心对象，再划一个窗口，如此迭代，直到最后收敛。拿二维数据来说，直观上均值会向数据集中的方向偏移。</p>
-
+            <h2 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h2><h3 id="1-拉格朗日乘子法"><a href="#1-拉格朗日乘子法" class="headerlink" title="1. 拉格朗日乘子法"></a>1. 拉格朗日乘子法</h3><h3 id="2-线性可分支持向量机"><a href="#2-线性可分支持向量机" class="headerlink" title="2. 线性可分支持向量机"></a>2. 线性可分支持向量机</h3><h3 id="3-线性支持向量机"><a href="#3-线性支持向量机" class="headerlink" title="3. 线性支持向量机"></a>3. 线性支持向量机</h3><h3 id="4-核函数"><a href="#4-核函数" class="headerlink" title="4. 核函数"></a>4. 核函数</h3><h3 id="5-非线性支持向量机"><a href="#5-非线性支持向量机" class="headerlink" title="5. 非线性支持向量机"></a>5. 非线性支持向量机</h3>
           
         
     </div>
@@ -440,7 +295,7 @@ J = \sum_{i=1}^k\sum_{j=1}^Nu_{ij}||\pmb x_j-\pmb \mu_i||^2</script><p>可知对
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/10/28/%E8%81%9A%E7%B1%BB/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/11/18/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -454,18 +309,9 @@ J = \sum_{i=1}^k\sum_{j=1}^Nu_{ij}||\pmb x_j-\pmb \mu_i||^2</script><p>可知对
   
 <nav id="article-nav">
   
-    <a href="/2020/11/08/%E7%A5%9E%E5%A5%87%E7%9A%84%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          神奇的矩阵乘法
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/10/25/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">动态规划</div>
+    <a href="/2020/11/16/%E6%9E%81%E5%87%A0%E4%BD%95%E4%B8%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">极几何与多视图几何</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -492,7 +338,7 @@ J = \sum_{i=1}^k\sum_{j=1}^Nu_{ij}||\pmb x_j-\pmb \mu_i||^2</script><p>可知对
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#聚类"><span class="toc-number">1.</span> <span class="toc-text">聚类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-聚类指标度量"><span class="toc-number">1.1.</span> <span class="toc-text">1. 聚类指标度量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-原型聚类"><span class="toc-number">1.2.</span> <span class="toc-text">2. 原型聚类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-K均值聚类"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 K均值聚类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-高斯混合聚类"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 高斯混合聚类</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-层次聚类"><span class="toc-number">1.3.</span> <span class="toc-text">3. 层次聚类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-密度聚类"><span class="toc-number">1.4.</span> <span class="toc-text">4. 密度聚类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-基本概念（白话版）"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 基本概念（白话版）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-算法描述"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 算法描述</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-均值漂移（Mean-Shift）"><span class="toc-number">1.5.</span> <span class="toc-text">5. 均值漂移（Mean Shift）</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#支持向量机"><span class="toc-number">1.</span> <span class="toc-text">支持向量机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-拉格朗日乘子法"><span class="toc-number">1.1.</span> <span class="toc-text">1. 拉格朗日乘子法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-线性可分支持向量机"><span class="toc-number">1.2.</span> <span class="toc-text">2. 线性可分支持向量机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-线性支持向量机"><span class="toc-number">1.3.</span> <span class="toc-text">3. 线性支持向量机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-核函数"><span class="toc-number">1.4.</span> <span class="toc-text">4. 核函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-非线性支持向量机"><span class="toc-number">1.5.</span> <span class="toc-text">5. 非线性支持向量机</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>

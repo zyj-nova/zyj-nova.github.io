@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-11-16T14:05:04.115Z</updated>
+  <updated>2020-11-18T07:44:48.307Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>极几何与多视图几何</title>
-    <link href="http://yoursite.com/2020/11/16/%E6%9E%81%E5%87%A0%E4%BD%95%E4%B8%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/"/>
-    <id>http://yoursite.com/2020/11/16/%E6%9E%81%E5%87%A0%E4%BD%95%E4%B8%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/</id>
-    <published>2020-11-16T14:01:59.865Z</published>
-    <updated>2020-11-16T14:05:04.115Z</updated>
+    <title>支持向量机</title>
+    <link href="http://yoursite.com/2020/11/18/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/"/>
+    <id>http://yoursite.com/2020/11/18/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/</id>
+    <published>2020-11-18T07:44:48.306Z</published>
+    <updated>2020-11-18T07:44:48.307Z</updated>
     
     <summary type="html">
     
@@ -29,9 +29,33 @@
       
         
         
-          &lt;h2 id=&quot;极几何与多视图几何&quot;&gt;&lt;a href=&quot;#极几何与多视图几何&quot; class=&quot;headerlink&quot;
+          &lt;h2 id=&quot;支持向量机&quot;&gt;&lt;a href=&quot;#支持向量机&quot; class=&quot;headerlink&quot; title=&quot;支持向量机&quot;&gt;&lt;/a&gt;支持向量机&lt;/h2&gt;&lt;h3 id=&quot;1-拉格朗日乘子法&quot;&gt;&lt;a href=&quot;#1-拉格朗日乘子法&quot; class=&quot;headerlink&quot;
         
       
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>极几何与多视图几何</title>
+    <link href="http://yoursite.com/2020/11/16/%E6%9E%81%E5%87%A0%E4%BD%95%E4%B8%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/"/>
+    <id>http://yoursite.com/2020/11/16/%E6%9E%81%E5%87%A0%E4%BD%95%E4%B8%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/</id>
+    <published>2020-11-16T14:01:59.865Z</published>
+    <updated>2020-11-18T14:26:05.437Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;极几何与多视图几何&quot;&gt;&lt;a href=&quot;#极几何与多视图几何&quot; class=&quot;headerlink&quot; title=&quot;极几何与多视图几何&quot;&gt;&lt;/a&gt;极几何与多视图几何&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;多视图几何的关键问题&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;摄像机几何：从一张或者多张图像中求解摄像机的内、外参数（标定）&lt;/li&gt;
+&lt;li&gt;场景几何：通过二至多张图寻找3D场景坐标&lt;/li&gt;
+&lt;li&gt;对应关系：已知一个图像中 $p$ 点，如何在另外一个图像中找到 $p^\prime$ 点（极几何要解决的问题）。&lt;/li&gt;
+&lt;/ul&gt;
     
     </summary>
     
@@ -66,7 +90,7 @@
     <link href="http://yoursite.com/2020/11/12/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
     <id>http://yoursite.com/2020/11/12/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/</id>
     <published>2020-11-12T12:07:07.324Z</published>
-    <updated>2020-11-12T14:18:22.745Z</updated>
+    <updated>2020-11-17T04:38:02.743Z</updated>
     
     <summary type="html">
     
@@ -85,7 +109,7 @@
     <link href="http://yoursite.com/2020/11/09/%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%A0%87%E5%AE%9A/"/>
     <id>http://yoursite.com/2020/11/09/%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%A0%87%E5%AE%9A/</id>
     <published>2020-11-09T12:05:07.590Z</published>
-    <updated>2020-11-16T13:59:30.697Z</updated>
+    <updated>2020-11-18T13:24:37.483Z</updated>
     
     <summary type="html">
     
@@ -147,7 +171,7 @@
     <link href="http://yoursite.com/2020/10/28/%E8%81%9A%E7%B1%BB/"/>
     <id>http://yoursite.com/2020/10/28/%E8%81%9A%E7%B1%BB/</id>
     <published>2020-10-28T11:11:58.654Z</published>
-    <updated>2020-11-15T10:42:58.229Z</updated>
+    <updated>2020-11-17T08:41:06.590Z</updated>
     
     <summary type="html">
     
@@ -389,25 +413,6 @@
     
     
       <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>交叉熵</title>
-    <link href="http://yoursite.com/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/"/>
-    <id>http://yoursite.com/2020/07/01/%E4%BA%A4%E5%8F%89%E7%86%B5/</id>
-    <published>2020-07-01T14:23:46.523Z</published>
-    <updated>2020-11-11T03:42:12.346Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;交叉熵&quot;&gt;&lt;a href=&quot;#交叉熵&quot; class=&quot;headerlink&quot; title=&quot;交叉熵&quot;&gt;&lt;/a&gt;交叉熵&lt;/h2&gt;
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
   </entry>
