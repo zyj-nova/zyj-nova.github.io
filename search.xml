@@ -1,9 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>数据结构之堆</title>
+    <url>/2020/11/20/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%A0%86/</url>
+    <content><![CDATA[<h2 id="数据结构之堆"><a href="#数据结构之堆" class="headerlink" title="数据结构之堆"></a>数据结构之堆</h2><p>堆就是用<strong>数组</strong>实现的二叉树，所以它没有使用父指针或者子指针。</p>
+<p>堆的定义（性质）：</p>
+<ul>
+<li>堆中某个节点的值总是不大于或不小于其父节点的值；</li>
+<li>堆是一棵完全二叉树</li>
+</ul>
+<p>根元素为最大值的称为大根堆，根元素为最小值的称为小根堆。</p>
+<p>在堆中：</p>
+<ul>
+<li><p>数组索引为<code>i</code>的元素其父元素索引是：<code>floor((i - 1) / 2)``floor</code>即取下界（floor(3.5)=3）；</p>
+</li>
+<li><p>数组索引为<code>i</code>的元素，左孩子节点的索引是：<code>2i + 1</code>，右孩子节点的索引是：<code>2i + 2</code>。</p>
+</li>
+</ul>
+<p>给定如下所示一个大根堆，用数组存储就是<code>[10,8,3,6,4,2]</code>。换句话说，这样的数组可以抽象化成一棵完全二叉树。可以看到没有用到任何指针，数组中索引为<code>i</code>的元素通过上述公式来找到对应的父节点和孩子节点。</p>
+<p><img src="C:\Users\zhang\Pictures\图片1.png" style="zoom:80%;" /></p>
+<p>现在的问题就是：给定一个无序数组，如何<strong>构建</strong>一个堆？构建好以后，添加元素、删除元素该怎么<strong>调整</strong>堆？</p>
+<p>关于维护堆两个重要的操作就是<code>heapifyUp</code>和<code>heapifyDown</code>。</p>
+<p>以小根堆为例。</p>
+<p><strong>添加元素：</strong><code>heapifyUp</code>，若当前节点值小于父节点，那么就交换，直到到达根节点为止（不断冒泡）。添加元素时，由于是数组，我们一般直接添加到数组最后，然后对新添加的元素不断执行<code>heapifyUp</code>进行维护。</p>
+<p><strong>删除元素：</strong><code>heapifyDown</code>。删除根节点时，令其和数组最后一个元素进行交换，这样删除最后一个元素的时间复杂度仅为 $O(1)$。然后我们对<strong>新的根节点</strong>执行<code>heapifyDown</code>操作即可。</p>
+<p><strong>构建堆：</strong>从最后一个<strong>非叶子节点</strong>开始，依次执行<code>heapfiyDown</code>操作。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="堆排序和优先队列"><a href="#堆排序和优先队列" class="headerlink" title="堆排序和优先队列"></a>堆排序和优先队列</h3><p>将一个数组构建成堆，然后不断的删除堆的根节点，根节点的值依照删除顺序就会形成一个有序数组，这就是堆排序。堆排序的时间性能$O(n\log n)$。</p>
+]]></content>
+      <categories>
+        <category>基础算法</category>
+      </categories>
+  </entry>
+  <entry>
     <title>支持向量机</title>
     <url>/2020/11/18/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/</url>
-    <content><![CDATA[<h2 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h2><h3 id="1-拉格朗日乘子法"><a href="#1-拉格朗日乘子法" class="headerlink" title="1. 拉格朗日乘子法"></a>1. 拉格朗日乘子法</h3><h3 id="2-线性可分支持向量机"><a href="#2-线性可分支持向量机" class="headerlink" title="2. 线性可分支持向量机"></a>2. 线性可分支持向量机</h3><h3 id="3-线性支持向量机"><a href="#3-线性支持向量机" class="headerlink" title="3. 线性支持向量机"></a>3. 线性支持向量机</h3><h3 id="4-核函数"><a href="#4-核函数" class="headerlink" title="4. 核函数"></a>4. 核函数</h3><h3 id="5-非线性支持向量机"><a href="#5-非线性支持向量机" class="headerlink" title="5. 非线性支持向量机"></a>5. 非线性支持向量机</h3>]]></content>
+    <content><![CDATA[<h2 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h2><p>给定一组训练实例，每个训练实例被标记为属于两个类别中的一个或另一个$\{+1,-1\}$，SVM训练算法创建一个将新的实例分配给两个类别之一的模型，使其成为非概率二元线性分类器。SVM模型是将实例表示为空间中的点，这样映射就使得单独类别的实例被尽可能宽的明显的间隔分开。然后，将新的实例映射到同一空间，并基于它们落在间隔的哪一侧来预测所属类别。除了进行线性分类之外，SVM还可以使用所谓的核技巧有效地进行非线性分类，将其输入<strong>隐式映射到高维特征空间</strong>中。</p>
+<a id="more"></a>
+<p>由于求解支持向量机问题需要用到拉格朗日乘子法，因此首先介绍拉格朗日乘子法。</p>
+<h3 id="1-拉格朗日乘子法"><a href="#1-拉格朗日乘子法" class="headerlink" title="1. 拉格朗日乘子法"></a>1. 拉格朗日乘子法</h3><p>拉格朗日乘子法是一种求解带有约束的优化问题的方法。</p>
+<p>假设 $f(x),g_j(x),h_i(x)$ 是定义在$\mathcal{R}^n$的连续可微函数，有如下约束优化问题：</p>
+<script type="math/tex; mode=display">
+\min_x f(x)</script><script type="math/tex; mode=display">
+s.t.\ \ h_i(x)=0,i=1,2...,m\\
+\ g_j(x)\le0,j=1,2,..,n</script><p>假设其最优解记为 $p^\star$。</p>
+<p><strong>拉格朗日函数</strong></p>
+<p>其拉格朗日函数$L(x,\lambda,\mu)$:</p>
+<script type="math/tex; mode=display">
+L(x,\alpha,\beta) = f(x) + \sum_i^m\lambda_ih_i(x)+\sum_j^n\mu_jg_j(x)</script><p>其中，$\lambda,\mu$为拉格朗日乘子。</p>
+<p><strong>KKT条件</strong></p>
+<script type="math/tex; mode=display">
+g_j(x)\le0;\\\mu_j>=0;\\\mu_jg_j(x)=0</script><p><strong>拉格朗日对偶函数</strong></p>
+<script type="math/tex; mode=display">
+\max_{\lambda,\mu}\Gamma(\lambda,\mu)\ \ s.t.\mu\ge0</script><p>无论原函数凸性如何，对偶函数保证是凸函数。</p>
+<p>如何获得对偶函数，将拉格朗日函数对$x$求偏导等于0，带回拉格朗日函数消去$x$后，就得到只包含$\lambda,\mu$的对偶函数。</p>
+<p>对偶问题的最优解记为 $d^\star$。</p>
+<p><strong>弱对偶</strong></p>
+<script type="math/tex; mode=display">
+d^\star\le p^\star</script><p>注意：<strong>弱对偶是一个性质</strong>。</p>
+<p><strong>强对偶</strong></p>
+<script type="math/tex; mode=display">
+d^\star = p^\star</script><p>强对偶成立时，对偶问题的最优解与原问题的最优解相同，这样通过求解对偶问题即可得到原问题的最优解。</p>
+<h3 id="2-线性可分支持向量机"><a href="#2-线性可分支持向量机" class="headerlink" title="2. 线性可分支持向量机"></a>2. 线性可分支持向量机</h3><h4 id="2-1-动机"><a href="#2-1-动机" class="headerlink" title="2.1 动机"></a>2.1 动机</h4><p>将数据进行分类是机器学习中的一项常见任务。 假设某些给定的数据点各自属于两个类之一，而目标是确定新数据点将在哪个类中。对于支持向量机来说，数据点被视为 $p$ 维向量，而我们想知道是否可以用 $p-1$ 维超平面来分开这些点。可能有许多超平面可以把数据分类。最佳超平面的一个合理选择是以<strong>最大间隔</strong>把两个类分开的超平面。因此，我们要选择能够让到每边最近的数据点的距离最大化的超平面。如果存在这样的超平面，则称为<strong>最大间隔超平面</strong>（来源：中文维基百科）。</p>
+<h4 id="2-2-推导"><a href="#2-2-推导" class="headerlink" title="2.2 推导"></a>2.2 推导</h4><h3 id="3-线性支持向量机"><a href="#3-线性支持向量机" class="headerlink" title="3. 线性支持向量机"></a>3. 线性支持向量机</h3><h3 id="4-核函数"><a href="#4-核函数" class="headerlink" title="4. 核函数"></a>4. 核函数</h3><script type="math/tex; mode=display">
+\mathcal{K}(\pmb x,\pmb y) = \phi(\pmb x)\phi(\pmb y)\tag{1}</script><p>常见的核函数：</p>
+<ul>
+<li>齐次多项式（$·$）表示向量内积：</li>
+</ul>
+<script type="math/tex; mode=display">
+\mathcal{K}(\pmb x,\pmb z) = (\pmb x·\pmb z)^d = (\pmb x^T\pmb z)^d</script><ul>
+<li>非齐次多项式：</li>
+</ul>
+<script type="math/tex; mode=display">
+\mathcal{K}(\pmb x,\pmb z) = (\pmb x·\pmb z + 1)^d</script><ul>
+<li>径向基函数（也叫高斯核函数）：</li>
+</ul>
+<script type="math/tex; mode=display">
+\mathcal{K}(\pmb x,\pmb z) = e^{-\frac{||\pmb x - \pmb z||^2}{2\sigma^2}}</script><h3 id="5-非线性支持向量机"><a href="#5-非线性支持向量机" class="headerlink" title="5. 非线性支持向量机"></a>5. 非线性支持向量机</h3><h3 id="6-多分类支持向量机"><a href="#6-多分类支持向量机" class="headerlink" title="6. 多分类支持向量机"></a>6. 多分类支持向量机</h3><h3 id="7-OneClass支持向量机"><a href="#7-OneClass支持向量机" class="headerlink" title="7. OneClass支持向量机"></a>7. OneClass支持向量机</h3>]]></content>
       <categories>
         <category>机器学习</category>
       </categories>
@@ -33,23 +106,38 @@
 <p><img src="/images/cv_7_4.png" alt="图4"></p>
 <p><strong>前向平移（无旋转）</strong></p>
 <p>两幅图上极点的位置相同</p>
-<h4 id="2-1-本质矩阵（Essential-Matrix）"><a href="#2-1-本质矩阵（Essential-Matrix）" class="headerlink" title="2.1 本质矩阵（Essential Matrix）"></a>2.1 本质矩阵（Essential Matrix）</h4><p>本质矩阵对<strong>规范化</strong>摄像机拍的两个视点图间极几何关系进行代数描述。规范化指的就是摄像机内参数矩阵 $K$ 是个三阶单位阵。（复习投影矩阵 $M = K\begin{pmatrix}I&amp;O\end{pmatrix}$，世界坐标系到摄像机坐标系变换：$P=RP_w + T$）。</p>
+<h4 id="2-1-本质矩阵（Essential-Matrix）"><a href="#2-1-本质矩阵（Essential-Matrix）" class="headerlink" title="2.1 本质矩阵（Essential Matrix）"></a>2.1 本质矩阵（Essential Matrix）</h4><p><strong>前置知识：</strong></p>
+<p>本质矩阵对<strong>规范化</strong>摄像机拍的两个视点图间极几何关系进行代数描述。规范化指的就是摄像机内参数矩阵 $K$ 是个三阶单位阵。（复习投影矩阵 $M = K\begin{pmatrix}I&amp;O\end{pmatrix}$，世界坐标系到摄像机坐标系变换：$P=RP_w + \pmb t$）。</p>
 <script type="math/tex; mode=display">
 K =\begin{pmatrix}1&0&0\\0&1&0\\0&0&1\end{pmatrix}</script><p><img src="/images/cv_7_5.png" alt="图5"></p>
 <p>在规范化的条件下，<strong>摄像机坐标系</strong>下的三维点的欧式坐标和<strong>像素点</strong>的齐次坐标是相同的。</p>
 <p>因此，若图像 $I$ 上点 $p$ 像素坐标为 $(u,v)$，齐次坐标就是 $(u,v,1)$，根据上面讲的对应在摄像机坐标系 $O_1$下的欧式坐标就是 $(u,v,1)$；同理，$p^\prime$ 在 $O_2$坐标系下的欧式坐标是 $(u^\prime,v^\prime,1)$（注意，这儿的1不是固定的，因为齐次坐标下是尺度不变的）。</p>
-<p><img src="/images/cv_7_6.png" alt="图6"></p>
-<p>现在的问题就是：</p>
-<ul>
-<li>三维点 $p^\prime$ 在 $O_1$ 坐标系下的坐标是？</li>
-<li>三维点 $O_2$ 在 $O_1$ 坐标系下的坐标是？</li>
-</ul>
-<p>注意：$p^\prime,O_2$都是指摄像机坐标下的点。</p>
-<p>若 $P$ 点的世界坐标系坐标为 $P_w$， 那么 $p^\prime$ 与 $P_w$的关系为：$p^\prime = RP_w+T$，$P_w=R^T(p^\prime-T)=R^Tp^\prime-R^TT$。因此，$p^\prime$ 在 $O_1$坐标系下的坐标就是 $R^Tp^\prime-R^TT$，$O_2$ 在 $O_1$坐标系下的坐标就是 $-R^TT$。</p>
-<p><img src="/images/cv_7_7.png" alt="图7"> </p>
-<p>在以 $O_1$为原点的情况下，可知向量$O_1p^\prime,O_1O_2$都位于极平面内，$O_1p^\prime \times O_1O_2$ 形成了一个垂直于极平面的向量，因此和$O_1p$的内积为0，即：</p>
+<p><strong>本质矩阵的作用：</strong></p>
+<p>给定 $p$ 在摄像机坐标系 $O_1$下的欧式三维坐标$(u,v,1)$，向量$\pmb p=O_1p = (u,v,1)$，本质矩阵 $E_{3\times3}$，那么极线 $l^\prime$ 的方程（$O_1$坐标系下）就是：$E\pmb p=\pmb l^\prime$。对于极线 $l$ 有 $\pmb p^T\pmb l=0$（假设极线 $l$ 的方程为$ax+by+c=0$，那么可以用一个向量表示为$\pmb l=(a,b,c)^T$，又因为 $p$ 点在 $l$ 上，因此$au+bv+c=0$，即  $\pmb p^T\pmb l=0$）。同理，对于 $p^\prime$在$O_2$ 坐标系下的欧式三维坐标$(u^\prime,v^\prime,1)$，$\pmb p^\prime = O_2p^\prime$，有 $\pmb p^{\prime T} \pmb l^\prime = 0$成立，</p>
+<p>将$E\pmb p=\pmb l^\prime$带入可得：</p>
 <script type="math/tex; mode=display">
-[R^TT\times(R^Tp^\prime-R^TT)]·p=0</script><h4 id="2-2-基础矩阵（Fundamental-Matrix）"><a href="#2-2-基础矩阵（Fundamental-Matrix）" class="headerlink" title="2.2 基础矩阵（Fundamental Matrix）"></a>2.2 基础矩阵（Fundamental Matrix）</h4><p>若不是规范化摄像机该如何？</p>
+\pmb p^{\prime T}E\pmb p=0</script><p><img src="C:\Users\zhang\AppData\Roaming\Typora\typora-user-images\image-20201119175933658.png" alt="image-20201119175933658"></p>
+<p>叉乘的矩阵表示形式：</p>
+<p><img src="C:\Users\zhang\AppData\Roaming\Typora\typora-user-images\image-20201119182250583.png" alt="image-20201119182250583" style="zoom: 80%;" /></p>
+<p><strong>本质矩阵的推导：</strong></p>
+<p><img src="C:\Users\zhang\AppData\Roaming\Typora\typora-user-images\image-20201119181702683.png" alt="image-20201119181702683" style="zoom:80%;" /></p>
+<p>$\pmb p^\prime = R(\pmb p-\pmb t)$ 就是$\pmb p^\prime$在$O_1$坐标系下的坐标。</p>
+<p>注意到 $p,p^\prime,l,l^\prime$和基线$O_1O_2$都位于极平面之上。</p>
+<p><img src="C:\Users\zhang\AppData\Roaming\Typora\typora-user-images\image-20201119184013119.png" alt="image-20201119184013119" style="zoom:80%;" /></p>
+<p>有：</p>
+<script type="math/tex; mode=display">
+\pmb p^T(\pmb t\times\pmb p) = 0</script><script type="math/tex; mode=display">
+(\pmb p-\pmb t)^T(\pmb t\times\pmb p) = 0</script><script type="math/tex; mode=display">
+\pmb p-\pmb t = R^T\pmb p^{\prime}</script><p>因此有：</p>
+<script type="math/tex; mode=display">
+\pmb p^{\prime T}R(\pmb t\times\pmb p) = 0</script><p>利用叉乘的矩阵形式有：</p>
+<script type="math/tex; mode=display">
+\pmb p^{\prime T}R[\pmb t_{\times}]\times\pmb p = 0</script><p>由以上推导可知：</p>
+<script type="math/tex; mode=display">
+E = (R[\pmb t_{\times}])_{3\times3}</script><p><strong>总结：</strong></p>
+<p>本质矩阵中包含 $R$ 和 $\pmb t$ (两个相机之间的旋转和平移关系)，它通过空间中的物理点，联系了左右相机之间的位置关系。</p>
+<h4 id="2-2-基础矩阵（Fundamental-Matrix）"><a href="#2-2-基础矩阵（Fundamental-Matrix）" class="headerlink" title="2.2 基础矩阵（Fundamental Matrix）"></a>2.2 基础矩阵（Fundamental Matrix）</h4><p>若不是规范化摄像机该如何？这是就引入了基础矩阵</p>
+<p><strong>基础矩阵对一般的透视摄像机拍两个点图间极几何关系进行代数描述</strong>。</p>
 ]]></content>
       <categories>
         <category>机器视觉基础</category>
@@ -324,6 +412,18 @@ J = \sum_{i=1}^k\sum_{j=1}^Nu_{ij}||\pmb x_j-\pmb \mu_i||^2</script><p>可知对
 \end{array}
 \right.</script><p>$u\in\{0,1\}$，也就是说，每个样本只属于某个簇，明显是个硬划分聚类。</p>
 <p>再回头看$\pmb \mu$更新公式，其实就是均值向量。</p>
+<p>自己手动实现K均值聚类代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets.samples_generator <span class="keyword">import</span> make_blobs</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eucli_distance</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">        定义欧式距离</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="keyword">return</span> np.sqrt(np.sum((x - y)**<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">assignment</span><span class="params">(points, centers)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">        将所有像素点分至k个簇中</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    assignments = []</span><br><span class="line">    cnt = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> p <span class="keyword">in</span> points:</span><br><span class="line">        <span class="comment"># 找出与p距离最近的中心</span></span><br><span class="line">        assignments.append(np.argmin([eucli_distance(p,c) <span class="keyword">for</span> c <span class="keyword">in</span> centers]))</span><br><span class="line">    <span class="keyword">return</span> assignments</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">refitting</span><span class="params">(points, assignments)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">        重新计算各个簇的均值</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    clusters = defaultdict(list)</span><br><span class="line">    means = []</span><br><span class="line">    <span class="keyword">for</span> (p,label) <span class="keyword">in</span> zip(points, assignments):</span><br><span class="line">        clusters[label].append(p)</span><br><span class="line">    <span class="comment"># 计算各个簇的均值</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> clusters:</span><br><span class="line">        means.append(np.mean(clusters[k],<span class="number">0</span>))</span><br><span class="line">    <span class="keyword">return</span> means</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kmeans</span><span class="params">(k, points, centers = None)</span>:</span></span><br><span class="line">    <span class="comment"># 每个像素点最终的聚类结果，k个类别</span></span><br><span class="line">    <span class="comment"># 初始化聚类中心</span></span><br><span class="line">    <span class="keyword">if</span> centers <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        centers = points[np.random.choice(len(points), k)]</span><br><span class="line">    ite = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> ite &lt;= <span class="number">100</span>:</span><br><span class="line">        labels = assignment(points, centers)</span><br><span class="line">        centers = refitting(points, labels)</span><br><span class="line">        ite += <span class="number">1</span></span><br><span class="line">        print(centers)</span><br><span class="line">    <span class="keyword">return</span> labels</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    center=[[<span class="number">1</span>,<span class="number">1</span>],[<span class="number">-1</span>,<span class="number">-1</span>],[<span class="number">1</span>,<span class="number">-1</span>]]</span><br><span class="line">	cluster_std=<span class="number">0.3</span></span><br><span class="line">	X,_ = make_blobs(n_samples=<span class="number">200</span>,centers=center,n_features=<span class="number">2</span>,</span><br><span class="line">                    cluster_std=cluster_std,random_state=<span class="number">0</span>)</span><br><span class="line">    res = kmeans(<span class="number">3</span>,X)</span><br><span class="line">    plt.scatter(X[:,<span class="number">0</span>],X[:,<span class="number">1</span>],c=res)</span><br><span class="line">	plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="/images/kmeans_res.png" alt=""></p>
+<p>下面是在<code>make_moons</code>数据集上的聚类结果</p>
+<p><img src="/images/make_moons_clusters.png" alt=""></p>
+<p>可以看到，K均值聚类的效果并不好。</p>
+<p><strong>图像分割</strong></p>
+<p>K均值做图像分割的思想非常简单。当输入是三通道图像时，每个像素点的三个通道值可以作为一个数据的特征，那么对于<code>[width,height,3]</code>的图像来说，共有<code>width*height</code>个数据点，每个点的特征维度是3维。K可以根据具体要求指定，当K为2时，即可用作前景、背景的分割。</p>
+<p>在聚类完成后，对于每个像素点的聚类结果（属于哪个簇）分配不同的像素值然后reshape回原来的size即可。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line">img = cv2.imread(<span class="string">'./3096.jpg'</span>).astype(<span class="string">'float32'</span>)</span><br><span class="line"><span class="comment"># 彩色图像,rgb作为一个像素的特征，共有 width * height 个点，每个点的维度是3维的</span></span><br><span class="line">data = img.reshape(<span class="number">-1</span>,<span class="number">3</span>)</span><br><span class="line"><span class="comment">#利用上述算法聚类 k = 2</span></span><br><span class="line">res = kmeans(<span class="number">2</span>,data)</span><br><span class="line"></span><br><span class="line">r = np.array(res).reshape(<span class="number">256</span>,<span class="number">-1</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(res)):</span><br><span class="line">    <span class="keyword">if</span> res[i] == <span class="number">1</span>:</span><br><span class="line">        res[i] = <span class="number">255</span> <span class="comment">#为类别为1的簇分配白色像素</span></span><br><span class="line"><span class="comment"># 保存图像</span></span><br><span class="line">cv2.imwrite(<span class="string">"bin.jpg"</span>,r)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/3096.jpg" alt=""></p>
+<p><img src="/images/bin.jpg" alt=""></p>
 <h4 id="2-2-高斯混合聚类"><a href="#2-2-高斯混合聚类" class="headerlink" title="2.2 高斯混合聚类"></a>2.2 高斯混合聚类</h4><p>高斯混合模型进行聚类的思想就是用多个概率分布函数来描述每一个簇（类）的信息。</p>
 <h3 id="3-层次聚类"><a href="#3-层次聚类" class="headerlink" title="3. 层次聚类"></a>3. 层次聚类</h3><p><strong>算法描述</strong></p>
 <ol>
@@ -1626,7 +1726,7 @@ A(\hat x) = ||G_E(\hat x) - E(G(\hat x))||_1</script><p>​        当异常得�
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> key, val;</span><br><span class="line">    <span class="keyword">public</span> Node prev, next;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">        <span class="keyword">this</span>.val = val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 双向链表</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DoubleList</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Node head, tail;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> length = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DoubleList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        head = <span class="keyword">new</span> Node(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        tail = <span class="keyword">new</span> Node(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        head.next = tail;</span><br><span class="line">        tail.prev = head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addFirst</span><span class="params">(Node n)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 双向链表头部添加节点</span></span><br><span class="line">        n.next = head.next;</span><br><span class="line">        n.prev = head;</span><br><span class="line"></span><br><span class="line">        head.next.prev = n;</span><br><span class="line">        head.next = n;</span><br><span class="line">        length++;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Node x)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 删除链表中的结点</span></span><br><span class="line">        x.prev.next = x.next;</span><br><span class="line">        x.next.prev = x.prev;</span><br><span class="line">        length--;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Node <span class="title">removeLast</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 首先判断链表是否为空</span></span><br><span class="line">        <span class="keyword">if</span> (head.next == tail) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Node res = tail.prev;</span><br><span class="line">        remove(res);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;Integer, Node&gt; map;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> DoubleList cache;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> capacity;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LRUCache</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">        map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        cache = <span class="keyword">new</span> DoubleList();</span><br><span class="line">        <span class="keyword">this</span>.capacity = capacity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!map.containsKey(key)) &#123;</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> val = map.get(key).val;</span><br><span class="line">        put(key, val);</span><br><span class="line">        <span class="keyword">return</span> val;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Node x = <span class="keyword">new</span> Node(key, value);</span><br><span class="line">        <span class="keyword">if</span> (map.containsKey(key)) &#123;</span><br><span class="line">            <span class="comment">// map中存在key，更新值</span></span><br><span class="line">            cache.remove(map.get(key));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.capacity == cache.size()) &#123;</span><br><span class="line">                <span class="comment">// 删除最久未使用的结点 -- 最后一个结点</span></span><br><span class="line">                Node last = cache.removeLast();</span><br><span class="line">                map.remove(last.key);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        cache.addFirst(x);</span><br><span class="line">        map.put(key, x);<span class="comment">// if else 中都有的逻辑，提取出来</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>Leetcode</category>
+        <category>基础算法</category>
       </categories>
   </entry>
   <entry>
