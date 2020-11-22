@@ -14,12 +14,12 @@
 <meta property="og:url" content="http://yoursite.com/2020/11/20/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%A0%86/index.html">
 <meta property="og:site_name" content="张永剑的博客">
 <meta property="og:description" content="数据结构之堆堆就是用数组实现的二叉树，所以它没有使用父指针或者子指针。 堆的定义（性质）：  堆中某个节点的值总是不大于或不小于其父节点的值； 堆是一棵完全二叉树  根元素为最大值的称为大根堆，根元素为最小值的称为小根堆。 在堆中：  数组索引为i的元素其父元素索引是：floor((i - 1) &#x2F; 2)&#96;&#96;floor即取下界（floor(3.5)&#x3D;3）；  数组索引为i的元素，左孩子节点的索引是">
-<meta property="og:image" content="c:/Users/zhang/Pictures/图片1.png">
+<meta property="og:image" content="http://yoursite.com/images/heap.png">
 <meta property="article:published_time" content="2020-11-20T02:48:10.642Z">
-<meta property="article:modified_time" content="2020-11-20T04:24:18.632Z">
+<meta property="article:modified_time" content="2020-11-22T03:53:33.775Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:/Users/zhang/Pictures/图片1.png">
+<meta name="twitter:image" content="http://yoursite.com/images/heap.png">
   
     <link rel="alternative" href="/atom.xml" title="张永剑的博客" type="application/atom+xml">
   
@@ -244,7 +244,7 @@
 </li>
 </ul>
 <p>给定如下所示一个大根堆，用数组存储就是<code>[10,8,3,6,4,2]</code>。换句话说，这样的数组可以抽象化成一棵完全二叉树。可以看到没有用到任何指针，数组中索引为<code>i</code>的元素通过上述公式来找到对应的父节点和孩子节点。</p>
-<p><img src="C:\Users\zhang\Pictures\图片1.png" style="zoom:80%;" /></p>
+<p><img src="/images/heap.png" alt=""></p>
 <p>现在的问题就是：给定一个无序数组，如何<strong>构建</strong>一个堆？构建好以后，添加元素、删除元素该怎么<strong>调整</strong>堆？</p>
 <p>关于维护堆两个重要的操作就是<code>heapifyUp</code>和<code>heapifyDown</code>。</p>
 <p>以小根堆为例。</p>
@@ -334,6 +334,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2020/11/21/Evidential%20Reasoning%20Rule%20for%20Evidence%20Combination/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Evidential Reasoning Rule for Evidence Combination
+        
+      </div>
+    </a>
   
   
     <a href="/2020/11/18/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" id="article-nav-older" class="article-nav-link-wrap">
