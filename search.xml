@@ -1,6 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>误差逆传播算法</title>
+    <url>/2020/11/23/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="误差逆传播算法"><a href="#误差逆传播算法" class="headerlink" title="误差逆传播算法"></a>误差逆传播算法</h2><a id="more"></a>
+<p>给定如下结构的前馈全连接神经网络：</p>
+<p><img src="https://img2018.cnblogs.com/i-beta/1217155/202002/1217155-20200215123550539-362686896.png" alt="网络结构图"></p>
+<h4 id="符号约定"><a href="#符号约定" class="headerlink" title="符号约定"></a>符号约定</h4><p>输入样本 $\pmb x\in \mathbb{R}^d$，即神经网络输入层有 $d$ 个神经元。</p>
+<p>输出 $\pmb y \in \mathbb{R}^l$，即神经网络输出层有 $l$ 个神经元。</p>
+<p>输入层有 $q$ 个神经元，第 $h$ 个隐藏层神经元输入 $\alpha_h$，阈值 $\gamma_h$。输入层第 $i$ 个神经元到隐藏层第 $h$ 个神经元的权重 $v_{ih}$，第 $h$ 个隐藏层神经元输出为 $b_h$。</p>
+<script type="math/tex; mode=display">
+\alpha_h = \sum_{i=1}^d v_{ih}x_i\tag{1}</script><script type="math/tex; mode=display">
+b_h = f(\alpha_h - \gamma_h)\tag{2}</script><p>输出层有 $l$ 个神经元，第 $j$ 个神经元的输入 $\beta_j$，阈值为 $\theta_j$，隐藏层第 $h$ 个神经元到输出层第 $j$ 个神经元的权重为 $w_{hj}$， 第 $j$ 个输出层神经元的输出为 $\hat y_j$ 。</p>
+<script type="math/tex; mode=display">
+\beta_j = \sum_{h=1}^qw_{hj}b_h\tag{3}</script><script type="math/tex; mode=display">
+\hat y_j = f(\beta_j - \theta_j) \tag{4}</script><p>给定第 $k$ 个样本 $(\pmb x_k,\pmb y_k)$，神经网络输出为 $\hat {\pmb y_k}=(\hat y_1^k,\hat y_2^k,…,\hat y_l^k)$。</p>
+<p>定义损失函数为均方误差函数，那么第 $k$ 个样本的损失为</p>
+<script type="math/tex; mode=display">
+E_k = \frac{1}{2}\sum_{j=1}^l(\hat y_j^k - y_j^k)^2\tag{5}</script><p>假设 $f$ 为 $Sigmod$ 函数。</p>
+<script type="math/tex; mode=display">
+f(x) = \frac{1}{1 + e^{-x}}\tag{6}</script><script type="math/tex; mode=display">
+f^\prime(x) = f(x)(1-f(x))\tag{7}</script><h4 id="具体推导"><a href="#具体推导" class="headerlink" title="具体推导"></a>具体推导</h4><ul>
+<li>隐藏层到输出层权重 $w_{hj}$ 的更新公式</li>
+</ul>
+<p>根据网络结构图我们注意到有如下关系：</p>
+<script type="math/tex; mode=display">
+w_{hj} \rightarrow \beta_j \rightarrow \hat y_j \rightarrow E</script><p>所以，根据链式求导法则，有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial w_{hj}} = \frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j}\frac{\partial \beta_j}{\partial w_{hj}}\tag{8}</script><p>现在就一步一步求三个偏导就好了。</p>
+<p>首先求 $\frac{\partial E_k}{\partial \hat y_j^k}$。根据公式 $(5)$，有</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial \hat y_j^k} = (\hat y_j^k - y_j^k)\tag{9}</script><p>接着求 $\frac{\partial \hat y_j^k}{\partial \beta_j}$。根据公式 $(4)，(7)$有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial \hat y_j^k}{\partial \beta_j} = f(\beta_j+\theta_j)(1-f(\beta_j+\theta_j))\tag{10}</script><p>将公式 $(4)$ 带入 $(10)$中可得：</p>
+<script type="math/tex; mode=display">
+\frac{\partial \hat y_j^k}{\partial \beta_j} = \hat y_j^k(1-\hat y_j^k)\tag{11}</script><p>最后求 $\frac{\partial \beta_j}{\partial w_{hj}}$。根据公式 $(3)$，有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial \beta_j}{\partial w_{hj}} = b_h\tag{12}</script><p>综上，结合公式$(9),(11),(12)$，带入$ (8)$ 中，可得：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial w_{hj}} =\hat y_j^k(\hat y_j^k - y_j^k)(1-\hat y_j^k)b_h\tag{13}</script><p>另外，我们定义 $g_j$ ：</p>
+<script type="math/tex; mode=display">
+g_j =-\frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j} = \hat y_j^k(y_j^k-\hat y_j^k)(1 - \hat y_j^k) \tag{14}</script><p>最后，隐藏层到输出层 $w_{hj}$ 的更新公式为：</p>
+<script type="math/tex; mode=display">
+w_{hj}^{(t+1)} = w_{hj}^{(t)} + \eta g_jb_h\tag{15}</script><p>其中，$\eta$ 为学习率。注意定义 $g_j$ 时已经取过负号了。</p>
+<ul>
+<li>输入层到隐藏层权重 $v_{ih}$ 的更新公式</li>
+</ul>
+<p>根据网络结构图，我们可知有如下关系：</p>
+<script type="math/tex; mode=display">
+v_{ih}\rightarrow \alpha_h \rightarrow b_h \rightarrow \beta_1,\beta_2,...,\beta_l \rightarrow \hat y_1,\hat y_2,...,\hat y_l \rightarrow E</script><p>因此，</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial v_{ih}} = (\sum_{j=1}^l \frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j}\frac{\partial \beta_j}{\partial b_h})\frac{\partial b_h}{\partial \alpha_h}\frac{\partial \alpha_h}{\partial v_{ih}}\tag{16}</script><p>根据公式 $(1),(2)$有</p>
+<script type="math/tex; mode=display">
+\frac{\partial \alpha_h}{\partial v_{ih}}  = x_i\tag{17}</script><script type="math/tex; mode=display">
+\frac{\partial b_h}{\partial \alpha_h} = f^\prime(\alpha_h-\gamma_h) = b_h(1-b_h)\tag{18}</script><p>根据公式$(3),(14)$，有</p>
+<script type="math/tex; mode=display">
+\frac{\partial \beta_j}{\partial b_h} = w_{hj}\tag{19}</script><script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j} = -g_j\tag{20}</script><p>综上，</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial v_{ih}} = \sum_{j=1}^l g_jw_{hj}(b_h-1)b_h x_i\tag{21}</script><p>另外，我们定义 $e_h$</p>
+<script type="math/tex; mode=display">
+e_h = -\sum_{j=1}^l \frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j}f^\prime(\alpha_h - \gamma_h)\tag{22}</script><p>最后，输入层到隐藏层权重 $v_{ih}$ 的更新公式为：</p>
+<script type="math/tex; mode=display">
+v_{ij}^{(t+1)} = v_{ij}^{(t)} +\epsilon e_hx_i \tag{23}</script><p>同样的，$\epsilon$ 为学习率。</p>
+<ul>
+<li>阈值 $\theta_j$、$\gamma_h$ 的更新公式</li>
+</ul>
+<script type="math/tex; mode=display">
+\theta_j \rightarrow \beta_j \rightarrow \hat y_j \rightarrow E</script><p>注意到与 $w_{hj}$ 完全相同（仅仅是将$w_{hj}$换成了 $\theta_j$ ），所以有：</p>
+<script type="math/tex; mode=display">
+\theta_j^{(t+1)} = \theta^{(t)}+\eta g_j \tag{24}</script><p>同理，</p>
+<script type="math/tex; mode=display">
+\gamma_h^{(t+1)} = \gamma_h^{(t+1)} +\eta e_h\tag{25}</script><h4 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h4><p><img src="E:\hexo\themes\yilia\source\images\bp_hw.png" alt="image-20201123220027292"></p>
+<p>首先推导，之后与直接带入公式进行对比。</p>
+<p>观察发现：</p>
+<script type="math/tex; mode=display">
+v_{11} \rightarrow \beta_1 \rightarrow \hat y_1 \rightarrow E</script><p>由此：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial v_{11}} = \frac{\partial E_k}{\partial \hat y_1^k}\frac{\partial \hat y_1^k}{\partial \beta_1}\frac{\partial \beta_1}{\partial v_{11}}</script><script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial \hat y_1^k} = (\hat y_1^k - y_1^k)</script><script type="math/tex; mode=display">
+\frac{\partial \hat y_1^k}{\partial \beta_1} =f^\prime(\beta_1-\theta_1)=\hat y_1(1-\hat y_1)</script><script type="math/tex; mode=display">
+\frac{\partial \beta_1}{\partial v_{11}} = b_1</script><p>其中 $b_1$ 为隐藏层第一个神经元的输出。综上，有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial v_{11}}  = \hat y_1(\hat y_1^k - y_1^k)(1-\hat y_1)b_!</script><p>发现与公式$(14)$一致。</p>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p>周志华，机器学习</p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>无重叠区间</title>
+    <url>/2020/11/23/%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/</url>
+    <content><![CDATA[<h3 id="无重叠区间"><a href="#无重叠区间" class="headerlink" title="无重叠区间"></a>无重叠区间</h3><p>日常刷题记录</p>
+<a id="more"></a>
+<p>今天这两个题都和贪心算法以及区间有关，还是挺有意思的。</p>
+<h4 id="1-用最少数量的箭引爆气球"><a href="#1-用最少数量的箭引爆气球" class="headerlink" title="1. 用最少数量的箭引爆气球"></a>1. 用最少数量的箭引爆气球</h4><p>贪心策略：将右端点从小到大排序。排序好以后，第一个气球肯定需要一只箭，以第一个右端点作为边界，如果下一个气球的左端点小于这个边界那说明不用花费一只箭了，否则就需要另一支箭，然后更新边界。</p>
+<p><img src="/images/minArrowShots.png" style="zoom:80%;" /></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findMinArrowShots</span><span class="params">(<span class="keyword">int</span>[][] points)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = points.length;</span><br><span class="line">        <span class="keyword">if</span> (len &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 排序 按照右端点从小到大排序 注意：使用 a[1] - b[1] 可能会越界</span></span><br><span class="line">        Arrays.sort(points, (a, b) -&gt; a[<span class="number">1</span>] &gt; b[<span class="number">1</span>] ? <span class="number">1</span> : -<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">int</span> arrow = points[<span class="number">0</span>][<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; len; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (arrow &lt; points[i][<span class="number">0</span>])&#123;<span class="comment">// 右端点小于下一个气球的起始坐标，需要另外一支箭</span></span><br><span class="line">                ans++;</span><br><span class="line">                arrow = points[i][<span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 否则，一支箭可以继续射下去</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-无重叠区间"><a href="#2-无重叠区间" class="headerlink" title="2. 无重叠区间"></a>2. 无重叠区间</h4><p>贪心策略：依然按照区间右端点从小到排序，然后反其道而行之，先计算最大无重叠区间个数，那么用区间个数减去最大无重叠区间个数就是需要移除区间的最小数量，使剩余区间互不重叠。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">eraseOverlapIntervals</span><span class="params">(<span class="keyword">int</span>[][] intervals)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">1</span>, len = intervals.length;</span><br><span class="line">        <span class="keyword">if</span> (len &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 重叠区间 [a,b] [c,d] b &gt; c</span></span><br><span class="line">        Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[<span class="number">1</span>],b[<span class="number">1</span>]));</span><br><span class="line">        <span class="keyword">int</span> boundary = intervals[<span class="number">0</span>][<span class="number">1</span>];<span class="comment">//右边界</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; len; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (boundary &lt;= intervals[i][<span class="number">0</span>])&#123;</span><br><span class="line">                ans++;</span><br><span class="line">                boundary = intervals[i][<span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> len - ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>基础算法</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Evidential Reasoning Rule for Evidence Combination</title>
     <url>/2020/11/21/Evidential%20Reasoning%20Rule%20for%20Evidence%20Combination/</url>
     <content><![CDATA[<h2 id="Evidential-Reasoning-Rule-for-Evidence-Combination"><a href="#Evidential-Reasoning-Rule-for-Evidence-Combination" class="headerlink" title="Evidential Reasoning Rule for Evidence Combination"></a>Evidential Reasoning Rule for Evidence Combination</h2><p>关键词：Dempster-Shafer theory，Information fusion（信息融合），Evidence Combination，Evidential Reasoning（证据推理）。</p>

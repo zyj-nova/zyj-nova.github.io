@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-11-22T13:42:04.060Z</updated>
+  <updated>2020-11-23T14:15:44.259Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,44 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>误差逆传播算法</title>
+    <link href="http://yoursite.com/2020/11/23/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/"/>
+    <id>http://yoursite.com/2020/11/23/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/</id>
+    <published>2020-11-23T11:45:06.033Z</published>
+    <updated>2020-11-23T14:15:44.259Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;误差逆传播算法&quot;&gt;&lt;a href=&quot;#误差逆传播算法&quot; class=&quot;headerlink&quot; title=&quot;误差逆传播算法&quot;&gt;&lt;/a&gt;误差逆传播算法&lt;/h2&gt;
+    
+    </summary>
+    
+    
+      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>无重叠区间</title>
+    <link href="http://yoursite.com/2020/11/23/%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/"/>
+    <id>http://yoursite.com/2020/11/23/%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/</id>
+    <published>2020-11-23T10:27:05.710Z</published>
+    <updated>2020-11-23T11:11:44.290Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;无重叠区间&quot;&gt;&lt;a href=&quot;#无重叠区间&quot; class=&quot;headerlink&quot; title=&quot;无重叠区间&quot;&gt;&lt;/a&gt;无重叠区间&lt;/h3&gt;&lt;p&gt;日常刷题记录&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="基础算法" scheme="http://yoursite.com/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Evidential Reasoning Rule for Evidence Combination</title>
@@ -366,48 +404,6 @@
     <summary type="html">
     
       &lt;h2 id=&quot;贝叶斯垃圾邮件分类器&quot;&gt;&lt;a href=&quot;#贝叶斯垃圾邮件分类器&quot; class=&quot;headerlink&quot; title=&quot;贝叶斯垃圾邮件分类器&quot;&gt;&lt;/a&gt;贝叶斯垃圾邮件分类器&lt;/h2&gt;&lt;p&gt;利用朴素贝叶斯算法，在给定训练数据上，训练一个垃圾分类器。有关朴素贝叶斯的基本思想，可以参见另一篇博客：&lt;a href=&quot;https://zyj-nova.github.io/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://zyj-nova.github.io/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Strang教授线性代数笔记</title>
-    <link href="http://yoursite.com/2020/09/23/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/"/>
-    <id>http://yoursite.com/2020/09/23/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/</id>
-    <published>2020-09-23T02:44:37.995Z</published>
-    <updated>2020-11-11T03:46:52.221Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h3 id=&quot;Strang教授线性代数笔记&quot;&gt;&lt;a href=&quot;#Strang教授线性代数笔记&quot; class=&quot;headerlink&quot; title=&quot;Strang教授线性代数笔记&quot;&gt;&lt;/a&gt;Strang教授线性代数笔记&lt;/h3&gt;&lt;p&gt;具体参见：&lt;a
-        
-      
-    
-    </summary>
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>浅谈逻辑斯蒂回归模型</title>
-    <link href="http://yoursite.com/2020/08/03/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/"/>
-    <id>http://yoursite.com/2020/08/03/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/</id>
-    <published>2020-08-03T08:01:07.919Z</published>
-    <updated>2020-11-11T03:42:35.176Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;浅谈逻辑斯蒂回归模型&quot;&gt;&lt;a href=&quot;#浅谈逻辑斯蒂回归模型&quot; class=&quot;headerlink&quot; title=&quot;浅谈逻辑斯蒂回归模型&quot;&gt;&lt;/a&gt;浅谈逻辑斯蒂回归模型&lt;/h2&gt;
     
     </summary>
     

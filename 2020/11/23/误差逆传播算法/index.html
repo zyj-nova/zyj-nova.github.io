@@ -6,18 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Evidential Reasoning Rule for Evidence Combination | 张永剑的博客</title>
+  <title>误差逆传播算法 | 张永剑的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Evidential Reasoning Rule for Evidence Combination关键词：Dempster-Shafer theory，Information fusion（信息融合），Evidence Combination，Evidential Reasoning（证据推理）。">
+  <meta name="description" content="误差逆传播算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Evidential Reasoning Rule for Evidence Combination">
-<meta property="og:url" content="http://yoursite.com/2020/11/21/Evidential%20Reasoning%20Rule%20for%20Evidence%20Combination/index.html">
+<meta property="og:title" content="误差逆传播算法">
+<meta property="og:url" content="http://yoursite.com/2020/11/23/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/index.html">
 <meta property="og:site_name" content="张永剑的博客">
-<meta property="og:description" content="Evidential Reasoning Rule for Evidence Combination关键词：Dempster-Shafer theory，Information fusion（信息融合），Evidence Combination，Evidential Reasoning（证据推理）。">
-<meta property="article:published_time" content="2020-11-21T14:08:20.854Z">
-<meta property="article:modified_time" content="2020-11-22T13:42:04.060Z">
+<meta property="og:description" content="误差逆传播算法">
+<meta property="og:image" content="https://img2018.cnblogs.com/i-beta/1217155/202002/1217155-20200215123550539-362686896.png">
+<meta property="og:image" content="e:/hexo/themes/yilia/source/images/bp_hw.png">
+<meta property="article:published_time" content="2020-11-23T11:45:06.033Z">
+<meta property="article:modified_time" content="2020-11-23T14:15:44.259Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img2018.cnblogs.com/i-beta/1217155/202002/1217155-20200215123550539-362686896.png">
   
     <link rel="alternative" href="/atom.xml" title="张永剑的博客" type="application/atom+xml">
   
@@ -205,20 +208,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Evidential Reasoning Rule for Evidence Combination" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-误差逆传播算法" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Evidential Reasoning Rule for Evidence Combination
+      误差逆传播算法
     </h1>
   
 
         
-        <a href="/2020/11/21/Evidential%20Reasoning%20Rule%20for%20Evidence%20Combination/" class="archive-article-date">
-  	<time datetime="2020-11-21T14:08:20.854Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-21</time>
+        <a href="/2020/11/23/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/" class="archive-article-date">
+  	<time datetime="2020-11-23T11:45:06.033Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-23</time>
 </a>
         
       </header>
@@ -227,28 +230,88 @@
       
         
           
-            <h2 id="Evidential-Reasoning-Rule-for-Evidence-Combination"><a href="#Evidential-Reasoning-Rule-for-Evidence-Combination" class="headerlink" title="Evidential Reasoning Rule for Evidence Combination"></a>Evidential Reasoning Rule for Evidence Combination</h2><p>关键词：Dempster-Shafer theory，Information fusion（信息融合），Evidence Combination，Evidential Reasoning（证据推理）。</p>
-<a id="more"></a>
-<p>ER: evidential reasoning</p>
-<p>BPA: basic probability assignment function 基本概率赋值函数</p>
-<p>ECR: evidence combination rule</p>
-<p>BD: belief distribution （信念分布，不严谨的说等同于概率分布）</p>
-<p>WBD: weighted belief distribution</p>
-<p>WBDR: weighted belief distribution with reliability  </p>
-<p>orthogonal sum operation（正交和）: </p>
-<p>propositions（命题），evidence（证据）。二者的关系：有一些证据，推断命题的真假。</p>
-<p>power set（幂集）：一个集合所有子集所构成的集合。</p>
-<h3 id="1-D-S-theory"><a href="#1-D-S-theory" class="headerlink" title="1. D-S theory"></a>1. D-S theory</h3><p>D-S theory首先由哈佛大学Dempster教授于1967年提出；在1976年由Dempster学生Shafer进一步拓展，形成了D-S theory。由于在证据理论中需要的先验数据比概率推理理论中的更为直观、更容易获得，再加上Dempster合成公式可以综合不同专家或数据源的知识或数据，这使得证据理论在<strong>专家系统、信息融合</strong>等领域中得到了广泛应用。</p>
-<p>先来介绍一个情景，介绍这个理论到底是干啥的。某天夜里，一个小区里发生了一起偷盗案，要找出窃贼是谁。经过一番排查锁定了三个嫌疑人：张三，李华，王五；与此同时还有三个人证：小明说是张三干的，小杰说是李华干的，小雪说是王五干的。问如何利用这三个证词找出窃贼？</p>
-<p>上述案例中的三个嫌疑人构成了一个集合$\Theta=\{\theta_1,\theta_2,\theta_3\}$，称集合$\Theta$为一个<strong>辨识框架</strong>（a framework of discernment），$\theta_i$被称为一个命题（proposition）或者假设（hypothesis）。这些命题需要满足mutually exclusive and collectively exhaustive principle（相互独立、完全穷尽原则，简称MCME）。单个命题通常称为 singleton。</p>
-<p>三个人证对应三个基本概率赋值函数（BPA），针对$\Theta$中每个子集（subset）概率赋值函数（也称为mass函数）需要给出一个值，表明这个子集对最终答案的信念度（ degree of belief）。</p>
-<p>在$\Theta$上的基本概率赋值函数 $m$ 定义如下：</p>
+            <h2 id="误差逆传播算法"><a href="#误差逆传播算法" class="headerlink" title="误差逆传播算法"></a>误差逆传播算法</h2><a id="more"></a>
+<p>给定如下结构的前馈全连接神经网络：</p>
+<p><img src="https://img2018.cnblogs.com/i-beta/1217155/202002/1217155-20200215123550539-362686896.png" alt="网络结构图"></p>
+<h4 id="符号约定"><a href="#符号约定" class="headerlink" title="符号约定"></a>符号约定</h4><p>输入样本 $\pmb x\in \mathbb{R}^d$，即神经网络输入层有 $d$ 个神经元。</p>
+<p>输出 $\pmb y \in \mathbb{R}^l$，即神经网络输出层有 $l$ 个神经元。</p>
+<p>输入层有 $q$ 个神经元，第 $h$ 个隐藏层神经元输入 $\alpha_h$，阈值 $\gamma_h$。输入层第 $i$ 个神经元到隐藏层第 $h$ 个神经元的权重 $v_{ih}$，第 $h$ 个隐藏层神经元输出为 $b_h$。</p>
 <script type="math/tex; mode=display">
-m(\empty)=0,\sum_{\theta\in2^{\Theta}}=1</script><p>集合$\Theta$的幂集：$2^{\Theta}$ 或者记为 $P(\Theta)$。可知：$\theta\in2^{\Theta}\Leftrightarrow\theta\subseteq\Theta$。</p>
-<p>当有多个概率赋值函数时，就需要考虑如何对其进行结合。</p>
-<h3 id="2-Typical-Evidence-Combination-Rules"><a href="#2-Typical-Evidence-Combination-Rules" class="headerlink" title="2. Typical Evidence Combination Rules"></a>2. Typical Evidence Combination Rules</h3><h4 id="2-1-Dempster’s-rule"><a href="#2-1-Dempster’s-rule" class="headerlink" title="2.1 Dempster’s rule"></a>2.1 Dempster’s rule</h4><p>假设有 $2$ 个概率赋值函数 $m_1,m_2$，关于某一命题$\theta$，Dempeter’s rule定义融合规则如下：</p>
+\alpha_h = \sum_{i=1}^d v_{ih}x_i\tag{1}</script><script type="math/tex; mode=display">
+b_h = f(\alpha_h - \gamma_h)\tag{2}</script><p>输出层有 $l$ 个神经元，第 $j$ 个神经元的输入 $\beta_j$，阈值为 $\theta_j$，隐藏层第 $h$ 个神经元到输出层第 $j$ 个神经元的权重为 $w_{hj}$， 第 $j$ 个输出层神经元的输出为 $\hat y_j$ 。</p>
 <script type="math/tex; mode=display">
-m_1\oplus m_2 = \frac{\sum_{B \cap C\not=\empty}m_1(B)m_2(C)}{1-\sum_{B\cap C=\empty}m_1(B)m_2(C)}</script><h4 id="2-2-Shafer’s-rule"><a href="#2-2-Shafer’s-rule" class="headerlink" title="2.2 Shafer’s rule"></a>2.2 Shafer’s rule</h4><h4 id="2-3-PCR5、Yager’s-rule、Dubois-and-Prade’s-rule"><a href="#2-3-PCR5、Yager’s-rule、Dubois-and-Prade’s-rule" class="headerlink" title="2.3 PCR5、Yager’s rule、Dubois and Prade’s rule"></a>2.3 PCR5、Yager’s rule、Dubois and Prade’s rule</h4><h3 id="3-New-ER-rule-to-combine-evidence-with-weight"><a href="#3-New-ER-rule-to-combine-evidence-with-weight" class="headerlink" title="3. New ER rule to combine evidence with weight"></a>3. New ER rule to combine evidence with weight</h3><h3 id="4-New-ER-rule-to-combine-evidence-with-both-weight-and-reliability"><a href="#4-New-ER-rule-to-combine-evidence-with-both-weight-and-reliability" class="headerlink" title="4. New ER rule to combine evidence with both weight and reliability"></a>4. New ER rule to combine evidence with both weight and reliability</h3><h3 id="5-Properties-of-the-new-ER-rule"><a href="#5-Properties-of-the-new-ER-rule" class="headerlink" title="5. Properties of the new ER rule"></a>5. Properties of the new ER rule</h3>
+\beta_j = \sum_{h=1}^qw_{hj}b_h\tag{3}</script><script type="math/tex; mode=display">
+\hat y_j = f(\beta_j - \theta_j) \tag{4}</script><p>给定第 $k$ 个样本 $(\pmb x_k,\pmb y_k)$，神经网络输出为 $\hat {\pmb y_k}=(\hat y_1^k,\hat y_2^k,…,\hat y_l^k)$。</p>
+<p>定义损失函数为均方误差函数，那么第 $k$ 个样本的损失为</p>
+<script type="math/tex; mode=display">
+E_k = \frac{1}{2}\sum_{j=1}^l(\hat y_j^k - y_j^k)^2\tag{5}</script><p>假设 $f$ 为 $Sigmod$ 函数。</p>
+<script type="math/tex; mode=display">
+f(x) = \frac{1}{1 + e^{-x}}\tag{6}</script><script type="math/tex; mode=display">
+f^\prime(x) = f(x)(1-f(x))\tag{7}</script><h4 id="具体推导"><a href="#具体推导" class="headerlink" title="具体推导"></a>具体推导</h4><ul>
+<li>隐藏层到输出层权重 $w_{hj}$ 的更新公式</li>
+</ul>
+<p>根据网络结构图我们注意到有如下关系：</p>
+<script type="math/tex; mode=display">
+w_{hj} \rightarrow \beta_j \rightarrow \hat y_j \rightarrow E</script><p>所以，根据链式求导法则，有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial w_{hj}} = \frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j}\frac{\partial \beta_j}{\partial w_{hj}}\tag{8}</script><p>现在就一步一步求三个偏导就好了。</p>
+<p>首先求 $\frac{\partial E_k}{\partial \hat y_j^k}$。根据公式 $(5)$，有</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial \hat y_j^k} = (\hat y_j^k - y_j^k)\tag{9}</script><p>接着求 $\frac{\partial \hat y_j^k}{\partial \beta_j}$。根据公式 $(4)，(7)$有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial \hat y_j^k}{\partial \beta_j} = f(\beta_j+\theta_j)(1-f(\beta_j+\theta_j))\tag{10}</script><p>将公式 $(4)$ 带入 $(10)$中可得：</p>
+<script type="math/tex; mode=display">
+\frac{\partial \hat y_j^k}{\partial \beta_j} = \hat y_j^k(1-\hat y_j^k)\tag{11}</script><p>最后求 $\frac{\partial \beta_j}{\partial w_{hj}}$。根据公式 $(3)$，有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial \beta_j}{\partial w_{hj}} = b_h\tag{12}</script><p>综上，结合公式$(9),(11),(12)$，带入$ (8)$ 中，可得：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial w_{hj}} =\hat y_j^k(\hat y_j^k - y_j^k)(1-\hat y_j^k)b_h\tag{13}</script><p>另外，我们定义 $g_j$ ：</p>
+<script type="math/tex; mode=display">
+g_j =-\frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j} = \hat y_j^k(y_j^k-\hat y_j^k)(1 - \hat y_j^k) \tag{14}</script><p>最后，隐藏层到输出层 $w_{hj}$ 的更新公式为：</p>
+<script type="math/tex; mode=display">
+w_{hj}^{(t+1)} = w_{hj}^{(t)} + \eta g_jb_h\tag{15}</script><p>其中，$\eta$ 为学习率。注意定义 $g_j$ 时已经取过负号了。</p>
+<ul>
+<li>输入层到隐藏层权重 $v_{ih}$ 的更新公式</li>
+</ul>
+<p>根据网络结构图，我们可知有如下关系：</p>
+<script type="math/tex; mode=display">
+v_{ih}\rightarrow \alpha_h \rightarrow b_h \rightarrow \beta_1,\beta_2,...,\beta_l \rightarrow \hat y_1,\hat y_2,...,\hat y_l \rightarrow E</script><p>因此，</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial v_{ih}} = (\sum_{j=1}^l \frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j}\frac{\partial \beta_j}{\partial b_h})\frac{\partial b_h}{\partial \alpha_h}\frac{\partial \alpha_h}{\partial v_{ih}}\tag{16}</script><p>根据公式 $(1),(2)$有</p>
+<script type="math/tex; mode=display">
+\frac{\partial \alpha_h}{\partial v_{ih}}  = x_i\tag{17}</script><script type="math/tex; mode=display">
+\frac{\partial b_h}{\partial \alpha_h} = f^\prime(\alpha_h-\gamma_h) = b_h(1-b_h)\tag{18}</script><p>根据公式$(3),(14)$，有</p>
+<script type="math/tex; mode=display">
+\frac{\partial \beta_j}{\partial b_h} = w_{hj}\tag{19}</script><script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j} = -g_j\tag{20}</script><p>综上，</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial v_{ih}} = \sum_{j=1}^l g_jw_{hj}(b_h-1)b_h x_i\tag{21}</script><p>另外，我们定义 $e_h$</p>
+<script type="math/tex; mode=display">
+e_h = -\sum_{j=1}^l \frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j}f^\prime(\alpha_h - \gamma_h)\tag{22}</script><p>最后，输入层到隐藏层权重 $v_{ih}$ 的更新公式为：</p>
+<script type="math/tex; mode=display">
+v_{ij}^{(t+1)} = v_{ij}^{(t)} +\epsilon e_hx_i \tag{23}</script><p>同样的，$\epsilon$ 为学习率。</p>
+<ul>
+<li>阈值 $\theta_j$、$\gamma_h$ 的更新公式</li>
+</ul>
+<script type="math/tex; mode=display">
+\theta_j \rightarrow \beta_j \rightarrow \hat y_j \rightarrow E</script><p>注意到与 $w_{hj}$ 完全相同（仅仅是将$w_{hj}$换成了 $\theta_j$ ），所以有：</p>
+<script type="math/tex; mode=display">
+\theta_j^{(t+1)} = \theta^{(t)}+\eta g_j \tag{24}</script><p>同理，</p>
+<script type="math/tex; mode=display">
+\gamma_h^{(t+1)} = \gamma_h^{(t+1)} +\eta e_h\tag{25}</script><h4 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h4><p><img src="E:\hexo\themes\yilia\source\images\bp_hw.png" alt="image-20201123220027292"></p>
+<p>首先推导，之后与直接带入公式进行对比。</p>
+<p>观察发现：</p>
+<script type="math/tex; mode=display">
+v_{11} \rightarrow \beta_1 \rightarrow \hat y_1 \rightarrow E</script><p>由此：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial v_{11}} = \frac{\partial E_k}{\partial \hat y_1^k}\frac{\partial \hat y_1^k}{\partial \beta_1}\frac{\partial \beta_1}{\partial v_{11}}</script><script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial \hat y_1^k} = (\hat y_1^k - y_1^k)</script><script type="math/tex; mode=display">
+\frac{\partial \hat y_1^k}{\partial \beta_1} =f^\prime(\beta_1-\theta_1)=\hat y_1(1-\hat y_1)</script><script type="math/tex; mode=display">
+\frac{\partial \beta_1}{\partial v_{11}} = b_1</script><p>其中 $b_1$ 为隐藏层第一个神经元的输出。综上，有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial v_{11}}  = \hat y_1(\hat y_1^k - y_1^k)(1-\hat y_1)b_!</script><p>发现与公式$(14)$一致。</p>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p>周志华，机器学习</p>
+
           
         
     </div>
@@ -261,7 +324,7 @@ m_1\oplus m_2 = \frac{\sum_{B \cap C\not=\empty}m_1(B)m_2(C)}{1-\sum_{B\cap C=\e
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/文献阅读笔记//" class="article-tag-list-link color2">文献阅读笔记</a>
+        			<a href="/categories/深度学习//" class="article-tag-list-link color5">深度学习</a>
         		</li>
       		
 		</ul>
@@ -316,7 +379,7 @@ m_1\oplus m_2 = \frac{\sum_{B \cap C\not=\empty}m_1(B)m_2(C)}{1-\sum_{B\cap C=\e
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/11/21/Evidential%20Reasoning%20Rule%20for%20Evidence%20Combination/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/11/23/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -330,18 +393,9 @@ m_1\oplus m_2 = \frac{\sum_{B \cap C\not=\empty}m_1(B)m_2(C)}{1-\sum_{B\cap C=\e
   
 <nav id="article-nav">
   
-    <a href="/2020/11/23/%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          无重叠区间
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/11/20/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%A0%86/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">数据结构之堆</div>
+    <a href="/2020/11/23/%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">无重叠区间</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -368,7 +422,7 @@ m_1\oplus m_2 = \frac{\sum_{B \cap C\not=\empty}m_1(B)m_2(C)}{1-\sum_{B\cap C=\e
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Evidential-Reasoning-Rule-for-Evidence-Combination"><span class="toc-number">1.</span> <span class="toc-text">Evidential Reasoning Rule for Evidence Combination</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-D-S-theory"><span class="toc-number">1.1.</span> <span class="toc-text">1. D-S theory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Typical-Evidence-Combination-Rules"><span class="toc-number">1.2.</span> <span class="toc-text">2. Typical Evidence Combination Rules</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-Dempster’s-rule"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 Dempster’s rule</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-Shafer’s-rule"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 Shafer’s rule</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-PCR5、Yager’s-rule、Dubois-and-Prade’s-rule"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 PCR5、Yager’s rule、Dubois and Prade’s rule</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-New-ER-rule-to-combine-evidence-with-weight"><span class="toc-number">1.3.</span> <span class="toc-text">3. New ER rule to combine evidence with weight</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-New-ER-rule-to-combine-evidence-with-both-weight-and-reliability"><span class="toc-number">1.4.</span> <span class="toc-text">4. New ER rule to combine evidence with both weight and reliability</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Properties-of-the-new-ER-rule"><span class="toc-number">1.5.</span> <span class="toc-text">5. Properties of the new ER rule</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#误差逆传播算法"><span class="toc-number">1.</span> <span class="toc-text">误差逆传播算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#符号约定"><span class="toc-number">1.0.1.</span> <span class="toc-text">符号约定</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#具体推导"><span class="toc-number">1.0.2.</span> <span class="toc-text">具体推导</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#习题"><span class="toc-number">1.0.3.</span> <span class="toc-text">习题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#参考文献"><span class="toc-number">1.0.4.</span> <span class="toc-text">参考文献</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
