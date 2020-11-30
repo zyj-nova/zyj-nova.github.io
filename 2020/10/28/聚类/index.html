@@ -21,7 +21,7 @@
 <meta property="og:image" content="http://yoursite.com/images/bin.jpg">
 <meta property="og:image" content="http://yoursite.com/images/dbscan.png">
 <meta property="article:published_time" content="2020-10-28T11:11:58.654Z">
-<meta property="article:modified_time" content="2020-11-21T13:18:00.700Z">
+<meta property="article:modified_time" content="2020-11-27T03:48:42.155Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/images/kmeans.jpg">
@@ -319,7 +319,9 @@ J = \sum_{i=1}^k\sum_{j=1}^Nu_{ij}||\pmb x_j-\pmb \mu_i||^2</script><p>可知对
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line">img = cv2.imread(<span class="string">'./3096.jpg'</span>).astype(<span class="string">'float32'</span>)</span><br><span class="line"><span class="comment"># 彩色图像,rgb作为一个像素的特征，共有 width * height 个点，每个点的维度是3维的</span></span><br><span class="line">data = img.reshape(<span class="number">-1</span>,<span class="number">3</span>)</span><br><span class="line"><span class="comment">#利用上述算法聚类 k = 2</span></span><br><span class="line">res = kmeans(<span class="number">2</span>,data)</span><br><span class="line"></span><br><span class="line">r = np.array(res).reshape(<span class="number">256</span>,<span class="number">-1</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(res)):</span><br><span class="line">    <span class="keyword">if</span> res[i] == <span class="number">1</span>:</span><br><span class="line">        res[i] = <span class="number">255</span> <span class="comment">#为类别为1的簇分配白色像素</span></span><br><span class="line"><span class="comment"># 保存图像</span></span><br><span class="line">cv2.imwrite(<span class="string">"bin.jpg"</span>,r)</span><br></pre></td></tr></table></figure>
 <p><img src="/images/3096.jpg" alt=""></p>
 <p><img src="/images/bin.jpg" alt=""></p>
-<h4 id="2-2-高斯混合聚类"><a href="#2-2-高斯混合聚类" class="headerlink" title="2.2 高斯混合聚类"></a>2.2 高斯混合聚类</h4><p>高斯混合模型进行聚类的思想就是用多个概率分布函数来描述每一个簇（类）的信息。</p>
+<p>事实上，在K均值聚类中我们强制每一个样本只能属于一个类，通常这又被称为硬聚类。那有没有一种情况，某个样本可以属于多个类呢？这就涉及到了模糊聚类，模糊聚类引入了模糊簇和模糊集，允许一个样本属于多个簇。因此又被称为<strong>软聚类</strong>。关于聚类分析的更详细介绍，可以参见《数据挖掘概念与技术》（韩家炜等著），讲的非常好</p>
+<p>K均值算法的过程可以被视为利用EM算法求解的过程，隐变量就是每个样本所属的类（簇）。</p>
+<h4 id="2-2-高斯混合聚类"><a href="#2-2-高斯混合聚类" class="headerlink" title="2.2 高斯混合聚类"></a>2.2 高斯混合聚类</h4><p>高斯混合模型是基于概率模型的聚类，其基本思想就是用一个概率分布函数来表示每一个簇（类）。</p>
 <h3 id="3-层次聚类"><a href="#3-层次聚类" class="headerlink" title="3. 层次聚类"></a>3. 层次聚类</h3><p><strong>算法描述</strong></p>
 <ol>
 <li>构造n个类，每个类只包含一个样本</li>
@@ -634,6 +636,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">CV</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">贪心算法</a>
               </li>
             
             <div class="clearfix"></div>

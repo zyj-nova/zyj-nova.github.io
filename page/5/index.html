@@ -205,6 +205,79 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-微信小程序开发入门指南" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/">微信小程序开发入门指南</a>
+    </h1>
+  
+
+        
+        <a href="/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" class="archive-article-date">
+  	<time datetime="2020-05-13T12:37:33.779Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          		<h2 id="微信小程序开发入门指南"><a href="#微信小程序开发入门指南" class="headerlink" title="微信小程序开发入门指南"></a>微信小程序开发入门指南</h2><h3 id="0-概述"><a href="#0-概述" class="headerlink" title="0. 概述"></a>0. 概述</h3><p>​        小程序是典型的前后端分离开发的架构，前端界面使用微信官方推出的<code>wxml</code>、<code>wxss</code>、<code>js</code>进行开发，发布时这些代码被微信官方托管，而后端开发可以使用任意语言，如：<code>Node.js</code>、<code>Python</code>、<code>PHP</code>、<code>Java</code>等，只需提供数据交互的<code>api</code>接口即可。需要注意的是，后端服务器必须有合法的域名才可以与前端界面提供数据交（微信强制要求），具体配置在微信公众平台 （小程序）=&gt; 开发 =&gt; 开发设置 =&gt; 服务器域名中，进行配置。</p>
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/小程序开发//" class="article-tag-list-link color1">小程序开发</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/05/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Spark学习笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -519,55 +592,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         
-          
-            <a id="more"></a>
-<h3 id="1-寻找重复数"><a href="#1-寻找重复数" class="headerlink" title="1. 寻找重复数"></a>1. 寻找重复数</h3><p>​        给定一个包含 <em>n</em> + 1 个整数的数组 <em>nums</em>，其数字都在 1 到 <em>n</em> 之间（包括 1 和 <em>n</em>），可知至少存在一个重复的整数。假设只有一个重复的整数，找出这个重复的数。这是<code>Leetcode 287</code>号问题。</p>
-<ul>
-<li><p>解法1：排序，然后看相邻元素是否是否相等</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">findDuplicate</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123; </span><br><span class="line">		Arrays.sort(nums);</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (nums[i] == nums[i - <span class="number">1</span>]) &#123;</span><br><span class="line">                ans = nums[i];</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>解法2：hashmap统计次数或集合判重。</p>
-</li>
-<li><p>解法3：双指针</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">     <span class="comment">// 数组中的值代表了索引，因为是1-n之间的数，数组包含n+1个数字，不会越界</span></span><br><span class="line">     <span class="comment">// nums[fast]-&gt;具体数值 以nums[fast]作为索引得到-&gt;nums[nums[fast]]</span></span><br><span class="line">     <span class="comment">// nums = [2,5,9,6,9,3,8,9,7,1] 构造成链表</span></span><br><span class="line">     <span class="comment">// 2-&gt;[9]-&gt;1-&gt;5-&gt;3-&gt;6-&gt;8-&gt;7-&gt;[9]-&gt;1-&gt;5-&gt;3...如果存在重复数字，有环存在，找到环的入口。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">findDuplicate</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123; </span><br><span class="line">		<span class="keyword">int</span> fast = <span class="number">0</span>, slow = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            fast = nums[nums[fast]];</span><br><span class="line">            slow = nums[slow];</span><br><span class="line">            <span class="comment">// System.out.println("fast=" + fast + ",slow=" + slow);</span></span><br><span class="line">            <span class="keyword">if</span> (fast == slow)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> finder = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            finder = nums[finder];</span><br><span class="line">            slow = nums[slow];</span><br><span class="line">            System.out.println(<span class="string">"finder="</span> + finder + <span class="string">",slow="</span> + slow);</span><br><span class="line">            <span class="keyword">if</span> (finder == slow)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="2-环形链表II"><a href="#2-环形链表II" class="headerlink" title="2. 环形链表II"></a>2. 环形链表II</h3><p>解法3的链表形式。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        ListNode next;</span><br><span class="line"></span><br><span class="line">        ListNode(<span class="keyword">int</span> x) &#123;</span><br><span class="line">            val = x;</span><br><span class="line">            next = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ListNode <span class="title">detectCycle</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        ListNode slow = head, fast = head;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (fast == <span class="keyword">null</span> || fast.next == <span class="keyword">null</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            slow = slow.next;</span><br><span class="line">            fast = fast.next.next;</span><br><span class="line">            <span class="keyword">if</span> (slow == fast)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (head == slow)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="comment">// System.out.println(head.val);</span></span><br><span class="line">            head = head.next;</span><br><span class="line">            slow = slow.next;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        ListNode head = <span class="keyword">new</span> ListNode(<span class="number">3</span>);</span><br><span class="line">        ListNode second = <span class="keyword">new</span> ListNode(<span class="number">2</span>);</span><br><span class="line">        ListNode third = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode fourth = <span class="keyword">new</span> ListNode(-<span class="number">4</span>);</span><br><span class="line">        head.next = second;</span><br><span class="line">        second.next = third;</span><br><span class="line">        third.next = fourth;</span><br><span class="line">        <span class="comment">// fourth.next = second;</span></span><br><span class="line">        System.out.println(detectCycle(head).val);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-关于为何会在环的入口相遇的证明："><a href="#3-关于为何会在环的入口相遇的证明：" class="headerlink" title="3. 关于为何会在环的入口相遇的证明："></a>3. 关于为何会在环的入口相遇的证明：</h3><p>程序中，<code>fast</code>每次循环移动两次，<code>slow</code>每次移动一次，也就是说<code>fast</code>的速度是<code>slow</code>的2倍。</p>
-<p>我们假设从索引为$0$元素开始，到环入口元素的距离为$k$，我们把入口元素作为环的起点。</p>
-<p>当<code>slow</code>指针刚到达入口元素时，经过了 $k$ 次移动，即：从数组第一个元素到环入口元素有 $k$ 个距离，而此时，<code>fast</code>指针已经在环上了，且领先<code>slow</code>指针 $k$ 个距离，接下来就要分情况讨论了，假设环的周长为 $C$:</p>
-<ol>
-<li><p>当<script type="math/tex">k < \frac{C}{2}</script> 时,也就是说fast当前位置在环的上半部分，<code>fast</code>在<code>slow</code>的前面（顺时针移动）。</p>
-<p>如果此时<code>slow</code>与<code>fast</code>相遇，<code>fast</code>一定会比<code>slow</code>多跑一圈，假设经过了 $t_1$ 时间，<code>fast</code>跑完一圈又回到了<code>slow</code>刚进入圆环时，<code>fast</code>的位置，由于<code>fast</code>的速度是<code>slow</code>的2倍，且<code>slow</code>从0点出发，<code>fast</code>跑完一圈，<code>slow</code>刚好在半圆位置。此时，二者距离为$\frac{C}{2} - k$，假设再经过 $t_2$ 时间，<code>fast</code>与<code>slow</code>相遇，考虑一下：</p>
-<p><code>slow</code>经过的距离：$t_2$ (<code>slow</code>每次移动一格)</p>
-<p><code>fast</code>经过的距离：$2t_2$</p>
-<p>可知有如下关系：</p>
-<script type="math/tex; mode=display">
-t_2 + \frac{C}{2}-k = 2t_2</script><script type="math/tex; mode=display">
-t_2 = \frac{C}{2} - k</script><p>此时，<code>slow</code>指针的位置为：</p>
-<script type="math/tex; mode=display">
-\frac{C}{2} + \frac{C}{2} - k</script><p>与起点距离为：</p>
-<script type="math/tex; mode=display">
-C - C + k = k</script><p>而数组第一个元素与圆环入口元素距离也为$k$。</p>
-<p>因此，另一个指针从数组第一个元素开始，slow从与fast相遇位置开始一起每次移动一格，最终会在入口元素相遇。</p>
-</li>
-<li><p>当$k &gt; \frac{C}{2}$时，fast当前位置在环的下半部分。fast在slow后面，距离为$C - k$</p>
-<p>这种情况，fast指针不必多跑一圈才能追上slow指针，假设经过$t_3$时间，fast追上了slow。</p>
-<p>期间：</p>
-<p>fast移动的距离：$2t_3$</p>
-<p>slow移动的距离：$t_3$</p>
-<p>有如下关系：</p>
-<script type="math/tex; mode=display">
-2t_3 = t_3 + C - k</script><script type="math/tex; mode=display">
-t_3 = C - k</script><p>此时slow的位置在$C-k$初，距离达圆环入口处（顺时针移动），有</p>
-<script type="math/tex; mode=display">
-C - (C-k) = k</script><p>同样是k个距离。</p>
-<p>得证。</p>
-</li>
-</ol>
-<p><img src="/images/快慢指针示意图.jpg" alt=""></p>
-
+          		<p>日常刷题记录。</p>
           
         
     </div>
@@ -580,7 +605,7 @@ C - (C-k) = k</script><p>同样是k个距离。</p>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
+        			<a href="/categories/日常刷题记录//" class="article-tag-list-link color2">日常刷题记录</a>
         		</li>
       		
 		</ul>
@@ -912,79 +937,6 @@ C - (C-k) = k</script><p>同样是k个距离。</p>
 
 
   
-    <article id="post-Java 反射和动态代理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/">Java 反射和动态代理</a>
-    </h1>
-  
-
-        
-        <a href="/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" class="archive-article-date">
-  	<time datetime="2020-02-23T03:34:51.877Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="Java-反射和动态代理"><a href="#Java-反射和动态代理" class="headerlink" title="Java 反射和动态代理"></a>Java 反射和动态代理</h2>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/02/23/Java%20%E5%8F%8D%E5%B0%84%E5%92%8C%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
@@ -1096,6 +1048,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">CV</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">贪心算法</a>
               </li>
             
             <div class="clearfix"></div>

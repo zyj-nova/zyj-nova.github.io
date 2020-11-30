@@ -14,13 +14,13 @@
 <meta property="og:url" content="http://yoursite.com/2020/11/23/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/index.html">
 <meta property="og:site_name" content="张永剑的博客">
 <meta property="og:description" content="误差逆传播算法">
-<meta property="og:image" content="https://img2018.cnblogs.com/i-beta/1217155/202002/1217155-20200215123550539-362686896.png">
-<meta property="og:image" content="e:/hexo/themes/yilia/source/images/bp_hw.png">
+<meta property="og:image" content="http://yoursite.com/images/fnn_struture.png">
+<meta property="og:image" content="http://yoursite.com/images/bp_hw.png">
 <meta property="article:published_time" content="2020-11-23T11:45:06.033Z">
-<meta property="article:modified_time" content="2020-11-23T14:15:44.259Z">
+<meta property="article:modified_time" content="2020-11-30T12:38:34.098Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img2018.cnblogs.com/i-beta/1217155/202002/1217155-20200215123550539-362686896.png">
+<meta name="twitter:image" content="http://yoursite.com/images/fnn_struture.png">
   
     <link rel="alternative" href="/atom.xml" title="张永剑的博客" type="application/atom+xml">
   
@@ -232,7 +232,7 @@
           
             <h2 id="误差逆传播算法"><a href="#误差逆传播算法" class="headerlink" title="误差逆传播算法"></a>误差逆传播算法</h2><a id="more"></a>
 <p>给定如下结构的前馈全连接神经网络：</p>
-<p><img src="https://img2018.cnblogs.com/i-beta/1217155/202002/1217155-20200215123550539-362686896.png" alt="网络结构图"></p>
+<p><img src="/images/fnn_struture.png" alt="网络结构图"></p>
 <h4 id="符号约定"><a href="#符号约定" class="headerlink" title="符号约定"></a>符号约定</h4><p>输入样本 $\pmb x\in \mathbb{R}^d$，即神经网络输入层有 $d$ 个神经元。</p>
 <p>输出 $\pmb y \in \mathbb{R}^l$，即神经网络输出层有 $l$ 个神经元。</p>
 <p>输入层有 $q$ 个神经元，第 $h$ 个隐藏层神经元输入 $\alpha_h$，阈值 $\gamma_h$。输入层第 $i$ 个神经元到隐藏层第 $h$ 个神经元的权重 $v_{ih}$，第 $h$ 个隐藏层神经元输出为 $b_h$。</p>
@@ -298,8 +298,7 @@ v_{ij}^{(t+1)} = v_{ij}^{(t)} +\epsilon e_hx_i \tag{23}</script><p>同样的，$
 <script type="math/tex; mode=display">
 \theta_j^{(t+1)} = \theta^{(t)}+\eta g_j \tag{24}</script><p>同理，</p>
 <script type="math/tex; mode=display">
-\gamma_h^{(t+1)} = \gamma_h^{(t+1)} +\eta e_h\tag{25}</script><h4 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h4><p><img src="E:\hexo\themes\yilia\source\images\bp_hw.png" alt="image-20201123220027292"></p>
-<p>首先推导，之后与直接带入公式进行对比。</p>
+\gamma_h^{(t+1)} = \gamma_h^{(t+1)} +\eta e_h\tag{25}</script><h4 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h4><p><img src="/images/bp_hw.png" alt="hm1"></p>
 <p>观察发现：</p>
 <script type="math/tex; mode=display">
 v_{11} \rightarrow \beta_1 \rightarrow \hat y_1 \rightarrow E</script><p>由此：</p>
@@ -309,7 +308,17 @@ v_{11} \rightarrow \beta_1 \rightarrow \hat y_1 \rightarrow E</script><p>由此�
 \frac{\partial \hat y_1^k}{\partial \beta_1} =f^\prime(\beta_1-\theta_1)=\hat y_1(1-\hat y_1)</script><script type="math/tex; mode=display">
 \frac{\partial \beta_1}{\partial v_{11}} = b_1</script><p>其中 $b_1$ 为隐藏层第一个神经元的输出。综上，有：</p>
 <script type="math/tex; mode=display">
-\frac{\partial E_k}{\partial v_{11}}  = \hat y_1(\hat y_1^k - y_1^k)(1-\hat y_1)b_!</script><p>发现与公式$(14)$一致。</p>
+\frac{\partial E_k}{\partial v_{11}}  = \hat y_1(\hat y_1^k - y_1^k)(1-\hat y_1)b_1</script><p>发现与公式$(14)$一致。</p>
+<p>类似的，</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial v_{21}} =\hat y_2(\hat y_2^k - y_2^k)(1-\hat y_2)b_1</script><p>观察$u_{11}$，有如下关系：</p>
+<script type="math/tex; mode=display">
+u_{11} \rightarrow \alpha_1 \rightarrow b_1 \rightarrow \beta_1,\beta_2\rightarrow \hat y_1,\hat y_2\rightarrow E</script><p>所以有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial u_{11}} = \sum_{j=1}^2\frac{\partial E_k}{\partial \hat y_j}\frac{\partial \hat y_j}{\partial \beta_j}\frac{\partial \beta_j}{b_1}\frac{\partial b_1}{\partial \alpha_1}\frac{\partial \alpha_1}{\partial u_{11}}</script><p>带入可得：</p>
+<script type="math/tex; mode=display">
+\frac{\partial E_k}{\partial u_{11}} = \sum_{j=1}^2g_jw_{1j}(b_1-1)b_1x_1</script><script type="math/tex; mode=display">
+g_j=\hat y^k_j(1-\hat y_j^k)(\hat y_j^k-y_j^k)</script><p>其中，$w_{1j}$表示隐藏层第 $1$ 个神经元到输出层第 $j$ 个神经元的连接权重。</p>
 <h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p>周志华，机器学习</p>
 
           
@@ -392,6 +401,15 @@ v_{11} \rightarrow \beta_1 \rightarrow \hat y_1 \rightarrow E</script><p>由此�
 
   
 <nav id="article-nav">
+  
+    <a href="/2020/11/30/%E9%87%8D%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          重构字符串
+        
+      </div>
+    </a>
   
   
     <a href="/2020/11/23/%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/" id="article-nav-older" class="article-nav-link-wrap">
@@ -548,6 +566,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">CV</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">贪心算法</a>
               </li>
             
             <div class="clearfix"></div>
