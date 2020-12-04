@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-11-30T12:39:30.219Z</updated>
+  <updated>2020-12-04T10:10:24.624Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>奇异值分解</title>
+    <link href="http://yoursite.com/2020/12/04/%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3/"/>
+    <id>http://yoursite.com/2020/12/04/%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3/</id>
+    <published>2020-12-04T03:39:23.458Z</published>
+    <updated>2020-12-04T10:10:24.624Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;奇异值分解&quot;&gt;&lt;a href=&quot;#奇异值分解&quot; class=&quot;headerlink&quot; title=&quot;奇异值分解&quot;&gt;&lt;/a&gt;奇异值分解&lt;/h2&gt;&lt;p&gt;注意：我们现在只讨论实矩阵的奇异值矩阵的分解。即给定矩阵 $A \in \mathbb{R}^{m\times n}$。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>重构字符串</title>
@@ -392,25 +411,6 @@
     
     
       <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Transformer模型介绍</title>
-    <link href="http://yoursite.com/2020/10/03/Transformer%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D/"/>
-    <id>http://yoursite.com/2020/10/03/Transformer%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D/</id>
-    <published>2020-10-03T06:58:05.171Z</published>
-    <updated>2020-11-11T03:46:56.426Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Transformer模型介绍&quot;&gt;&lt;a href=&quot;#Transformer模型介绍&quot; class=&quot;headerlink&quot; title=&quot;Transformer模型介绍&quot;&gt;&lt;/a&gt;Transformer模型介绍&lt;/h2&gt;
-    
-    </summary>
-    
-    
-      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
   </entry>

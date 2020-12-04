@@ -6,16 +6,16 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>近期刷题总结记录 | 张永剑的博客</title>
+  <title>奇异值分解 | 张永剑的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="近期刷题总结记录">
+  <meta name="description" content="奇异值分解注意：我们现在只讨论实矩阵的奇异值矩阵的分解。即给定矩阵 $A \in \mathbb{R}^{m\times n}$。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="近期刷题总结记录">
-<meta property="og:url" content="http://yoursite.com/2020/07/18/%E8%BF%91%E6%9C%9F%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:title" content="奇异值分解">
+<meta property="og:url" content="http://yoursite.com/2020/12/04/%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3/index.html">
 <meta property="og:site_name" content="张永剑的博客">
-<meta property="og:description" content="近期刷题总结记录">
-<meta property="article:published_time" content="2020-07-18T14:33:46.959Z">
-<meta property="article:modified_time" content="2020-11-11T03:42:16.088Z">
+<meta property="og:description" content="奇异值分解注意：我们现在只讨论实矩阵的奇异值矩阵的分解。即给定矩阵 $A \in \mathbb{R}^{m\times n}$。">
+<meta property="article:published_time" content="2020-12-04T03:39:23.458Z">
+<meta property="article:modified_time" content="2020-12-04T10:10:24.624Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
   
@@ -205,20 +205,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-近期刷题总结记录" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-奇异值分解" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      近期刷题总结记录
+      奇异值分解
     </h1>
   
 
         
-        <a href="/2020/07/18/%E8%BF%91%E6%9C%9F%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93%E8%AE%B0%E5%BD%95/" class="archive-article-date">
-  	<time datetime="2020-07-18T14:33:46.959Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-18</time>
+        <a href="/2020/12/04/%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3/" class="archive-article-date">
+  	<time datetime="2020-12-04T03:39:23.458Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-12-04</time>
 </a>
         
       </header>
@@ -227,81 +227,45 @@
       
         
           
-            <h2 id="近期刷题总结记录"><a href="#近期刷题总结记录" class="headerlink" title="近期刷题总结记录"></a>近期刷题总结记录</h2><a id="more"></a>
-<h3 id="1-Leftmost-Digit"><a href="#1-Leftmost-Digit" class="headerlink" title="1. Leftmost Digit"></a>1. Leftmost Digit</h3><p>​        杭电1060题，给你一个数字$n$，求出$n^n$最高位数字$t$，$n$不超过$10,000,000,000$(10亿)。</p>
-<p>​        具体思想如下：</p>
-<p>​        设$M = n^n$（n为整数），两边取10的对数则有</p>
+            <h2 id="奇异值分解"><a href="#奇异值分解" class="headerlink" title="奇异值分解"></a>奇异值分解</h2><p>注意：我们现在只讨论实矩阵的奇异值矩阵的分解。即给定矩阵 $A \in \mathbb{R}^{m\times n}$。</p>
+<a id="more"></a>
+<h3 id="1-奇异值"><a href="#1-奇异值" class="headerlink" title="1. 奇异值"></a>1. 奇异值</h3><p><strong>定理：</strong>$A^TA$ 的特征值都是实数且非负。</p>
+<p>证明：设 $A^TA$ 的特征值 $\lambda$，对应的特征向量 $\pmb v \not=\pmb 0$，有：</p>
 <script type="math/tex; mode=display">
-\log_{10}M = \log_{10} n^n = k</script><p>​        直觉上，如果$M$不是10的整数幂次，那么$k$是一个浮点数。</p>
+A^TA\pmb v = \lambda\pmb v</script><script type="math/tex; mode=display">
+||A\pmb v||^2 = (A\pmb v)^T(A\pmb v) = \pmb v^TA^TA\pmb v = \lambda\pmb v^T\pmb v = \lambda||\pmb v||^2 \ge0</script><p>可知$||\pmb v||^2 \gt 0$，因此 $\lambda \ge 0$。得证。</p>
+<p>当将定义拓展到复数空间时，对称矩阵属于$\text{Hermite}$ 矩阵（$A^H=A$），$\text{Hermite}$ 矩阵的特征值均为实数。</p>
+<p><strong>定义：</strong>令 $\lambda_1,\lambda_2,…,\lambda_n$ 是 $A^TA$ 的特征值，且 $\lambda_1\ge\lambda_2\ge…\ge\lambda_n\ge0$，$\sigma_i=\sqrt \lambda_i$，我们称 $\sigma_i$ 为矩阵 $A$ 的奇异值。</p>
+<p><strong>定理：</strong>矩阵 $A$ 的正奇异值的数量等于矩阵 $A$ 的秩。</p>
+<p><strong>定理：</strong> 若矩阵 $A$ 的秩为 $r$，那么 $r(A^TA) = r(AA^T) = r$。</p>
+<p><strong>定理：</strong>矩阵 $A^TA$ 与矩阵 $AA^T$的特征值相同。</p>
+<h3 id="2-奇异值分解"><a href="#2-奇异值分解" class="headerlink" title="2. 奇异值分解"></a>2. 奇异值分解</h3><p><strong>定理：</strong>给定任意矩阵 $A_{m\times n}$，总可以分解为以下的矩阵相乘形式：</p>
 <script type="math/tex; mode=display">
-k = A.B</script><p>​        $A$为$k$ 的整数部分，$B$ 则为$k$ 的小数部分。有</p>
+A = U\Sigma V^T</script><p>其中：$U_{m\times m},\Sigma_{m\times n},V_{n\times n}$，且</p>
 <script type="math/tex; mode=display">
-\log_{10} M = k = A.B \\
-10^{A.B} = M \\
-10^A*10^{B} = M(B < 1)</script><p>​        其实$A$就代表了$M$的位数（三位数$10^2$、四位数$10^3$以此类推），而$10^B$相当于前面的系数（有点类似科学计数法那个形式）。</p>
-<p>​        我们观察幂函数$y = 10^x$ ，在$x = 1$时$y = 10$，我们这儿$B &lt; 1$，<strong>因此$10^B$的值介于$[1,10)$之间，并且是一个浮点数</strong>。我们可以这么想，$10^A*10^{B}$把$10^B$放大了$10^A$倍后得到了$M$，即 $n$ 的 $n$ 次幂。</p>
-<p>​        好了，那么$M$的最高位到底是几？很明显是$10^B$这个数字的整数部分。如何取到$B$这个小数呢，$k = n \log_{10} n = A.B$，$k$减去其取整部分即可得到$B$。$10^B$再取整就得到了最高位。</p>
-<p>​        程序代码如下</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> t,n;</span><br><span class="line">	<span class="keyword">double</span> k;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;t);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; t; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</span><br><span class="line">        k = n * <span class="built_in">log10</span>(<span class="number">1.0</span> * n); <span class="comment">// k = A.B</span></span><br><span class="line">        <span class="comment">// k减去对k取整部分得到小数部分</span></span><br><span class="line">        k = k - (__int64)k;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,(<span class="keyword">int</span>)<span class="built_in">pow</span>(<span class="number">10</span>,k));</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-Euler函数"><a href="#2-Euler函数" class="headerlink" title="2. Euler函数"></a>2. Euler函数</h3><p>​        在数论中，对正整数，欧拉函数是小于或等于n的正整数中与n互质的数的数目。比如$\phi(8) = 4$，因为1、3、5、7与8互质。注：互质为两者没有除1外的公因数。</p>
-<p>​        具体定义如下：</p>
-<p>​        我们知道，对于任意正整数n，都可以表示为多个质数的乘积，即如下形式：</p>
+UU^T=I,VV^T=I</script><script type="math/tex; mode=display">
+\Sigma=\begin{pmatrix}\Sigma^\prime&O\\O&O\end{pmatrix}</script><script type="math/tex; mode=display">
+\Sigma^\prime=\text{diag}\{\sigma_1,\sigma_2,...,\sigma_r\},\sigma_1\ge\sigma_2\ge...\ge\sigma_r\gt0</script><p>同时我们称  $U$ 是 $A$ 的左奇异向量，$V$ 是 $A$ 的右奇异向量。</p>
+<p>详细证明过程可以参见《统计学习方法》（第二版）。</p>
+<h3 id="3-性质"><a href="#3-性质" class="headerlink" title="3. 性质"></a>3. 性质</h3><p>因为 $A = U\Sigma V^T,A^T = V\Sigma^TU^T$，所以：</p>
 <script type="math/tex; mode=display">
-n = p_1^{k_1}p_2^{k2}...p_n^{k_n}</script><p>​        ，其中，$p_i$均为质数。</p>
-<p>​        那么欧拉函数$\phi(n)$等于</p>
-<script type="math/tex; mode=display">
-\phi(n) = n\prod_{i=1}^n (1 - \frac{1}{p_i})</script><p>​        性质：</p>
-<p>​        ① 欧拉函数是积性函数，$\phi(mn)=\phi(m)*\phi(n)$</p>
-<p>​        ② 若p为质数，$\phi(p)=p-1$</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="comment">// 欧拉函数:统计小于等于n中与n互质的数的个数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">euler</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = n;</span><br><span class="line">    <span class="keyword">int</span> tmp = n;</span><br><span class="line">    <span class="comment">// n在循环过程中会不断发生变化。</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= <span class="built_in">sqrt</span>(<span class="number">1.0</span> * tmp); i++ )&#123;<span class="comment">//枚举所有能够被n整除的质因数</span></span><br><span class="line">        <span class="keyword">if</span>(n % i == <span class="number">0</span>)&#123;</span><br><span class="line">            ans = ans * (i - <span class="number">1</span>) / i;<span class="comment">// 欧拉公式，不断累乘</span></span><br><span class="line">            <span class="keyword">while</span>(n % i == <span class="number">0</span>)&#123;</span><br><span class="line">                n /= i; <span class="comment">// 消除质数因子的过程</span></span><br><span class="line">                <span class="comment">//将质数i不断的左除过去</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">         <span class="comment">// 新的n = n / p1 / p1 / p1 ... = p2*p2*p2...*pn</span></span><br><span class="line">        <span class="comment">// p1 &lt; p2 &lt; ... &lt; pn</span></span><br><span class="line">        <span class="comment">// 再次循环通过枚举找到p2....pn</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// n不为1，表明还有因子，最后一个质因子可能不在[2,sqrt(n)]之间</span></span><br><span class="line">    <span class="keyword">if</span>(n &gt; <span class="number">1</span>)&#123;</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t,n;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;t);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; t; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,euler(n));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-找出缺失的数字"><a href="#3-找出缺失的数字" class="headerlink" title="3. 找出缺失的数字"></a>3. 找出缺失的数字</h3><p>​        题目大意如下，首先输入$n$个不同的数字，再次输入$n-1$个数字，找出第二次输入没有输入的那个数字。输入的数字的值介于$[0,1000000000]$，$2 &lt;= n &lt;= 400000$。</p>
-<p>​        可以看到数据规模较大，无论是集合还是利用高斯公式求两次和都可能数据溢出。能不能使用$O(n)$时间复杂度以及$O(1)$空间解决这个问题？</p>
-<p>​        下面介绍二进制中异或（<code>^</code>）的操作的一些性质。</p>
-<p>​        异或就是相同为0，不同为1。即<code>1 ^ 1 = 0,0 ^ 0 = 0,1 ^ 0 = 1,0 ^ 1 = 1</code>。异或还有如下性质</p>
+AA^T =U\Sigma V^TV\Sigma^TU^T = U(\Sigma \Sigma ^T)U^T</script><script type="math/tex; mode=display">
+A^TA = V\Sigma^TU^TU\Sigma V^T  = V(\Sigma^T\Sigma)V^T</script><p>由以上可得：</p>
 <ul>
-<li><p><code>0 ^ x = x</code></p>
-</li>
-<li><p><code>x ^ x = 0</code></p>
-</li>
-<li><p>异或满足交换律，即<code>1 ^ 2 ^ 4 ^ 6 =  6 ^ 2 ^ 1 ^ 4</code></p>
-<p>有了这些性质，对于这个题，我们设置<code>a = 0,b = 0</code>；</p>
-<p><code>a = a ^ arr1[i], i from 0 to n-1</code>，<code>b = b ^ arr2[j], j  from 0 to n-2</code>。</p>
-<p>最后所求数字即为<code>a^b</code>。</p>
-<p>其实很好理解：</p>
-<script type="math/tex; mode=display">
-a = a_1 \bigoplus a_2 \bigoplus....\bigoplus a_n \\
-b = b_1 \bigoplus b_2 \bigoplus....\bigoplus b_{n-1} \\</script><p>最后<code>a^b</code>，由<strong>异或交换律</strong>这个性质等价于，将前后两次相同的数字先做异或得到0，前后两次相同的数字就都被消掉了，最后剩下的那个数字再与0异或还是这个数字，也就是第二次没有出现的那个数字。</p>
-<p>同理，找出在都是偶数次出现的数字中出现次数为奇数次的数字也可以利用异或算法解决。</p>
-<p><code>a = 1 ^ 2 ^ 4 ^ 6;b = 4 ^ 6 ^ 1;</code></p>
-<p> <code>a ^ b =1 ^ 2 ^ 4 ^ 6 ^ 4 ^ 6 ^ 1 = 1 ^ 1 ^ 4 ^ 4 ^ 6 ^ 6 ^ 2= 0 ^ 0 ^ 0 ^ 2 = 0 ^ 2 = 2</code></p>
-</li>
+<li>正交矩阵 $V$ 是 $A^TA$ 的特征向量组成的矩阵</li>
+<li>正交矩阵 $U$ 是 $AA^T$ 的特征向量组成的矩阵</li>
+<li>由 $A = U\Sigma V^T$，有：$AV = U\Sigma$，</li>
 </ul>
-<h3 id="4-Rightmost-Digit"><a href="#4-Rightmost-Digit" class="headerlink" title="4. Rightmost Digit"></a>4. Rightmost Digit</h3><p>​        杭电1061题。与第1题相反的是，本题求正整数$n^n$最左边的数字。要用到快速幂取模算法。快速幂即比较快的计算n的幂次。相比于循环n次计算的$O(n)$算法，快速幂能够在$O(\log n)$求出结果。比如计算$3^{100}$，一般我们可以循环100次计算出结果。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">100</span>; i++)&#123;</span><br><span class="line">    ans *= <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>​        我们观察发现:</p>
 <script type="math/tex; mode=display">
-3^{100} = 3^{50}*3^{50}\\
-3^{50} = 3^{25}*3^{25}\\
-3^{25} = 3^{12}*3^{12}*3\\
-3^{12} = 3^6*3^6 \\
-3^6 = 3^3*3^3\\
-3^3 = 3^2 * 3\\
-3^2 = 3 * 3</script><p>​        这样，我们要计算$3^{100}$，就可以先计算出$3^{50}$，然后自己和自己相乘就可以得到结果，对于$3^{25}$同理，然后这样递推下去就可得到结果。按照这个方法计算，我们只做了8次乘法便得到了结果，相比100次大大减少了时间。幂次不是奇数就是偶数，偶数次幂就等于自己乘自己，奇数次幂得额外再乘以一个基底数字。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 递归计算快速幂 a^b</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(b == <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> temp = f(a, b / <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">return</span> (b % <span class="number">2</span> == <span class="number">0</span> ? <span class="number">1</span> : a) * temp * temp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 非递归</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> base = a;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>( b != <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(b % <span class="number">2</span> == <span class="number">1</span>)&#123;</span><br><span class="line">            ans = ans * base;</span><br><span class="line">        &#125;</span><br><span class="line">        base = base * base;</span><br><span class="line">        b /= <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>​        回到这道题，两个数相乘，二者的最后一位分别相乘贡献了结果，因此我们可以在计算快速幂过程中不断对10取模就可以得到最终结果。</p>
-<p>​        插入一点其他知识：</p>
+\pmb u_i = \frac{1}{\sigma_i}A\pmb v_i,i=1,2,...,r</script><p>​    $\pmb u_{r+1},\pmb u_{r+2},…,\pmb u_m$ 是矩阵 $A^T$ 零空间 $N(A^T)$ 的一组标准正交基。</p>
+<ul>
+<li>由 $A = U\Sigma V^T$，有：$U^TA = \Sigma V^T$，进而：$A^TU = V\Sigma^T$。</li>
+</ul>
 <script type="math/tex; mode=display">
-(a + b) \mod p = (a\mod p + b \mod p) \mod p</script><p>​        在计算斐波那契数列时会用到。将加号改为乘号同样适用。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 快速幂取余</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> base = a;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>( b != <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(b % <span class="number">2</span> == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="comment">// 最后两位数相乘再对10取余 ans = ans * base ans % 10 = (ans%10)*(base%10)%10</span></span><br><span class="line">            ans = (ans % <span class="number">10</span>) * (base % <span class="number">10</span>) % <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 因为求最后一位数字，每次记录最后一位数字是几就可以避免越界</span></span><br><span class="line">        base = (base % <span class="number">10</span>)* (base % <span class="number">10</span>) % <span class="number">10</span>;</span><br><span class="line">        b /= <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t,n;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; t;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; t; i++)&#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,f(n,n));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="5-阶乘位数"><a href="#5-阶乘位数" class="headerlink" title="5. 阶乘位数"></a>5. 阶乘位数</h3><p>​        给定一个小于等于$10,000,000$的正整数，计算其阶乘的位数。小于1000的数字的阶乘可以通过模拟乘法来计算出来，但是当数字特别大数组也无法存下。这是就要用到斯特林公式。</p>
-<p>​        一个十进制数 $n$ 的位数可以表示为：</p>
+\pmb v_i = \frac{1}{\sigma_i}A^T\pmb u_i,i=1,2,...,r</script><p>​    $\pmb v_{r+1},\pmb v_{r+2},…,\pmb v_n$ 是矩阵 $A$ 零空间 $N(A)$ 的一组标准正交基。</p>
+<h3 id="4-计算"><a href="#4-计算" class="headerlink" title="4. 计算"></a>4. 计算</h3><p>计算如下矩阵的奇异值分解。</p>
 <script type="math/tex; mode=display">
-(int)\log_{10} n + 1</script><p>这一点可以很明显的在$y = \log_{10} x$的函数图像上观察出来。</p>
-<p>​        因此，$n!$的位数即：</p>
-<script type="math/tex; mode=display">
-\log_{10} n! + 1</script><script type="math/tex; mode=display">
-\log_{10} n! = \log_{10} n * (n-1) * ... * 1 = \log_{10}n + \log_{10}n-1 + ...</script><p>​        只要循环计算1到n的对数再求和之后取整加一就是结果。</p>
-
+A = \begin{pmatrix}1&2&0\\2&0&2\end{pmatrix}</script>
           
         
     </div>
@@ -314,7 +278,7 @@ b = b_1 \bigoplus b_2 \bigoplus....\bigoplus b_{n-1} \\</script><p>最后<code>a
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
         		</li>
       		
 		</ul>
@@ -369,7 +333,7 @@ b = b_1 \bigoplus b_2 \bigoplus....\bigoplus b_{n-1} \\</script><p>最后<code>a
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/07/18/%E8%BF%91%E6%9C%9F%E5%88%B7%E9%A2%98%E6%80%BB%E7%BB%93%E8%AE%B0%E5%BD%95/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/12/04/%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -383,18 +347,9 @@ b = b_1 \bigoplus b_2 \bigoplus....\bigoplus b_{n-1} \\</script><p>最后<code>a
   
 <nav id="article-nav">
   
-    <a href="/2020/08/03/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          浅谈逻辑斯蒂回归模型
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/07/07/Graph%20Neutral%20Network%E5%92%8CGraph%20Embedding/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Graph Neutral Network和Graph Embedding</div>
+    <a href="/2020/11/30/%E9%87%8D%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">重构字符串</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -421,7 +376,7 @@ b = b_1 \bigoplus b_2 \bigoplus....\bigoplus b_{n-1} \\</script><p>最后<code>a
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#近期刷题总结记录"><span class="toc-number">1.</span> <span class="toc-text">近期刷题总结记录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Leftmost-Digit"><span class="toc-number">1.1.</span> <span class="toc-text">1. Leftmost Digit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Euler函数"><span class="toc-number">1.2.</span> <span class="toc-text">2. Euler函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-找出缺失的数字"><span class="toc-number">1.3.</span> <span class="toc-text">3. 找出缺失的数字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Rightmost-Digit"><span class="toc-number">1.4.</span> <span class="toc-text">4. Rightmost Digit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-阶乘位数"><span class="toc-number">1.5.</span> <span class="toc-text">5. 阶乘位数</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#奇异值分解"><span class="toc-number">1.</span> <span class="toc-text">奇异值分解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-奇异值"><span class="toc-number">1.1.</span> <span class="toc-text">1. 奇异值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-奇异值分解"><span class="toc-number">1.2.</span> <span class="toc-text">2. 奇异值分解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-性质"><span class="toc-number">1.3.</span> <span class="toc-text">3. 性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-计算"><span class="toc-number">1.4.</span> <span class="toc-text">4. 计算</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
