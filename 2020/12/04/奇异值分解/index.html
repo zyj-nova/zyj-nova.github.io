@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="张永剑的博客">
 <meta property="og:description" content="奇异值分解注意：我们现在只讨论实矩阵的奇异值矩阵的分解。即给定矩阵 $A \in \mathbb{R}^{m\times n}$。">
 <meta property="article:published_time" content="2020-12-04T03:39:23.458Z">
-<meta property="article:modified_time" content="2020-12-04T10:10:24.624Z">
+<meta property="article:modified_time" content="2020-12-06T05:31:22.282Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
   
@@ -265,7 +265,35 @@ A^TA = V\Sigma^TU^TU\Sigma V^T  = V(\Sigma^T\Sigma)V^T</script><p>由以上可�
 \pmb v_i = \frac{1}{\sigma_i}A^T\pmb u_i,i=1,2,...,r</script><p>​    $\pmb v_{r+1},\pmb v_{r+2},…,\pmb v_n$ 是矩阵 $A$ 零空间 $N(A)$ 的一组标准正交基。</p>
 <h3 id="4-计算"><a href="#4-计算" class="headerlink" title="4. 计算"></a>4. 计算</h3><p>计算如下矩阵的奇异值分解。</p>
 <script type="math/tex; mode=display">
-A = \begin{pmatrix}1&2&0\\2&0&2\end{pmatrix}</script>
+A = \begin{pmatrix}1&2&0\\2&0&2\end{pmatrix}</script><p>可知：</p>
+<script type="math/tex; mode=display">
+A^T=\begin{pmatrix}1&2\\2&0\\0&2\end{pmatrix}</script><p>为了计算方便，计算 $AA^T$的特征值，即先求出 $U$，再计算 $V$。</p>
+<script type="math/tex; mode=display">
+AA^T=\begin{pmatrix}5&2\\2&8\end{pmatrix}</script><script type="math/tex; mode=display">
+|\lambda I-A| = \left |\begin {matrix}\lambda-5&-2\\-2&\lambda - 8 \end{matrix} \right |</script><p>特征方程：</p>
+<script type="math/tex; mode=display">
+(\lambda-5)(\lambda-8)-4=(\lambda-4)(\lambda-9)=0</script><p>可知两个特征值分别为 $\lambda_1=9,\lambda_2=4$，因此奇异值 $\sigma_1 = \sqrt 9=3,\sigma_2=\sqrt 4=2$，所以</p>
+<script type="math/tex; mode=display">
+\Sigma = \begin{pmatrix}3&0&0\\0&2&0\end{pmatrix}</script><p>计算 $\lambda_1=9$ 对应的特征向量：</p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}4&-2\\-2&1\end{pmatrix}\pmb x = \pmb 0</script><p>解得：$\pmb x = (1,2)^T$。单位化后可得：$\pmb u_1=(1/\sqrt5,2/\sqrt5)^T$</p>
+<p>计算 $\lambda_2 = 4$ 对应的特征向量：</p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}-1&-2\\-2&-4\end{pmatrix}\pmb x = \pmb 0</script><p>解得：$\pmb x = (2,-1)^T$。单位化后可得：$\pmb u_2=(2/\sqrt5,-1/\sqrt5)^T$</p>
+<p>因此：</p>
+<script type="math/tex; mode=display">
+U = \begin{pmatrix}\frac{1}{\sqrt5}&\frac{2}{\sqrt5}\\ \frac{2}{\sqrt5}&-\frac{1}{\sqrt5}\end{pmatrix}</script><p>现在根据$\pmb v_i = \frac{1}{\sigma_i}A^T\pmb u_i,i=1,2,…,r$ 计算 $V$。</p>
+<script type="math/tex; mode=display">
+A^TU = \begin{pmatrix}1&2\\2&0\\0&2\end{pmatrix}\begin{pmatrix}\frac{1}{\sqrt5}&\frac{2}{\sqrt5}\\ \frac{2}{\sqrt5}&-\frac{1}{\sqrt5}\end{pmatrix} = \begin{pmatrix}\sqrt5&0\\\frac{2}{\sqrt5}&\frac{4}{\sqrt5}\\\frac{4}{\sqrt5}&-\frac{2}{\sqrt5}\end{pmatrix}</script><p>可得：$\pmb v_1=(\frac{\sqrt5}{3},\frac{2}{3\sqrt5},\frac{4}{3\sqrt5})^T,\pmb v_2=(0,\frac{2}{\sqrt 5},-\frac{1}{\sqrt 5})^T$</p>
+<p>又$\pmb v_3$是$N(A)$的一组基，即：</p>
+<script type="math/tex; mode=display">
+A = \begin{pmatrix}1&2&0\\2&0&2\end{pmatrix}\begin{pmatrix}x_1\\x_2\\x_3\end{pmatrix} = \pmb 0</script><p>解得 $(-2,1,2)^T$。单位化可得 ： $\pmb v_3=(-2/3,1/3,2/3)$。因此：</p>
+<script type="math/tex; mode=display">
+V = \begin{pmatrix}\frac{\sqrt 5}{3}&0&-\frac{2}{3}\\\frac{2}{3\sqrt5}&\frac{2}{\sqrt 5}&\frac{1}{3}\\\frac{4}{3\sqrt5}&-\frac{1}{\sqrt5}&\frac{2}{3} \end{pmatrix}</script><p>综上，$A$ 的奇异值分解如下：</p>
+<script type="math/tex; mode=display">
+A =\begin{pmatrix}\frac{1}{\sqrt5}&\frac{2}{\sqrt5}\\ \frac{2}{\sqrt5}&-\frac{1}{\sqrt5}\end{pmatrix}\begin{pmatrix}3&0&0\\0&2&0\end{pmatrix}\begin{pmatrix}\frac{\sqrt 5}{3}&0&-\frac{2}{3}\\\frac{2}{3\sqrt5}&\frac{2}{\sqrt 5}&\frac{1}{3}\\\frac{4}{3\sqrt5}&-\frac{1}{\sqrt5}&\frac{2}{3} \end{pmatrix}^T</script><p><strong>注意：</strong>$V$ 是转置过的，计算时要注意一下。</p>
+<p>也可以计算$A^TA$的特征值与特征向量，得到矩阵 $V$，然后根据 $\pmb u_i = \frac{1}{\sigma_i}A\pmb v_i,i=1,2,…,r$  得到矩阵 $U$。</p>
+
           
         
     </div>
