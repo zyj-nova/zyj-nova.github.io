@@ -6,14 +6,16 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | 张永剑的博客</title>
+  <title>Batch Normalization 思考 | 张永剑的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="天空如此辽阔，大地不过是必经之路">
-<meta property="og:type" content="website">
-<meta property="og:title" content="张永剑的博客">
-<meta property="og:url" content="http://yoursite.com/archives/page/4/index.html">
+  <meta name="description" content="BatchNormalization思考之前在卷积网络中写过一点bn的东西，主要是论文中的一些想法，本文探讨一下Pytorch中的BatchNorm的实现。 参考： [1]. https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;b38e14c1f14d [2]. https:&#x2F;&#x2F;github.com&#x2F;pytorch&#x2F;pytorch&#x2F;blob&#x2F;master&#x2F;torch&#x2F;nn&#x2F;modules&#x2F;batc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Batch Normalization 思考">
+<meta property="og:url" content="http://yoursite.com/2020/12/11/Batch%20Normalization%20%E6%80%9D%E8%80%83/index.html">
 <meta property="og:site_name" content="张永剑的博客">
-<meta property="og:description" content="天空如此辽阔，大地不过是必经之路">
+<meta property="og:description" content="BatchNormalization思考之前在卷积网络中写过一点bn的东西，主要是论文中的一些想法，本文探讨一下Pytorch中的BatchNorm的实现。 参考： [1]. https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;b38e14c1f14d [2]. https:&#x2F;&#x2F;github.com&#x2F;pytorch&#x2F;pytorch&#x2F;blob&#x2F;master&#x2F;torch&#x2F;nn&#x2F;modules&#x2F;batc">
+<meta property="article:published_time" content="2020-12-11T02:13:52.670Z">
+<meta property="article:modified_time" content="2020-12-11T07:00:39.078Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
   
@@ -203,113 +205,71 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Batch Normalization 思考" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Batch Normalization 思考
+    </h1>
+  
+
+        
+        <a href="/2020/12/11/Batch%20Normalization%20%E6%80%9D%E8%80%83/" class="archive-article-date">
+  	<time datetime="2020-12-11T02:13:52.670Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-12-11</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="BatchNormalization思考"><a href="#BatchNormalization思考" class="headerlink" title="BatchNormalization思考"></a>BatchNormalization思考</h2><p>之前在卷积网络中写过一点bn的东西，主要是论文中的一些想法，本文探讨一下Pytorch中的BatchNorm的实现。</p>
+<p>参考：</p>
+<p>[1]. <a href="https://www.jianshu.com/p/b38e14c1f14d" target="_blank" rel="noopener">https://www.jianshu.com/p/b38e14c1f14d</a></p>
+<p>[2]. <a href="https://github.com/pytorch/pytorch/blob/master/torch/nn/modules/batchnorm.py" target="_blank" rel="noopener">https://github.com/pytorch/pytorch/blob/master/torch/nn/modules/batchnorm.py</a></p>
+<p>[3]. <a href="https://blog.csdn.net/winycg/article/details/88974107" target="_blank" rel="noopener">https://blog.csdn.net/winycg/article/details/88974107</a></p>
+<p>[4]. <a href="https://github.com/ptrblck/pytorch_misc/blob/master/batch_norm_manual.py" target="_blank" rel="noopener">https://github.com/ptrblck/pytorch_misc/blob/master/batch_norm_manual.py</a></p>
+<p>[5]. <a href="https://discuss.pytorch.org/t/why-track-running-stats-is-not-set-to-false-during-eval/25412" target="_blank" rel="noopener">https://discuss.pytorch.org/t/why-track-running-stats-is-not-set-to-false-during-eval/25412</a></p>
+<a id="more"></a>
+<p>BatchNorm具体数学形式：</p>
+<script type="math/tex; mode=display">
+y = \frac{x - \mathrm{E}[x]}{\sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta</script><p><code>torch.nn.BatchNorm1d(num_features: int, eps: float = 1e-5,momentum: float = 0.1,</code></p>
+<p>​                                        <code>affine: bool = True,track_running_stats: bool = True)</code>:</p>
+<ul>
+<li><p><strong>num_features</strong>：特征的数量（样本维度）</p>
+</li>
+<li><p><strong>eps</strong>：$\epsilon$，默认是$1e-5$，防止方差为0的情况</p>
+</li>
+<li><p><strong>momentum</strong>： 计算running_mean和running_var的滑动平均系数。采用下列的公式：</p>
+<script type="math/tex; mode=display">
+\hat{x}_\text{new} = (1 - \text{momentum}) \times \hat{x} + \text{momentum} \times x_t</script><p>其中，$x_t$ 指当前批次样本的均值或方差，$\hat x$ 指之前计算的均值或方差。</p>
+</li>
+<li><p><strong>affine</strong>：True表示使用 $\gamma$ 和 $\beta$ 参数，是超参数，通过学习得到，初始时$\gamma = 1,\beta = 0$</p>
+</li>
+<li><p><strong>track_running_stats</strong>：如果为True，<strong>训练阶段采用实时的batch均值和方差</strong>， 同时采用滑动平均来计算<strong>全局</strong>的running_mean和running_var，测试阶段采用计算出的running_mean和running_var；如果是False，则训练阶段和测试阶段都采用实时的batch均值和方差。</p>
+</li>
+</ul>
+<p><strong>说明：</strong></p>
+<ul>
+<li>momentum其实用到了指数加权的思想（<a href="https://zhuanlan.zhihu.com/p/29895933），本质上是一种近似求平均的方法。" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29895933），本质上是一种近似求平均的方法。</a></li>
+<li>训练阶段，要求BatchNorm要求<strong>输入的样本数量必须大于1</strong>。测试时，对样本个数没有要求，使用<code>model.eval()</code>（<code>model.eval()</code>pytorch会自动将bn层中的<strong>training设置为False,track_running_stats设置为True</strong>）则会固定Batchnorm层的参数，这时均值与方差会用<code>running_mean</code>与<code>running_var</code>代替并且不再更新。测试时不推荐将<code>track_running_stats</code>设置为<code>False</code>。</li>
+<li>Pytorch在BatchNorm中计算方差时，<code>torch.var(x,unbiased=False)</code>。区别可搜索”方差的贝塞尔校正“。</li>
+<li>定义<code>bn = nn.BatchNorm1d(3)</code>，通过<code>bn.running_mean</code>和<code>bn.running_var</code>获取统计数据的均值和方差。</li>
+</ul>
+<p>以下代码来自链接[4]。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyBatchNorm2d</span><span class="params">(nn.BatchNorm2d)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, num_features, eps=<span class="number">1e-5</span>, momentum=<span class="number">0.1</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 affine=True, track_running_stats=True)</span>:</span></span><br><span class="line">        super(MyBatchNorm2d, self).__init__(</span><br><span class="line">            num_features, eps, momentum, affine, track_running_stats)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input)</span>:</span></span><br><span class="line">        self._check_input_dim(input)</span><br><span class="line"></span><br><span class="line">        exponential_average_factor = <span class="number">0.0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.training <span class="keyword">and</span> self.track_running_stats:</span><br><span class="line">            <span class="keyword">if</span> self.num_batches_tracked <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                self.num_batches_tracked += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> self.momentum <span class="keyword">is</span> <span class="literal">None</span>:  <span class="comment"># use cumulative moving average</span></span><br><span class="line">                    exponential_average_factor = <span class="number">1.0</span> / float(self.num_batches_tracked)</span><br><span class="line">                <span class="keyword">else</span>:  <span class="comment"># use exponential moving average</span></span><br><span class="line">                    exponential_average_factor = self.momentum</span><br><span class="line"></span><br><span class="line">        <span class="comment"># calculate running estimates</span></span><br><span class="line">        <span class="keyword">if</span> self.training:</span><br><span class="line">            mean = input.mean([<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">            <span class="comment"># use biased var in train</span></span><br><span class="line">            var = input.var([<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>], unbiased=<span class="literal">False</span>)</span><br><span class="line">            n = input.numel() / input.size(<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">                self.running_mean = exponential_average_factor * mean\</span><br><span class="line">                    + (<span class="number">1</span> - exponential_average_factor) * self.running_mean</span><br><span class="line">                <span class="comment"># update running_var with unbiased var</span></span><br><span class="line">                self.running_var = exponential_average_factor * var * n / (n - <span class="number">1</span>)\</span><br><span class="line">                    + (<span class="number">1</span> - exponential_average_factor) * self.running_var</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            mean = self.running_mean</span><br><span class="line">            var = self.running_var</span><br><span class="line"></span><br><span class="line">        input = (input - mean[<span class="literal">None</span>, :, <span class="literal">None</span>, <span class="literal">None</span>]) / (torch.sqrt(var[<span class="literal">None</span>, :, <span class="literal">None</span>, <span class="literal">None</span>] + self.eps))</span><br><span class="line">        <span class="keyword">if</span> self.affine:</span><br><span class="line">            input = input * self.weight[<span class="literal">None</span>, :, <span class="literal">None</span>, <span class="literal">None</span>] + self.bias[<span class="literal">None</span>, :, <span class="literal">None</span>, <span class="literal">None</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> input</span><br></pre></td></tr></table></figure>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2020-06-25T14:56:20.418Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/25/Kafka%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">Kafka入门教程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/大数据//" class="article-tag-list-link color4">大数据</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/24/SpringMVC%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-06-24T01:47:29.672Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/24/SpringMVC%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/">SpringMVC源码浅析</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/22/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/" class="archive-article-date">
-  	<time datetime="2020-06-22T05:22:08.407Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/22/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/">生成对抗网络</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -322,286 +282,116 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/12/11/Batch%20Normalization%20%E6%80%9D%E8%80%83/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2020-06-22T03:09:01.189Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-22</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/12/04/%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">奇异值分解</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/22/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/">ZooKeeper基础教程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#BatchNormalization思考"><span class="toc-number">1.</span> <span class="toc-text">BatchNormalization思考</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" class="archive-article-date">
-  	<time datetime="2020-06-10T16:17:54.353Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/11/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/">LRU缓存机制</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/日常刷题记录//" class="article-tag-list-link color2">日常刷题记录</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/" class="archive-article-date">
-  	<time datetime="2020-06-09T16:22:30.243Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-10</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/10/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/">数据分析之Pandas</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/" class="archive-article-date">
-  	<time datetime="2020-06-06T02:45:23.060Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/06/Java%E4%B8%AD%E5%A4%9A%E6%80%81%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99/">Java中多态和方法的重载和重写</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/" class="archive-article-date">
-  	<time datetime="2020-05-23T12:29:05.107Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/23/%E5%BD%92%E4%B8%80%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96/">归一化和标准化</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/" class="archive-article-date">
-  	<time datetime="2020-05-23T09:17:03.636Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/23/Vuex%E4%BD%BF%E7%94%A8/">Vuex使用</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/JS//" class="article-tag-list-link color3">JS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/" class="archive-article-date">
-  	<time datetime="2020-05-22T14:52:05.540Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/22/ES6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/">ES6模块的导出和导入</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/JS//" class="article-tag-list-link color3">JS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/archives/page/5/">5</a><a class="page-number" href="/archives/page/6/">6</a><a class="page-number" href="/archives/page/7/">7</a><a class="extend next" rel="next" href="/archives/page/5/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -625,8 +415,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

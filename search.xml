@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Batch Normalization 思考</title>
+    <url>/2020/12/11/Batch%20Normalization%20%E6%80%9D%E8%80%83/</url>
+    <content><![CDATA[<h2 id="BatchNormalization思考"><a href="#BatchNormalization思考" class="headerlink" title="BatchNormalization思考"></a>BatchNormalization思考</h2><p>之前在卷积网络中写过一点bn的东西，主要是论文中的一些想法，本文探讨一下Pytorch中的BatchNorm的实现。</p>
+<p>参考：</p>
+<p>[1]. <a href="https://www.jianshu.com/p/b38e14c1f14d" target="_blank" rel="noopener">https://www.jianshu.com/p/b38e14c1f14d</a></p>
+<p>[2]. <a href="https://github.com/pytorch/pytorch/blob/master/torch/nn/modules/batchnorm.py" target="_blank" rel="noopener">https://github.com/pytorch/pytorch/blob/master/torch/nn/modules/batchnorm.py</a></p>
+<p>[3]. <a href="https://blog.csdn.net/winycg/article/details/88974107" target="_blank" rel="noopener">https://blog.csdn.net/winycg/article/details/88974107</a></p>
+<p>[4]. <a href="https://github.com/ptrblck/pytorch_misc/blob/master/batch_norm_manual.py" target="_blank" rel="noopener">https://github.com/ptrblck/pytorch_misc/blob/master/batch_norm_manual.py</a></p>
+<p>[5]. <a href="https://discuss.pytorch.org/t/why-track-running-stats-is-not-set-to-false-during-eval/25412" target="_blank" rel="noopener">https://discuss.pytorch.org/t/why-track-running-stats-is-not-set-to-false-during-eval/25412</a></p>
+<a id="more"></a>
+<p>BatchNorm具体数学形式：</p>
+<script type="math/tex; mode=display">
+y = \frac{x - \mathrm{E}[x]}{\sqrt{\mathrm{Var}[x] + \epsilon}} * \gamma + \beta</script><p><code>torch.nn.BatchNorm1d(num_features: int, eps: float = 1e-5,momentum: float = 0.1,</code></p>
+<p>​                                        <code>affine: bool = True,track_running_stats: bool = True)</code>:</p>
+<ul>
+<li><p><strong>num_features</strong>：特征的数量（样本维度）</p>
+</li>
+<li><p><strong>eps</strong>：$\epsilon$，默认是$1e-5$，防止方差为0的情况</p>
+</li>
+<li><p><strong>momentum</strong>： 计算running_mean和running_var的滑动平均系数。采用下列的公式：</p>
+<script type="math/tex; mode=display">
+\hat{x}_\text{new} = (1 - \text{momentum}) \times \hat{x} + \text{momentum} \times x_t</script><p>其中，$x_t$ 指当前批次样本的均值或方差，$\hat x$ 指之前计算的均值或方差。</p>
+</li>
+<li><p><strong>affine</strong>：True表示使用 $\gamma$ 和 $\beta$ 参数，是超参数，通过学习得到，初始时$\gamma = 1,\beta = 0$</p>
+</li>
+<li><p><strong>track_running_stats</strong>：如果为True，<strong>训练阶段采用实时的batch均值和方差</strong>， 同时采用滑动平均来计算<strong>全局</strong>的running_mean和running_var，测试阶段采用计算出的running_mean和running_var；如果是False，则训练阶段和测试阶段都采用实时的batch均值和方差。</p>
+</li>
+</ul>
+<p><strong>说明：</strong></p>
+<ul>
+<li>momentum其实用到了指数加权的思想（<a href="https://zhuanlan.zhihu.com/p/29895933），本质上是一种近似求平均的方法。" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29895933），本质上是一种近似求平均的方法。</a></li>
+<li>训练阶段，要求BatchNorm要求<strong>输入的样本数量必须大于1</strong>。测试时，对样本个数没有要求，使用<code>model.eval()</code>（<code>model.eval()</code>pytorch会自动将bn层中的<strong>training设置为False,track_running_stats设置为True</strong>）则会固定Batchnorm层的参数，这时均值与方差会用<code>running_mean</code>与<code>running_var</code>代替并且不再更新。测试时不推荐将<code>track_running_stats</code>设置为<code>False</code>。</li>
+<li>Pytorch在BatchNorm中计算方差时，<code>torch.var(x,unbiased=False)</code>。区别可搜索”方差的贝塞尔校正“。</li>
+<li>定义<code>bn = nn.BatchNorm1d(3)</code>，通过<code>bn.running_mean</code>和<code>bn.running_var</code>获取统计数据的均值和方差。</li>
+</ul>
+<p>以下代码来自链接[4]。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyBatchNorm2d</span><span class="params">(nn.BatchNorm2d)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, num_features, eps=<span class="number">1e-5</span>, momentum=<span class="number">0.1</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 affine=True, track_running_stats=True)</span>:</span></span><br><span class="line">        super(MyBatchNorm2d, self).__init__(</span><br><span class="line">            num_features, eps, momentum, affine, track_running_stats)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, input)</span>:</span></span><br><span class="line">        self._check_input_dim(input)</span><br><span class="line"></span><br><span class="line">        exponential_average_factor = <span class="number">0.0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.training <span class="keyword">and</span> self.track_running_stats:</span><br><span class="line">            <span class="keyword">if</span> self.num_batches_tracked <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                self.num_batches_tracked += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> self.momentum <span class="keyword">is</span> <span class="literal">None</span>:  <span class="comment"># use cumulative moving average</span></span><br><span class="line">                    exponential_average_factor = <span class="number">1.0</span> / float(self.num_batches_tracked)</span><br><span class="line">                <span class="keyword">else</span>:  <span class="comment"># use exponential moving average</span></span><br><span class="line">                    exponential_average_factor = self.momentum</span><br><span class="line"></span><br><span class="line">        <span class="comment"># calculate running estimates</span></span><br><span class="line">        <span class="keyword">if</span> self.training:</span><br><span class="line">            mean = input.mean([<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">            <span class="comment"># use biased var in train</span></span><br><span class="line">            var = input.var([<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>], unbiased=<span class="literal">False</span>)</span><br><span class="line">            n = input.numel() / input.size(<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">                self.running_mean = exponential_average_factor * mean\</span><br><span class="line">                    + (<span class="number">1</span> - exponential_average_factor) * self.running_mean</span><br><span class="line">                <span class="comment"># update running_var with unbiased var</span></span><br><span class="line">                self.running_var = exponential_average_factor * var * n / (n - <span class="number">1</span>)\</span><br><span class="line">                    + (<span class="number">1</span> - exponential_average_factor) * self.running_var</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            mean = self.running_mean</span><br><span class="line">            var = self.running_var</span><br><span class="line"></span><br><span class="line">        input = (input - mean[<span class="literal">None</span>, :, <span class="literal">None</span>, <span class="literal">None</span>]) / (torch.sqrt(var[<span class="literal">None</span>, :, <span class="literal">None</span>, <span class="literal">None</span>] + self.eps))</span><br><span class="line">        <span class="keyword">if</span> self.affine:</span><br><span class="line">            input = input * self.weight[<span class="literal">None</span>, :, <span class="literal">None</span>, <span class="literal">None</span>] + self.bias[<span class="literal">None</span>, :, <span class="literal">None</span>, <span class="literal">None</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> input</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+  </entry>
+  <entry>
     <title>奇异值分解</title>
     <url>/2020/12/04/%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3/</url>
     <content><![CDATA[<h2 id="奇异值分解"><a href="#奇异值分解" class="headerlink" title="奇异值分解"></a>奇异值分解</h2><p>注意：我们现在只讨论实矩阵的奇异值矩阵的分解。即给定矩阵 $A \in \mathbb{R}^{m\times n}$。</p>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-12-06T05:31:22.282Z</updated>
+  <updated>2020-12-11T07:00:39.078Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Batch Normalization 思考</title>
+    <link href="http://yoursite.com/2020/12/11/Batch%20Normalization%20%E6%80%9D%E8%80%83/"/>
+    <id>http://yoursite.com/2020/12/11/Batch%20Normalization%20%E6%80%9D%E8%80%83/</id>
+    <published>2020-12-11T02:13:52.670Z</published>
+    <updated>2020-12-11T07:00:39.078Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;BatchNormalization思考&quot;&gt;&lt;a href=&quot;#BatchNormalization思考&quot; class=&quot;headerlink&quot; title=&quot;BatchNormalization思考&quot;&gt;&lt;/a&gt;BatchNormalization思考&lt;/h2&gt;&lt;p&gt;之前在卷积网络中写过一点bn的东西，主要是论文中的一些想法，本文探讨一下Pytorch中的BatchNorm的实现。&lt;/p&gt;
+&lt;p&gt;参考：&lt;/p&gt;
+&lt;p&gt;[1]. &lt;a href=&quot;https://www.jianshu.com/p/b38e14c1f14d&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://www.jianshu.com/p/b38e14c1f14d&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[2]. &lt;a href=&quot;https://github.com/pytorch/pytorch/blob/master/torch/nn/modules/batchnorm.py&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/pytorch/pytorch/blob/master/torch/nn/modules/batchnorm.py&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[3]. &lt;a href=&quot;https://blog.csdn.net/winycg/article/details/88974107&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://blog.csdn.net/winycg/article/details/88974107&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[4]. &lt;a href=&quot;https://github.com/ptrblck/pytorch_misc/blob/master/batch_norm_manual.py&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/ptrblck/pytorch_misc/blob/master/batch_norm_manual.py&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[5]. &lt;a href=&quot;https://discuss.pytorch.org/t/why-track-running-stats-is-not-set-to-false-during-eval/25412&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://discuss.pytorch.org/t/why-track-running-stats-is-not-set-to-false-during-eval/25412&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>奇异值分解</title>
@@ -392,25 +417,6 @@
     
     
       <category term="机器视觉基础" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>多元高斯及其极大似然估计</title>
-    <link href="http://yoursite.com/2020/10/06/%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%8F%8A%E5%85%B6%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1/"/>
-    <id>http://yoursite.com/2020/10/06/%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%8F%8A%E5%85%B6%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1/</id>
-    <published>2020-10-06T07:54:18.217Z</published>
-    <updated>2020-11-11T03:41:28.166Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;多元高斯及其极大似然估计&quot;&gt;&lt;a href=&quot;#多元高斯及其极大似然估计&quot; class=&quot;headerlink&quot; title=&quot;多元高斯及其极大似然估计&quot;&gt;&lt;/a&gt;多元高斯及其极大似然估计&lt;/h2&gt;&lt;p&gt;参考：&lt;a href=&quot;https://blog.csdn.net/Joyliness/article/details/80097491&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://blog.csdn.net/Joyliness/article/details/80097491&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
   </entry>
