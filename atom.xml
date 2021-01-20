@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-12-11T07:00:39.078Z</updated>
+  <updated>2021-01-20T12:12:04.166Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,40 +17,91 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Batch Normalization 思考</title>
-    <link href="http://yoursite.com/2020/12/11/Batch%20Normalization%20%E6%80%9D%E8%80%83/"/>
-    <id>http://yoursite.com/2020/12/11/Batch%20Normalization%20%E6%80%9D%E8%80%83/</id>
-    <published>2020-12-11T02:13:52.670Z</published>
-    <updated>2020-12-11T07:00:39.078Z</updated>
+    <title>并查集</title>
+    <link href="http://yoursite.com/2021/01/20/%E5%B9%B6%E6%9F%A5%E9%9B%86/"/>
+    <id>http://yoursite.com/2021/01/20/%E5%B9%B6%E6%9F%A5%E9%9B%86/</id>
+    <published>2021-01-19T16:04:53.708Z</published>
+    <updated>2021-01-20T12:12:04.166Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;BatchNormalization思考&quot;&gt;&lt;a href=&quot;#BatchNormalization思考&quot; class=&quot;headerlink&quot; title=&quot;BatchNormalization思考&quot;&gt;&lt;/a&gt;BatchNormalization思考&lt;/h2&gt;&lt;p&gt;之前在卷积网络中写过一点bn的东西，主要是论文中的一些想法，本文探讨一下Pytorch中的BatchNorm的实现。&lt;/p&gt;
-&lt;p&gt;参考：&lt;/p&gt;
-&lt;p&gt;[1]. &lt;a href=&quot;https://www.jianshu.com/p/b38e14c1f14d&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://www.jianshu.com/p/b38e14c1f14d&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;[2]. &lt;a href=&quot;https://github.com/pytorch/pytorch/blob/master/torch/nn/modules/batchnorm.py&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/pytorch/pytorch/blob/master/torch/nn/modules/batchnorm.py&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;[3]. &lt;a href=&quot;https://blog.csdn.net/winycg/article/details/88974107&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://blog.csdn.net/winycg/article/details/88974107&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;[4]. &lt;a href=&quot;https://github.com/ptrblck/pytorch_misc/blob/master/batch_norm_manual.py&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/ptrblck/pytorch_misc/blob/master/batch_norm_manual.py&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;[5]. &lt;a href=&quot;https://discuss.pytorch.org/t/why-track-running-stats-is-not-set-to-false-during-eval/25412&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://discuss.pytorch.org/t/why-track-running-stats-is-not-set-to-false-during-eval/25412&lt;/a&gt;&lt;/p&gt;
+      &lt;h2 id=&quot;并查集&quot;&gt;&lt;a href=&quot;#并查集&quot; class=&quot;headerlink&quot; title=&quot;并查集&quot;&gt;&lt;/a&gt;并查集&lt;/h2&gt;&lt;h3 id=&quot;1-并查集介绍&quot;&gt;&lt;a href=&quot;#1-并查集介绍&quot; class=&quot;headerlink&quot; title=&quot;1. 并查集介绍&quot;&gt;&lt;/a&gt;1. 并查集介绍&lt;/h3&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;[] data = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;[&lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; x)&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(data[x] == x)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; x;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        data[x] = find(data[x]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; data[x];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; voif &lt;span class=&quot;title&quot;&gt;merge&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; a, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; b)&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; x = find(a);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; y = find(b);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(x != y)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        data[x] = y;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     
     
-      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+      <category term="基础算法" scheme="http://yoursite.com/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/"/>
     
     
   </entry>
   
   <entry>
-    <title>奇异值分解</title>
-    <link href="http://yoursite.com/2020/12/04/%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3/"/>
-    <id>http://yoursite.com/2020/12/04/%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3/</id>
-    <published>2020-12-04T03:39:23.458Z</published>
-    <updated>2020-12-06T05:31:22.282Z</updated>
+    <title>Hadoop 完全分布式集群配置</title>
+    <link href="http://yoursite.com/2021/01/20/Hadoop%20%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/"/>
+    <id>http://yoursite.com/2021/01/20/Hadoop%20%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/</id>
+    <published>2021-01-19T16:03:31.685Z</published>
+    <updated>2021-01-20T12:11:49.497Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;奇异值分解&quot;&gt;&lt;a href=&quot;#奇异值分解&quot; class=&quot;headerlink&quot; title=&quot;奇异值分解&quot;&gt;&lt;/a&gt;奇异值分解&lt;/h2&gt;&lt;p&gt;注意：我们现在只讨论实矩阵的奇异值矩阵的分解。即给定矩阵 $A \in \mathbb{R}^{m\times n}$。&lt;/p&gt;
+      &lt;h2 id=&quot;Hadoop-完全分布式集群配置&quot;&gt;&lt;a href=&quot;#Hadoop-完全分布式集群配置&quot; class=&quot;headerlink&quot; title=&quot;Hadoop 完全分布式集群配置&quot;&gt;&lt;/a&gt;Hadoop 完全分布式集群配置&lt;/h2&gt;
+    
+    </summary>
+    
+    
+      <category term="大数据" scheme="http://yoursite.com/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>链表</title>
+    <link href="http://yoursite.com/2021/01/02/%E9%93%BE%E8%A1%A8/"/>
+    <id>http://yoursite.com/2021/01/02/%E9%93%BE%E8%A1%A8/</id>
+    <published>2021-01-02T01:54:38.008Z</published>
+    <updated>2021-01-20T12:08:45.587Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;链表&quot;&gt;&lt;a href=&quot;#链表&quot; class=&quot;headerlink&quot; title=&quot;链表&quot;&gt;&lt;/a&gt;链表&lt;/h2&gt;
+    
+    </summary>
+    
+    
+      <category term="基础算法" scheme="http://yoursite.com/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>造成Java Out Of Memory原因总结</title>
+    <link href="http://yoursite.com/2021/01/02/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/"/>
+    <id>http://yoursite.com/2021/01/02/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/</id>
+    <published>2021-01-02T01:54:38.008Z</published>
+    <updated>2020-11-11T03:43:24.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;造成-Java-Out-Of-Memory-原因总结&quot;&gt;&lt;a href=&quot;#造成-Java-Out-Of-Memory-原因总结&quot; class=&quot;headerlink&quot; title=&quot;造成 Java Out Of Memory 原因总结&quot;&gt;&lt;/a&gt;造成 Java Out Of Memory 原因总结&lt;/h2&gt;&lt;p&gt;总结起来有 6 点原因，以下分点阐述。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>降维方法</title>
+    <link href="http://yoursite.com/2021/01/02/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/"/>
+    <id>http://yoursite.com/2021/01/02/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/</id>
+    <published>2021-01-02T01:54:38.008Z</published>
+    <updated>2020-11-11T03:42:10.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;降维方法&quot;&gt;&lt;a href=&quot;#降维方法&quot; class=&quot;headerlink&quot; title=&quot;降维方法&quot;&gt;&lt;/a&gt;降维方法&lt;/h2&gt;
     
     </summary>
     
@@ -62,10 +113,10 @@
   
   <entry>
     <title>重构字符串</title>
-    <link href="http://yoursite.com/2020/11/30/%E9%87%8D%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
-    <id>http://yoursite.com/2020/11/30/%E9%87%8D%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/</id>
-    <published>2020-11-30T10:17:21.329Z</published>
-    <updated>2020-11-30T12:39:30.219Z</updated>
+    <link href="http://yoursite.com/2021/01/02/%E9%87%8D%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
+    <id>http://yoursite.com/2021/01/02/%E9%87%8D%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/</id>
+    <published>2021-01-02T01:54:38.008Z</published>
+    <updated>2020-11-30T12:39:32.000Z</updated>
     
     <summary type="html">
     
@@ -82,11 +133,30 @@
   </entry>
   
   <entry>
+    <title>聚类</title>
+    <link href="http://yoursite.com/2021/01/02/%E8%81%9A%E7%B1%BB/"/>
+    <id>http://yoursite.com/2021/01/02/%E8%81%9A%E7%B1%BB/</id>
+    <published>2021-01-02T01:54:37.992Z</published>
+    <updated>2020-11-27T03:48:44.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;聚类&quot;&gt;&lt;a href=&quot;#聚类&quot; class=&quot;headerlink&quot; title=&quot;聚类&quot;&gt;&lt;/a&gt;聚类&lt;/h2&gt;&lt;p&gt;参考：《机器学习》，2016，周志华；统计学习方法，李航。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>误差逆传播算法</title>
-    <link href="http://yoursite.com/2020/11/23/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/"/>
-    <id>http://yoursite.com/2020/11/23/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/</id>
-    <published>2020-11-23T11:45:06.033Z</published>
-    <updated>2020-11-30T12:38:34.098Z</updated>
+    <link href="http://yoursite.com/2021/01/02/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/"/>
+    <id>http://yoursite.com/2021/01/02/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/</id>
+    <published>2021-01-02T01:54:37.992Z</published>
+    <updated>2020-11-30T12:38:36.000Z</updated>
     
     <summary type="html">
     
@@ -101,49 +171,207 @@
   </entry>
   
   <entry>
-    <title>无重叠区间</title>
-    <link href="http://yoursite.com/2020/11/23/%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/"/>
-    <id>http://yoursite.com/2020/11/23/%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/</id>
-    <published>2020-11-23T10:27:05.710Z</published>
-    <updated>2020-11-30T12:39:16.942Z</updated>
+    <title>贝叶斯垃圾邮件分类器</title>
+    <link href="http://yoursite.com/2021/01/02/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%9E%83%E5%9C%BE%E9%82%AE%E4%BB%B6%E5%88%86%E7%B1%BB%E5%99%A8/"/>
+    <id>http://yoursite.com/2021/01/02/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%9E%83%E5%9C%BE%E9%82%AE%E4%BB%B6%E5%88%86%E7%B1%BB%E5%99%A8/</id>
+    <published>2021-01-02T01:54:37.992Z</published>
+    <updated>2020-11-11T03:41:18.000Z</updated>
     
     <summary type="html">
     
-      &lt;h3 id=&quot;无重叠区间&quot;&gt;&lt;a href=&quot;#无重叠区间&quot; class=&quot;headerlink&quot; title=&quot;无重叠区间&quot;&gt;&lt;/a&gt;无重叠区间&lt;/h3&gt;&lt;p&gt;日常刷题记录&lt;/p&gt;
+      &lt;h2 id=&quot;贝叶斯垃圾邮件分类器&quot;&gt;&lt;a href=&quot;#贝叶斯垃圾邮件分类器&quot; class=&quot;headerlink&quot; title=&quot;贝叶斯垃圾邮件分类器&quot;&gt;&lt;/a&gt;贝叶斯垃圾邮件分类器&lt;/h2&gt;&lt;p&gt;利用朴素贝叶斯算法，在给定训练数据上，训练一个垃圾分类器。有关朴素贝叶斯的基本思想，可以参见另一篇博客：&lt;a href=&quot;https://zyj-nova.github.io/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://zyj-nova.github.io/2020/02/09/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%EF%BC%88Naive%20Bayes%EF%BC%89/&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
     
-      <category term="日常刷题记录" scheme="http://yoursite.com/categories/%E6%97%A5%E5%B8%B8%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
   </entry>
   
   <entry>
-    <title>Evidential Reasoning Rule for Evidence Combination</title>
-    <link href="http://yoursite.com/2020/11/21/Evidential%20Reasoning%20Rule%20for%20Evidence%20Combination/"/>
-    <id>http://yoursite.com/2020/11/21/Evidential%20Reasoning%20Rule%20for%20Evidence%20Combination/</id>
-    <published>2020-11-21T14:08:20.854Z</published>
-    <updated>2020-11-22T13:42:04.060Z</updated>
+    <title>树状数组</title>
+    <link href="http://yoursite.com/2021/01/02/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/"/>
+    <id>http://yoursite.com/2021/01/02/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/</id>
+    <published>2021-01-02T01:54:37.977Z</published>
+    <updated>2020-11-14T13:54:48.000Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;Evidential-Reasoning-Rule-for-Evidence-Combination&quot;&gt;&lt;a href=&quot;#Evidential-Reasoning-Rule-for-Evidence-Combination&quot; class=&quot;headerlink&quot; title=&quot;Evidential Reasoning Rule for Evidence Combination&quot;&gt;&lt;/a&gt;Evidential Reasoning Rule for Evidence Combination&lt;/h2&gt;&lt;p&gt;关键词：Dempster-Shafer theory，Information fusion（信息融合），Evidence Combination，Evidential Reasoning（证据推理）。&lt;/p&gt;
+      &lt;h2 id=&quot;树状数组&quot;&gt;&lt;a href=&quot;#树状数组&quot; class=&quot;headerlink&quot; title=&quot;树状数组&quot;&gt;&lt;/a&gt;树状数组&lt;/h2&gt;&lt;p&gt;树状数组（Binary Indexed Tree/Fenwick Tree）。&lt;/p&gt;
+&lt;p&gt;视频：&lt;a href=&quot;https://www.bilibili.com/video/BV1Hz411v7XC?p=2&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://www.bilibili.com/video/BV1Hz411v7XC?p=2&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
     
-      <category term="文献阅读笔记" scheme="http://yoursite.com/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"/>
+      <category term="基础算法" scheme="http://yoursite.com/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>浅谈逻辑斯蒂回归模型</title>
+    <link href="http://yoursite.com/2021/01/02/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/"/>
+    <id>http://yoursite.com/2021/01/02/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/</id>
+    <published>2021-01-02T01:54:37.977Z</published>
+    <updated>2020-11-11T03:42:36.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;浅谈逻辑斯蒂回归模型&quot;&gt;&lt;a href=&quot;#浅谈逻辑斯蒂回归模型&quot; class=&quot;headerlink&quot; title=&quot;浅谈逻辑斯蒂回归模型&quot;&gt;&lt;/a&gt;浅谈逻辑斯蒂回归模型&lt;/h2&gt;
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>生成对抗网络</title>
+    <link href="http://yoursite.com/2021/01/02/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/"/>
+    <id>http://yoursite.com/2021/01/02/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/</id>
+    <published>2021-01-02T01:54:37.977Z</published>
+    <updated>2020-11-11T03:42:46.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;生成对抗网络（GAN）&quot;&gt;&lt;a href=&quot;#生成对抗网络（GAN）&quot; class=&quot;headerlink&quot; title=&quot;生成对抗网络（GAN）&quot;&gt;&lt;/a&gt;生成对抗网络（GAN）&lt;/h2&gt;
+    
+    </summary>
+    
+    
+      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>神奇的矩阵乘法</title>
+    <link href="http://yoursite.com/2021/01/02/%E7%A5%9E%E5%A5%87%E7%9A%84%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/"/>
+    <id>http://yoursite.com/2021/01/02/%E7%A5%9E%E5%A5%87%E7%9A%84%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/</id>
+    <published>2021-01-02T01:54:37.977Z</published>
+    <updated>2020-11-11T03:42:42.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;神奇的矩阵乘法&quot;&gt;&lt;a href=&quot;#神奇的矩阵乘法&quot; class=&quot;headerlink&quot; title=&quot;神奇的矩阵乘法&quot;&gt;&lt;/a&gt;神奇的矩阵乘法&lt;/h2&gt;
+    
+    </summary>
+    
+    
+      <category term="基础算法" scheme="http://yoursite.com/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>极几何与多视图几何</title>
+    <link href="http://yoursite.com/2021/01/02/%E6%9E%81%E5%87%A0%E4%BD%95%E4%B8%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/"/>
+    <id>http://yoursite.com/2021/01/02/%E6%9E%81%E5%87%A0%E4%BD%95%E4%B8%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/</id>
+    <published>2021-01-02T01:54:37.961Z</published>
+    <updated>2020-11-19T11:05:22.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;极几何与多视图几何&quot;&gt;&lt;a href=&quot;#极几何与多视图几何&quot; class=&quot;headerlink&quot; title=&quot;极几何与多视图几何&quot;&gt;&lt;/a&gt;极几何与多视图几何&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;多视图几何的关键问题&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;摄像机几何：从一张或者多张图像中求解摄像机的内、外参数（标定）&lt;/li&gt;
+&lt;li&gt;场景几何：通过二至多张图寻找3D场景坐标&lt;/li&gt;
+&lt;li&gt;对应关系：已知一个图像中 $p$ 点，如何在另外一个图像中找到 $p^\prime$ 点（极几何要解决的问题）。&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+      <category term="机器视觉基础" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>机器视觉基础Lecture 3局部特征</title>
+    <link href="http://yoursite.com/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%203%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/"/>
+    <id>http://yoursite.com/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%203%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/</id>
+    <published>2021-01-02T01:54:37.961Z</published>
+    <updated>2020-11-11T03:41:58.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;Lecture-3-局部特征&quot;&gt;&lt;a href=&quot;#Lecture-3-局部特征&quot; class=&quot;headerlink&quot; title=&quot;Lecture 3 局部特征&quot;&gt;&lt;/a&gt;Lecture 3 局部特征&lt;/h3&gt;
+    
+    </summary>
+    
+    
+      <category term="机器视觉基础" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>机器视觉基础Lecture 2</title>
+    <link href="http://yoursite.com/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%202/"/>
+    <id>http://yoursite.com/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%202/</id>
+    <published>2021-01-02T01:54:37.961Z</published>
+    <updated>2020-11-11T03:41:52.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;机器视觉基础-Lecture-2&quot;&gt;&lt;a href=&quot;#机器视觉基础-Lecture-2&quot; class=&quot;headerlink&quot; title=&quot;机器视觉基础 Lecture 2&quot;&gt;&lt;/a&gt;机器视觉基础 Lecture 2&lt;/h2&gt;
+    
+    </summary>
+    
+    
+      <category term="机器视觉基础" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>机器视觉基础Lecture1</title>
+    <link href="http://yoursite.com/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture1/"/>
+    <id>http://yoursite.com/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture1/</id>
+    <published>2021-01-02T01:54:37.961Z</published>
+    <updated>2020-11-11T03:42:02.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;机器视觉基础-Lecture-1&quot;&gt;&lt;a href=&quot;#机器视觉基础-Lecture-1&quot; class=&quot;headerlink&quot; title=&quot;机器视觉基础 Lecture 1&quot;&gt;&lt;/a&gt;机器视觉基础 Lecture 1&lt;/h2&gt;
+    
+    </summary>
+    
+    
+      <category term="机器视觉基础" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>数据分析之Pandas</title>
+    <link href="http://yoursite.com/2021/01/02/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/"/>
+    <id>http://yoursite.com/2021/01/02/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPandas/</id>
+    <published>2021-01-02T01:54:37.945Z</published>
+    <updated>2020-12-04T09:25:30.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;数据分析之Pandas&quot;&gt;&lt;a href=&quot;#数据分析之Pandas&quot; class=&quot;headerlink&quot; title=&quot;数据分析之Pandas&quot;&gt;&lt;/a&gt;数据分析之Pandas&lt;/h2&gt;&lt;p&gt;​    Pandas中两大数据结构：DataFrame、Series。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
   </entry>
   
   <entry>
     <title>数据结构之堆</title>
-    <link href="http://yoursite.com/2020/11/20/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%A0%86/"/>
-    <id>http://yoursite.com/2020/11/20/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%A0%86/</id>
-    <published>2020-11-20T02:48:10.642Z</published>
-    <updated>2020-11-22T03:53:33.775Z</updated>
+    <link href="http://yoursite.com/2021/01/02/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%A0%86/"/>
+    <id>http://yoursite.com/2021/01/02/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B9%8B%E5%A0%86/</id>
+    <published>2021-01-02T01:54:37.945Z</published>
+    <updated>2020-11-22T03:53:34.000Z</updated>
     
     <summary type="html">
     
@@ -164,259 +392,20 @@
   </entry>
   
   <entry>
-    <title>支持向量机</title>
-    <link href="http://yoursite.com/2020/11/18/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/"/>
-    <id>http://yoursite.com/2020/11/18/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/</id>
-    <published>2020-11-18T07:44:48.306Z</published>
-    <updated>2020-11-25T14:06:52.223Z</updated>
+    <title>无重叠区间</title>
+    <link href="http://yoursite.com/2021/01/02/%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/"/>
+    <id>http://yoursite.com/2021/01/02/%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/</id>
+    <published>2021-01-02T01:54:37.945Z</published>
+    <updated>2020-11-30T12:39:18.000Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;支持向量机&quot;&gt;&lt;a href=&quot;#支持向量机&quot; class=&quot;headerlink&quot; title=&quot;支持向量机&quot;&gt;&lt;/a&gt;支持向量机&lt;/h2&gt;&lt;p&gt;给定一组训练实例，每个训练实例被标记为属于两个类别中的一个或另一个$\{+1,-1\}$，SVM训练算法创建一个将新的实例分配给两个类别之一的模型，使其成为非概率二元线性分类器。SVM模型是将实例表示为空间中的点，这样映射就使得单独类别的实例被尽可能宽的明显的间隔分开。然后，将新的实例映射到同一空间，并基于它们落在间隔的哪一侧来预测所属类别。除了进行线性分类之外，SVM还可以使用所谓的核技巧有效地进行非线性分类，将其输入&lt;strong&gt;隐式映射到高维特征空间&lt;/strong&gt;中。&lt;/p&gt;
+      &lt;h3 id=&quot;无重叠区间&quot;&gt;&lt;a href=&quot;#无重叠区间&quot; class=&quot;headerlink&quot; title=&quot;无重叠区间&quot;&gt;&lt;/a&gt;无重叠区间&lt;/h3&gt;&lt;p&gt;日常刷题记录&lt;/p&gt;
     
     </summary>
     
     
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>极几何与多视图几何</title>
-    <link href="http://yoursite.com/2020/11/16/%E6%9E%81%E5%87%A0%E4%BD%95%E4%B8%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/"/>
-    <id>http://yoursite.com/2020/11/16/%E6%9E%81%E5%87%A0%E4%BD%95%E4%B8%8E%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/</id>
-    <published>2020-11-16T14:01:59.865Z</published>
-    <updated>2020-11-19T11:05:20.196Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;极几何与多视图几何&quot;&gt;&lt;a href=&quot;#极几何与多视图几何&quot; class=&quot;headerlink&quot; title=&quot;极几何与多视图几何&quot;&gt;&lt;/a&gt;极几何与多视图几何&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;多视图几何的关键问题&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;摄像机几何：从一张或者多张图像中求解摄像机的内、外参数（标定）&lt;/li&gt;
-&lt;li&gt;场景几何：通过二至多张图寻找3D场景坐标&lt;/li&gt;
-&lt;li&gt;对应关系：已知一个图像中 $p$ 点，如何在另外一个图像中找到 $p^\prime$ 点（极几何要解决的问题）。&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-    
-      <category term="机器视觉基础" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>树状数组</title>
-    <link href="http://yoursite.com/2020/11/14/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/"/>
-    <id>http://yoursite.com/2020/11/14/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/</id>
-    <published>2020-11-14T08:59:46.309Z</published>
-    <updated>2020-11-14T13:54:46.774Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;树状数组&quot;&gt;&lt;a href=&quot;#树状数组&quot; class=&quot;headerlink&quot; title=&quot;树状数组&quot;&gt;&lt;/a&gt;树状数组&lt;/h2&gt;&lt;p&gt;树状数组（Binary Indexed Tree/Fenwick Tree）。&lt;/p&gt;
-&lt;p&gt;视频：&lt;a href=&quot;https://www.bilibili.com/video/BV1Hz411v7XC?p=2&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://www.bilibili.com/video/BV1Hz411v7XC?p=2&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="基础算法" scheme="http://yoursite.com/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>动态规划（二）</title>
-    <link href="http://yoursite.com/2020/11/12/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
-    <id>http://yoursite.com/2020/11/12/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/</id>
-    <published>2020-11-12T12:07:07.324Z</published>
-    <updated>2020-11-30T13:09:36.528Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;动态规划（二）&quot;&gt;&lt;a href=&quot;#动态规划（二）&quot; class=&quot;headerlink&quot; title=&quot;动态规划（二）&quot;&gt;&lt;/a&gt;动态规划（二）&lt;/h2&gt;&lt;p&gt;再列举一些经典的动态规划习题。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="基础算法" scheme="http://yoursite.com/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>摄像机模型与标定</title>
-    <link href="http://yoursite.com/2020/11/09/%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%A0%87%E5%AE%9A/"/>
-    <id>http://yoursite.com/2020/11/09/%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%A0%87%E5%AE%9A/</id>
-    <published>2020-11-09T12:05:07.590Z</published>
-    <updated>2020-11-18T13:24:37.483Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;摄像机模型与标定&quot;&gt;&lt;a href=&quot;#摄像机模型与标定&quot; class=&quot;headerlink&quot; title=&quot;摄像机模型与标定&quot;&gt;&lt;/a&gt;摄像机模型与标定&lt;/h2&gt;&lt;p&gt;参考：计算机视觉，鲁鹏，北京邮电大学。&lt;a href=&quot;https://www.bilibili.com/video/BV1nz4y197Qv&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://www.bilibili.com/video/BV1nz4y197Qv&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;课件：&lt;a href=&quot;https://gitee.com/cv-xueba/A01_cvclass_basic&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://gitee.com/cv-xueba/A01_cvclass_basic&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="机器视觉基础" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>图像分割与目标检测</title>
-    <link href="http://yoursite.com/2020/11/09/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E4%B8%8E%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/"/>
-    <id>http://yoursite.com/2020/11/09/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E4%B8%8E%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/</id>
-    <published>2020-11-09T12:01:25.493Z</published>
-    <updated>2020-11-11T03:43:09.282Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;图像分割与目标检测&quot;&gt;&lt;a href=&quot;#图像分割与目标检测&quot; class=&quot;headerlink&quot; title=&quot;图像分割与目标检测&quot;&gt;&lt;/a&gt;图像分割与目标检测&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;名词解释&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;语义分割：像素级分类，给定一张含有一个人、两条狗、三只猫的图像，语义分割需要正确的将背景分为一类，两条狗分为一类，三只猫分为一类。&lt;/li&gt;
-&lt;li&gt;实例分割：还是上面的那张图片，实例分割不仅需要分出猫、狗、人以及背景，还要分出猫1、2、3，狗1、2，以及人和背景。&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-    
-      <category term="机器视觉基础" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>神奇的矩阵乘法</title>
-    <link href="http://yoursite.com/2020/11/08/%E7%A5%9E%E5%A5%87%E7%9A%84%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/"/>
-    <id>http://yoursite.com/2020/11/08/%E7%A5%9E%E5%A5%87%E7%9A%84%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/</id>
-    <published>2020-11-08T09:03:37.884Z</published>
-    <updated>2020-11-11T03:42:41.163Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;神奇的矩阵乘法&quot;&gt;&lt;a href=&quot;#神奇的矩阵乘法&quot; class=&quot;headerlink&quot; title=&quot;神奇的矩阵乘法&quot;&gt;&lt;/a&gt;神奇的矩阵乘法&lt;/h2&gt;
-    
-    </summary>
-    
-    
-      <category term="基础算法" scheme="http://yoursite.com/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>聚类</title>
-    <link href="http://yoursite.com/2020/10/28/%E8%81%9A%E7%B1%BB/"/>
-    <id>http://yoursite.com/2020/10/28/%E8%81%9A%E7%B1%BB/</id>
-    <published>2020-10-28T11:11:58.654Z</published>
-    <updated>2020-11-27T03:48:42.155Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;聚类&quot;&gt;&lt;a href=&quot;#聚类&quot; class=&quot;headerlink&quot; title=&quot;聚类&quot;&gt;&lt;/a&gt;聚类&lt;/h2&gt;&lt;p&gt;参考：《机器学习》，2016，周志华；统计学习方法，李航。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>动态规划</title>
-    <link href="http://yoursite.com/2020/10/25/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
-    <id>http://yoursite.com/2020/10/25/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</id>
-    <published>2020-10-25T05:41:25.443Z</published>
-    <updated>2020-11-12T12:07:01.044Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;动态规划&quot;&gt;&lt;a href=&quot;#动态规划&quot; class=&quot;headerlink&quot; title=&quot;动态规划&quot;&gt;&lt;/a&gt;动态规划&lt;/h2&gt;
-    
-    </summary>
-    
-    
-      <category term="基础算法" scheme="http://yoursite.com/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>机器视觉基础Lecture1</title>
-    <link href="http://yoursite.com/2020/10/21/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture1/"/>
-    <id>http://yoursite.com/2020/10/21/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture1/</id>
-    <published>2020-10-21T12:34:34.100Z</published>
-    <updated>2020-11-11T03:42:01.828Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;机器视觉基础-Lecture-1&quot;&gt;&lt;a href=&quot;#机器视觉基础-Lecture-1&quot; class=&quot;headerlink&quot; title=&quot;机器视觉基础 Lecture 1&quot;&gt;&lt;/a&gt;机器视觉基础 Lecture 1&lt;/h2&gt;
-    
-    </summary>
-    
-    
-      <category term="机器视觉基础" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>机器视觉基础Lecture 3局部特征</title>
-    <link href="http://yoursite.com/2020/10/15/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%203%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/"/>
-    <id>http://yoursite.com/2020/10/15/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%203%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/</id>
-    <published>2020-10-15T12:20:42.841Z</published>
-    <updated>2020-11-11T03:41:56.618Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;Lecture-3-局部特征&quot;&gt;&lt;a href=&quot;#Lecture-3-局部特征&quot; class=&quot;headerlink&quot; title=&quot;Lecture 3 局部特征&quot;&gt;&lt;/a&gt;Lecture 3 局部特征&lt;/h3&gt;
-    
-    </summary>
-    
-    
-      <category term="机器视觉基础" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>降维方法</title>
-    <link href="http://yoursite.com/2020/10/13/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/"/>
-    <id>http://yoursite.com/2020/10/13/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/</id>
-    <published>2020-10-13T11:25:37.660Z</published>
-    <updated>2020-11-11T03:42:08.065Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;降维方法&quot;&gt;&lt;a href=&quot;#降维方法&quot; class=&quot;headerlink&quot; title=&quot;降维方法&quot;&gt;&lt;/a&gt;降维方法&lt;/h2&gt;
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>机器视觉基础Lecture 2</title>
-    <link href="http://yoursite.com/2020/10/08/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%202/"/>
-    <id>http://yoursite.com/2020/10/08/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%202/</id>
-    <published>2020-10-08T09:28:38.672Z</published>
-    <updated>2020-11-11T03:41:51.805Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;机器视觉基础-Lecture-2&quot;&gt;&lt;a href=&quot;#机器视觉基础-Lecture-2&quot; class=&quot;headerlink&quot; title=&quot;机器视觉基础 Lecture 2&quot;&gt;&lt;/a&gt;机器视觉基础 Lecture 2&lt;/h2&gt;
-    
-    </summary>
-    
-    
-      <category term="机器视觉基础" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80/"/>
+      <category term="日常刷题记录" scheme="http://yoursite.com/categories/%E6%97%A5%E5%B8%B8%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
     
     
   </entry>
