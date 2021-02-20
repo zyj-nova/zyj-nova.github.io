@@ -393,8 +393,8 @@ E_Z[\log p(x_i,z;\theta)|x_i;\theta^j]</script><p>我们将最后一个式子称
     </a>
   
   
-    <a href="/2021/01/02/Dropout%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Dropout理解与实现</div>
+    <a href="/2021/01/02/canny/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Canny 边缘检测</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -680,5 +680,22 @@ MathJax.Hub.Queue(function() {
    <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
    <!-- <script type="text/javascript" src="/js/clipboard.js"></script>  -->
    <script type="text/javascript" src="/js/clipboard_use.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
 </body>
 </html>
