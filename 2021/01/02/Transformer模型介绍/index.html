@@ -14,10 +14,16 @@
 <meta property="og:url" content="http://yoursite.com/2021/01/02/Transformer%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D/index.html">
 <meta property="og:site_name" content="张永剑的博客">
 <meta property="og:description" content="Transformer模型介绍">
+<meta property="og:image" content="http://yoursite.com/images/self-attention_1.png">
+<meta property="og:image" content="http://yoursite.com/images/self-attention_2.png">
+<meta property="og:image" content="http://yoursite.com/images/self-attention_3.png">
+<meta property="og:image" content="http://yoursite.com/images/self-attention_4.png">
+<meta property="og:image" content="http://yoursite.com/images/self-attention_5.png">
 <meta property="article:published_time" content="2021-01-02T01:54:37.867Z">
-<meta property="article:modified_time" content="2020-11-11T03:46:58.000Z">
+<meta property="article:modified_time" content="2021-05-13T07:43:19.367Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/self-attention_1.png">
   
     <link rel="alternative" href="/atom.xml" title="张永剑的博客" type="application/atom+xml">
   
@@ -228,10 +234,16 @@
         
           
             <h2 id="Transformer模型介绍"><a href="#Transformer模型介绍" class="headerlink" title="Transformer模型介绍"></a>Transformer模型介绍</h2><a id="more"></a>
-<p>文献：Vaswani A,  Shazeer N,  Parmar N,  et al.  Attention is all you need[C]. Advances in neural information processing systems. 2017: 5998-6008.</p>
+<p>文献：$Vaswani A,  Shazeer N,  Parmar N,  et al.  Attention is all you need[C]. Advances in neural information processing systems. 2017: 5998-6008.$</p>
 <p>详解：<a href="http://nlp.seas.harvard.edu/2018/04/03/attention.html" target="_blank" rel="noopener">http://nlp.seas.harvard.edu/2018/04/03/attention.html</a>  The Annotated Transformer.</p>
 <p>视频：<a href="https://www.youtube.com/watch?v=ugWDIIOHtPA" target="_blank" rel="noopener">https://www.youtube.com/watch?v=ugWDIIOHtPA</a>  李宏毅：Transformer</p>
-<h3 id="1-encoder-decoder"><a href="#1-encoder-decoder" class="headerlink" title="1. encoder-decoder"></a>1. encoder-decoder</h3><h3 id="2-self-attention"><a href="#2-self-attention" class="headerlink" title="2. self attention"></a>2. self attention</h3><h3 id="3-multi-head-attention"><a href="#3-multi-head-attention" class="headerlink" title="3. multi head attention"></a>3. multi head attention</h3><h3 id="4-attention和self-attention区别"><a href="#4-attention和self-attention区别" class="headerlink" title="4. attention和self-attention区别"></a>4. attention和self-attention区别</h3>
+<h3 id="1-encoder-decoder"><a href="#1-encoder-decoder" class="headerlink" title="1. encoder-decoder"></a>1. encoder-decoder</h3><h3 id="2-self-attention"><a href="#2-self-attention" class="headerlink" title="2. self attention"></a>2. self attention</h3><p><img src="/images/self-attention_1.png" alt=""></p>
+<p><img src="/images/self-attention_2.png" alt=""></p>
+<p><img src="/images/self-attention_3.png" alt=""></p>
+<p><img src="/images/self-attention_4.png" alt=""></p>
+<p><img src="/images/self-attention_5.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SelfAttention</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, input_dim,hidden_dim)</span>:</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.key = nn.Parameter(torch.randn(input_dim,hidden_dim))</span><br><span class="line">        self.query = nn.Parameter(torch.randn(input_dim,hidden_dim))</span><br><span class="line">        self.value = nn.Parameter(torch.randn(input_dim,hidden_dim))</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, inputs)</span>:</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        inputs dim : [batch, seq_len, dim]</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        Q,K,V = torch.matmul(inputs, self.query), \</span><br><span class="line">                torch.matmul(inputs, self.key), \</span><br><span class="line">                torch.matmul(inputs, self.value)</span><br><span class="line">        <span class="comment"># Q * K.T =&gt; [batch, seq_len, seq_len]</span></span><br><span class="line">        A = torch.bmm(Q, K.transpose(<span class="number">2</span>,<span class="number">1</span>))</span><br><span class="line">        <span class="comment"># 每个batch，每行进行softmax</span></span><br><span class="line">        A = F.softmax(A, dim = <span class="number">2</span>)</span><br><span class="line">        <span class="comment"># V.T * A.T</span></span><br><span class="line">        O = torch.bmm(V.transpose(<span class="number">2</span>,<span class="number">1</span>),A.transpose(<span class="number">2</span>,<span class="number">1</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> O</span><br><span class="line"></span><br><span class="line">hidden_dim = <span class="number">64</span></span><br><span class="line">input_dim = <span class="number">32</span></span><br><span class="line">batch = <span class="number">32</span></span><br><span class="line">seq_len = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">model = SelfAttention(input_dim,hidden_dim)</span><br><span class="line">inputs = torch.randn((batch,seq_len,input_dim))</span><br><span class="line"></span><br><span class="line">model(inputs).shape</span><br><span class="line"><span class="comment"># 输出：torch.Size([32, 64, 5])</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-multi-head-attention"><a href="#3-multi-head-attention" class="headerlink" title="3. multi head attention"></a>3. multi head attention</h3><h3 id="4-attention和self-attention区别"><a href="#4-attention和self-attention区别" class="headerlink" title="4. attention和self-attention区别"></a>4. attention和self-attention区别</h3>
           
         
     </div>
@@ -313,11 +325,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2021/01/02/Vuex%E4%BD%BF%E7%94%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2021/01/02/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Vuex使用
+          Strang教授线性代数笔记
         
       </div>
     </a>
