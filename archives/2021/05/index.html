@@ -6,21 +6,16 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>误差逆传播算法 | 张永剑的博客</title>
+  <title>Archives: 2021/5 | 张永剑的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="误差逆传播算法">
-<meta property="og:type" content="article">
-<meta property="og:title" content="误差逆传播算法">
-<meta property="og:url" content="http://yoursite.com/2021/01/02/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/index.html">
+  <meta name="description" content="天空如此辽阔，大地不过是必经之路">
+<meta property="og:type" content="website">
+<meta property="og:title" content="张永剑的博客">
+<meta property="og:url" content="http://yoursite.com/archives/2021/05/index.html">
 <meta property="og:site_name" content="张永剑的博客">
-<meta property="og:description" content="误差逆传播算法">
-<meta property="og:image" content="http://yoursite.com/images/fnn_struture.png">
-<meta property="og:image" content="http://yoursite.com/images/bp_hw.png">
-<meta property="article:published_time" content="2021-01-02T01:54:37.992Z">
-<meta property="article:modified_time" content="2020-11-30T12:38:36.000Z">
+<meta property="og:description" content="天空如此辽阔，大地不过是必经之路">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/images/fnn_struture.png">
   
     <link rel="alternative" href="/atom.xml" title="张永剑的博客" type="application/atom+xml">
   
@@ -208,258 +203,60 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-误差逆传播算法" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      误差逆传播算法
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2021" class="archive-year">2021</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2021/05/15/%E5%A6%82%E4%BD%95%E5%B0%86%20int%5B%5D%20%E8%BD%AC%E6%8D%A2%E4%B8%BA%20List/" class="archive-article-date">
+  	<time datetime="2021-05-15T09:47:45.081Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-15</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2021/05/15/%E5%A6%82%E4%BD%95%E5%B0%86%20int%5B%5D%20%E8%BD%AC%E6%8D%A2%E4%B8%BA%20List/">如何将 int[] 转换为 List</a>
     </h1>
   
 
-        
-        <a href="/2021/01/02/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.992Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
+        <div class="article-info info-on-right">
           
-            <h2 id="误差逆传播算法"><a href="#误差逆传播算法" class="headerlink" title="误差逆传播算法"></a>误差逆传播算法</h2><a id="more"></a>
-<p>给定如下结构的前馈全连接神经网络：</p>
-<p><img src="/images/fnn_struture.png" alt="网络结构图"></p>
-<h4 id="符号约定"><a href="#符号约定" class="headerlink" title="符号约定"></a>符号约定</h4><p>输入样本 $\pmb x\in \mathbb{R}^d$，即神经网络输入层有 $d$ 个神经元。</p>
-<p>输出 $\pmb y \in \mathbb{R}^l$，即神经网络输出层有 $l$ 个神经元。</p>
-<p>输入层有 $q$ 个神经元，第 $h$ 个隐藏层神经元输入 $\alpha_h$，阈值 $\gamma_h$。输入层第 $i$ 个神经元到隐藏层第 $h$ 个神经元的权重 $v_{ih}$，第 $h$ 个隐藏层神经元输出为 $b_h$。</p>
-<script type="math/tex; mode=display">
-\alpha_h = \sum_{i=1}^d v_{ih}x_i\tag{1}</script><script type="math/tex; mode=display">
-b_h = f(\alpha_h - \gamma_h)\tag{2}</script><p>输出层有 $l$ 个神经元，第 $j$ 个神经元的输入 $\beta_j$，阈值为 $\theta_j$，隐藏层第 $h$ 个神经元到输出层第 $j$ 个神经元的权重为 $w_{hj}$， 第 $j$ 个输出层神经元的输出为 $\hat y_j$ 。</p>
-<script type="math/tex; mode=display">
-\beta_j = \sum_{h=1}^qw_{hj}b_h\tag{3}</script><script type="math/tex; mode=display">
-\hat y_j = f(\beta_j - \theta_j) \tag{4}</script><p>给定第 $k$ 个样本 $(\pmb x_k,\pmb y_k)$，神经网络输出为 $\hat {\pmb y_k}=(\hat y_1^k,\hat y_2^k,…,\hat y_l^k)$。</p>
-<p>定义损失函数为均方误差函数，那么第 $k$ 个样本的损失为</p>
-<script type="math/tex; mode=display">
-E_k = \frac{1}{2}\sum_{j=1}^l(\hat y_j^k - y_j^k)^2\tag{5}</script><p>假设 $f$ 为 $Sigmod$ 函数。</p>
-<script type="math/tex; mode=display">
-f(x) = \frac{1}{1 + e^{-x}}\tag{6}</script><script type="math/tex; mode=display">
-f^\prime(x) = f(x)(1-f(x))\tag{7}</script><h4 id="具体推导"><a href="#具体推导" class="headerlink" title="具体推导"></a>具体推导</h4><ul>
-<li>隐藏层到输出层权重 $w_{hj}$ 的更新公式</li>
-</ul>
-<p>根据网络结构图我们注意到有如下关系：</p>
-<script type="math/tex; mode=display">
-w_{hj} \rightarrow \beta_j \rightarrow \hat y_j \rightarrow E</script><p>所以，根据链式求导法则，有：</p>
-<script type="math/tex; mode=display">
-\frac{\partial E_k}{\partial w_{hj}} = \frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j}\frac{\partial \beta_j}{\partial w_{hj}}\tag{8}</script><p>现在就一步一步求三个偏导就好了。</p>
-<p>首先求 $\frac{\partial E_k}{\partial \hat y_j^k}$。根据公式 $(5)$，有</p>
-<script type="math/tex; mode=display">
-\frac{\partial E_k}{\partial \hat y_j^k} = (\hat y_j^k - y_j^k)\tag{9}</script><p>接着求 $\frac{\partial \hat y_j^k}{\partial \beta_j}$。根据公式 $(4)，(7)$有：</p>
-<script type="math/tex; mode=display">
-\frac{\partial \hat y_j^k}{\partial \beta_j} = f(\beta_j+\theta_j)(1-f(\beta_j+\theta_j))\tag{10}</script><p>将公式 $(4)$ 带入 $(10)$中可得：</p>
-<script type="math/tex; mode=display">
-\frac{\partial \hat y_j^k}{\partial \beta_j} = \hat y_j^k(1-\hat y_j^k)\tag{11}</script><p>最后求 $\frac{\partial \beta_j}{\partial w_{hj}}$。根据公式 $(3)$，有：</p>
-<script type="math/tex; mode=display">
-\frac{\partial \beta_j}{\partial w_{hj}} = b_h\tag{12}</script><p>综上，结合公式$(9),(11),(12)$，带入$ (8)$ 中，可得：</p>
-<script type="math/tex; mode=display">
-\frac{\partial E_k}{\partial w_{hj}} =\hat y_j^k(\hat y_j^k - y_j^k)(1-\hat y_j^k)b_h\tag{13}</script><p>另外，我们定义 $g_j$ ：</p>
-<script type="math/tex; mode=display">
-g_j =-\frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j} = \hat y_j^k(y_j^k-\hat y_j^k)(1 - \hat y_j^k) \tag{14}</script><p>最后，隐藏层到输出层 $w_{hj}$ 的更新公式为：</p>
-<script type="math/tex; mode=display">
-w_{hj}^{(t+1)} = w_{hj}^{(t)} + \eta g_jb_h\tag{15}</script><p>其中，$\eta$ 为学习率。注意定义 $g_j$ 时已经取过负号了。</p>
-<ul>
-<li>输入层到隐藏层权重 $v_{ih}$ 的更新公式</li>
-</ul>
-<p>根据网络结构图，我们可知有如下关系：</p>
-<script type="math/tex; mode=display">
-v_{ih}\rightarrow \alpha_h \rightarrow b_h \rightarrow \beta_1,\beta_2,...,\beta_l \rightarrow \hat y_1,\hat y_2,...,\hat y_l \rightarrow E</script><p>因此，</p>
-<script type="math/tex; mode=display">
-\frac{\partial E_k}{\partial v_{ih}} = (\sum_{j=1}^l \frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j}\frac{\partial \beta_j}{\partial b_h})\frac{\partial b_h}{\partial \alpha_h}\frac{\partial \alpha_h}{\partial v_{ih}}\tag{16}</script><p>根据公式 $(1),(2)$有</p>
-<script type="math/tex; mode=display">
-\frac{\partial \alpha_h}{\partial v_{ih}}  = x_i\tag{17}</script><script type="math/tex; mode=display">
-\frac{\partial b_h}{\partial \alpha_h} = f^\prime(\alpha_h-\gamma_h) = b_h(1-b_h)\tag{18}</script><p>根据公式$(3),(14)$，有</p>
-<script type="math/tex; mode=display">
-\frac{\partial \beta_j}{\partial b_h} = w_{hj}\tag{19}</script><script type="math/tex; mode=display">
-\frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j} = -g_j\tag{20}</script><p>综上，</p>
-<script type="math/tex; mode=display">
-\frac{\partial E_k}{\partial v_{ih}} = \sum_{j=1}^l g_jw_{hj}(b_h-1)b_h x_i\tag{21}</script><p>另外，我们定义 $e_h$</p>
-<script type="math/tex; mode=display">
-e_h = -\sum_{j=1}^l \frac{\partial E_k}{\partial \hat y_j^k}\frac{\partial \hat y_j^k}{\partial \beta_j}f^\prime(\alpha_h - \gamma_h)\tag{22}</script><p>最后，输入层到隐藏层权重 $v_{ih}$ 的更新公式为：</p>
-<script type="math/tex; mode=display">
-v_{ij}^{(t+1)} = v_{ij}^{(t)} +\epsilon e_hx_i \tag{23}</script><p>同样的，$\epsilon$ 为学习率。</p>
-<ul>
-<li>阈值 $\theta_j$、$\gamma_h$ 的更新公式</li>
-</ul>
-<script type="math/tex; mode=display">
-\theta_j \rightarrow \beta_j \rightarrow \hat y_j \rightarrow E</script><p>注意到与 $w_{hj}$ 完全相同（仅仅是将$w_{hj}$换成了 $\theta_j$ ），所以有：</p>
-<script type="math/tex; mode=display">
-\theta_j^{(t+1)} = \theta^{(t)}+\eta g_j \tag{24}</script><p>同理，</p>
-<script type="math/tex; mode=display">
-\gamma_h^{(t+1)} = \gamma_h^{(t+1)} +\eta e_h\tag{25}</script><h4 id="习题"><a href="#习题" class="headerlink" title="习题"></a>习题</h4><p><img src="/images/bp_hw.png" alt="hm1"></p>
-<p>观察发现：</p>
-<script type="math/tex; mode=display">
-v_{11} \rightarrow \beta_1 \rightarrow \hat y_1 \rightarrow E</script><p>由此：</p>
-<script type="math/tex; mode=display">
-\frac{\partial E_k}{\partial v_{11}} = \frac{\partial E_k}{\partial \hat y_1^k}\frac{\partial \hat y_1^k}{\partial \beta_1}\frac{\partial \beta_1}{\partial v_{11}}</script><script type="math/tex; mode=display">
-\frac{\partial E_k}{\partial \hat y_1^k} = (\hat y_1^k - y_1^k)</script><script type="math/tex; mode=display">
-\frac{\partial \hat y_1^k}{\partial \beta_1} =f^\prime(\beta_1-\theta_1)=\hat y_1(1-\hat y_1)</script><script type="math/tex; mode=display">
-\frac{\partial \beta_1}{\partial v_{11}} = b_1</script><p>其中 $b_1$ 为隐藏层第一个神经元的输出。综上，有：</p>
-<script type="math/tex; mode=display">
-\frac{\partial E_k}{\partial v_{11}}  = \hat y_1(\hat y_1^k - y_1^k)(1-\hat y_1)b_1</script><p>发现与公式$(14)$一致。</p>
-<p>类似的，</p>
-<script type="math/tex; mode=display">
-\frac{\partial E_k}{\partial v_{21}} =\hat y_2(\hat y_2^k - y_2^k)(1-\hat y_2)b_1</script><p>观察$u_{11}$，有如下关系：</p>
-<script type="math/tex; mode=display">
-u_{11} \rightarrow \alpha_1 \rightarrow b_1 \rightarrow \beta_1,\beta_2\rightarrow \hat y_1,\hat y_2\rightarrow E</script><p>所以有：</p>
-<script type="math/tex; mode=display">
-\frac{\partial E_k}{\partial u_{11}} = \sum_{j=1}^2\frac{\partial E_k}{\partial \hat y_j}\frac{\partial \hat y_j}{\partial \beta_j}\frac{\partial \beta_j}{b_1}\frac{\partial b_1}{\partial \alpha_1}\frac{\partial \alpha_1}{\partial u_{11}}</script><p>带入可得：</p>
-<script type="math/tex; mode=display">
-\frac{\partial E_k}{\partial u_{11}} = \sum_{j=1}^2g_jw_{1j}(b_1-1)b_1x_1</script><script type="math/tex; mode=display">
-g_j=\hat y^k_j(1-\hat y_j^k)(\hat y_j^k-y_j^k)</script><p>其中，$w_{1j}$表示隐藏层第 $1$ 个神经元到输出层第 $j$ 个神经元的连接权重。</p>
-<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p>周志华，机器学习</p>
-
           
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/深度学习//" class="article-tag-list-link color5">深度学习</a>
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/01/02/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2021/01/02/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          降维方法
-        
-      </div>
-    </a>
   
   
-    <a href="/2021/01/02/%E8%81%9A%E7%B1%BB/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">聚类</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-        <div class="toc-container tooltip-left">
-            <i class="icon-font icon-category"></i>
-            <div class="tooltip tooltip-east">
-                <span class="tooltip-item">
-                </span>
-                <span class="tooltip-content">
-                    <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#误差逆传播算法"><span class="toc-number">1.</span> <span class="toc-text">误差逆传播算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#符号约定"><span class="toc-number">1.0.1.</span> <span class="toc-text">符号约定</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#具体推导"><span class="toc-number">1.0.2.</span> <span class="toc-text">具体推导</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#习题"><span class="toc-number">1.0.3.</span> <span class="toc-text">习题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#参考文献"><span class="toc-number">1.0.4.</span> <span class="toc-text">参考文献</span></a></li></ol></li></ol></li></ol>
-                    </div>
-                </span>
-            </div>
-        </div>
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -482,8 +279,8 @@ g_j=\hat y^k_j(1-\hat y_j^k)(\hat y_j^k-y_j^k)</script><p>其中，$w_{1j}$表�
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="张永剑的博客">
 <meta property="og:description" content="SpringMVC源码浅析">
 <meta property="article:published_time" content="2021-01-02T01:54:37.852Z">
-<meta property="article:modified_time" content="2020-11-11T03:46:46.000Z">
+<meta property="article:modified_time" content="2021-05-17T01:43:15.188Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
   
@@ -228,6 +228,22 @@
         
           
             <h2 id="SpringMVC源码浅析"><a href="#SpringMVC源码浅析" class="headerlink" title="SpringMVC源码浅析"></a>SpringMVC源码浅析</h2><a id="more"></a>
+<p>核心组件：DispatcherServlet、HandlerMapping、HandlerAdapter、ModelAndView</p>
+<p>DispatcherServlet负责请求的分发(<code>doDispatch</code>)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DispatcherServlet 继承层级关系 </span></span><br><span class="line">DispatcherServlet (org.springframework.web.servlet) <span class="comment">// doService -&gt; doDispatch -&gt; getHandler</span></span><br><span class="line">    FrameworkServlet (org.springframework.web.servlet)</span><br><span class="line">        ApplicationContextAware (org.springframework.context)</span><br><span class="line">            Aware (org.springframework.beans.factory)</span><br><span class="line">        HttpServletBean (org.springframework.web.servlet)</span><br><span class="line">            EnvironmentAware (org.springframework.context)</span><br><span class="line">                Aware (org.springframework.beans.factory)</span><br><span class="line">            EnvironmentCapable (org.springframework.core.env)</span><br><span class="line">            HttpServlet (javax.servlet.http)</span><br><span class="line">                GenericServlet (javax.servlet)</span><br><span class="line">                    Object (java.lang)</span><br><span class="line">                    Serializable (java.io)</span><br><span class="line">                    Servlet (javax.servlet)</span><br><span class="line">                    ServletConfig (javax.servlet)</span><br></pre></td></tr></table></figure>
+<p>DispatchServlet中<strong>getHandler</strong> 方法浅析</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// private List&lt;HandlerMapping&gt; handlerMappings; </span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> HandlerExecutionChain <span class="title">getHandler</span><span class="params">(HttpServletRequest request)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.handlerMappings != <span class="keyword">null</span>) &#123;</span><br><span class="line">        Iterator var2 = <span class="keyword">this</span>.handlerMappings.iterator();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(var2.hasNext()) &#123;</span><br><span class="line">            HandlerMapping mapping = (HandlerMapping)var2.next();</span><br><span class="line">            HandlerExecutionChain handler = mapping.getHandler(request);</span><br><span class="line">            <span class="keyword">if</span> (handler != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> handler;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>RequestMappingHandlerMapping</em> 继承了<em>AbstractHandlerMapping</em>和<em>AbstractHandlerMethodMapping</em>，<em>AbstractHandlerMethodMapping</em>中包含一个<code>private final MappingRegistry mappingRegistry = new MappingRegistry();</code>对象，该对象又包含一个<code>private final Map&lt;T, MappingRegistration&lt;T&gt;&gt; registry = new HashMap&lt;&gt;();</code>，注意到这个hashmap的value类型是<code>MappingRegistration</code>，内有<code>private final HandlerMethod handlerMethod;</code>这个<strong>handlerMethod</strong>就是保存了到底哪个控制器、控制器的哪个方法用来处理请求这样的具体信息（在ioc容器初始化时就完成扫描和初始化）。<em>DispatcherServlet</em>通过<em>getHandler</em>方法得到一个具体的<em>HandlerExecutionChain</em>，该对象内包含:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Object handler;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> List&lt;HandlerInterceptor&gt; interceptorList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br></pre></td></tr></table></figure>
+<p>通过debug之后发现，handler最终是<em>HandlerMethod</em>类型的；另外内还有一系列的拦截器组成的list。</p>
+<p>通过<code>getAdpater</code>方法，将<code>HandlerExecutionChain</code>中的handler传入，返回HandlerAdapter，之后执行对应控制器中的具体方法(<code>handle</code>方法运用Java的 反射机制执行controller的具体方法）将返回结果包装在ModelAndView中。</p>
+<p>HandlerAdapter的具体子类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SimpleControllerHandlerAdapter</span><br><span class="line">SimpleServletHandlerAdapter</span><br><span class="line">RequestMappingHandlerAdapter <span class="comment">// 用于处理被 @RequestMapping 标注的方法或handler对象</span></span><br><span class="line">HttpRequestHandlerAdapter</span><br></pre></td></tr></table></figure>
+<p><strong>HandlerMapping的作用</strong>：</p>
+<p>找到哪个handler对象或方法可以处理对应的请求</p>
+<p><strong>HandlerAdapter的作用：</strong></p>
+<p>将与请求对应的handler封装到支持handler的adapter中，同时定义了如何处理请求的策略，通过请求url、请求Method和处理器的requestMapping定义，最终确定使用handler类的哪个方法来处理请求，并检查处理类相应处理方法的参数以及相关的Annotation配置，确定如何转换需要的参数传入调用方法，并最终调用返回ModelAndView。</p>
+<h4 id="Controller-和-RestController-区别"><a href="#Controller-和-RestController-区别" class="headerlink" title="Controller 和 RestController 区别"></a>Controller 和 RestController 区别</h4>
           
         
     </div>
@@ -319,8 +335,8 @@
     </a>
   
   
-    <a href="/2021/01/02/LRU%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">LRU缓存机制</div>
+    <a href="/2021/01/02/PyTorch%20%E4%BD%BF%E7%94%A8GPU%E5%8A%A0%E9%80%9F/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">PyTorch 使用GPU加速</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -347,7 +363,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SpringMVC源码浅析"><span class="toc-number">1.</span> <span class="toc-text">SpringMVC源码浅析</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SpringMVC源码浅析"><span class="toc-number">1.</span> <span class="toc-text">SpringMVC源码浅析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Controller-和-RestController-区别"><span class="toc-number">1.0.1.</span> <span class="toc-text">Controller 和 RestController 区别</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
