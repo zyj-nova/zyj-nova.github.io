@@ -8,16 +8,19 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>MySQL数据库总结 | 张永剑的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="MySQL数据库总结版本：8.0 查看会话当前使用的哪个数据库： 1select database(); 设置关闭自动提交事务： 1set autocommit &#x3D; 0; 1. 事务的隔离级别隔离级别总共有四种：  读未提交（Read-Uncommited） 读提交（Read-Commited） 可重复读（Repeatable-Read） 串行化（Serializable）  查看当前会">
+  <meta name="description" content="MySQL数据库总结版本：8.0 查看会话当前使用的哪个数据库： 1select database(); 设置关闭自动提交事务： 1set autocommit &#x3D; 0; 1. 事务的隔离级别隔离级别总共有四种：  读未提交（Read-Uncommited） 读提交（Read-Commited）解决“脏读” 可重复读（Repeatable-Read）解决“不可重复读” 串行化（Seria">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL数据库总结">
 <meta property="og:url" content="http://yoursite.com/2021/05/20/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="张永剑的博客">
-<meta property="og:description" content="MySQL数据库总结版本：8.0 查看会话当前使用的哪个数据库： 1select database(); 设置关闭自动提交事务： 1set autocommit &#x3D; 0; 1. 事务的隔离级别隔离级别总共有四种：  读未提交（Read-Uncommited） 读提交（Read-Commited） 可重复读（Repeatable-Read） 串行化（Serializable）  查看当前会">
+<meta property="og:description" content="MySQL数据库总结版本：8.0 查看会话当前使用的哪个数据库： 1select database(); 设置关闭自动提交事务： 1set autocommit &#x3D; 0; 1. 事务的隔离级别隔离级别总共有四种：  读未提交（Read-Uncommited） 读提交（Read-Commited）解决“脏读” 可重复读（Repeatable-Read）解决“不可重复读” 串行化（Seria">
+<meta property="og:image" content="http://openfile.shixinke.com/images/posts/2018/12/22bb9577e5da9c0642e9a5b8c4d429dd.png">
+<meta property="og:image" content="http://openfile.shixinke.com/images/posts/2018/12/5d28d9bb9752b1bc6727fa5859ebe487.png">
 <meta property="article:published_time" content="2021-05-20T12:18:58.917Z">
-<meta property="article:modified_time" content="2021-05-20T13:02:27.611Z">
+<meta property="article:modified_time" content="2021-05-31T14:07:28.666Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://openfile.shixinke.com/images/posts/2018/12/22bb9577e5da9c0642e9a5b8c4d429dd.png">
   
     <link rel="alternative" href="/atom.xml" title="张永剑的博客" type="application/atom+xml">
   
@@ -235,9 +238,9 @@
 <h3 id="1-事务的隔离级别"><a href="#1-事务的隔离级别" class="headerlink" title="1. 事务的隔离级别"></a>1. 事务的隔离级别</h3><p>隔离级别总共有四种：</p>
 <ol>
 <li>读未提交（Read-Uncommited）</li>
-<li>读提交（Read-Commited）</li>
-<li>可重复读（Repeatable-Read）</li>
-<li>串行化（Serializable）</li>
+<li>读提交（Read-Commited）解决“脏读”</li>
+<li>可重复读（Repeatable-Read）解决“不可重复读”</li>
+<li>串行化（Serializable）解决“幻读”</li>
 </ol>
 <p>查看当前会话事务的隔离级别：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select @@transaction_isolation;</span><br></pre></td></tr></table></figure>
@@ -255,14 +258,69 @@
 <blockquote>
 <p> 读写锁之间的关系可以概括为：允许多个事务一起读，读写互斥！</p>
 </blockquote>
-<p>但加行锁并不可以解决”幻读“这一现象。幻读指的是当某个事务在读取某个范围内的记录时，另外一个事务又在该范围内插入了新行，当之前的事务再次读取该范围的记录时，会产生幻行</p>
+<p>但加行锁并不可以解决”幻读“这一现象，因为行锁无法对后insert的数据加锁。幻读指的是当某个事务在读取某个范围内的记录时，另外一个事务又在该范围内插入了新行，当之前的事务再次读取该范围的记录时，会产生幻行。解决幻读要么序列化，要么加表锁。</p>
 <p>首先了解两个概念：</p>
 <ul>
-<li><p>一致读：consistent read 指的是</p>
-</li>
-<li><p>多版本并发控制：multi-versioned concurrency control，是MySQL中基于<strong>乐观锁</strong>理论实现隔离级别的方式，用于实现读已提交和可重复读取隔离级别的实现。在MySQL中，会在表中每一条数据后面添加两个字段：<strong>创建版本号</strong>：创建一行数据时，将当前系统版本号作为创建版本号赋值；<strong>删除版本号</strong>：删除一行数据时，将当前系统版本号作为删除版本号赋值。</p>
-</li>
+<li>一致读：consistent read 也叫快照读，当事务开始时会给数据“拍个照”，只要本事务不做update、insert操作，无论其他事务怎样提交，在本事务结束前select查到的内容不会改变。</li>
+<li>当前读：<code>select * from table_1 for update</code>读取数据库最新的内容</li>
 </ul>
+<p>Mysql中主要通过MVCC来保证<strong>可重复读</strong>，和<strong>select级别的幻读</strong>。注意：当其他事务进行提交后，本事务要对提交的数据进行修改时，会使用当前读，即update之前先select数据库最新的内容，这就会导致幻读。所以说只保证select级别的幻读，看以下例子：</p>
+<ul>
+<li>A、B事务同时开始</li>
+<li>A事务查询table中的记录，得到一条记录；B事务插入table一条记录，id=2，B事务提交</li>
+<li>A事务当前update id为2的数据，A事务会先查询table中的所有数据，再进行更新。之后查询table中的记录，发现有了两条记录。</li>
+<li>注意，当不进行更新操作，即使其他事务插入数据并提交，快照读可以保证可重复读，加行锁不可以。</li>
+</ul>
+<p>多版本并发控制：multi-versioned concurrency control，是MySQL中基于<strong>乐观锁</strong>理论实现隔离级别的方式，用于实现读已提交和可重复读取隔离级别的实现。在MySQL中，会在表中每一条数据后面添加两个字段：<strong>创建版本号</strong>：创建一行数据时，将当前系统版本号作为创建版本号赋值；<strong>删除版本号</strong>：删除一行数据时，将当前系统版本号作为删除版本号赋值。</p>
+<h3 id="2-MySQL索引"><a href="#2-MySQL索引" class="headerlink" title="2. MySQL索引"></a>2. MySQL索引</h3><h4 id="2-1-InnoDB引擎"><a href="#2-1-InnoDB引擎" class="headerlink" title="2.1 InnoDB引擎"></a>2.1 InnoDB引擎</h4><p>聚集索引，B+树</p>
+<p><img src="http://openfile.shixinke.com/images/posts/2018/12/22bb9577e5da9c0642e9a5b8c4d429dd.png" alt=""></p>
+<h4 id="2-3-MyISAM引擎"><a href="#2-3-MyISAM引擎" class="headerlink" title="2.3 MyISAM引擎"></a>2.3 MyISAM引擎</h4><p>叶节点并不存储数据，而是存储指向数据的指针。</p>
+<p>非聚集索引</p>
+<p><img src="http://openfile.shixinke.com/images/posts/2018/12/5d28d9bb9752b1bc6727fa5859ebe487.png" alt=""></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>区别</th>
+<th>Innodb</th>
+<th>Myisam</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>事务</td>
+<td>安全</td>
+<td>非安全</td>
+</tr>
+<tr>
+<td>锁</td>
+<td>行级</td>
+<td>表级</td>
+</tr>
+<tr>
+<td>效率</td>
+<td>低</td>
+<td>高</td>
+</tr>
+<tr>
+<td>索引</td>
+<td>聚集索引</td>
+<td>非聚集索引</td>
+</tr>
+<tr>
+<td>外键</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>使用环境</td>
+<td>需要事务，大量增，改</td>
+<td>多查询，不需要事务</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="附：在Ubuntu上安装MySQL8-0"><a href="#附：在Ubuntu上安装MySQL8-0" class="headerlink" title="附：在Ubuntu上安装MySQL8.0"></a>附：在Ubuntu上安装MySQL8.0</h3><p>请参考：<a href="https://computingforgeeks.com/how-to-install-mysql-8-on-ubuntu/" target="_blank" rel="noopener">https://computingforgeeks.com/how-to-install-mysql-8-on-ubuntu/</a></p>
 
           
         
@@ -383,7 +441,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL数据库总结"><span class="toc-number">1.</span> <span class="toc-text">MySQL数据库总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-事务的隔离级别"><span class="toc-number">1.1.</span> <span class="toc-text">1. 事务的隔离级别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#排他锁，共享锁"><span class="toc-number">1.1.1.</span> <span class="toc-text">排他锁，共享锁</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL数据库总结"><span class="toc-number">1.</span> <span class="toc-text">MySQL数据库总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-事务的隔离级别"><span class="toc-number">1.1.</span> <span class="toc-text">1. 事务的隔离级别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#排他锁，共享锁"><span class="toc-number">1.1.1.</span> <span class="toc-text">排他锁，共享锁</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-MySQL索引"><span class="toc-number">1.2.</span> <span class="toc-text">2. MySQL索引</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-InnoDB引擎"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 InnoDB引擎</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-MyISAM引擎"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.3 MyISAM引擎</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#附：在Ubuntu上安装MySQL8-0"><span class="toc-number">1.3.</span> <span class="toc-text">附：在Ubuntu上安装MySQL8.0</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>

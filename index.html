@@ -205,6 +205,444 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Java中的等待唤醒机制" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/07/Java%E4%B8%AD%E7%9A%84%E7%AD%89%E5%BE%85%E5%94%A4%E9%86%92%E6%9C%BA%E5%88%B6/">Java中的等待唤醒机制</a>
+    </h1>
+  
+
+        
+        <a href="/2021/06/07/Java%E4%B8%AD%E7%9A%84%E7%AD%89%E5%BE%85%E5%94%A4%E9%86%92%E6%9C%BA%E5%88%B6/" class="archive-article-date">
+  	<time datetime="2021-06-07T07:30:53.551Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="Java中的等待-唤醒机制"><a href="#Java中的等待-唤醒机制" class="headerlink" title="Java中的等待/唤醒机制"></a>Java中的等待/唤醒机制</h2><p>Java中实现等待唤醒机制共有三种方法：</p>
+<ul>
+<li>Java1.5之前，使用<code>synchronized</code>配合<code>wait</code>与<code>notify</code>实现等待唤醒</li>
+<li>Java1.5及之后，由于并发工具包的加入，我们可以用lock、lock中的Condition对象的<code>await</code>，<code>signal</code>实现等待唤醒</li>
+<li><code>LockSupport</code>类中的静态方法<code>park</code>、<code>unpark</code>。</li>
+</ul>
+<p>前两种方法的缺点：</p>
+<ul>
+<li>都需要配合锁来使用，否则会报异常<code>IllegalMonitorStateException</code></li>
+<li>若先<code>notify</code>、后<code>wait</code>，则等待的线程会无限期等待</li>
+</ul>
+<p><code>LockSupport</code>的优点：</p>
+<ul>
+<li>无需配合锁来使用，其底层使用了<code>Unsafe</code>类，通过设置凭证（permit）来实现，permit初始为0，<code>unpark</code>会使permit数量加一（最多为1），因此重复调用<code>unpark</code>的效果与调用一次相同；<code>park</code>方法会使permit数量减一，多次调用可能会造成阻塞。</li>
+<li>若先<code>unpark</code>后<code>park</code>，则<code>park</code>不会阻塞线程</li>
+</ul>
+<p><strong>为什么等待通知要配合锁来使用？</strong></p>
+<p>如果没有锁的加入，可能会由于线程调度导致wait的线程错过notify，从而造成该线程无限期阻塞。</p>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/06/07/Java%E4%B8%AD%E7%9A%84%E7%AD%89%E5%BE%85%E5%94%A4%E9%86%92%E6%9C%BA%E5%88%B6/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-CountDownLatch使用案例" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/03/CountDownLatch%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B/">CountDownLatch使用案例</a>
+    </h1>
+  
+
+        
+        <a href="/2021/06/03/CountDownLatch%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B/" class="archive-article-date">
+  	<time datetime="2021-06-03T14:32:23.662Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="CountDownLatch使用案例"><a href="#CountDownLatch使用案例" class="headerlink" title="CountDownLatch使用案例"></a>CountDownLatch使用案例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CountDownLatchDemo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> CountDownLatch startSignal = <span class="keyword">new</span> CountDownLatch(<span class="number">1</span>);</span><br><span class="line">    <span class="comment">// 用来表示裁判员需要维护的是6个运动员</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> CountDownLatch endSignal = <span class="keyword">new</span> CountDownLatch(<span class="number">6</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(<span class="number">6</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++) &#123;</span><br><span class="line">            executorService.execute(() -&gt; &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    System.out.println(Thread.currentThread().getName() + <span class="string">" 运动员等待裁判员响哨！！！"</span>);</span><br><span class="line">                    <span class="comment">//等待主线程发出开始信号</span></span><br><span class="line">                    startSignal.await();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName() + <span class="string">"正在全力冲刺"</span>);</span><br><span class="line">                    </span><br><span class="line">                    System.out.println(Thread.currentThread().getName() + <span class="string">"  到达终点"</span>);</span><br><span class="line">                    endSignal.countDown();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//为了让所有线程都启动</span></span><br><span class="line">        Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">        System.out.println(<span class="string">"裁判员发号施令啦！！！"</span>);</span><br><span class="line">        </span><br><span class="line">        startSignal.countDown();</span><br><span class="line">        <span class="comment">//等待所有线程运行结束</span></span><br><span class="line">        endSignal.await();</span><br><span class="line">        System.out.println(<span class="string">"所有运动员到达终点，比赛结束！"</span>);</span><br><span class="line">        executorService.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/06/03/CountDownLatch%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Spring AOP编程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/01/Spring%20AOP%E7%BC%96%E7%A8%8B/">Spring AOP编程</a>
+    </h1>
+  
+
+        
+        <a href="/2021/06/01/Spring%20AOP%E7%BC%96%E7%A8%8B/" class="archive-article-date">
+  	<time datetime="2021-06-01T12:40:54.606Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="Spring-AOP编程"><a href="#Spring-AOP编程" class="headerlink" title="Spring AOP编程"></a>Spring AOP编程</h2><p>将重复冗余的代码抽取出来，通过动态代理的方式在程序运行时对程序进行增强和扩展。是面向函数编程的衍生，能够解耦合。</p>
+<h3 id="1-相关概念"><a href="#1-相关概念" class="headerlink" title="1. 相关概念"></a>1. 相关概念</h3><ul>
+<li>连接点（Joinpoint）需要被扩展和增强的方法</li>
+<li>切入点（pointcut）通过切入点表达式，描述一组具有共同性的连接点，比如说对包含“remove”的方法执行后记录日志。</li>
+<li>通知（Advance）对连接点进行的扩展和增强的行为，例如进行remove后会记录日志，权限验证行为、事务行为。</li>
+<li>织入（Weaving）将通知连接到连接点，创建代理对象的过程</li>
+<li>目标对象（Target Object）连接点被织入通知后，生成的代理类创建的代理对象，Spring AOP通过运行时代理实现。</li>
+<li>切面（Aspect）一个支持对横跨多个模块功能，实现通用同意扩展的行为，例如：事务处理切面、日志记录切面等。切面通常包含切入点表达式和通知。Spring中用<code>@Aspect</code>申明这是一个切面类。</li>
+</ul>
+<p>当一个对象不想引用或不能直接引用另一个对象时就可以通过动态代理来实现。</p>
+<h3 id="2-Spring中的Advice类型"><a href="#2-Spring中的Advice类型" class="headerlink" title="2. Spring中的Advice类型"></a>2. Spring中的Advice类型</h3><ul>
+<li><code>@Before</code>前置通知，在切入点方法执行前通知</li>
+<li><code>@AfterReturning</code></li>
+<li><code>@AfterThrowing</code></li>
+<li><code>@After</code>后置最终通知，</li>
+<li><code>@Around</code> 环绕通知</li>
+</ul>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/06/01/Spring%20AOP%E7%BC%96%E7%A8%8B/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-B树与B+树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/05/31/B%E6%A0%91%E4%B8%8EB+%E6%A0%91/">B树与B+树</a>
+    </h1>
+  
+
+        
+        <a href="/2021/05/31/B%E6%A0%91%E4%B8%8EB+%E6%A0%91/" class="archive-article-date">
+  	<time datetime="2021-05-31T12:42:10.275Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-31</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="B树与B-树"><a href="#B树与B-树" class="headerlink" title="B树与B+树"></a>B树与B+树</h2><h3 id="1-B树"><a href="#1-B树" class="headerlink" title="1. B树"></a>1. B树</h3><p>B树又成多路平衡查找树，B树中所有节点的孩子节点数的最大值成为B树的阶（order）。</p>
+<p>一棵m阶B树的组成：<strong>根节点、内部节点、叶子节点</strong></p>
+<p>一棵m阶B树，或为空树，或为满足如下特性的m叉树：</p>
+<ul>
+<li><p>树中每个节点至多有m个孩子，即最多含有m+1个key，每个节点的key以非降序存放。根节点至少有两个孩子；</p>
+</li>
+<li><p>除根节点外的所有非叶子节点至少含有<code>ceil(m/2)</code>个孩子</p>
+</li>
+<li><p>所有的叶子节点位于同一层，不包含孩子</p>
+</li>
+</ul>
+<p>m的阶数越高，树的高度越小</p>
+<p><img src="http://openfile.shixinke.com/images/posts/2018/12/3a28b4a60f3664e95a40a8e87e1ee13d.png" alt=""></p>
+<h3 id="2-B-树"><a href="#2-B-树" class="headerlink" title="2. B+树"></a>2. B+树</h3><p><img src="http://openfile.shixinke.com/images/posts/2018/12/c33703a77cec9fd57cfebe61143a60d6.png" alt=""></p>
+<h3 id="3-区别与联系"><a href="#3-区别与联系" class="headerlink" title="3. 区别与联系"></a>3. 区别与联系</h3><ul>
+<li><p>B+树的内部节点仅存储数据对应的key不存储具体的数据，而完整数据存储于叶子节点中（或者说叶子节点存储了指向完整数据的具体地址），而B树内部节点和叶子节点存储了数据的key和完整的数据，当数据量特别大可能会很占内存。</p>
+</li>
+<li><p>B+树的叶子节点用链表进行串联。</p>
+</li>
+<li><p>B树的key值在树中是唯一的，而B+树允许重复。</p>
+</li>
+<li><p>在添加、删除节点上。B+树更加高效；在B树中搜索时，可能到不了叶子节点，即在中间节点就找到了目标，而B+树中一定会搜索到叶子节点。</p>
+</li>
+</ul>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/05/31/B%E6%A0%91%E4%B8%8EB+%E6%A0%91/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-HashMap源码解读" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/05/29/HashMap%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/">HashMap源码解读</a>
+    </h1>
+  
+
+        
+        <a href="/2021/05/29/HashMap%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" class="archive-article-date">
+  	<time datetime="2021-05-29T12:29:31.251Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="HashMap源码解读"><a href="#HashMap源码解读" class="headerlink" title="HashMap源码解读"></a>HashMap源码解读</h2><h3 id="1-HashMap的数据结构"><a href="#1-HashMap的数据结构" class="headerlink" title="1. HashMap的数据结构"></a>1. HashMap的数据结构</h3><p>总的来说hashmap中用到了<strong>链表</strong>、<strong>数组</strong>、<strong>红黑树</strong>这三种数据结构。不同hash值的key放在对应的数组中，当存在hash冲突时，将相同hash值的key用链表保存起来，当链表长度以及所有k-v对的个数达到阈值时，链表就会“树化”为红黑树，以提高查找效率。</p>
+<h3 id="2-HashMap的扩容和负载因子"><a href="#2-HashMap的扩容和负载因子" class="headerlink" title="2. HashMap的扩容和负载因子"></a>2. HashMap的扩容和负载因子</h3><p>区分两个概念：<code>capacity</code>、<code>size</code></p>
+<ul>
+<li><code>size</code>：指的是map中不同key-value键值对的总个数，这个字段会暴露给我们。</li>
+<li><code>capacity</code>：指的是map中buckets的个数，即table数组的长度</li>
+</ul>
+<p>当我们在初始化一个map的时候，默认负载因子为<code>0.75f</code>，当size达到<code>0.75 * capacity</code>时，就会进行扩容，<strong>map的扩容是2倍扩容</strong>。</p>
+<p>table的长度始终都是2的指数次幂，当我们指定的初始化长度不是2的次幂时，会调用<code>tableSizeFor</code>方法自动找到刚好大于该长度的2的次幂的数。默认初始化时table的长度是16。</p>
+<h3 id="3-HashMap中的hash方法"><a href="#3-HashMap中的hash方法" class="headerlink" title="3. HashMap中的hash方法"></a>3. HashMap中的hash方法</h3><h3 id="4-HashMap的put和get方法"><a href="#4-HashMap的put和get方法" class="headerlink" title="4. HashMap的put和get方法"></a>4. HashMap的put和get方法</h3><h3 id=""><a href="#" class="headerlink" title=" "></a> </h3>
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/05/29/HashMap%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-数据库的三范式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -385,9 +823,9 @@
 <h3 id="1-事务的隔离级别"><a href="#1-事务的隔离级别" class="headerlink" title="1. 事务的隔离级别"></a>1. 事务的隔离级别</h3><p>隔离级别总共有四种：</p>
 <ol>
 <li>读未提交（Read-Uncommited）</li>
-<li>读提交（Read-Commited）</li>
-<li>可重复读（Repeatable-Read）</li>
-<li>串行化（Serializable）</li>
+<li>读提交（Read-Commited）解决“脏读”</li>
+<li>可重复读（Repeatable-Read）解决“不可重复读”</li>
+<li>串行化（Serializable）解决“幻读”</li>
 </ol>
 <p>查看当前会话事务的隔离级别：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select @@transaction_isolation;</span><br></pre></td></tr></table></figure>
@@ -405,14 +843,69 @@
 <blockquote>
 <p> 读写锁之间的关系可以概括为：允许多个事务一起读，读写互斥！</p>
 </blockquote>
-<p>但加行锁并不可以解决”幻读“这一现象。幻读指的是当某个事务在读取某个范围内的记录时，另外一个事务又在该范围内插入了新行，当之前的事务再次读取该范围的记录时，会产生幻行</p>
+<p>但加行锁并不可以解决”幻读“这一现象，因为行锁无法对后insert的数据加锁。幻读指的是当某个事务在读取某个范围内的记录时，另外一个事务又在该范围内插入了新行，当之前的事务再次读取该范围的记录时，会产生幻行。解决幻读要么序列化，要么加表锁。</p>
 <p>首先了解两个概念：</p>
 <ul>
-<li><p>一致读：consistent read 指的是</p>
-</li>
-<li><p>多版本并发控制：multi-versioned concurrency control，是MySQL中基于<strong>乐观锁</strong>理论实现隔离级别的方式，用于实现读已提交和可重复读取隔离级别的实现。在MySQL中，会在表中每一条数据后面添加两个字段：<strong>创建版本号</strong>：创建一行数据时，将当前系统版本号作为创建版本号赋值；<strong>删除版本号</strong>：删除一行数据时，将当前系统版本号作为删除版本号赋值。</p>
-</li>
+<li>一致读：consistent read 也叫快照读，当事务开始时会给数据“拍个照”，只要本事务不做update、insert操作，无论其他事务怎样提交，在本事务结束前select查到的内容不会改变。</li>
+<li>当前读：<code>select * from table_1 for update</code>读取数据库最新的内容</li>
 </ul>
+<p>Mysql中主要通过MVCC来保证<strong>可重复读</strong>，和<strong>select级别的幻读</strong>。注意：当其他事务进行提交后，本事务要对提交的数据进行修改时，会使用当前读，即update之前先select数据库最新的内容，这就会导致幻读。所以说只保证select级别的幻读，看以下例子：</p>
+<ul>
+<li>A、B事务同时开始</li>
+<li>A事务查询table中的记录，得到一条记录；B事务插入table一条记录，id=2，B事务提交</li>
+<li>A事务当前update id为2的数据，A事务会先查询table中的所有数据，再进行更新。之后查询table中的记录，发现有了两条记录。</li>
+<li>注意，当不进行更新操作，即使其他事务插入数据并提交，快照读可以保证可重复读，加行锁不可以。</li>
+</ul>
+<p>多版本并发控制：multi-versioned concurrency control，是MySQL中基于<strong>乐观锁</strong>理论实现隔离级别的方式，用于实现读已提交和可重复读取隔离级别的实现。在MySQL中，会在表中每一条数据后面添加两个字段：<strong>创建版本号</strong>：创建一行数据时，将当前系统版本号作为创建版本号赋值；<strong>删除版本号</strong>：删除一行数据时，将当前系统版本号作为删除版本号赋值。</p>
+<h3 id="2-MySQL索引"><a href="#2-MySQL索引" class="headerlink" title="2. MySQL索引"></a>2. MySQL索引</h3><h4 id="2-1-InnoDB引擎"><a href="#2-1-InnoDB引擎" class="headerlink" title="2.1 InnoDB引擎"></a>2.1 InnoDB引擎</h4><p>聚集索引，B+树</p>
+<p><img src="http://openfile.shixinke.com/images/posts/2018/12/22bb9577e5da9c0642e9a5b8c4d429dd.png" alt=""></p>
+<h4 id="2-3-MyISAM引擎"><a href="#2-3-MyISAM引擎" class="headerlink" title="2.3 MyISAM引擎"></a>2.3 MyISAM引擎</h4><p>叶节点并不存储数据，而是存储指向数据的指针。</p>
+<p>非聚集索引</p>
+<p><img src="http://openfile.shixinke.com/images/posts/2018/12/5d28d9bb9752b1bc6727fa5859ebe487.png" alt=""></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>区别</th>
+<th>Innodb</th>
+<th>Myisam</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>事务</td>
+<td>安全</td>
+<td>非安全</td>
+</tr>
+<tr>
+<td>锁</td>
+<td>行级</td>
+<td>表级</td>
+</tr>
+<tr>
+<td>效率</td>
+<td>低</td>
+<td>高</td>
+</tr>
+<tr>
+<td>索引</td>
+<td>聚集索引</td>
+<td>非聚集索引</td>
+</tr>
+<tr>
+<td>外键</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>使用环境</td>
+<td>需要事务，大量增，改</td>
+<td>多查询，不需要事务</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="附：在Ubuntu上安装MySQL8-0"><a href="#附：在Ubuntu上安装MySQL8-0" class="headerlink" title="附：在Ubuntu上安装MySQL8.0"></a>附：在Ubuntu上安装MySQL8.0</h3><p>请参考：<a href="https://computingforgeeks.com/how-to-install-mysql-8-on-ubuntu/" target="_blank" rel="noopener">https://computingforgeeks.com/how-to-install-mysql-8-on-ubuntu/</a></p>
 
           
         
@@ -489,7 +982,11 @@
           
             <h2 id="ArrayList源码分析"><a href="#ArrayList源码分析" class="headerlink" title="ArrayList源码分析"></a>ArrayList源码分析</h2><h3 id="1-扩容"><a href="#1-扩容" class="headerlink" title="1. 扩容"></a>1. 扩容</h3><p>Arraylist的初始容量为10，一旦达到，将会按照原容量的50%进行扩容，即<code>elementData</code>数组的长度变为原来的1.5倍。</p>
 <h3 id="2-添加元素"><a href="#2-添加元素" class="headerlink" title="2.添加元素"></a>2.添加元素</h3><p>我们来看一下<code>add(int index, Object e)</code>这个方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line">可以看到，使用了`System.arraycopy`方法，源数组和目标数组都是`elementData`，将`index`及其之后的元素复制到`index+<span class="number">1</span>`的位置。</span><br><span class="line"></span><br><span class="line">### 3. 序列化</span><br><span class="line"></span><br><span class="line">​         我们发现源码中用于保存元素的`elementData`的数组是被`<span class="keyword">transient</span>`修饰的，这意味着他将不被序列化。那ArrayList是如何序列化的呢？我们可以发现，ArrayList自己实现了两个方法：`readObject`、`writeObject`用于自定义序列化，避免采用Java原生的序列化。那为什么要这么做呢？在`writeObject`方法中，可以看到只是将`size`范围内的元素进行序列化，这是由于前面讲过的扩容机制，导致`elementData`的长度大于`size`，`size`索引之后都不保存具体元素值（或者说只为数组初始化的值），但确已经申请了内存空间，如果全部序列化，那么将会浪费大量空间来存储这些无用的信息。我们可以通过下面一个例子来具体演示。</span><br><span class="line"></span><br><span class="line">​         我们可以看到，一个长度为<span class="number">20000</span>的数组只保存了<span class="number">5</span>个元素，如果直接将这个数组序列化，大小是<span class="number">79</span>kb，若只将<span class="number">5</span>个元素序列化，序列化后的文件大小仅为<span class="number">1</span>kb。</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SerDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] nums = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">20000</span>];</span><br><span class="line">        <span class="keyword">int</span> size = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)&#123;</span><br><span class="line">            nums[i] = i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="comment">// 将数组全部初始化</span></span><br><span class="line">            <span class="comment">// FileOutputStream fs = new FileOutputStream("E:\\num1.ser");</span></span><br><span class="line">            <span class="comment">// ObjectOutputStream os = new ObjectOutputStream(fs);</span></span><br><span class="line">            <span class="comment">// os.writeObject(nums);</span></span><br><span class="line">            <span class="comment">// os.close();</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 只将非空数组初始化</span></span><br><span class="line">            <span class="keyword">int</span>[] ret = <span class="keyword">new</span> <span class="keyword">int</span>[size];</span><br><span class="line">            System.arraycopy(nums, <span class="number">0</span>, ret, <span class="number">0</span>, size);</span><br><span class="line">            FileOutputStream fs = <span class="keyword">new</span> FileOutputStream(<span class="string">"E:\\num2.ser"</span>);</span><br><span class="line">            ObjectOutputStream os = <span class="keyword">new</span> ObjectOutputStream(fs);</span><br><span class="line">            os.writeObject(ret);</span><br><span class="line">            os.close();</span><br><span class="line"></span><br><span class="line">        &#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Inserts the specified element at the specified position in this</span></span><br><span class="line"><span class="comment">     * list. Shifts the element currently at that position (if any) and</span></span><br><span class="line"><span class="comment">     * any subsequent elements to the right (adds one to their indices).</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> index index at which the specified element is to be inserted</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> element element to be inserted</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IndexOutOfBoundsException &#123;<span class="doctag">@inheritDoc</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> index, E element)</span> </span>&#123;</span><br><span class="line">    rangeCheckForAdd(index);</span><br><span class="line">    modCount++;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> s;</span><br><span class="line">    Object[] elementData;</span><br><span class="line">    <span class="keyword">if</span> ((s = size) == (elementData = <span class="keyword">this</span>.elementData).length)</span><br><span class="line">        elementData = grow();</span><br><span class="line">    System.arraycopy(elementData, index,</span><br><span class="line">                     elementData, index + <span class="number">1</span>,</span><br><span class="line">                     s - index);</span><br><span class="line">    elementData[index] = element;</span><br><span class="line">    size = s + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，使用了<code>System.arraycopy</code>方法，源数组和目标数组都是<code>elementData</code>，将<code>index</code>及其之后的元素复制到<code>index+1</code>的位置。</p>
+<h3 id="3-序列化"><a href="#3-序列化" class="headerlink" title="3. 序列化"></a>3. 序列化</h3><p>​         我们发现源码中用于保存元素的<code>elementData</code>的数组是被<code>transient</code>修饰的，这意味着他将不被序列化。那ArrayList是如何序列化的呢？我们可以发现，ArrayList自己实现了两个方法：<code>readObject</code>、<code>writeObject</code>用于自定义序列化，避免采用Java原生的序列化。那为什么要这么做呢？在<code>writeObject</code>方法中，可以看到只是将<code>size</code>范围内的元素进行序列化，这是由于前面讲过的扩容机制，导致<code>elementData</code>的长度大于<code>size</code>，<code>size</code>索引之后都不保存具体元素值（或者说只为数组初始化的值），但确已经申请了内存空间，如果全部序列化，那么将会浪费大量空间来存储这些无用的信息。我们可以通过下面一个例子来具体演示。</p>
+<p>​         我们可以看到，一个长度为20000的数组只保存了5个元素，如果直接将这个数组序列化，大小是79kb，若只将5个元素序列化，序列化后的文件大小仅为1kb。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SerDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] nums = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">20000</span>];</span><br><span class="line">        <span class="keyword">int</span> size = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)&#123;</span><br><span class="line">            nums[i] = i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="comment">// 将数组全部初始化</span></span><br><span class="line">            <span class="comment">// FileOutputStream fs = new FileOutputStream("E:\\num1.ser");</span></span><br><span class="line">            <span class="comment">// ObjectOutputStream os = new ObjectOutputStream(fs);</span></span><br><span class="line">            <span class="comment">// os.writeObject(nums);</span></span><br><span class="line">            <span class="comment">// os.close();</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 只将非空数组初始化</span></span><br><span class="line">            <span class="keyword">int</span>[] ret = <span class="keyword">new</span> <span class="keyword">int</span>[size];</span><br><span class="line">            System.arraycopy(nums, <span class="number">0</span>, ret, <span class="number">0</span>, size);</span><br><span class="line">            FileOutputStream fs = <span class="keyword">new</span> FileOutputStream(<span class="string">"E:\\num2.ser"</span>);</span><br><span class="line">            ObjectOutputStream os = <span class="keyword">new</span> ObjectOutputStream(fs);</span><br><span class="line">            os.writeObject(ret);</span><br><span class="line">            os.close();</span><br><span class="line"></span><br><span class="line">        &#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="C:\Users\zhang\AppData\Roaming\Typora\typora-user-images\image-20210519110511250.png" alt="image-20210519110511250"></p>
 
           
@@ -619,462 +1116,9 @@
 
 
   
-    <article id="post-RMLSE" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/11/RMLSE/">RMLSE</a>
-    </h1>
-  
-
-        
-        <a href="/2021/04/11/RMLSE/" class="archive-article-date">
-  	<time datetime="2021-04-11T08:36:45.192Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="RMLSE损失函数"><a href="#RMLSE损失函数" class="headerlink" title="RMLSE损失函数"></a>RMLSE损失函数</h2><p>RMLSE即 $\text{Root Mean Log Squared Error}$</p>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/04/11/RMLSE/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-有向图的节点通路" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/05/%E6%9C%89%E5%90%91%E5%9B%BE%E7%9A%84%E8%8A%82%E7%82%B9%E9%80%9A%E8%B7%AF/">有向图的节点通路</a>
-    </h1>
-  
-
-        
-        <a href="/2021/04/05/%E6%9C%89%E5%90%91%E5%9B%BE%E7%9A%84%E8%8A%82%E7%82%B9%E9%80%9A%E8%B7%AF/" class="archive-article-date">
-  	<time datetime="2021-04-05T03:11:01.869Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="有向图的节点通路"><a href="#有向图的节点通路" class="headerlink" title="有向图的节点通路"></a>有向图的节点通路</h2><p>描述：给定有向图的边的集合，设计一个算法，找出两个节点之间是否存在一条通路。</p>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/日常刷题记录//" class="article-tag-list-link color2">日常刷题记录</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/04/05/%E6%9C%89%E5%90%91%E5%9B%BE%E7%9A%84%E8%8A%82%E7%82%B9%E9%80%9A%E8%B7%AF/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-信用卡虚假交易数据检测" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/27/%E4%BF%A1%E7%94%A8%E5%8D%A1%E8%99%9A%E5%81%87%E4%BA%A4%E6%98%93%E6%95%B0%E6%8D%AE%E6%A3%80%E6%B5%8B/">信用卡虚假交易数据检测</a>
-    </h1>
-  
-
-        
-        <a href="/2021/03/27/%E4%BF%A1%E7%94%A8%E5%8D%A1%E8%99%9A%E5%81%87%E4%BA%A4%E6%98%93%E6%95%B0%E6%8D%AE%E6%A3%80%E6%B5%8B/" class="archive-article-date">
-  	<time datetime="2021-03-27T15:17:16.311Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          
-            <a id="more"></a>
-<h2 id="信用卡虚假交易数据检测"><a href="#信用卡虚假交易数据检测" class="headerlink" title="信用卡虚假交易数据检测"></a>信用卡虚假交易数据检测</h2><p>测试网站：<a href="https://www.lintcode.com/ai/creditcard_fraud/overview" target="_blank" rel="noopener">https://www.lintcode.com/ai/creditcard_fraud/overview</a></p>
-<h3 id="0-背景介绍"><a href="#0-背景介绍" class="headerlink" title="0. 背景介绍"></a>0. 背景介绍</h3><p>​        信用卡虚假交易即指该交易有涉嫌非法套现的行为，即用户在商户刷卡后，商户不提供用户消费品而是把消费的钱通过现金的方式返还给用户同时抽取一部分费用作为佣金，虚假交易检测即给定某一交易数据，判定该交易是否是虚假交易。</p>
-<!--more-->
-<h3 id="1-数据探索"><a href="#1-数据探索" class="headerlink" title="1. 数据探索"></a>1. 数据探索</h3><p>​        数据集为2013年9月里某两天欧元区的信用卡交易记录。在这<strong>两天</strong>中共有284807笔交易，其中的492笔是欺诈。把欺诈交易的类(class) 认为是1，非欺诈交易的类认为是0。给定数据集中，正常数据有22万余条，虚假数据只有400多条，可见训练数据严重失衡，需要通过采取一些措施解决这种不平衡。</p>
-<h4 id="1-1-数据属性"><a href="#1-1-数据属性" class="headerlink" title="1.1 数据属性"></a>1.1 数据属性</h4><p>​        数据集里面有从PCA转换得到的28个features。之所以进行了PCA转换是因为不能把原始的消费者信用卡记录暴露给公众，这样触犯了用户的隐私。所以做PCA转换处理。可以简单理解为加密。</p>
-<p>​        Features V1, V2, …, V28都是经过PCA转换后获得的features。没有被PCA转换的，保留了原始数据是”Time”和”Amount”。”Time”记录了每笔交易和第一笔交易（Time属性为0）之间的时间间隔，以秒为单位。”Amount”是交易数额。”Class”就是这笔交易的最终分类。</p>
-<h4 id="1-2-数据分布"><a href="#1-2-数据分布" class="headerlink" title="1.2 数据分布"></a>1.2 数据分布</h4><p>​        导入数据。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"></span><br><span class="line"><span class="comment">#训练模型的数据集</span></span><br><span class="line">df = pd.read_csv(<span class="string">'ml_problems_12_creditcard_train.csv'</span>)</span><br><span class="line">df = df.drop([<span class="string">"Id"</span>],axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#加载测试数据,需要预测的</span></span><br><span class="line">test = pd.read_csv(<span class="string">'ml_problems_12_creditcard_test.csv'</span>)</span><br><span class="line">Id = test.Id</span><br><span class="line">test = test.drop([<span class="string">"Id"</span>], axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-<p>​        我们首先统计在不同的时间间隔内正常交易的数量和虚假交易的数量是怎样的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">f, (ax1, ax2) = plt.subplots(<span class="number">2</span>, <span class="number">1</span>, sharex=<span class="literal">True</span>, figsize=(<span class="number">12</span>, <span class="number">4</span>))</span><br><span class="line">bins = <span class="number">100</span></span><br><span class="line"></span><br><span class="line">ax1.hist(df.Time[df.Class==<span class="number">1</span>], bins=bins)</span><br><span class="line">ax1.set_title(<span class="string">"Fraud"</span>)</span><br><span class="line"></span><br><span class="line">ax2.hist(df.Time[df.Class==<span class="number">0</span>], bins=bins)</span><br><span class="line">ax2.set_title(<span class="string">"Normal"</span>)</span><br><span class="line"></span><br><span class="line">plt.xlabel(<span class="string">'Time'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Number of Transactions'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p><img src="/images/card_time.png" alt=""></p>
-<p>​        可以看到，正常交易有一个明显的周期性，而虚假交易呈现一个均匀分布的趋势。</p>
-<p>​        我们再统计不同交易金额的交易数量。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">f, (ax1, ax2) = plt.subplots(<span class="number">2</span>, <span class="number">1</span>, sharex=<span class="literal">True</span>, figsize=(<span class="number">12</span>, <span class="number">4</span>))</span><br><span class="line">bins = <span class="number">25</span></span><br><span class="line"></span><br><span class="line">ax1.hist(df.Amount[df.Class==<span class="number">1</span>], bins=bins)</span><br><span class="line">ax1.set_title(<span class="string">"Fraud"</span>)</span><br><span class="line"></span><br><span class="line">ax2.hist(df.Amount[df.Class==<span class="number">0</span>], bins=bins)</span><br><span class="line">ax2.set_title(<span class="string">"Normal"</span>)</span><br><span class="line"></span><br><span class="line">plt.xlabel(<span class="string">'Amount'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Number of Transactions'</span>)</span><br><span class="line">plt.yscale(<span class="string">"log"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p>​        <img src="/images/card_amount.png" alt=""></p>
-<p>​        可以看到，正常交易的交易金额比虚假交易金额要大，虚假交易的交易金额最大不超过2500。</p>
-<h3 id="2-数据清洗"><a href="#2-数据清洗" class="headerlink" title="2. 数据清洗"></a>2. 数据清洗</h3><h4 id="2-1-数据标准化"><a href="#2-1-数据标准化" class="headerlink" title="2.1 数据标准化"></a>2.1 数据标准化</h4><p>​        首先将“Time”、“Amount”这两列标准化，需要注意的是，训练数据标准化意味着测试数据集也需要标准化，要将二者置于同一尺度下才能较好的预测结果。注意：<strong>标准化的时候注意防止数据泄露！</strong></p>
-<ul>
-<li>先将数据划分为训练集和测试集</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line">X = df.iloc[:, df.columns != <span class="string">'Class'</span>]</span><br><span class="line">y = df.iloc[:, df.columns == <span class="string">'Class'</span>]</span><br><span class="line"></span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=<span class="number">0.25</span>,random_state=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>数据标准化</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line">amount_scaler = StandardScaler()</span><br><span class="line">time_scaler = StandardScaler()</span><br><span class="line"></span><br><span class="line">X_train[<span class="string">"normAmount"</span>] = amount_scaler.fit_transform(X_train[<span class="string">'Amount'</span>].values.reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">X_train[<span class="string">"normTime"</span>] = time_scaler.fit_transform(X_train[<span class="string">'Time'</span>].values.reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">X_train = X_train.drop([<span class="string">"Time"</span>,<span class="string">"Amount"</span>], axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#利用训练集得到的归一化器对测试集进行归一化转化</span></span><br><span class="line">X_test[<span class="string">"normAmount"</span>] = amount_scaler.transform(X_test[<span class="string">'Amount'</span>].values.reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">X_test[<span class="string">"normTime"</span>] =  time_scaler.transform(X_test[<span class="string">'Time'</span>].values.reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">X_test = X_test.drop([<span class="string">"Time"</span>,<span class="string">"Amount"</span>], axis = <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">test[<span class="string">"normAmount"</span>] = amount_scaler.transform(test[<span class="string">'Amount'</span>].values.reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">test[<span class="string">"normTime"</span>] =  time_scaler.transform(test[<span class="string">'Time'</span>].values.reshape(<span class="number">-1</span>,<span class="number">1</span>))</span><br><span class="line">test = test.drop([<span class="string">"Time"</span>,<span class="string">"Amount"</span>], axis = <span class="number">1</span>)</span><br><span class="line">test_data = np.array(test)</span><br></pre></td></tr></table></figure>
-<h4 id="2-2-解决样本不平衡问题"><a href="#2-2-解决样本不平衡问题" class="headerlink" title="2.2 解决样本不平衡问题"></a>2.2 解决样本不平衡问题</h4><p>​        对于样本类别数量极不平衡通常有过采样（over-sampling）、欠采样（under-sampling）两种方法。过采样用于扩增数据集，而欠采样用于减小数据集。</p>
-<p>​        本例中，由于预测的数据在5万条，给定的训练数据中异常数据只有400条左右，如果做欠采样，需要使得正常数据与虚假数据数量相同，那么训练模型的数据大约为900条，这样训练出的模型大概率是欠拟合的，无法应对大规模测试集的情况。</p>
-<p>​        因此，采用SMOTE算法对数据集进行过采样，使得虚假交易数据与正常交易数据相同。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> imblearn.over_sampling <span class="keyword">import</span> SMOTE</span><br><span class="line"></span><br><span class="line">sample_solver = SMOTE(random_state=<span class="number">0</span>)</span><br><span class="line"><span class="comment"># 对训练集进行过采样操作</span></span><br><span class="line">X_samples,y_samples = sample_solver.fit_resample(X_train,y_train)</span><br></pre></td></tr></table></figure>
-<h3 id="3-模型选择"><a href="#3-模型选择" class="headerlink" title="3. 模型选择"></a>3. 模型选择</h3><p>​        模型尝试了LR、决策树、随机森林、XGBClassifier。最终随机森林在数据集上取得的分数最高为0.87。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"></span><br><span class="line">X_samples,y_samples = np.array(X_samples), np.array(y_samples)</span><br><span class="line"></span><br><span class="line">classifier = RandomForestClassifier(random_state=<span class="number">0</span>)</span><br><span class="line">classifier.fit(X_samples, y_samples.ravel())</span><br><span class="line"></span><br><span class="line">y_pred = classifier.predict(X_test)</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> f1_score,confusion_matrix</span><br><span class="line">cm_grid = confusion_matrix(y_test,y_pred)</span><br><span class="line">sns.heatmap(cm_grid, annot=<span class="literal">True</span>)</span><br><span class="line">f1_score(y_true=y_test, y_pred=y_pred)</span><br><span class="line"></span><br><span class="line">pred = classifier.predict(test_data)</span><br><span class="line">pred.sum()</span><br></pre></td></tr></table></figure>
-<p>由于随机的原因分数误差在0.1上下。</p>
-
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/03/27/%E4%BF%A1%E7%94%A8%E5%8D%A1%E8%99%9A%E5%81%87%E4%BA%A4%E6%98%93%E6%95%B0%E6%8D%AE%E6%A3%80%E6%B5%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-机器学习常见模型优缺点对比" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B8%B8%E8%A7%81%E6%A8%A1%E5%9E%8B%E4%BC%98%E7%BC%BA%E7%82%B9%E5%AF%B9%E6%AF%94/">机器学习常见模型优缺点对比</a>
-    </h1>
-  
-
-        
-        <a href="/2021/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B8%B8%E8%A7%81%E6%A8%A1%E5%9E%8B%E4%BC%98%E7%BC%BA%E7%82%B9%E5%AF%B9%E6%AF%94/" class="archive-article-date">
-  	<time datetime="2021-03-26T13:08:21.388Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          
-            <a id="more"></a>
-<h2 id="机器学习常见模型优缺点对比"><a href="#机器学习常见模型优缺点对比" class="headerlink" title="机器学习常见模型优缺点对比"></a>机器学习常见模型优缺点对比</h2><!--more-->
-<h3 id="1-支持向量机与LR"><a href="#1-支持向量机与LR" class="headerlink" title="1. 支持向量机与LR"></a>1. 支持向量机与LR</h3><h4 id="1-1-支持向量机优点分析"><a href="#1-1-支持向量机优点分析" class="headerlink" title="1.1 支持向量机优点分析"></a>1.1 支持向量机优点分析</h4><ul>
-<li>有着完备的数学统计基础</li>
-<li>决策超平面只与支持向量有关，且得到的决策超平面是最大化间隔实现的，鲁棒性较高</li>
-</ul>
-<h4 id="1-2-支持向量机缺点分析"><a href="#1-2-支持向量机缺点分析" class="headerlink" title="1.2 支持向量机缺点分析"></a>1.2 支持向量机缺点分析</h4><ul>
-<li>当数据量较大维度较高时，训练缓慢</li>
-<li>面对多分类问题，支持向量机不能够很好的处理</li>
-</ul>
-<h4 id="1-3-LR优点分析"><a href="#1-3-LR优点分析" class="headerlink" title="1.3 LR优点分析"></a>1.3 LR优点分析</h4><ul>
-<li>易于训练</li>
-</ul>
-<h4 id="1-4-LR缺点分析"><a href="#1-4-LR缺点分析" class="headerlink" title="1.4 LR缺点分析"></a>1.4 LR缺点分析</h4><ul>
-<li>只能处理非线性数据</li>
-<li>对多重共线性数据效果较差</li>
-</ul>
-<h3 id="2-k均值聚类与DBSCAN"><a href="#2-k均值聚类与DBSCAN" class="headerlink" title="2. k均值聚类与DBSCAN"></a>2. k均值聚类与DBSCAN</h3><h4 id="2-1-k均值聚类的优缺点分析"><a href="#2-1-k均值聚类的优缺点分析" class="headerlink" title="2.1 k均值聚类的优缺点分析"></a>2.1 k均值聚类的优缺点分析</h4><p>​        <strong>优点</strong>：</p>
-<ul>
-<li>直观简单，易于实现</li>
-<li>收敛速度较快</li>
-</ul>
-<p>​        <strong>缺点</strong>：</p>
-<ul>
-<li>容易受到异常值影响</li>
-<li>最终聚类结果容易受到初始聚类中心的选择的影响</li>
-<li>K的选择需要不断尝试</li>
-<li>最终只能收敛到局部最优值</li>
-<li>只适用于球状（凸集）数据</li>
-</ul>
-<h4 id="2-2-DBSCAN优缺点分析"><a href="#2-2-DBSCAN优缺点分析" class="headerlink" title="2.2 DBSCAN优缺点分析"></a>2.2 DBSCAN优缺点分析</h4><p>​    <strong>优点</strong>：</p>
-<ul>
-<li>对异常值不敏感</li>
-<li>可以发现任意形状的类簇</li>
-<li>无需指定k的数量</li>
-</ul>
-<p>​    <strong>缺点</strong>：</p>
-<ul>
-<li>当类与类之间的间隔较大或密度不均匀的时候，效果不太好</li>
-<li>当数据较大时，时间复杂度较高</li>
-</ul>
-<h3 id="3-随机森林与决策树"><a href="#3-随机森林与决策树" class="headerlink" title="3. 随机森林与决策树"></a>3. 随机森林与决策树</h3><h4 id="3-1-随机森林的优点"><a href="#3-1-随机森林的优点" class="headerlink" title="3.1 随机森林的优点"></a>3.1 随机森林的优点</h4><ul>
-<li>对于大部分的数据，它的分类效果比较好。</li>
-<li>能处理高维特征，并且不用做特征选择，不容易产生过拟合</li>
-<li>容易实现并行化计算</li>
-<li>对数据集的适应能力强：既能处理离散型数据，也能处理连续型数据，数据集无需规范化。</li>
-<li>即使有很大部分数据遗失，仍可以维持高准确度</li>
-</ul>
-<h4 id="3-2-随机森林的缺点"><a href="#3-2-随机森林的缺点" class="headerlink" title="3.2 随机森林的缺点"></a>3.2 随机森林的缺点</h4><ul>
-<li>训练相比决策树而言慢</li>
-<li>在某些噪音比较大的样本集上，RF的模型容易陷入过拟合</li>
-<li>对于许多统计建模者来说，随机森林给人的感觉就像一个黑盒子，你无法控制模型内部的运行。只能在不同的参数和随机种子之间进行尝试。</li>
-</ul>
-
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B8%B8%E8%A7%81%E6%A8%A1%E5%9E%8B%E4%BC%98%E7%BC%BA%E7%82%B9%E5%AF%B9%E6%AF%94/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-并查集" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/20/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a>
-    </h1>
-  
-
-        
-        <a href="/2021/01/20/%E5%B9%B6%E6%9F%A5%E9%9B%86/" class="archive-article-date">
-  	<time datetime="2021-01-19T16:04:53.708Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h2><h3 id="1-并查集介绍"><a href="#1-并查集介绍" class="headerlink" title="1. 并查集介绍"></a>1. 并查集介绍</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] data = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(data[x] == x)&#123;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        data[x] = find(data[x]);</span><br><span class="line">        <span class="keyword">return</span> data[x];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> voif <span class="title">merge</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = find(a);</span><br><span class="line">    <span class="keyword">int</span> y = find(b);</span><br><span class="line">    <span class="keyword">if</span>(x != y)&#123;</span><br><span class="line">        data[x] = y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/20/%E5%B9%B6%E6%9F%A5%E9%9B%86/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
     </nav>
   
 
