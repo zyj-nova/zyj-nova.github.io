@@ -205,6 +205,559 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-和为k的连续子数组系列题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/12/%E5%92%8C%E4%B8%BAk%E7%9A%84%E8%BF%9E%E7%BB%AD%E5%AD%90%E6%95%B0%E7%BB%84%E7%B3%BB%E5%88%97%E9%A2%98/">和为k的连续子数组系列题</a>
+    </h1>
+  
+
+        
+        <a href="/2021/08/12/%E5%92%8C%E4%B8%BAk%E7%9A%84%E8%BF%9E%E7%BB%AD%E5%AD%90%E6%95%B0%E7%BB%84%E7%B3%BB%E5%88%97%E9%A2%98/" class="archive-article-date">
+  	<time datetime="2021-08-12T10:36:33.044Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          		<h3 id="和为k的连续子数组系列题"><a href="#和为k的连续子数组系列题" class="headerlink" title="和为k的连续子数组系列题"></a>和为k的连续子数组系列题</h3><p>整理了一下和为k的子数组的题单。</p>
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/日常刷题记录//" class="article-tag-list-link color2">日常刷题记录</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/08/12/%E5%92%8C%E4%B8%BAk%E7%9A%84%E8%BF%9E%E7%BB%AD%E5%AD%90%E6%95%B0%E7%BB%84%E7%B3%BB%E5%88%97%E9%A2%98/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Cookie和Session" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/24/Cookie%E5%92%8CSession/">Cookie和Session</a>
+    </h1>
+  
+
+        
+        <a href="/2021/07/24/Cookie%E5%92%8CSession/" class="archive-article-date">
+  	<time datetime="2021-07-24T02:39:01.488Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="Cookie和Session"><a href="#Cookie和Session" class="headerlink" title="Cookie和Session"></a>Cookie和Session</h2><h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><ul>
+<li>Cookie存储与浏览器（客户端），一个cookie就是一个键值对，当服务器要设置cookie时，会在响应头（response header）中设置<code>Set-Cookie</code>属性，可以设置的属性有cookie的name和value，path，max-age以及过期时间等。浏览器以后向服务器发起请求时会检查请求的url和cookie的path是否一致，或者请求的url是否是设置的path下的子路径，如符合请求就会自动带上cookie信息。</li>
+</ul>
+<p><strong>注意：</strong>当服务器设置了多个cookie时，响应头中会有多个<code>Set-Cookie</code>。</p>
+<p><img src="/images/image-20210724104014270.png" alt="image-20210724104014270" style="zoom:67%;" /></p>
+<p><img src="/images/cookies.png" alt="image-20210724103444815"></p>
+<ul>
+<li>Session存在于服务器端。Session创建后会将JSESSIONID存储与cookie中。浏览器每次向该服务器发起请求时，都会携带这个id。当浏览器关闭后，会话自动关闭，浏览器会自动删除JSESSIONID。若服务器宕机浏览器窗口未关闭，此时id仍会保存，向服务端发起请求时会调用getSession方法重新创建一个session。</li>
+</ul>
+<p><img src="/images/session.png" alt="image-20210724111410278"></p>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li>Cookie可以存储的信息大小有限，且只可以存储字符信息，容易被伪造和盗用。</li>
+</ul>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/07/24/Cookie%E5%92%8CSession/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-HTTPS解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/19/HTTPS%E8%A7%A3%E6%9E%90/">HTTPS解析</a>
+    </h1>
+  
+
+        
+        <a href="/2021/07/19/HTTPS%E8%A7%A3%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2021-07-19T02:49:26.738Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="HTTPS解析"><a href="#HTTPS解析" class="headerlink" title="HTTPS解析"></a>HTTPS解析</h2><p>https是<strong>Hypertext Transfer Protocol Secure</strong>的简称。主要是为了解决服务器与客户端明文发送http请求和响应消息容易被第三方劫持而造成数据泄露这一问题而提出。 https在http的基础上采用<strong>Secure Sockets Layer(SSL)</strong>对消息进行加密处理。因此，https也指HTTP over SSL。</p>
+<h3 id="对称与非对称加密算法"><a href="#对称与非对称加密算法" class="headerlink" title="对称与非对称加密算法"></a>对称与非对称加密算法</h3><h3 id="中间人攻击"><a href="#中间人攻击" class="headerlink" title="中间人攻击"></a>中间人攻击</h3><p>man-in-the-middle attack</p>
+<h3 id="CA证书"><a href="#CA证书" class="headerlink" title="CA证书"></a>CA证书</h3><p>CA是<strong>Certificate Authority（认证授权）</strong>的简称。</p>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/07/19/HTTPS%E8%A7%A3%E6%9E%90/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Quartz" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/09/Quartz/">Quartz</a>
+    </h1>
+  
+
+        
+        <a href="/2021/07/09/Quartz/" class="archive-article-date">
+  	<time datetime="2021-07-09T06:49:28.972Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="Quartz"><a href="#Quartz" class="headerlink" title="Quartz"></a>Quartz</h2><h3 id="1-入门"><a href="#1-入门" class="headerlink" title="1. 入门"></a>1. 入门</h3><h4 id="核心组件"><a href="#核心组件" class="headerlink" title="核心组件"></a>核心组件</h4><ul>
+<li><code>Scheduler</code>：调度器</li>
+<li><code>Job</code>：接口，特定任务需要实现该接口，并实现<code>execute</code>方法。</li>
+<li><code>JobDetail</code>：对某个<code>Job</code>实例的封装</li>
+<li><code>Trigger</code>：<code>Job</code>的触发器，即指定某个任务在什么情况下执行。</li>
+<li><code>JobBuilder</code>：使用<code>build</code>方法返回一个<code>JobDetail</code>对象。使用了设计模式中的<strong>建造者模式</strong>。</li>
+<li><code>TriggerBuilder</code></li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20200331214508248.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dhbmdteDE5OTMzMjg=,size_16,color_FFFFFF,t_70" alt=""></p>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/07/09/Quartz/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-TCP建立连接与释放连接" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/13/TCP%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E4%B8%8E%E9%87%8A%E6%94%BE%E8%BF%9E%E6%8E%A5/">TCP建立连接与释放连接</a>
+    </h1>
+  
+
+        
+        <a href="/2021/06/13/TCP%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E4%B8%8E%E9%87%8A%E6%94%BE%E8%BF%9E%E6%8E%A5/" class="archive-article-date">
+  	<time datetime="2021-06-13T15:06:33.530Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h3 id="TCP建立连接与释放连接"><a href="#TCP建立连接与释放连接" class="headerlink" title="TCP建立连接与释放连接"></a>TCP建立连接与释放连接</h3><h3 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h3><h3 id="为什么要三次，两次或者四次不行吗"><a href="#为什么要三次，两次或者四次不行吗" class="headerlink" title="为什么要三次，两次或者四次不行吗"></a>为什么要三次，两次或者四次不行吗</h3><p>TCP的三次握手是基于可用性、安全性、高效性来设计的。</p>
+<p>首先我们假设A是请求建立连接端，即客户端；B为服务端。</p>
+<p>讨论为什么不是两次。两次的话有以下缺点：</p>
+<ul>
+<li><p>对于二次握手，服务器无法验证客户端真伪，容易造成dDOS攻击。</p>
+</li>
+<li><p>前两次连接<strong>就客户端的初始序列号达成了一致</strong>（A发送SYN包，seq=0；B收到，ACK=1，SYN=1，ack=1，seq=0），即<strong>客户端知道了自己应该发送第几个序列号给服务端</strong>，但服务端无法知道客户端是否接收到了自己发的同步包，即<strong>服务端不知道该发第几个序列号给客户端</strong>。</p>
+</li>
+<li><p>防止旧的重复链接造成混乱，比如旧的syn比新的syn先到达服务端。</p>
+</li>
+</ul>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/06/13/TCP%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E4%B8%8E%E9%87%8A%E6%94%BE%E8%BF%9E%E6%8E%A5/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Java中的自动拆箱装箱" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/13/Java%E4%B8%AD%E7%9A%84%E8%87%AA%E5%8A%A8%E6%8B%86%E7%AE%B1%E8%A3%85%E7%AE%B1/">Java中的自动拆箱装箱</a>
+    </h1>
+  
+
+        
+        <a href="/2021/06/13/Java%E4%B8%AD%E7%9A%84%E8%87%AA%E5%8A%A8%E6%8B%86%E7%AE%B1%E8%A3%85%E7%AE%B1/" class="archive-article-date">
+  	<time datetime="2021-06-13T10:51:38.878Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="Java中的自动拆箱装箱"><a href="#Java中的自动拆箱装箱" class="headerlink" title="Java中的自动拆箱装箱"></a>Java中的自动拆箱装箱</h2><p>Java中共有8种基本数据类型，每一个基本类型都有对应的类。由基本数据类型封装成类的过程叫装箱，反过来叫拆箱。比如<code>Integer-&gt;int</code>和<code>int -&gt;Integer</code>。在Integer这个类中，类加载的时候会在内存中创建一个-128-127的Integer数组，当自动装箱时就会调用<code>Integer.valueOf</code>这个方法，首先会判断数值是否在这个缓存范围内，不在的话会调用<code>new Integer</code>方法在内存中创建对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">       Integer a = <span class="keyword">new</span> Integer(<span class="number">9</span>);</span><br><span class="line">       Integer b = <span class="keyword">new</span> Integer(<span class="number">9</span>);</span><br><span class="line">       Integer c = Integer.valueOf(<span class="number">9</span>);</span><br><span class="line">       Integer f = Integer.valueOf(<span class="number">9</span>);</span><br><span class="line">       Integer d = <span class="number">9</span>;<span class="comment">//调用nteger.valueOf自动装箱</span></span><br><span class="line">       <span class="keyword">int</span> e = <span class="number">9</span>;</span><br><span class="line">        <span class="comment">// 比较地址</span></span><br><span class="line">       System.out.println(a == b);<span class="comment">//false,==比较引用地址，堆内存中new了两个对象地址肯定不一样</span></span><br><span class="line">       System.out.println(a == c);<span class="comment">//false，c是初始缓存中的对象，和new出的地址不一样</span></span><br><span class="line">       System.out.println(c == d);<span class="comment">// true, 会自动装箱，相当于是同一个对象</span></span><br><span class="line">       System.out.println(c == f); <span class="comment">// true 都是缓存中的同一对象</span></span><br><span class="line">       <span class="comment">//注意 e 是基本数据类型 自动拆箱，比较值</span></span><br><span class="line">       System.out.println(c == e); <span class="comment">// true</span></span><br><span class="line">       System.out.println(e == a); <span class="comment">// true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/06/13/Java%E4%B8%AD%E7%9A%84%E8%87%AA%E5%8A%A8%E6%8B%86%E7%AE%B1%E8%A3%85%E7%AE%B1/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Spring学习笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/11/Spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">Spring学习笔记</a>
+    </h1>
+  
+
+        
+        <a href="/2021/06/11/Spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="archive-article-date">
+  	<time datetime="2021-06-11T06:43:30.205Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="Spring学习笔记"><a href="#Spring学习笔记" class="headerlink" title="Spring学习笔记"></a>Spring学习笔记</h2><h3 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h3><p>官方文档地址：<a href="https://docs.spring.io/spring-framework/docs/2.0.x/reference/beans.html#beans-constructor-injection" target="_blank" rel="noopener">https://docs.spring.io/spring-framework/docs/2.0.x/reference/beans.html#beans-constructor-injection</a></p>
+<p>依赖注入（Dependency Injection）指的是某个类中使用到其他类时，我们不直接new，而是可以通过构造器或者setter方法等手段将需要的类作为参数传给使用的类，在合适的时候实现注入。如果没有容器，就需要我们手动去实现何时注入，有了Spring容器之后，容器就会自动帮我们去管理并注入这些依赖项，这就叫控制反转（Inversion of Control），即将bean的控制权交给容器。</p>
+<p>Spring中依赖注入主要有两种方式：</p>
+<ul>
+<li>setter注入、</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleMovieLister</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// the SimpleMovieLister has a dependency on the MovieFinder</span></span><br><span class="line">    <span class="keyword">private</span> MovieFinder movieFinder;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// a setter method so that the Spring container can 'inject' a MovieFinder</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMovieFinder</span><span class="params">(MovieFinder movieFinder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.movieFinder = movieFinder;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// business logic that actually 'uses' the injected MovieFinder is omitted...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>构造器注入（不推荐，容易引发“循环依赖”，导致容器无法启动）</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleMovieLister</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// the SimpleMovieLister has a dependency on the MovieFinder</span></span><br><span class="line">    <span class="keyword">private</span> MovieFinder movieFinder;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// a constructor so that the Spring container can 'inject' a MovieFinder</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SimpleMovieLister</span><span class="params">(MovieFinder movieFinder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.movieFinder = movieFinder;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// business logic that actually 'uses' the injected MovieFinder is omitted...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Bean的作用域和生命周期"><a href="#Bean的作用域和生命周期" class="headerlink" title="Bean的作用域和生命周期"></a>Bean的作用域和生命周期</h3><p>Spring中Bean的作用域可分为：</p>
+<ul>
+<li>singleton（单例，默认）</li>
+<li>prototype</li>
+<li>request</li>
+<li>session</li>
+<li>global session</li>
+</ul>
+<p>singleton时容器在启动过程中就会自动创建bean，prototype时，容器会在使用时才会去创建。</p>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/06/11/Spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Java中的等待唤醒机制" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -408,9 +961,11 @@
 <li><code>@Before</code>前置通知，在切入点方法执行前通知</li>
 <li><code>@AfterReturning</code></li>
 <li><code>@AfterThrowing</code></li>
-<li><code>@After</code>后置最终通知，</li>
+<li><code>@After</code>后置最终(finally)通知，</li>
 <li><code>@Around</code> 环绕通知</li>
 </ul>
+<h3 id="3-各类通知的执行顺序"><a href="#3-各类通知的执行顺序" class="headerlink" title="3. 各类通知的执行顺序"></a>3. 各类通知的执行顺序</h3><p>Around -&gt; Before -&gt; proceed（目标方法执行） -&gt; AfterReturning/AfterThrowing -&gt; After -&gt; Around</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Around beginning...</span><br><span class="line">Before Advice...</span><br><span class="line">Method Running...</span><br><span class="line">After Returning Advice...<span class="number">1</span></span><br><span class="line">After(<span class="keyword">finally</span>) Advice...</span><br><span class="line">Around endding...<span class="number">1</span>(当执行的方法抛出异常，该通知不会出现)</span><br></pre></td></tr></table></figure>
 
           
         
@@ -434,659 +989,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2021/06/01/Spring%20AOP%E7%BC%96%E7%A8%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-B树与B+树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/31/B%E6%A0%91%E4%B8%8EB+%E6%A0%91/">B树与B+树</a>
-    </h1>
-  
-
-        
-        <a href="/2021/05/31/B%E6%A0%91%E4%B8%8EB+%E6%A0%91/" class="archive-article-date">
-  	<time datetime="2021-05-31T12:42:10.275Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          
-            <h2 id="B树与B-树"><a href="#B树与B-树" class="headerlink" title="B树与B+树"></a>B树与B+树</h2><h3 id="1-B树"><a href="#1-B树" class="headerlink" title="1. B树"></a>1. B树</h3><p>B树又成多路平衡查找树，B树中所有节点的孩子节点数的最大值成为B树的阶（order）。</p>
-<p>一棵m阶B树的组成：<strong>根节点、内部节点、叶子节点</strong></p>
-<p>一棵m阶B树，或为空树，或为满足如下特性的m叉树：</p>
-<ul>
-<li><p>树中每个节点至多有m个孩子，即最多含有m+1个key，每个节点的key以非降序存放。根节点至少有两个孩子；</p>
-</li>
-<li><p>除根节点外的所有非叶子节点至少含有<code>ceil(m/2)</code>个孩子</p>
-</li>
-<li><p>所有的叶子节点位于同一层，不包含孩子</p>
-</li>
-</ul>
-<p>m的阶数越高，树的高度越小</p>
-<p><img src="http://openfile.shixinke.com/images/posts/2018/12/3a28b4a60f3664e95a40a8e87e1ee13d.png" alt=""></p>
-<h3 id="2-B-树"><a href="#2-B-树" class="headerlink" title="2. B+树"></a>2. B+树</h3><p><img src="http://openfile.shixinke.com/images/posts/2018/12/c33703a77cec9fd57cfebe61143a60d6.png" alt=""></p>
-<h3 id="3-区别与联系"><a href="#3-区别与联系" class="headerlink" title="3. 区别与联系"></a>3. 区别与联系</h3><ul>
-<li><p>B+树的内部节点仅存储数据对应的key不存储具体的数据，而完整数据存储于叶子节点中（或者说叶子节点存储了指向完整数据的具体地址），而B树内部节点和叶子节点存储了数据的key和完整的数据，当数据量特别大可能会很占内存。</p>
-</li>
-<li><p>B+树的叶子节点用链表进行串联。</p>
-</li>
-<li><p>B树的key值在树中是唯一的，而B+树允许重复。</p>
-</li>
-<li><p>在添加、删除节点上。B+树更加高效；在B树中搜索时，可能到不了叶子节点，即在中间节点就找到了目标，而B+树中一定会搜索到叶子节点。</p>
-</li>
-</ul>
-
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/05/31/B%E6%A0%91%E4%B8%8EB+%E6%A0%91/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-HashMap源码解读" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/29/HashMap%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/">HashMap源码解读</a>
-    </h1>
-  
-
-        
-        <a href="/2021/05/29/HashMap%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" class="archive-article-date">
-  	<time datetime="2021-05-29T12:29:31.251Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          
-            <h2 id="HashMap源码解读"><a href="#HashMap源码解读" class="headerlink" title="HashMap源码解读"></a>HashMap源码解读</h2><h3 id="1-HashMap的数据结构"><a href="#1-HashMap的数据结构" class="headerlink" title="1. HashMap的数据结构"></a>1. HashMap的数据结构</h3><p>总的来说hashmap中用到了<strong>链表</strong>、<strong>数组</strong>、<strong>红黑树</strong>这三种数据结构。不同hash值的key放在对应的数组中，当存在hash冲突时，将相同hash值的key用链表保存起来，当链表长度以及所有k-v对的个数达到阈值时，链表就会“树化”为红黑树，以提高查找效率。</p>
-<h3 id="2-HashMap的扩容和负载因子"><a href="#2-HashMap的扩容和负载因子" class="headerlink" title="2. HashMap的扩容和负载因子"></a>2. HashMap的扩容和负载因子</h3><p>区分两个概念：<code>capacity</code>、<code>size</code></p>
-<ul>
-<li><code>size</code>：指的是map中不同key-value键值对的总个数，这个字段会暴露给我们。</li>
-<li><code>capacity</code>：指的是map中buckets的个数，即table数组的长度</li>
-</ul>
-<p>当我们在初始化一个map的时候，默认负载因子为<code>0.75f</code>，当size达到<code>0.75 * capacity</code>时，就会进行扩容，<strong>map的扩容是2倍扩容</strong>。</p>
-<p>table的长度始终都是2的指数次幂，当我们指定的初始化长度不是2的次幂时，会调用<code>tableSizeFor</code>方法自动找到刚好大于该长度的2的次幂的数。默认初始化时table的长度是16。</p>
-<h3 id="3-HashMap中的hash方法"><a href="#3-HashMap中的hash方法" class="headerlink" title="3. HashMap中的hash方法"></a>3. HashMap中的hash方法</h3><h3 id="4-HashMap的put和get方法"><a href="#4-HashMap的put和get方法" class="headerlink" title="4. HashMap的put和get方法"></a>4. HashMap的put和get方法</h3><h3 id=""><a href="#" class="headerlink" title=" "></a> </h3>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/05/29/HashMap%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-数据库的三范式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%89%E8%8C%83%E5%BC%8F/">数据库的三范式</a>
-    </h1>
-  
-
-        
-        <a href="/2021/05/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%89%E8%8C%83%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2021-05-27T03:39:37.633Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          
-            <h2 id="数据库的三范式"><a href="#数据库的三范式" class="headerlink" title="数据库的三范式"></a>数据库的三范式</h2><h3 id="1-第一范式"><a href="#1-第一范式" class="headerlink" title="1. 第一范式"></a>1. 第一范式</h3><p>1NF是对属性的<strong><code>原子性</code></strong>，要求属性具有原子性，不可再分解</p>
-<h3 id="2-第二范式"><a href="#2-第二范式" class="headerlink" title="2. 第二范式"></a>2. 第二范式</h3><p>属性完全依赖于主键，即不存在部份依赖、</p>
-<h3 id="3-第三范式"><a href="#3-第三范式" class="headerlink" title="3. 第三范式"></a>3. 第三范式</h3><p><strong>属性不依赖于其它非主属性</strong>，即不存在传递依赖</p>
-
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/05/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%89%E8%8C%83%E5%BC%8F/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Python一行代码实现滑动窗口" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/26/Python%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/">Python一行代码实现滑动窗口</a>
-    </h1>
-  
-
-        
-        <a href="/2021/05/26/Python%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" class="archive-article-date">
-  	<time datetime="2021-05-26T12:54:36.160Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="Python一行代码实现滑动窗口"><a href="#Python一行代码实现滑动窗口" class="headerlink" title="Python一行代码实现滑动窗口"></a>Python一行代码实现滑动窗口</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据的加载</span></span><br><span class="line">data = np.loads(path)</span><br><span class="line">window_size = <span class="number">12</span></span><br><span class="line"><span class="comment"># 非常优雅的代码</span></span><br><span class="line">split_data = data[np.arange(window_size)[<span class="literal">None</span>, :] + np.arange(data.shape[<span class="number">0</span>]-window_size)[:, <span class="literal">None</span>]]</span><br></pre></td></tr></table></figure>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/05/26/Python%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-MySQL数据库总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/20/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%BB%E7%BB%93/">MySQL数据库总结</a>
-    </h1>
-  
-
-        
-        <a href="/2021/05/20/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%BB%E7%BB%93/" class="archive-article-date">
-  	<time datetime="2021-05-20T12:18:58.917Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          
-            <h2 id="MySQL数据库总结"><a href="#MySQL数据库总结" class="headerlink" title="MySQL数据库总结"></a>MySQL数据库总结</h2><p>版本：8.0</p>
-<p>查看会话当前使用的哪个数据库：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select database();</span><br></pre></td></tr></table></figure>
-<p>设置关闭自动提交事务：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set autocommit &#x3D; 0;</span><br></pre></td></tr></table></figure>
-<h3 id="1-事务的隔离级别"><a href="#1-事务的隔离级别" class="headerlink" title="1. 事务的隔离级别"></a>1. 事务的隔离级别</h3><p>隔离级别总共有四种：</p>
-<ol>
-<li>读未提交（Read-Uncommited）</li>
-<li>读提交（Read-Commited）解决“脏读”</li>
-<li>可重复读（Repeatable-Read）解决“不可重复读”</li>
-<li>串行化（Serializable）解决“幻读”</li>
-</ol>
-<p>查看当前会话事务的隔离级别：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select @@transaction_isolation;</span><br></pre></td></tr></table></figure>
-<p>查看数据库的隔离级别：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select @@global.transaction_isolation;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select @@global.transaction_isolation;</span><br><span class="line">+--------------------------------+</span><br><span class="line">| @@global.transaction_isolation |</span><br><span class="line">+--------------------------------+</span><br><span class="line">| REPEATABLE-READ                |</span><br><span class="line">+--------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
-<p>可见innoDB默认的是可重复读这一隔离级别。可重复读可以避免”不可重读“（innoDB在PR级别通过MVCC解决了幻读这一现象）</p>
-<h4 id="排他锁，共享锁"><a href="#排他锁，共享锁" class="headerlink" title="排他锁，共享锁"></a>排他锁，共享锁</h4><p>排它锁（Exclusive），又称为X 锁，写锁。</p>
-<p>共享锁（Shared），又称为S 锁，读锁。</p>
-<p>读写锁之间有以下的关系：</p>
-<ul>
-<li>一个事务对数据对象O（多行，或者表等等）加了S锁，可以对O进行读取操作，但是不能进行更新（update、delete）操作。加锁期间其它事务能对O加S锁，但是不能加 X 锁。</li>
-<li>一个事务对数据对象 O 加了 X 锁，就可以对 O 进行读取和更新。加锁期间其它事务不能对 O 加任何锁。</li>
-</ul>
-<blockquote>
-<p> 读写锁之间的关系可以概括为：允许多个事务一起读，读写互斥！</p>
-</blockquote>
-<p>但加行锁并不可以解决”幻读“这一现象，因为行锁无法对后insert的数据加锁。幻读指的是当某个事务在读取某个范围内的记录时，另外一个事务又在该范围内插入了新行，当之前的事务再次读取该范围的记录时，会产生幻行。解决幻读要么序列化，要么加表锁。</p>
-<p>首先了解两个概念：</p>
-<ul>
-<li>一致读：consistent read 也叫快照读，当事务开始时会给数据“拍个照”，只要本事务不做update、insert操作，无论其他事务怎样提交，在本事务结束前select查到的内容不会改变。</li>
-<li>当前读：<code>select * from table_1 for update</code>读取数据库最新的内容</li>
-</ul>
-<p>Mysql中主要通过MVCC来保证<strong>可重复读</strong>，和<strong>select级别的幻读</strong>。注意：当其他事务进行提交后，本事务要对提交的数据进行修改时，会使用当前读，即update之前先select数据库最新的内容，这就会导致幻读。所以说只保证select级别的幻读，看以下例子：</p>
-<ul>
-<li>A、B事务同时开始</li>
-<li>A事务查询table中的记录，得到一条记录；B事务插入table一条记录，id=2，B事务提交</li>
-<li>A事务当前update id为2的数据，A事务会先查询table中的所有数据，再进行更新。之后查询table中的记录，发现有了两条记录。</li>
-<li>注意，当不进行更新操作，即使其他事务插入数据并提交，快照读可以保证可重复读，加行锁不可以。</li>
-</ul>
-<p>多版本并发控制：multi-versioned concurrency control，是MySQL中基于<strong>乐观锁</strong>理论实现隔离级别的方式，用于实现读已提交和可重复读取隔离级别的实现。在MySQL中，会在表中每一条数据后面添加两个字段：<strong>创建版本号</strong>：创建一行数据时，将当前系统版本号作为创建版本号赋值；<strong>删除版本号</strong>：删除一行数据时，将当前系统版本号作为删除版本号赋值。</p>
-<h3 id="2-MySQL索引"><a href="#2-MySQL索引" class="headerlink" title="2. MySQL索引"></a>2. MySQL索引</h3><h4 id="2-1-InnoDB引擎"><a href="#2-1-InnoDB引擎" class="headerlink" title="2.1 InnoDB引擎"></a>2.1 InnoDB引擎</h4><p>聚集索引，B+树</p>
-<p><img src="http://openfile.shixinke.com/images/posts/2018/12/22bb9577e5da9c0642e9a5b8c4d429dd.png" alt=""></p>
-<h4 id="2-3-MyISAM引擎"><a href="#2-3-MyISAM引擎" class="headerlink" title="2.3 MyISAM引擎"></a>2.3 MyISAM引擎</h4><p>叶节点并不存储数据，而是存储指向数据的指针。</p>
-<p>非聚集索引</p>
-<p><img src="http://openfile.shixinke.com/images/posts/2018/12/5d28d9bb9752b1bc6727fa5859ebe487.png" alt=""></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>区别</th>
-<th>Innodb</th>
-<th>Myisam</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>事务</td>
-<td>安全</td>
-<td>非安全</td>
-</tr>
-<tr>
-<td>锁</td>
-<td>行级</td>
-<td>表级</td>
-</tr>
-<tr>
-<td>效率</td>
-<td>低</td>
-<td>高</td>
-</tr>
-<tr>
-<td>索引</td>
-<td>聚集索引</td>
-<td>非聚集索引</td>
-</tr>
-<tr>
-<td>外键</td>
-<td>支持</td>
-<td>不支持</td>
-</tr>
-<tr>
-<td>使用环境</td>
-<td>需要事务，大量增，改</td>
-<td>多查询，不需要事务</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="附：在Ubuntu上安装MySQL8-0"><a href="#附：在Ubuntu上安装MySQL8-0" class="headerlink" title="附：在Ubuntu上安装MySQL8.0"></a>附：在Ubuntu上安装MySQL8.0</h3><p>请参考：<a href="https://computingforgeeks.com/how-to-install-mysql-8-on-ubuntu/" target="_blank" rel="noopener">https://computingforgeeks.com/how-to-install-mysql-8-on-ubuntu/</a></p>
-
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/05/20/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%BB%E7%BB%93/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-ArrayList源码分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/19/ArrayList%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">ArrayList源码分析</a>
-    </h1>
-  
-
-        
-        <a href="/2021/05/19/ArrayList%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2021-05-19T03:11:23.646Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          
-            <h2 id="ArrayList源码分析"><a href="#ArrayList源码分析" class="headerlink" title="ArrayList源码分析"></a>ArrayList源码分析</h2><h3 id="1-扩容"><a href="#1-扩容" class="headerlink" title="1. 扩容"></a>1. 扩容</h3><p>Arraylist的初始容量为10，一旦达到，将会按照原容量的50%进行扩容，即<code>elementData</code>数组的长度变为原来的1.5倍。</p>
-<h3 id="2-添加元素"><a href="#2-添加元素" class="headerlink" title="2.添加元素"></a>2.添加元素</h3><p>我们来看一下<code>add(int index, Object e)</code>这个方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Inserts the specified element at the specified position in this</span></span><br><span class="line"><span class="comment">     * list. Shifts the element currently at that position (if any) and</span></span><br><span class="line"><span class="comment">     * any subsequent elements to the right (adds one to their indices).</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> index index at which the specified element is to be inserted</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> element element to be inserted</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IndexOutOfBoundsException &#123;<span class="doctag">@inheritDoc</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> index, E element)</span> </span>&#123;</span><br><span class="line">    rangeCheckForAdd(index);</span><br><span class="line">    modCount++;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> s;</span><br><span class="line">    Object[] elementData;</span><br><span class="line">    <span class="keyword">if</span> ((s = size) == (elementData = <span class="keyword">this</span>.elementData).length)</span><br><span class="line">        elementData = grow();</span><br><span class="line">    System.arraycopy(elementData, index,</span><br><span class="line">                     elementData, index + <span class="number">1</span>,</span><br><span class="line">                     s - index);</span><br><span class="line">    elementData[index] = element;</span><br><span class="line">    size = s + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到，使用了<code>System.arraycopy</code>方法，源数组和目标数组都是<code>elementData</code>，将<code>index</code>及其之后的元素复制到<code>index+1</code>的位置。</p>
-<h3 id="3-序列化"><a href="#3-序列化" class="headerlink" title="3. 序列化"></a>3. 序列化</h3><p>​         我们发现源码中用于保存元素的<code>elementData</code>的数组是被<code>transient</code>修饰的，这意味着他将不被序列化。那ArrayList是如何序列化的呢？我们可以发现，ArrayList自己实现了两个方法：<code>readObject</code>、<code>writeObject</code>用于自定义序列化，避免采用Java原生的序列化。那为什么要这么做呢？在<code>writeObject</code>方法中，可以看到只是将<code>size</code>范围内的元素进行序列化，这是由于前面讲过的扩容机制，导致<code>elementData</code>的长度大于<code>size</code>，<code>size</code>索引之后都不保存具体元素值（或者说只为数组初始化的值），但确已经申请了内存空间，如果全部序列化，那么将会浪费大量空间来存储这些无用的信息。我们可以通过下面一个例子来具体演示。</p>
-<p>​         我们可以看到，一个长度为20000的数组只保存了5个元素，如果直接将这个数组序列化，大小是79kb，若只将5个元素序列化，序列化后的文件大小仅为1kb。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SerDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] nums = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">20000</span>];</span><br><span class="line">        <span class="keyword">int</span> size = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)&#123;</span><br><span class="line">            nums[i] = i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="comment">// 将数组全部初始化</span></span><br><span class="line">            <span class="comment">// FileOutputStream fs = new FileOutputStream("E:\\num1.ser");</span></span><br><span class="line">            <span class="comment">// ObjectOutputStream os = new ObjectOutputStream(fs);</span></span><br><span class="line">            <span class="comment">// os.writeObject(nums);</span></span><br><span class="line">            <span class="comment">// os.close();</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 只将非空数组初始化</span></span><br><span class="line">            <span class="keyword">int</span>[] ret = <span class="keyword">new</span> <span class="keyword">int</span>[size];</span><br><span class="line">            System.arraycopy(nums, <span class="number">0</span>, ret, <span class="number">0</span>, size);</span><br><span class="line">            FileOutputStream fs = <span class="keyword">new</span> FileOutputStream(<span class="string">"E:\\num2.ser"</span>);</span><br><span class="line">            ObjectOutputStream os = <span class="keyword">new</span> ObjectOutputStream(fs);</span><br><span class="line">            os.writeObject(ret);</span><br><span class="line">            os.close();</span><br><span class="line"></span><br><span class="line">        &#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="C:\Users\zhang\AppData\Roaming\Typora\typora-user-images\image-20210519110511250.png" alt="image-20210519110511250"></p>
-
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/05/19/ArrayList%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-如何将 int[] 转换为 List" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/15/%E5%A6%82%E4%BD%95%E5%B0%86%20int%5B%5D%20%E8%BD%AC%E6%8D%A2%E4%B8%BA%20List/">如何将 int[] 转换为 List</a>
-    </h1>
-  
-
-        
-        <a href="/2021/05/15/%E5%A6%82%E4%BD%95%E5%B0%86%20int%5B%5D%20%E8%BD%AC%E6%8D%A2%E4%B8%BA%20List/" class="archive-article-date">
-  	<time datetime="2021-05-15T09:47:45.081Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          
-            <h2 id="如何将-int-转换为-List"><a href="#如何将-int-转换为-List" class="headerlink" title="如何将 int[] 转换为 List"></a>如何将 int[] 转换为 List</h2><p>在Java 8及以后版本中，可以这么实现：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> java.util.stream.Collectors;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] nums = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line">        </span><br><span class="line">        List&lt;Integer&gt; lists = Arrays.stream(nums).boxed().collect(Collectors.toList());</span><br><span class="line">        </span><br><span class="line">        System.out.println(lists);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/05/15/%E5%A6%82%E4%BD%95%E5%B0%86%20int%5B%5D%20%E8%BD%AC%E6%8D%A2%E4%B8%BA%20List/">展开全文 >></a>
         </p>
       
 

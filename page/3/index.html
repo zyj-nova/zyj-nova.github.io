@@ -205,6 +205,582 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-机器学习常见模型优缺点对比" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B8%B8%E8%A7%81%E6%A8%A1%E5%9E%8B%E4%BC%98%E7%BC%BA%E7%82%B9%E5%AF%B9%E6%AF%94/">机器学习常见模型优缺点对比</a>
+    </h1>
+  
+
+        
+        <a href="/2021/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B8%B8%E8%A7%81%E6%A8%A1%E5%9E%8B%E4%BC%98%E7%BC%BA%E7%82%B9%E5%AF%B9%E6%AF%94/" class="archive-article-date">
+  	<time datetime="2021-03-26T13:08:21.388Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <a id="more"></a>
+<h2 id="机器学习常见模型优缺点对比"><a href="#机器学习常见模型优缺点对比" class="headerlink" title="机器学习常见模型优缺点对比"></a>机器学习常见模型优缺点对比</h2><!--more-->
+<h3 id="1-支持向量机与LR"><a href="#1-支持向量机与LR" class="headerlink" title="1. 支持向量机与LR"></a>1. 支持向量机与LR</h3><h4 id="1-1-支持向量机优点分析"><a href="#1-1-支持向量机优点分析" class="headerlink" title="1.1 支持向量机优点分析"></a>1.1 支持向量机优点分析</h4><ul>
+<li>有着完备的数学统计基础</li>
+<li>决策超平面只与支持向量有关，且得到的决策超平面是最大化间隔实现的，鲁棒性较高</li>
+</ul>
+<h4 id="1-2-支持向量机缺点分析"><a href="#1-2-支持向量机缺点分析" class="headerlink" title="1.2 支持向量机缺点分析"></a>1.2 支持向量机缺点分析</h4><ul>
+<li>当数据量较大维度较高时，训练缓慢</li>
+<li>面对多分类问题，支持向量机不能够很好的处理</li>
+</ul>
+<h4 id="1-3-LR优点分析"><a href="#1-3-LR优点分析" class="headerlink" title="1.3 LR优点分析"></a>1.3 LR优点分析</h4><ul>
+<li>易于训练</li>
+</ul>
+<h4 id="1-4-LR缺点分析"><a href="#1-4-LR缺点分析" class="headerlink" title="1.4 LR缺点分析"></a>1.4 LR缺点分析</h4><ul>
+<li>只能处理非线性数据</li>
+<li>对多重共线性数据效果较差</li>
+</ul>
+<h3 id="2-k均值聚类与DBSCAN"><a href="#2-k均值聚类与DBSCAN" class="headerlink" title="2. k均值聚类与DBSCAN"></a>2. k均值聚类与DBSCAN</h3><h4 id="2-1-k均值聚类的优缺点分析"><a href="#2-1-k均值聚类的优缺点分析" class="headerlink" title="2.1 k均值聚类的优缺点分析"></a>2.1 k均值聚类的优缺点分析</h4><p>​        <strong>优点</strong>：</p>
+<ul>
+<li>直观简单，易于实现</li>
+<li>收敛速度较快</li>
+</ul>
+<p>​        <strong>缺点</strong>：</p>
+<ul>
+<li>容易受到异常值影响</li>
+<li>最终聚类结果容易受到初始聚类中心的选择的影响</li>
+<li>K的选择需要不断尝试</li>
+<li>最终只能收敛到局部最优值</li>
+<li>只适用于球状（凸集）数据</li>
+</ul>
+<h4 id="2-2-DBSCAN优缺点分析"><a href="#2-2-DBSCAN优缺点分析" class="headerlink" title="2.2 DBSCAN优缺点分析"></a>2.2 DBSCAN优缺点分析</h4><p>​    <strong>优点</strong>：</p>
+<ul>
+<li>对异常值不敏感</li>
+<li>可以发现任意形状的类簇</li>
+<li>无需指定k的数量</li>
+</ul>
+<p>​    <strong>缺点</strong>：</p>
+<ul>
+<li>当类与类之间的间隔较大或密度不均匀的时候，效果不太好</li>
+<li>当数据较大时，时间复杂度较高</li>
+</ul>
+<h3 id="3-随机森林与决策树"><a href="#3-随机森林与决策树" class="headerlink" title="3. 随机森林与决策树"></a>3. 随机森林与决策树</h3><h4 id="3-1-随机森林的优点"><a href="#3-1-随机森林的优点" class="headerlink" title="3.1 随机森林的优点"></a>3.1 随机森林的优点</h4><ul>
+<li>对于大部分的数据，它的分类效果比较好。</li>
+<li>能处理高维特征，并且不用做特征选择，不容易产生过拟合</li>
+<li>容易实现并行化计算</li>
+<li>对数据集的适应能力强：既能处理离散型数据，也能处理连续型数据，数据集无需规范化。</li>
+<li>即使有很大部分数据遗失，仍可以维持高准确度</li>
+</ul>
+<h4 id="3-2-随机森林的缺点"><a href="#3-2-随机森林的缺点" class="headerlink" title="3.2 随机森林的缺点"></a>3.2 随机森林的缺点</h4><ul>
+<li>训练相比决策树而言慢</li>
+<li>在某些噪音比较大的样本集上，RF的模型容易陷入过拟合</li>
+<li>对于许多统计建模者来说，随机森林给人的感觉就像一个黑盒子，你无法控制模型内部的运行。只能在不同的参数和随机种子之间进行尝试。</li>
+</ul>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B8%B8%E8%A7%81%E6%A8%A1%E5%9E%8B%E4%BC%98%E7%BC%BA%E7%82%B9%E5%AF%B9%E6%AF%94/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-并查集" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/20/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a>
+    </h1>
+  
+
+        
+        <a href="/2021/01/20/%E5%B9%B6%E6%9F%A5%E9%9B%86/" class="archive-article-date">
+  	<time datetime="2021-01-19T16:04:53.708Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          		<h2 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h2><h3 id="1-并查集介绍"><a href="#1-并查集介绍" class="headerlink" title="1. 并查集介绍"></a>1. 并查集介绍</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] data = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(data[x] == x)&#123;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        data[x] = find(data[x]);</span><br><span class="line">        <span class="keyword">return</span> data[x];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> voif <span class="title">merge</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = find(a);</span><br><span class="line">    <span class="keyword">int</span> y = find(b);</span><br><span class="line">    <span class="keyword">if</span>(x != y)&#123;</span><br><span class="line">        data[x] = y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/01/20/%E5%B9%B6%E6%9F%A5%E9%9B%86/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Hadoop 完全分布式集群配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/20/Hadoop%20%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/">Hadoop 完全分布式集群配置</a>
+    </h1>
+  
+
+        
+        <a href="/2021/01/20/Hadoop%20%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/" class="archive-article-date">
+  	<time datetime="2021-01-19T16:03:31.685Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          		<h2 id="Hadoop-完全分布式集群配置"><a href="#Hadoop-完全分布式集群配置" class="headerlink" title="Hadoop 完全分布式集群配置"></a>Hadoop 完全分布式集群配置</h2>
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/大数据//" class="article-tag-list-link color4">大数据</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/01/20/Hadoop%20%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-重构字符串" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/02/%E9%87%8D%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/">重构字符串</a>
+    </h1>
+  
+
+        
+        <a href="/2021/01/02/%E9%87%8D%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="archive-article-date">
+  	<time datetime="2021-01-02T01:54:38.008Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          		<h3 id="重构字符串（日常刷题记录）"><a href="#重构字符串（日常刷题记录）" class="headerlink" title="重构字符串（日常刷题记录）"></a>重构字符串（日常刷题记录）</h3><p>题目链接：<a href="https://leetcode-cn.com/problems/reorganize-string/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/reorganize-string/</a></p>
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">贪心算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/日常刷题记录//" class="article-tag-list-link color2">日常刷题记录</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/01/02/%E9%87%8D%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-造成Java Out Of Memory原因总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/02/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/">造成Java Out Of Memory原因总结</a>
+    </h1>
+  
+
+        
+        <a href="/2021/01/02/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" class="archive-article-date">
+  	<time datetime="2021-01-02T01:54:38.008Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          		<h2 id="造成-Java-Out-Of-Memory-原因总结"><a href="#造成-Java-Out-Of-Memory-原因总结" class="headerlink" title="造成 Java Out Of Memory 原因总结"></a>造成 Java Out Of Memory 原因总结</h2><p>总结起来有 6 点原因，以下分点阐述。</p>
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/01/02/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-链表" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/02/%E9%93%BE%E8%A1%A8/">链表</a>
+    </h1>
+  
+
+        
+        <a href="/2021/01/02/%E9%93%BE%E8%A1%A8/" class="archive-article-date">
+  	<time datetime="2021-01-02T01:54:38.008Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          		<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2>
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/01/02/%E9%93%BE%E8%A1%A8/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-降维方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/02/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/">降维方法</a>
+    </h1>
+  
+
+        
+        <a href="/2021/01/02/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/" class="archive-article-date">
+  	<time datetime="2021-01-02T01:54:38.008Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          		<h2 id="降维方法"><a href="#降维方法" class="headerlink" title="降维方法"></a>降维方法</h2>
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/01/02/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-聚类" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -249,79 +825,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2021/01/02/%E8%81%9A%E7%B1%BB/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-误差逆传播算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/02/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/">误差逆传播算法</a>
-    </h1>
-  
-
-        
-        <a href="/2021/01/02/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.992Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="误差逆传播算法"><a href="#误差逆传播算法" class="headerlink" title="误差逆传播算法"></a>误差逆传播算法</h2>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/深度学习//" class="article-tag-list-link color5">深度学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/02/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/">展开全文 >></a>
         </p>
       
 
@@ -424,20 +927,20 @@
 
 
   
-    <article id="post-树状数组" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-误差逆传播算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/02/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/">树状数组</a>
+      <a class="article-title" href="/2021/01/02/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/">误差逆传播算法</a>
     </h1>
   
 
         
-        <a href="/2021/01/02/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.977Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
+        <a href="/2021/01/02/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/" class="archive-article-date">
+  	<time datetime="2021-01-02T01:54:37.992Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
 </a>
         
       </header>
@@ -445,154 +948,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         
-          		<h2 id="树状数组"><a href="#树状数组" class="headerlink" title="树状数组"></a>树状数组</h2><p>树状数组（Binary Indexed Tree/Fenwick Tree）。</p>
-<p>视频：<a href="https://www.bilibili.com/video/BV1Hz411v7XC?p=2" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1Hz411v7XC?p=2</a></p>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/02/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-浅谈逻辑斯蒂回归模型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/02/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/">浅谈逻辑斯蒂回归模型</a>
-    </h1>
-  
-
-        
-        <a href="/2021/01/02/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.977Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="浅谈逻辑斯蒂回归模型"><a href="#浅谈逻辑斯蒂回归模型" class="headerlink" title="浅谈逻辑斯蒂回归模型"></a>浅谈逻辑斯蒂回归模型</h2>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/02/%E6%B5%85%E8%B0%88%E9%80%BB%E8%BE%91%E6%96%AF%E8%92%82%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-生成对抗网络" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/02/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/">生成对抗网络</a>
-    </h1>
-  
-
-        
-        <a href="/2021/01/02/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.977Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="生成对抗网络（GAN）"><a href="#生成对抗网络（GAN）" class="headerlink" title="生成对抗网络（GAN）"></a>生成对抗网络（GAN）</h2>
+          		<h2 id="误差逆传播算法"><a href="#误差逆传播算法" class="headerlink" title="误差逆传播算法"></a>误差逆传播算法</h2>
           
         
     </div>
@@ -614,299 +970,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/02/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-神奇的矩阵乘法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/02/%E7%A5%9E%E5%A5%87%E7%9A%84%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/">神奇的矩阵乘法</a>
-    </h1>
-  
-
-        
-        <a href="/2021/01/02/%E7%A5%9E%E5%A5%87%E7%9A%84%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.977Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="神奇的矩阵乘法"><a href="#神奇的矩阵乘法" class="headerlink" title="神奇的矩阵乘法"></a>神奇的矩阵乘法</h2>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/02/%E7%A5%9E%E5%A5%87%E7%9A%84%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-机器视觉基础Lecture 2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%202/">机器视觉基础Lecture 2</a>
-    </h1>
-  
-
-        
-        <a href="/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%202/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.961Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="机器视觉基础-Lecture-2"><a href="#机器视觉基础-Lecture-2" class="headerlink" title="机器视觉基础 Lecture 2"></a>机器视觉基础 Lecture 2</h2>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器视觉基础//" class="article-tag-list-link color2">机器视觉基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%202/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-机器视觉基础Lecture 3局部特征" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%203%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/">机器视觉基础Lecture 3局部特征</a>
-    </h1>
-  
-
-        
-        <a href="/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%203%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.961Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h3 id="Lecture-3-局部特征"><a href="#Lecture-3-局部特征" class="headerlink" title="Lecture 3 局部特征"></a>Lecture 3 局部特征</h3>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器视觉基础//" class="article-tag-list-link color2">机器视觉基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture%203%E5%B1%80%E9%83%A8%E7%89%B9%E5%BE%81/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-机器视觉基础Lecture1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture1/">机器视觉基础Lecture1</a>
-    </h1>
-  
-
-        
-        <a href="/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture1/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.961Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="机器视觉基础-Lecture-1"><a href="#机器视觉基础-Lecture-1" class="headerlink" title="机器视觉基础 Lecture 1"></a>机器视觉基础 Lecture 1</h2>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器视觉基础//" class="article-tag-list-link color2">机器视觉基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/02/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89%E5%9F%BA%E7%A1%80Lecture1/">展开全文 >></a>
+          <a class="article-more-a" href="/2021/01/02/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95/">展开全文 >></a>
         </p>
       
 

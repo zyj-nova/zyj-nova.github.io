@@ -205,6 +205,665 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-B树与B+树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/05/31/B%E6%A0%91%E4%B8%8EB+%E6%A0%91/">B树与B+树</a>
+    </h1>
+  
+
+        
+        <a href="/2021/05/31/B%E6%A0%91%E4%B8%8EB+%E6%A0%91/" class="archive-article-date">
+  	<time datetime="2021-05-31T12:42:10.275Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-31</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="B树与B-树"><a href="#B树与B-树" class="headerlink" title="B树与B+树"></a>B树与B+树</h2><h3 id="1-B树"><a href="#1-B树" class="headerlink" title="1. B树"></a>1. B树</h3><p>B树又成多路平衡查找树，B树中所有节点的孩子节点数的最大值成为B树的阶（order）。</p>
+<p>一棵m阶B树的组成：<strong>根节点、内部节点、叶子节点</strong></p>
+<p>一棵m阶B树，或为空树，或为满足如下特性的m叉树：</p>
+<ul>
+<li><p>树中每个节点至多有m个孩子，即最多含有m+1个key，每个节点的key以非降序存放。根节点至少有两个孩子；</p>
+</li>
+<li><p>除根节点外的所有非叶子节点至少含有<code>ceil(m/2)</code>个孩子</p>
+</li>
+<li><p>所有的叶子节点位于同一层，不包含孩子</p>
+</li>
+</ul>
+<p>m的阶数越高，树的高度越小</p>
+<p><img src="http://openfile.shixinke.com/images/posts/2018/12/3a28b4a60f3664e95a40a8e87e1ee13d.png" alt=""></p>
+<h3 id="2-B-树"><a href="#2-B-树" class="headerlink" title="2. B+树"></a>2. B+树</h3><p><img src="http://openfile.shixinke.com/images/posts/2018/12/c33703a77cec9fd57cfebe61143a60d6.png" alt=""></p>
+<p>B+树的叶子节点包含了所有的key。</p>
+<h3 id="3-区别与联系"><a href="#3-区别与联系" class="headerlink" title="3. 区别与联系"></a>3. 区别与联系</h3><ul>
+<li><p>B+树的内部节点仅存储数据对应的key不存储具体的数据，而完整数据存储于叶子节点中（或者说叶子节点存储了指向完整数据的具体地址），而B树内部节点和叶子节点存储了数据的key和完整的数据，当数据量特别大可能会很占内存</p>
+</li>
+<li><p>B+树的叶子节点包含了是有序的且用链表进行串联。</p>
+</li>
+<li><p>B树的key值在树中是唯一的，而B+树允许重复。</p>
+</li>
+<li><p>在添加、删除节点上。B+树更加高效；在B树中搜索时，可能到不了叶子节点，即在中间节点就找到了目标，而B+树中一定会搜索到叶子节点。</p>
+</li>
+</ul>
+<p><strong>MySQL</strong>为何选择B+树而不是B树作为索引？</p>
+<ul>
+<li>B+树索引非叶子节点不存储具体数据，这就使得索引文件“体积”更小，进而在索引查询时能够减少磁盘IO次数，提升查询效率。</li>
+<li>B+树叶子节点包含了所有的key且用链表进行有序连接，方便MySQL进行全表扫描和范围查询。</li>
+</ul>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/05/31/B%E6%A0%91%E4%B8%8EB+%E6%A0%91/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-HashMap源码解读" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/05/29/HashMap%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/">HashMap源码解读</a>
+    </h1>
+  
+
+        
+        <a href="/2021/05/29/HashMap%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" class="archive-article-date">
+  	<time datetime="2021-05-29T12:29:31.251Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="HashMap源码解读"><a href="#HashMap源码解读" class="headerlink" title="HashMap源码解读"></a>HashMap源码解读</h2><h3 id="1-HashMap的数据结构"><a href="#1-HashMap的数据结构" class="headerlink" title="1. HashMap的数据结构"></a>1. HashMap的数据结构</h3><p>总的来说hashmap中用到了<strong>链表</strong>、<strong>数组</strong>、<strong>红黑树</strong>这三种数据结构。不同hash值的key放在对应的数组中，当存在hash冲突时，将相同hash值的key用链表保存起来，当链表长度以及所有k-v对的个数达到阈值时，链表就会“树化”为红黑树，以提高查找效率。</p>
+<h3 id="2-HashMap的扩容和负载因子"><a href="#2-HashMap的扩容和负载因子" class="headerlink" title="2. HashMap的扩容和负载因子"></a>2. HashMap的扩容和负载因子</h3><p>区分两个概念：<code>capacity</code>、<code>size</code></p>
+<ul>
+<li><code>size</code>：指的是map中不同key-value键值对的总个数，这个字段会暴露给我们。</li>
+<li><code>capacity</code>：指的是map中buckets的个数，即table数组的长度</li>
+</ul>
+<p>当我们在初始化一个map的时候，默认负载因子为<code>0.75f</code>，当size达到<code>0.75 * capacity</code>时，就会进行扩容，<strong>map的扩容是2倍扩容</strong>。</p>
+<p>table的长度始终都是2的指数次幂，当我们指定的初始化长度不是2的次幂时，会调用<code>tableSizeFor</code>方法自动找到刚好大于该长度的2的次幂的数。默认初始化时table的长度是16。</p>
+<h3 id="3-HashMap中的hash方法"><a href="#3-HashMap中的hash方法" class="headerlink" title="3. HashMap中的hash方法"></a>3. HashMap中的hash方法</h3><h3 id="4-HashMap的put和get方法"><a href="#4-HashMap的put和get方法" class="headerlink" title="4. HashMap的put和get方法"></a>4. HashMap的put和get方法</h3><h3 id=""><a href="#" class="headerlink" title=" "></a> </h3>
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/05/29/HashMap%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-数据库的三范式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/05/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%89%E8%8C%83%E5%BC%8F/">数据库的三范式</a>
+    </h1>
+  
+
+        
+        <a href="/2021/05/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%89%E8%8C%83%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2021-05-27T03:39:37.633Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="数据库的三范式"><a href="#数据库的三范式" class="headerlink" title="数据库的三范式"></a>数据库的三范式</h2><h3 id="1-第一范式"><a href="#1-第一范式" class="headerlink" title="1. 第一范式"></a>1. 第一范式</h3><p>1NF是对属性的<strong><code>原子性</code></strong>，要求属性具有原子性，不可再分解</p>
+<h3 id="2-第二范式"><a href="#2-第二范式" class="headerlink" title="2. 第二范式"></a>2. 第二范式</h3><p>属性完全依赖于主键，即不存在部份依赖、</p>
+<h3 id="3-第三范式"><a href="#3-第三范式" class="headerlink" title="3. 第三范式"></a>3. 第三范式</h3><p><strong>属性不依赖于其它非主属性</strong>，即不存在传递依赖</p>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/05/27/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%89%E8%8C%83%E5%BC%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Python一行代码实现滑动窗口" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/05/26/Python%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/">Python一行代码实现滑动窗口</a>
+    </h1>
+  
+
+        
+        <a href="/2021/05/26/Python%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" class="archive-article-date">
+  	<time datetime="2021-05-26T12:54:36.160Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          		<h2 id="Python一行代码实现滑动窗口"><a href="#Python一行代码实现滑动窗口" class="headerlink" title="Python一行代码实现滑动窗口"></a>Python一行代码实现滑动窗口</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据的加载</span></span><br><span class="line">data = np.loads(path)</span><br><span class="line">window_size = <span class="number">12</span></span><br><span class="line"><span class="comment"># 非常优雅的代码</span></span><br><span class="line">split_data = data[np.arange(window_size)[<span class="literal">None</span>, :] + np.arange(data.shape[<span class="number">0</span>]-window_size)[:, <span class="literal">None</span>]]</span><br></pre></td></tr></table></figure>
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/05/26/Python%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-MySQL数据库总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/05/20/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%BB%E7%BB%93/">MySQL数据库总结</a>
+    </h1>
+  
+
+        
+        <a href="/2021/05/20/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%BB%E7%BB%93/" class="archive-article-date">
+  	<time datetime="2021-05-20T12:18:58.917Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="MySQL数据库总结"><a href="#MySQL数据库总结" class="headerlink" title="MySQL数据库总结"></a>MySQL数据库总结</h2><p>版本：8.0</p>
+<p>查看会话当前使用的哪个数据库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select database();</span><br></pre></td></tr></table></figure>
+<p>设置关闭自动提交事务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set autocommit &#x3D; 0;</span><br></pre></td></tr></table></figure>
+<h3 id="1-事务的隔离级别"><a href="#1-事务的隔离级别" class="headerlink" title="1. 事务的隔离级别"></a>1. 事务的隔离级别</h3><p>隔离级别总共有四种：</p>
+<ol>
+<li>读未提交（Read-Uncommited）</li>
+<li>读提交（Read-Commited）解决“脏读”</li>
+<li>可重复读（Repeatable-Read）解决“不可重复读”</li>
+<li>串行化（Serializable）解决“幻读”</li>
+</ol>
+<p>查看当前会话事务的隔离级别：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select @@transaction_isolation;</span><br></pre></td></tr></table></figure>
+<p>查看数据库的隔离级别：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select @@global.transaction_isolation;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select @@global.transaction_isolation;</span><br><span class="line">+--------------------------------+</span><br><span class="line">| @@global.transaction_isolation |</span><br><span class="line">+--------------------------------+</span><br><span class="line">| REPEATABLE-READ                |</span><br><span class="line">+--------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>可见innoDB默认的是可重复读这一隔离级别。可重复读可以避免”不可重读“（innoDB在PR级别通过MVCC解决了幻读这一现象）</p>
+<h4 id="排他锁，共享锁"><a href="#排他锁，共享锁" class="headerlink" title="排他锁，共享锁"></a>排他锁，共享锁</h4><p>排它锁（Exclusive），又称为X 锁，写锁。</p>
+<p>共享锁（Shared），又称为S 锁，读锁。</p>
+<p>读写锁之间有以下的关系：</p>
+<ul>
+<li>一个事务对数据对象O（多行，或者表等等）加了S锁，可以对O进行读取操作，但是不能进行更新（update、delete）操作。加锁期间其它事务能对O加S锁，但是不能加 X 锁。</li>
+<li>一个事务对数据对象 O 加了 X 锁，就可以对 O 进行读取和更新。加锁期间其它事务不能对 O 加任何锁。</li>
+</ul>
+<blockquote>
+<p> 读写锁之间的关系可以概括为：允许多个事务一起读，读写互斥！</p>
+</blockquote>
+<p>但加行锁并不可以解决”幻读“这一现象，因为行锁无法对后insert的数据加锁。幻读指的是当某个事务在读取某个范围内的记录时，另外一个事务又在该范围内插入了新行，当之前的事务再次读取该范围的记录时，会产生幻行。解决幻读要么序列化，要么加表锁。</p>
+<p>首先了解两个概念：</p>
+<ul>
+<li>一致读：consistent read 也叫快照读，当事务开始时会给数据“拍个照”，只要本事务不做update、insert操作，无论其他事务怎样提交，在本事务结束前select查到的内容不会改变。</li>
+<li>当前读：<code>select * from table_1 for update</code>读取数据库最新的内容</li>
+</ul>
+<p>Mysql中主要通过MVCC来保证<strong>可重复读</strong>，和<strong>select级别的幻读</strong>。注意：当其他事务进行提交后，本事务要对提交的数据进行修改时，会使用当前读，即update之前先select数据库最新的内容，这就会导致幻读。所以说只保证select级别的幻读，看以下例子：</p>
+<ul>
+<li>A、B事务同时开始</li>
+<li>A事务查询table中的记录，得到一条记录；B事务插入table一条记录，id=2，B事务提交</li>
+<li>A事务当前update id为2的数据，A事务会先查询table中的所有数据，再进行更新。之后查询table中的记录，发现有了两条记录。</li>
+<li>注意，当不进行更新操作，即使其他事务插入数据并提交，快照读可以保证可重复读，加行锁不可以。</li>
+</ul>
+<p>多版本并发控制：multi-versioned concurrency control，是MySQL中基于<strong>乐观锁</strong>理论实现隔离级别的方式，用于实现读已提交和可重复读取隔离级别的实现。在MySQL中，会在表中每一条数据后面添加两个字段：<strong>创建版本号</strong>：创建一行数据时，将当前系统版本号作为创建版本号赋值；<strong>删除版本号</strong>：删除一行数据时，将当前系统版本号作为删除版本号赋值。</p>
+<h3 id="2-MySQL索引"><a href="#2-MySQL索引" class="headerlink" title="2. MySQL索引"></a>2. MySQL索引</h3><h4 id="2-1-InnoDB引擎"><a href="#2-1-InnoDB引擎" class="headerlink" title="2.1 InnoDB引擎"></a>2.1 InnoDB引擎</h4><p>聚集索引，B+树</p>
+<p><img src="http://openfile.shixinke.com/images/posts/2018/12/22bb9577e5da9c0642e9a5b8c4d429dd.png" alt=""></p>
+<h4 id="2-3-MyISAM引擎"><a href="#2-3-MyISAM引擎" class="headerlink" title="2.3 MyISAM引擎"></a>2.3 MyISAM引擎</h4><p>叶节点并不存储数据，而是存储指向数据的指针。</p>
+<p>非聚集索引</p>
+<p><img src="http://openfile.shixinke.com/images/posts/2018/12/5d28d9bb9752b1bc6727fa5859ebe487.png" alt=""></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>区别</th>
+<th>Innodb</th>
+<th>Myisam</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>事务</td>
+<td>安全</td>
+<td>非安全</td>
+</tr>
+<tr>
+<td>锁</td>
+<td>行级</td>
+<td>表级</td>
+</tr>
+<tr>
+<td>效率</td>
+<td>低</td>
+<td>高</td>
+</tr>
+<tr>
+<td>索引</td>
+<td>聚集索引</td>
+<td>非聚集索引</td>
+</tr>
+<tr>
+<td>外键</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>使用环境</td>
+<td>需要事务，大量增，改</td>
+<td>多查询，不需要事务</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="附：在Ubuntu上安装MySQL8-0"><a href="#附：在Ubuntu上安装MySQL8-0" class="headerlink" title="附：在Ubuntu上安装MySQL8.0"></a>附：在Ubuntu上安装MySQL8.0</h3><p>请参考：<a href="https://computingforgeeks.com/how-to-install-mysql-8-on-ubuntu/" target="_blank" rel="noopener">https://computingforgeeks.com/how-to-install-mysql-8-on-ubuntu/</a></p>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/05/20/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%BB%E7%BB%93/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-ArrayList源码分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/05/19/ArrayList%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">ArrayList源码分析</a>
+    </h1>
+  
+
+        
+        <a href="/2021/05/19/ArrayList%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2021-05-19T03:11:23.646Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="ArrayList源码分析"><a href="#ArrayList源码分析" class="headerlink" title="ArrayList源码分析"></a>ArrayList源码分析</h2><h3 id="1-扩容"><a href="#1-扩容" class="headerlink" title="1. 扩容"></a>1. 扩容</h3><p>Arraylist的初始容量为10，一旦达到，将会按照原容量的50%进行扩容，即<code>elementData</code>数组的长度变为原来的1.5倍。</p>
+<h3 id="2-添加元素"><a href="#2-添加元素" class="headerlink" title="2.添加元素"></a>2.添加元素</h3><p>我们来看一下<code>add(int index, Object e)</code>这个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Inserts the specified element at the specified position in this</span></span><br><span class="line"><span class="comment">     * list. Shifts the element currently at that position (if any) and</span></span><br><span class="line"><span class="comment">     * any subsequent elements to the right (adds one to their indices).</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> index index at which the specified element is to be inserted</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> element element to be inserted</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IndexOutOfBoundsException &#123;<span class="doctag">@inheritDoc</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> index, E element)</span> </span>&#123;</span><br><span class="line">    rangeCheckForAdd(index);</span><br><span class="line">    modCount++;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> s;</span><br><span class="line">    Object[] elementData;</span><br><span class="line">    <span class="keyword">if</span> ((s = size) == (elementData = <span class="keyword">this</span>.elementData).length)</span><br><span class="line">        elementData = grow();</span><br><span class="line">    System.arraycopy(elementData, index,</span><br><span class="line">                     elementData, index + <span class="number">1</span>,</span><br><span class="line">                     s - index);</span><br><span class="line">    elementData[index] = element;</span><br><span class="line">    size = s + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，使用了<code>System.arraycopy</code>方法，源数组和目标数组都是<code>elementData</code>，将<code>index</code>及其之后的元素复制到<code>index+1</code>的位置。</p>
+<h3 id="3-序列化"><a href="#3-序列化" class="headerlink" title="3. 序列化"></a>3. 序列化</h3><p>​         我们发现源码中用于保存元素的<code>elementData</code>的数组是被<code>transient</code>修饰的，这意味着他将不被序列化。那ArrayList是如何序列化的呢？我们可以发现，ArrayList自己实现了两个方法：<code>readObject</code>、<code>writeObject</code>用于自定义序列化，避免采用Java原生的序列化。那为什么要这么做呢？在<code>writeObject</code>方法中，可以看到只是将<code>size</code>范围内的元素进行序列化，这是由于前面讲过的扩容机制，导致<code>elementData</code>的长度大于<code>size</code>，<code>size</code>索引之后都不保存具体元素值（或者说只为数组初始化的值），但确已经申请了内存空间，如果全部序列化，那么将会浪费大量空间来存储这些无用的信息。我们可以通过下面一个例子来具体演示。</p>
+<p>​         我们可以看到，一个长度为20000的数组只保存了5个元素，如果直接将这个数组序列化，大小是79kb，若只将5个元素序列化，序列化后的文件大小仅为1kb。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SerDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] nums = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">20000</span>];</span><br><span class="line">        <span class="keyword">int</span> size = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)&#123;</span><br><span class="line">            nums[i] = i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="comment">// 将数组全部初始化</span></span><br><span class="line">            <span class="comment">// FileOutputStream fs = new FileOutputStream("E:\\num1.ser");</span></span><br><span class="line">            <span class="comment">// ObjectOutputStream os = new ObjectOutputStream(fs);</span></span><br><span class="line">            <span class="comment">// os.writeObject(nums);</span></span><br><span class="line">            <span class="comment">// os.close();</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 只将非空数组初始化</span></span><br><span class="line">            <span class="keyword">int</span>[] ret = <span class="keyword">new</span> <span class="keyword">int</span>[size];</span><br><span class="line">            System.arraycopy(nums, <span class="number">0</span>, ret, <span class="number">0</span>, size);</span><br><span class="line">            FileOutputStream fs = <span class="keyword">new</span> FileOutputStream(<span class="string">"E:\\num2.ser"</span>);</span><br><span class="line">            ObjectOutputStream os = <span class="keyword">new</span> ObjectOutputStream(fs);</span><br><span class="line">            os.writeObject(ret);</span><br><span class="line">            os.close();</span><br><span class="line"></span><br><span class="line">        &#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="C:\Users\zhang\AppData\Roaming\Typora\typora-user-images\image-20210519110511250.png" alt="image-20210519110511250"></p>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/05/19/ArrayList%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-如何将 int[] 转换为 List" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/05/15/%E5%A6%82%E4%BD%95%E5%B0%86%20int%5B%5D%20%E8%BD%AC%E6%8D%A2%E4%B8%BA%20List/">如何将 int[] 转换为 List</a>
+    </h1>
+  
+
+        
+        <a href="/2021/05/15/%E5%A6%82%E4%BD%95%E5%B0%86%20int%5B%5D%20%E8%BD%AC%E6%8D%A2%E4%B8%BA%20List/" class="archive-article-date">
+  	<time datetime="2021-05-15T09:47:45.081Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h2 id="如何将-int-转换为-List"><a href="#如何将-int-转换为-List" class="headerlink" title="如何将 int[] 转换为 List"></a>如何将 int[] 转换为 List</h2><p>在Java 8及以后版本中，可以这么实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> java.util.stream.Collectors;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] nums = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line">        </span><br><span class="line">        List&lt;Integer&gt; lists = Arrays.stream(nums).boxed().collect(Collectors.toList());</span><br><span class="line">        </span><br><span class="line">        System.out.println(lists);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/05/15/%E5%A6%82%E4%BD%95%E5%B0%86%20int%5B%5D%20%E8%BD%AC%E6%8D%A2%E4%B8%BA%20List/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-RMLSE" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -429,582 +1088,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2021/03/27/%E4%BF%A1%E7%94%A8%E5%8D%A1%E8%99%9A%E5%81%87%E4%BA%A4%E6%98%93%E6%95%B0%E6%8D%AE%E6%A3%80%E6%B5%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-机器学习常见模型优缺点对比" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B8%B8%E8%A7%81%E6%A8%A1%E5%9E%8B%E4%BC%98%E7%BC%BA%E7%82%B9%E5%AF%B9%E6%AF%94/">机器学习常见模型优缺点对比</a>
-    </h1>
-  
-
-        
-        <a href="/2021/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B8%B8%E8%A7%81%E6%A8%A1%E5%9E%8B%E4%BC%98%E7%BC%BA%E7%82%B9%E5%AF%B9%E6%AF%94/" class="archive-article-date">
-  	<time datetime="2021-03-26T13:08:21.388Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          
-            <a id="more"></a>
-<h2 id="机器学习常见模型优缺点对比"><a href="#机器学习常见模型优缺点对比" class="headerlink" title="机器学习常见模型优缺点对比"></a>机器学习常见模型优缺点对比</h2><!--more-->
-<h3 id="1-支持向量机与LR"><a href="#1-支持向量机与LR" class="headerlink" title="1. 支持向量机与LR"></a>1. 支持向量机与LR</h3><h4 id="1-1-支持向量机优点分析"><a href="#1-1-支持向量机优点分析" class="headerlink" title="1.1 支持向量机优点分析"></a>1.1 支持向量机优点分析</h4><ul>
-<li>有着完备的数学统计基础</li>
-<li>决策超平面只与支持向量有关，且得到的决策超平面是最大化间隔实现的，鲁棒性较高</li>
-</ul>
-<h4 id="1-2-支持向量机缺点分析"><a href="#1-2-支持向量机缺点分析" class="headerlink" title="1.2 支持向量机缺点分析"></a>1.2 支持向量机缺点分析</h4><ul>
-<li>当数据量较大维度较高时，训练缓慢</li>
-<li>面对多分类问题，支持向量机不能够很好的处理</li>
-</ul>
-<h4 id="1-3-LR优点分析"><a href="#1-3-LR优点分析" class="headerlink" title="1.3 LR优点分析"></a>1.3 LR优点分析</h4><ul>
-<li>易于训练</li>
-</ul>
-<h4 id="1-4-LR缺点分析"><a href="#1-4-LR缺点分析" class="headerlink" title="1.4 LR缺点分析"></a>1.4 LR缺点分析</h4><ul>
-<li>只能处理非线性数据</li>
-<li>对多重共线性数据效果较差</li>
-</ul>
-<h3 id="2-k均值聚类与DBSCAN"><a href="#2-k均值聚类与DBSCAN" class="headerlink" title="2. k均值聚类与DBSCAN"></a>2. k均值聚类与DBSCAN</h3><h4 id="2-1-k均值聚类的优缺点分析"><a href="#2-1-k均值聚类的优缺点分析" class="headerlink" title="2.1 k均值聚类的优缺点分析"></a>2.1 k均值聚类的优缺点分析</h4><p>​        <strong>优点</strong>：</p>
-<ul>
-<li>直观简单，易于实现</li>
-<li>收敛速度较快</li>
-</ul>
-<p>​        <strong>缺点</strong>：</p>
-<ul>
-<li>容易受到异常值影响</li>
-<li>最终聚类结果容易受到初始聚类中心的选择的影响</li>
-<li>K的选择需要不断尝试</li>
-<li>最终只能收敛到局部最优值</li>
-<li>只适用于球状（凸集）数据</li>
-</ul>
-<h4 id="2-2-DBSCAN优缺点分析"><a href="#2-2-DBSCAN优缺点分析" class="headerlink" title="2.2 DBSCAN优缺点分析"></a>2.2 DBSCAN优缺点分析</h4><p>​    <strong>优点</strong>：</p>
-<ul>
-<li>对异常值不敏感</li>
-<li>可以发现任意形状的类簇</li>
-<li>无需指定k的数量</li>
-</ul>
-<p>​    <strong>缺点</strong>：</p>
-<ul>
-<li>当类与类之间的间隔较大或密度不均匀的时候，效果不太好</li>
-<li>当数据较大时，时间复杂度较高</li>
-</ul>
-<h3 id="3-随机森林与决策树"><a href="#3-随机森林与决策树" class="headerlink" title="3. 随机森林与决策树"></a>3. 随机森林与决策树</h3><h4 id="3-1-随机森林的优点"><a href="#3-1-随机森林的优点" class="headerlink" title="3.1 随机森林的优点"></a>3.1 随机森林的优点</h4><ul>
-<li>对于大部分的数据，它的分类效果比较好。</li>
-<li>能处理高维特征，并且不用做特征选择，不容易产生过拟合</li>
-<li>容易实现并行化计算</li>
-<li>对数据集的适应能力强：既能处理离散型数据，也能处理连续型数据，数据集无需规范化。</li>
-<li>即使有很大部分数据遗失，仍可以维持高准确度</li>
-</ul>
-<h4 id="3-2-随机森林的缺点"><a href="#3-2-随机森林的缺点" class="headerlink" title="3.2 随机森林的缺点"></a>3.2 随机森林的缺点</h4><ul>
-<li>训练相比决策树而言慢</li>
-<li>在某些噪音比较大的样本集上，RF的模型容易陷入过拟合</li>
-<li>对于许多统计建模者来说，随机森林给人的感觉就像一个黑盒子，你无法控制模型内部的运行。只能在不同的参数和随机种子之间进行尝试。</li>
-</ul>
-
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B8%B8%E8%A7%81%E6%A8%A1%E5%9E%8B%E4%BC%98%E7%BC%BA%E7%82%B9%E5%AF%B9%E6%AF%94/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-并查集" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/20/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a>
-    </h1>
-  
-
-        
-        <a href="/2021/01/20/%E5%B9%B6%E6%9F%A5%E9%9B%86/" class="archive-article-date">
-  	<time datetime="2021-01-19T16:04:53.708Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h2><h3 id="1-并查集介绍"><a href="#1-并查集介绍" class="headerlink" title="1. 并查集介绍"></a>1. 并查集介绍</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] data = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(data[x] == x)&#123;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        data[x] = find(data[x]);</span><br><span class="line">        <span class="keyword">return</span> data[x];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> voif <span class="title">merge</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = find(a);</span><br><span class="line">    <span class="keyword">int</span> y = find(b);</span><br><span class="line">    <span class="keyword">if</span>(x != y)&#123;</span><br><span class="line">        data[x] = y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/20/%E5%B9%B6%E6%9F%A5%E9%9B%86/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Hadoop 完全分布式集群配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/20/Hadoop%20%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/">Hadoop 完全分布式集群配置</a>
-    </h1>
-  
-
-        
-        <a href="/2021/01/20/Hadoop%20%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/" class="archive-article-date">
-  	<time datetime="2021-01-19T16:03:31.685Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="Hadoop-完全分布式集群配置"><a href="#Hadoop-完全分布式集群配置" class="headerlink" title="Hadoop 完全分布式集群配置"></a>Hadoop 完全分布式集群配置</h2>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/大数据//" class="article-tag-list-link color4">大数据</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/20/Hadoop%20%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-造成Java Out Of Memory原因总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/02/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/">造成Java Out Of Memory原因总结</a>
-    </h1>
-  
-
-        
-        <a href="/2021/01/02/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:38.008Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="造成-Java-Out-Of-Memory-原因总结"><a href="#造成-Java-Out-Of-Memory-原因总结" class="headerlink" title="造成 Java Out Of Memory 原因总结"></a>造成 Java Out Of Memory 原因总结</h2><p>总结起来有 6 点原因，以下分点阐述。</p>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/02/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-重构字符串" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/02/%E9%87%8D%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/">重构字符串</a>
-    </h1>
-  
-
-        
-        <a href="/2021/01/02/%E9%87%8D%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:38.008Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h3 id="重构字符串（日常刷题记录）"><a href="#重构字符串（日常刷题记录）" class="headerlink" title="重构字符串（日常刷题记录）"></a>重构字符串（日常刷题记录）</h3><p>题目链接：<a href="https://leetcode-cn.com/problems/reorganize-string/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/reorganize-string/</a></p>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">贪心算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/日常刷题记录//" class="article-tag-list-link color2">日常刷题记录</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/02/%E9%87%8D%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-降维方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/02/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/">降维方法</a>
-    </h1>
-  
-
-        
-        <a href="/2021/01/02/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:38.008Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="降维方法"><a href="#降维方法" class="headerlink" title="降维方法"></a>降维方法</h2>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/02/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-链表" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/02/%E9%93%BE%E8%A1%A8/">链表</a>
-    </h1>
-  
-
-        
-        <a href="/2021/01/02/%E9%93%BE%E8%A1%A8/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:38.008Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          		<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2>
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/01/02/%E9%93%BE%E8%A1%A8/">展开全文 >></a>
         </p>
       
 

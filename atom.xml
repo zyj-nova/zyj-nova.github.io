@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-06-07T07:32:10.770Z</updated>
+  <updated>2021-08-12T10:50:40.281Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,171 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>和为k的连续子数组系列题</title>
+    <link href="http://yoursite.com/2021/08/12/%E5%92%8C%E4%B8%BAk%E7%9A%84%E8%BF%9E%E7%BB%AD%E5%AD%90%E6%95%B0%E7%BB%84%E7%B3%BB%E5%88%97%E9%A2%98/"/>
+    <id>http://yoursite.com/2021/08/12/%E5%92%8C%E4%B8%BAk%E7%9A%84%E8%BF%9E%E7%BB%AD%E5%AD%90%E6%95%B0%E7%BB%84%E7%B3%BB%E5%88%97%E9%A2%98/</id>
+    <published>2021-08-12T10:36:33.044Z</published>
+    <updated>2021-08-12T10:50:40.281Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;和为k的连续子数组系列题&quot;&gt;&lt;a href=&quot;#和为k的连续子数组系列题&quot; class=&quot;headerlink&quot; title=&quot;和为k的连续子数组系列题&quot;&gt;&lt;/a&gt;和为k的连续子数组系列题&lt;/h3&gt;&lt;p&gt;整理了一下和为k的子数组的题单。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="日常刷题记录" scheme="http://yoursite.com/categories/%E6%97%A5%E5%B8%B8%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Cookie和Session</title>
+    <link href="http://yoursite.com/2021/07/24/Cookie%E5%92%8CSession/"/>
+    <id>http://yoursite.com/2021/07/24/Cookie%E5%92%8CSession/</id>
+    <published>2021-07-24T02:39:01.488Z</published>
+    <updated>2021-07-25T03:41:48.144Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Cookie和Session&quot;&gt;&lt;a href=&quot;#Cookie和Session&quot; class=&quot;headerlink&quot; title=&quot;Cookie和Session&quot;&gt;&lt;/a&gt;Cookie和Session&lt;/h2&gt;&lt;h3 id=&quot;区别&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>HTTPS解析</title>
+    <link href="http://yoursite.com/2021/07/19/HTTPS%E8%A7%A3%E6%9E%90/"/>
+    <id>http://yoursite.com/2021/07/19/HTTPS%E8%A7%A3%E6%9E%90/</id>
+    <published>2021-07-19T02:49:26.738Z</published>
+    <updated>2021-07-19T02:57:00.749Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;HTTPS解析&quot;&gt;&lt;a href=&quot;#HTTPS解析&quot; class=&quot;headerlink&quot; title=&quot;HTTPS解析&quot;&gt;&lt;/a&gt;HTTPS解析&lt;/h2&gt;&lt;p&gt;https是&lt;strong&gt;Hypertext Transfer Protocol
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Quartz</title>
+    <link href="http://yoursite.com/2021/07/09/Quartz/"/>
+    <id>http://yoursite.com/2021/07/09/Quartz/</id>
+    <published>2021-07-09T06:49:28.972Z</published>
+    <updated>2021-07-09T06:49:28.972Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Quartz&quot;&gt;&lt;a href=&quot;#Quartz&quot; class=&quot;headerlink&quot; title=&quot;Quartz&quot;&gt;&lt;/a&gt;Quartz&lt;/h2&gt;&lt;h3 id=&quot;1-入门&quot;&gt;&lt;a href=&quot;#1-入门&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TCP建立连接与释放连接</title>
+    <link href="http://yoursite.com/2021/06/13/TCP%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E4%B8%8E%E9%87%8A%E6%94%BE%E8%BF%9E%E6%8E%A5/"/>
+    <id>http://yoursite.com/2021/06/13/TCP%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E4%B8%8E%E9%87%8A%E6%94%BE%E8%BF%9E%E6%8E%A5/</id>
+    <published>2021-06-13T15:06:33.530Z</published>
+    <updated>2021-06-13T15:10:14.979Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;TCP建立连接与释放连接&quot;&gt;&lt;a href=&quot;#TCP建立连接与释放连接&quot; class=&quot;headerlink&quot; title=&quot;TCP建立连接与释放连接&quot;&gt;&lt;/a&gt;TCP建立连接与释放连接&lt;/h3&gt;&lt;h3 id=&quot;三次握手&quot;&gt;&lt;a href=&quot;#三次握手&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Java中的自动拆箱装箱</title>
+    <link href="http://yoursite.com/2021/06/13/Java%E4%B8%AD%E7%9A%84%E8%87%AA%E5%8A%A8%E6%8B%86%E7%AE%B1%E8%A3%85%E7%AE%B1/"/>
+    <id>http://yoursite.com/2021/06/13/Java%E4%B8%AD%E7%9A%84%E8%87%AA%E5%8A%A8%E6%8B%86%E7%AE%B1%E8%A3%85%E7%AE%B1/</id>
+    <published>2021-06-13T10:51:38.878Z</published>
+    <updated>2021-06-13T10:51:44.532Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Java中的自动拆箱装箱&quot;&gt;&lt;a href=&quot;#Java中的自动拆箱装箱&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Spring学习笔记</title>
+    <link href="http://yoursite.com/2021/06/11/Spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>http://yoursite.com/2021/06/11/Spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
+    <published>2021-06-11T06:43:30.205Z</published>
+    <updated>2021-06-11T06:54:10.432Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Spring学习笔记&quot;&gt;&lt;a href=&quot;#Spring学习笔记&quot; class=&quot;headerlink&quot; title=&quot;Spring学习笔记&quot;&gt;&lt;/a&gt;Spring学习笔记&lt;/h2&gt;&lt;h3 id=&quot;依赖注入&quot;&gt;&lt;a href=&quot;#依赖注入&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Java中的等待唤醒机制</title>
@@ -71,7 +236,7 @@
     <link href="http://yoursite.com/2021/06/01/Spring%20AOP%E7%BC%96%E7%A8%8B/"/>
     <id>http://yoursite.com/2021/06/01/Spring%20AOP%E7%BC%96%E7%A8%8B/</id>
     <published>2021-06-01T12:40:54.606Z</published>
-    <updated>2021-06-01T13:07:09.758Z</updated>
+    <updated>2021-07-09T07:53:17.470Z</updated>
     
     <summary type="html">
     
@@ -96,7 +261,7 @@
     <link href="http://yoursite.com/2021/05/31/B%E6%A0%91%E4%B8%8EB+%E6%A0%91/"/>
     <id>http://yoursite.com/2021/05/31/B%E6%A0%91%E4%B8%8EB+%E6%A0%91/</id>
     <published>2021-05-31T12:42:10.275Z</published>
-    <updated>2021-05-31T13:29:33.664Z</updated>
+    <updated>2021-06-23T03:30:36.678Z</updated>
     
     <summary type="html">
     
@@ -320,148 +485,6 @@
     
     
       <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>机器学习常见模型优缺点对比</title>
-    <link href="http://yoursite.com/2021/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B8%B8%E8%A7%81%E6%A8%A1%E5%9E%8B%E4%BC%98%E7%BC%BA%E7%82%B9%E5%AF%B9%E6%AF%94/"/>
-    <id>http://yoursite.com/2021/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B8%B8%E8%A7%81%E6%A8%A1%E5%9E%8B%E4%BC%98%E7%BC%BA%E7%82%B9%E5%AF%B9%E6%AF%94/</id>
-    <published>2021-03-26T13:08:21.388Z</published>
-    <updated>2021-05-13T07:46:24.266Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h2 id=&quot;机器学习常见模型优缺点对比&quot;&gt;&lt;a href=&quot;#机器学习常见模型优缺点对比&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>并查集</title>
-    <link href="http://yoursite.com/2021/01/20/%E5%B9%B6%E6%9F%A5%E9%9B%86/"/>
-    <id>http://yoursite.com/2021/01/20/%E5%B9%B6%E6%9F%A5%E9%9B%86/</id>
-    <published>2021-01-19T16:04:53.708Z</published>
-    <updated>2021-01-20T12:12:04.166Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;并查集&quot;&gt;&lt;a href=&quot;#并查集&quot; class=&quot;headerlink&quot; title=&quot;并查集&quot;&gt;&lt;/a&gt;并查集&lt;/h2&gt;&lt;h3 id=&quot;1-并查集介绍&quot;&gt;&lt;a href=&quot;#1-并查集介绍&quot; class=&quot;headerlink&quot; title=&quot;1. 并查集介绍&quot;&gt;&lt;/a&gt;1. 并查集介绍&lt;/h3&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;[] data = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;[&lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; x)&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(data[x] == x)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; x;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        data[x] = find(data[x]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; data[x];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; voif &lt;span class=&quot;title&quot;&gt;merge&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; a, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; b)&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; x = find(a);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; y = find(b);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(x != y)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        data[x] = y;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="基础算法" scheme="http://yoursite.com/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Hadoop 完全分布式集群配置</title>
-    <link href="http://yoursite.com/2021/01/20/Hadoop%20%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/"/>
-    <id>http://yoursite.com/2021/01/20/Hadoop%20%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/</id>
-    <published>2021-01-19T16:03:31.685Z</published>
-    <updated>2021-01-21T11:24:55.787Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Hadoop-完全分布式集群配置&quot;&gt;&lt;a href=&quot;#Hadoop-完全分布式集群配置&quot; class=&quot;headerlink&quot; title=&quot;Hadoop 完全分布式集群配置&quot;&gt;&lt;/a&gt;Hadoop 完全分布式集群配置&lt;/h2&gt;
-    
-    </summary>
-    
-    
-      <category term="大数据" scheme="http://yoursite.com/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>造成Java Out Of Memory原因总结</title>
-    <link href="http://yoursite.com/2021/01/02/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/"/>
-    <id>http://yoursite.com/2021/01/02/%E9%80%A0%E6%88%90Java%20Out%20Of%20Memory%E5%8E%9F%E5%9B%A0%E6%80%BB%E7%BB%93/</id>
-    <published>2021-01-02T01:54:38.008Z</published>
-    <updated>2020-11-11T03:43:24.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;造成-Java-Out-Of-Memory-原因总结&quot;&gt;&lt;a href=&quot;#造成-Java-Out-Of-Memory-原因总结&quot; class=&quot;headerlink&quot; title=&quot;造成 Java Out Of Memory 原因总结&quot;&gt;&lt;/a&gt;造成 Java Out Of Memory 原因总结&lt;/h2&gt;&lt;p&gt;总结起来有 6 点原因，以下分点阐述。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>重构字符串</title>
-    <link href="http://yoursite.com/2021/01/02/%E9%87%8D%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
-    <id>http://yoursite.com/2021/01/02/%E9%87%8D%E6%9E%84%E5%AD%97%E7%AC%A6%E4%B8%B2/</id>
-    <published>2021-01-02T01:54:38.008Z</published>
-    <updated>2020-11-30T12:39:32.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;重构字符串（日常刷题记录）&quot;&gt;&lt;a href=&quot;#重构字符串（日常刷题记录）&quot; class=&quot;headerlink&quot; title=&quot;重构字符串（日常刷题记录）&quot;&gt;&lt;/a&gt;重构字符串（日常刷题记录）&lt;/h3&gt;&lt;p&gt;题目链接：&lt;a href=&quot;https://leetcode-cn.com/problems/reorganize-string/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://leetcode-cn.com/problems/reorganize-string/&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="日常刷题记录" scheme="http://yoursite.com/categories/%E6%97%A5%E5%B8%B8%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
-    
-    
-      <category term="贪心算法" scheme="http://yoursite.com/tags/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>降维方法</title>
-    <link href="http://yoursite.com/2021/01/02/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/"/>
-    <id>http://yoursite.com/2021/01/02/%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/</id>
-    <published>2021-01-02T01:54:38.008Z</published>
-    <updated>2020-11-11T03:42:10.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;降维方法&quot;&gt;&lt;a href=&quot;#降维方法&quot; class=&quot;headerlink&quot; title=&quot;降维方法&quot;&gt;&lt;/a&gt;降维方法&lt;/h2&gt;
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>链表</title>
-    <link href="http://yoursite.com/2021/01/02/%E9%93%BE%E8%A1%A8/"/>
-    <id>http://yoursite.com/2021/01/02/%E9%93%BE%E8%A1%A8/</id>
-    <published>2021-01-02T01:54:38.008Z</published>
-    <updated>2021-01-20T12:08:45.587Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;链表&quot;&gt;&lt;a href=&quot;#链表&quot; class=&quot;headerlink&quot; title=&quot;链表&quot;&gt;&lt;/a&gt;链表&lt;/h2&gt;
-    
-    </summary>
-    
-    
-      <category term="基础算法" scheme="http://yoursite.com/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/"/>
     
     
   </entry>
