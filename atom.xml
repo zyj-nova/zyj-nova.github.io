@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-08-12T10:50:40.281Z</updated>
+  <updated>2021-09-06T07:34:22.779Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,32 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Spring如何解决循环依赖</title>
+    <link href="http://yoursite.com/2021/09/06/Spring%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/"/>
+    <id>http://yoursite.com/2021/09/06/Spring%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/</id>
+    <published>2021-09-06T02:54:51.703Z</published>
+    <updated>2021-09-06T07:34:22.779Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Spring如何解决循环依赖&quot;&gt;&lt;a href=&quot;#Spring如何解决循环依赖&quot; class=&quot;headerlink&quot; title=&quot;Spring如何解决循环依赖&quot;&gt;&lt;/a&gt;Spring如何解决循环依赖&lt;/h2&gt;&lt;p&gt;三级缓存指什么？&lt;/p&gt;
+&lt;p&gt;即&lt;code&gt;DefaultSingletonBeanRegistry&lt;/code&gt;中的定义的三个map：&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/** Cache of singleton objects: bean name to bean instance. */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// 一级缓存，存在已经实例化并且初始化好的完整的对象&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; Map&amp;lt;String, Object&amp;gt; singletonObjects = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ConcurrentHashMap&amp;lt;&amp;gt;(&lt;span class=&quot;number&quot;&gt;256&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/** Cache of singleton factories: bean name to ObjectFactory. */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// 二级缓存，可以理解为一个中间层，存放已经构造好但还未初始化的对象&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; Map&amp;lt;String, ObjectFactory&amp;lt;?&amp;gt;&amp;gt; singletonFactories = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HashMap&amp;lt;&amp;gt;(&lt;span class=&quot;number&quot;&gt;16&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/** Cache of early singleton objects: bean name to bean instance. */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// 三级缓存，存放对象名字和对应的ObjectFactory对象&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; Map&amp;lt;String, Object&amp;gt; earlySingletonObjects = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ConcurrentHashMap&amp;lt;&amp;gt;(&lt;span class=&quot;number&quot;&gt;16&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="java" scheme="http://yoursite.com/categories/java/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>和为k的连续子数组系列题</title>
     <link href="http://yoursite.com/2021/08/12/%E5%92%8C%E4%B8%BAk%E7%9A%84%E8%BF%9E%E7%BB%AD%E5%AD%90%E6%95%B0%E7%BB%84%E7%B3%BB%E5%88%97%E9%A2%98/"/>
     <id>http://yoursite.com/2021/08/12/%E5%92%8C%E4%B8%BAk%E7%9A%84%E8%BF%9E%E7%BB%AD%E5%AD%90%E6%95%B0%E7%BB%84%E7%B3%BB%E5%88%97%E9%A2%98/</id>
     <published>2021-08-12T10:36:33.044Z</published>
-    <updated>2021-08-12T10:50:40.281Z</updated>
+    <updated>2021-08-12T11:17:28.115Z</updated>
     
     <summary type="html">
     
@@ -459,32 +480,6 @@
     
     
       <category term="日常刷题记录" scheme="http://yoursite.com/categories/%E6%97%A5%E5%B8%B8%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>信用卡虚假交易数据检测</title>
-    <link href="http://yoursite.com/2021/03/27/%E4%BF%A1%E7%94%A8%E5%8D%A1%E8%99%9A%E5%81%87%E4%BA%A4%E6%98%93%E6%95%B0%E6%8D%AE%E6%A3%80%E6%B5%8B/"/>
-    <id>http://yoursite.com/2021/03/27/%E4%BF%A1%E7%94%A8%E5%8D%A1%E8%99%9A%E5%81%87%E4%BA%A4%E6%98%93%E6%95%B0%E6%8D%AE%E6%A3%80%E6%B5%8B/</id>
-    <published>2021-03-27T15:17:16.311Z</published>
-    <updated>2021-05-13T07:48:02.061Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h2 id=&quot;信用卡虚假交易数据检测&quot;&gt;&lt;a href=&quot;#信用卡虚假交易数据检测&quot; class=&quot;headerlink&quot; title=&quot;信用卡虚假交易数据检测&quot;&gt;&lt;/a&gt;信用卡虚假交易数据检测&lt;/h2&gt;&lt;p&gt;测试网站：&lt;a
-        
-      
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
   </entry>

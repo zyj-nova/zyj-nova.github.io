@@ -14,10 +14,12 @@
 <meta property="og:url" content="http://yoursite.com/2021/08/12/%E5%92%8C%E4%B8%BAk%E7%9A%84%E8%BF%9E%E7%BB%AD%E5%AD%90%E6%95%B0%E7%BB%84%E7%B3%BB%E5%88%97%E9%A2%98/index.html">
 <meta property="og:site_name" content="张永剑的博客">
 <meta property="og:description" content="和为k的连续子数组系列题整理了一下和为k的子数组的题单。">
+<meta property="og:image" content="https://leetcode.com/problems/contiguous-array/Figures/535_Contiguous_Array.PNG">
 <meta property="article:published_time" content="2021-08-12T10:36:33.044Z">
-<meta property="article:modified_time" content="2021-08-12T10:50:40.281Z">
+<meta property="article:modified_time" content="2021-08-12T11:17:28.115Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://leetcode.com/problems/contiguous-array/Figures/535_Contiguous_Array.PNG">
   
     <link rel="alternative" href="/atom.xml" title="张永剑的博客" type="application/atom+xml">
   
@@ -238,6 +240,8 @@
 <h4 id="2-连续数组"><a href="#2-连续数组" class="headerlink" title="2. 连续数组"></a>2. 连续数组</h4><p><strong>题目描述：</strong>给定一个二进制数组 <code>nums</code> , 找到含有相同数量的 <code>0</code> 和 <code>1</code> 的<strong>最长</strong>连续子数组，并返回该子数组的长度。</p>
 <p><strong>题目链接：</strong><a href="https://leetcode-cn.com/problems/contiguous-array/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/contiguous-array/</a></p>
 <p><strong>题目思路：</strong>我们可以将0视为<code>-1</code>，这样的话就转化为和为0的最长子数组。而且如果从第<code>i</code> 个数开始，第<code>j</code> 个数为止，前缀和恰好相同，就表明子数组<code>(i,j]</code>内包含的0与1个数相同。注意本题求的是长度，所以哈希表存储的键值对是<code>前缀和:索引</code>，因为要求最长的，因此如果某个前缀和之前出现过，那么就不需要更新他的位置了，之前出现过表明更靠前。</p>
+<p><img src="https://leetcode.com/problems/contiguous-array/Figures/535_Contiguous_Array.PNG" alt=""></p>
+<p>看上图可以帮助我们更好的理解。上图中<code>A-C</code>中（不包含A，包含C）有3个0、3个1。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findMaxLength</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = nums.length, sum = <span class="number">0</span>, ret = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// map用来保存 （前缀和，位置）</span></span><br><span class="line">        HashMap&lt;Integer,Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        map.put(<span class="number">0</span>, -<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i] == <span class="number">0</span>)&#123;</span><br><span class="line">                sum += -<span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                sum += nums[i];    </span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(map.containsKey(sum))&#123;</span><br><span class="line">                ret = Math.max(ret, i -  map.get(sum));</span><br><span class="line">            &#125;<span class="keyword">else</span></span><br><span class="line">                map.put(sum, i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="3-最大子数组之和为k"><a href="#3-最大子数组之和为k" class="headerlink" title="3. 最大子数组之和为k"></a>3. 最大子数组之和为k</h4><p><strong>题目描述：</strong>给一个数组<code>nums</code>和目标值<code>k</code>，找到数组中最长的子数组，使其中的元素和为k。如果没有，则返回0。</p>
 <p><strong>题目链接：</strong><a href="https://www.lintcode.com/problem/911/" target="_blank" rel="noopener">https://www.lintcode.com/problem/911/</a></p>
@@ -327,6 +331,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2021/09/06/Spring%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Spring如何解决循环依赖
+        
+      </div>
+    </a>
   
   
     <a href="/2021/07/24/Cookie%E5%92%8CSession/" id="article-nav-older" class="article-nav-link-wrap">
