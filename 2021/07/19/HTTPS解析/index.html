@@ -8,14 +8,14 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>HTTPS解析 | 张永剑的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="HTTPS解析https是Hypertext Transfer Protocol Secure的简称。主要是为了解决服务器与客户端明文发送http请求和响应消息容易被第三方劫持而造成数据泄露这一问题而提出。 https在http的基础上采用Secure Sockets Layer(SSL)对消息进行加密处理。因此，https也指HTTP over SSL。 对称与非对称加密算法中间人攻击man-i">
+  <meta name="description" content="HTTPS解析概述https是Hypertext Transfer Protocol Secure的简称。主要是为了解决服务器与客户端明文发送http请求和响应消息容易被第三方劫持而造成数据泄露这一问题而提出。 https在http的基础上采用Secure Sockets Layer(SSL)对消息进行加密处理。因此，https也指HTTP over SSL。随着版本迭代，SSL逐渐被废弃，而使用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HTTPS解析">
 <meta property="og:url" content="http://yoursite.com/2021/07/19/HTTPS%E8%A7%A3%E6%9E%90/index.html">
 <meta property="og:site_name" content="张永剑的博客">
-<meta property="og:description" content="HTTPS解析https是Hypertext Transfer Protocol Secure的简称。主要是为了解决服务器与客户端明文发送http请求和响应消息容易被第三方劫持而造成数据泄露这一问题而提出。 https在http的基础上采用Secure Sockets Layer(SSL)对消息进行加密处理。因此，https也指HTTP over SSL。 对称与非对称加密算法中间人攻击man-i">
+<meta property="og:description" content="HTTPS解析概述https是Hypertext Transfer Protocol Secure的简称。主要是为了解决服务器与客户端明文发送http请求和响应消息容易被第三方劫持而造成数据泄露这一问题而提出。 https在http的基础上采用Secure Sockets Layer(SSL)对消息进行加密处理。因此，https也指HTTP over SSL。随着版本迭代，SSL逐渐被废弃，而使用">
 <meta property="article:published_time" content="2021-07-19T02:49:26.738Z">
-<meta property="article:modified_time" content="2021-07-19T02:57:00.749Z">
+<meta property="article:modified_time" content="2021-10-23T11:59:50.856Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
   
@@ -227,9 +227,11 @@
       
         
           
-            <h2 id="HTTPS解析"><a href="#HTTPS解析" class="headerlink" title="HTTPS解析"></a>HTTPS解析</h2><p>https是<strong>Hypertext Transfer Protocol Secure</strong>的简称。主要是为了解决服务器与客户端明文发送http请求和响应消息容易被第三方劫持而造成数据泄露这一问题而提出。 https在http的基础上采用<strong>Secure Sockets Layer(SSL)</strong>对消息进行加密处理。因此，https也指HTTP over SSL。</p>
-<h3 id="对称与非对称加密算法"><a href="#对称与非对称加密算法" class="headerlink" title="对称与非对称加密算法"></a>对称与非对称加密算法</h3><h3 id="中间人攻击"><a href="#中间人攻击" class="headerlink" title="中间人攻击"></a>中间人攻击</h3><p>man-in-the-middle attack</p>
-<h3 id="CA证书"><a href="#CA证书" class="headerlink" title="CA证书"></a>CA证书</h3><p>CA是<strong>Certificate Authority（认证授权）</strong>的简称。</p>
+            <h2 id="HTTPS解析"><a href="#HTTPS解析" class="headerlink" title="HTTPS解析"></a>HTTPS解析</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>https是<strong>Hypertext Transfer Protocol Secure</strong>的简称。主要是为了解决服务器与客户端明文发送http请求和响应消息容易被第三方劫持而造成数据泄露这一问题而提出。 https在http的基础上采用<strong>Secure Sockets Layer(SSL)</strong>对消息进行加密处理。因此，https也指HTTP over SSL。随着版本迭代，SSL逐渐被废弃，而使用了<strong>Transport Layer Security(TLS)</strong>。在http进行连接前，TLS会通过tcp进行握手完成证书校验和随机数生成，之后通过双方生成的随机数运算得到一个对称密钥，之后就使用对称加密算法进行通信。</p>
+<h3 id="中间人攻击"><a href="#中间人攻击" class="headerlink" title="中间人攻击"></a>中间人攻击</h3><p>中间人攻击(man-in-the-middle attack)是指双方在通过网络进行通信时，可能会被第三者进行窃听拦截，进而篡改伪造消息，造成的通信信息不安全现象。</p>
+<h3 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h3><p>加密主要有对称加密算法和非对称加密算法。对称加密算法计算简单但是容易被破解，非对称加密算法安全不易破解但是较为消耗计算资源。非对称加密算法包含公钥和私钥，使用公钥加密的内容只有私钥才可以解密，使用私钥加密的内容只有公钥才可以解密。公钥可以派发给所有人，而私钥自能自己保存。</p>
+<h3 id="CA证书"><a href="#CA证书" class="headerlink" title="CA证书"></a>CA证书</h3><p>CA是<strong>Certificate Authority（认证授权）</strong>的简称。CA证书实际是由证书签证机关（CA）签发的对用户的公钥的认证。一个数字证书主要保存了认证网站的公钥。CA机构的公钥被内嵌在操作系统中，进而免去了传输的过程。为了防止证书被篡改（CA机构的公钥是公开的），CA证书通常还包括一个数字签名（指纹），即证书主体内容（明文）首先进行一次哈希（用到的哈希算法包含在证书信息中）得到信息摘要，之后再使用CA机构的私钥对这个哈希后的值进行<strong>签名</strong>。一方收到证书后，会用相同内嵌在本地的CA公钥进行解密，然后对解密后的内容进行哈希，如果明文与解密后的内容哈希一致就说明信息没有被篡改，这就得到另一方的公钥。</p>
+<p>注意，当存在内容被篡改的情况时，比如说第三者通过供CA公开的公钥解密后又修改了明文和数字签名，但第三者没有私钥，这就导致本地公钥无法解密数字签名，导致篡改后的证书失效，这就保证了信息传送的真实性、完整性和不可否认性。</p>
 
           
         
@@ -350,7 +352,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS解析"><span class="toc-number">1.</span> <span class="toc-text">HTTPS解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对称与非对称加密算法"><span class="toc-number">1.1.</span> <span class="toc-text">对称与非对称加密算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#中间人攻击"><span class="toc-number">1.2.</span> <span class="toc-text">中间人攻击</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CA证书"><span class="toc-number">1.3.</span> <span class="toc-text">CA证书</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS解析"><span class="toc-number">1.</span> <span class="toc-text">HTTPS解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#概述"><span class="toc-number">1.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#中间人攻击"><span class="toc-number">1.2.</span> <span class="toc-text">中间人攻击</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加密"><span class="toc-number">1.3.</span> <span class="toc-text">加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CA证书"><span class="toc-number">1.4.</span> <span class="toc-text">CA证书</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
