@@ -6,14 +6,16 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2021/1 | 张永剑的博客</title>
+  <title>设计模式之一致性 | 张永剑的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="天空如此辽阔，大地不过是必经之路">
-<meta property="og:type" content="website">
-<meta property="og:title" content="张永剑的博客">
-<meta property="og:url" content="http://yoursite.com/archives/2021/01/page/4/index.html">
+  <meta name="description" content="设计模式之一致性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式之一致性">
+<meta property="og:url" content="http://yoursite.com/2023/03/29/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E4%B8%80%E8%87%B4%E6%80%A7/index.html">
 <meta property="og:site_name" content="张永剑的博客">
-<meta property="og:description" content="天空如此辽阔，大地不过是必经之路">
+<meta property="og:description" content="设计模式之一致性">
+<meta property="article:published_time" content="2023-03-29T14:50:09.686Z">
+<meta property="article:modified_time" content="2023-03-29T14:50:05.182Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
   
@@ -203,189 +205,84 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-设计模式之一致性" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      设计模式之一致性
+    </h1>
+  
+
+        
+        <a href="/2023/03/29/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E4%B8%80%E8%87%B4%E6%80%A7/" class="archive-article-date">
+  	<time datetime="2023-03-29T14:50:09.686Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-29</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          
+            <h1 id="设计模式之一致性"><a href="#设计模式之一致性" class="headerlink" title="设计模式之一致性"></a>设计模式之一致性</h1><a id="more"></a>
+<h2 id="1-Composite模式"><a href="#1-Composite模式" class="headerlink" title="1.Composite模式"></a>1.Composite模式</h2><p>Composite（组合）模式适用于将对象组织为树形结构的一种设计模式，使得树中节点具有一致性，一致性可以理解为指父节点和子节点的api完全相同（使用完全一致性），进而创造出递归结构。文件系统就是一种典型的树形结构。</p>
+<p>示例代码：列出文件夹和文件的内容。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名字</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Entry</td>
+<td style="text-align:center">抽象类，用来实现File和Directory类的一致性</td>
+</tr>
+<tr>
+<td style="text-align:center">File</td>
+<td style="text-align:center">表示文件的类</td>
+</tr>
+<tr>
+<td style="text-align:center">Directory</td>
+<td style="text-align:center">表示文件夹的类</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">getSize</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title">getName</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">printList</span><span class="params">(String prefix)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printList</span><span class="params">()</span></span>&#123;</span><br><span class="line">        printList(<span class="string">""</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Entry <span class="title">add</span><span class="params">(Entry entry)</span> <span class="keyword">throws</span> UnsupportedOperationException</span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getName() + <span class="string">" ("</span> + getSize() + <span class="string">")"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">File</span> <span class="keyword">extends</span> <span class="title">Entry</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">File</span><span class="params">(String name, <span class="keyword">int</span> size)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.size = size;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> size;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printList</span><span class="params">(String prefix)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// toString继承了父类的方法</span></span><br><span class="line">        System.out.println(prefix + <span class="string">"/"</span> + toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 表示文件夹的类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Directory</span> <span class="keyword">extends</span> <span class="title">Entry</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;Entry&gt; directory = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Directory</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 不论directory中元素的类型是Entry还是Directory，都可以使用getSize获取其大小，这就是“一致性”的体现</span></span><br><span class="line">        <span class="keyword">return</span> directory.stream().map(Entry::getSize).reduce(<span class="number">0</span>, Integer::sum);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printList</span><span class="params">(String prefix)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 打印当前文件夹下所有内容：name + "/" + size</span></span><br><span class="line">        System.out.println(prefix + <span class="string">"/"</span> + <span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">for</span> (Entry next : directory) &#123;</span><br><span class="line">            <span class="comment">// 同样，打印的时候也不用关心这个next的具体类型，需要添加参数prefix</span></span><br><span class="line">            next.printList(prefix + <span class="string">"/"</span> + name);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Entry <span class="title">add</span><span class="params">(Entry entry)</span></span>&#123;</span><br><span class="line">        directory.add(entry);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Main类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EntryTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Entry rootDir = <span class="keyword">new</span> Directory(<span class="string">"root"</span>);</span><br><span class="line">        rootDir.add(<span class="keyword">new</span> File(<span class="string">"main.java"</span>, <span class="number">23</span>));</span><br><span class="line">        rootDir.add(<span class="keyword">new</span> File(<span class="string">"test.go"</span>, <span class="number">12</span>));</span><br><span class="line"></span><br><span class="line">        Entry user1 = <span class="keyword">new</span> Directory(<span class="string">"user1"</span>);</span><br><span class="line">        user1.add(<span class="keyword">new</span> File(<span class="string">"user1.info"</span>, <span class="number">50</span>));</span><br><span class="line">        user1.add(<span class="keyword">new</span> File(<span class="string">"user1.order"</span>, <span class="number">14</span>));</span><br><span class="line"></span><br><span class="line">        rootDir.add(user1);</span><br><span class="line"></span><br><span class="line">        rootDir.printList();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/root (99)</span><br><span class="line">/root/main.java (23)</span><br><span class="line">/root/test.go (12)</span><br><span class="line">/root/user1 (64)</span><br><span class="line">/root/user1/user1.info (50)</span><br><span class="line">/root/user1/user1.order (14)</span><br></pre></td></tr></table></figure>
+<p>Java IO包SequenceInputStream的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Copyright (c) 1994, 2011, Oracle and/or its affiliates. All rights reserved.</span></span><br><span class="line"><span class="comment"> * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * This code is free software; you can redistribute it and/or modify it</span></span><br><span class="line"><span class="comment"> * under the terms of the GNU General Public License version 2 only, as</span></span><br><span class="line"><span class="comment"> * published by the Free Software Foundation.  Oracle designates this</span></span><br><span class="line"><span class="comment"> * particular file as subject to the "Classpath" exception as provided</span></span><br><span class="line"><span class="comment"> * by Oracle in the LICENSE file that accompanied this code.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * This code is distributed in the hope that it will be useful, but WITHOUT</span></span><br><span class="line"><span class="comment"> * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or</span></span><br><span class="line"><span class="comment"> * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License</span></span><br><span class="line"><span class="comment"> * version 2 for more details (a copy is included in the LICENSE file that</span></span><br><span class="line"><span class="comment"> * accompanied this code).</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * You should have received a copy of the GNU General Public License version</span></span><br><span class="line"><span class="comment"> * 2 along with this work; if not, write to the Free Software Foundation,</span></span><br><span class="line"><span class="comment"> * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA</span></span><br><span class="line"><span class="comment"> * or visit www.oracle.com if you need additional information or have any</span></span><br><span class="line"><span class="comment"> * questions.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> java.io;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.Enumeration;</span><br><span class="line"><span class="keyword">import</span> java.util.Vector;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * A &lt;code&gt;SequenceInputStream&lt;/code&gt; represents</span></span><br><span class="line"><span class="comment"> * the logical concatenation of other input</span></span><br><span class="line"><span class="comment"> * streams. It starts out with an ordered</span></span><br><span class="line"><span class="comment"> * collection of input streams and reads from</span></span><br><span class="line"><span class="comment"> * the first one until end of file is reached,</span></span><br><span class="line"><span class="comment"> * whereupon it reads from the second one,</span></span><br><span class="line"><span class="comment"> * and so on, until end of file is reached</span></span><br><span class="line"><span class="comment"> * on the last of the contained input streams.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>  Author van Hoff</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span>   1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SequenceInputStream</span> <span class="keyword">extends</span> <span class="title">InputStream</span> </span>&#123;</span><br><span class="line">    Enumeration&lt;? extends InputStream&gt; e;</span><br><span class="line">    InputStream in;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Initializes a newly created &lt;code&gt;SequenceInputStream&lt;/code&gt;</span></span><br><span class="line"><span class="comment">     * by remembering the argument, which must</span></span><br><span class="line"><span class="comment">     * be an &lt;code&gt;Enumeration&lt;/code&gt;  that produces</span></span><br><span class="line"><span class="comment">     * objects whose run-time type is &lt;code&gt;InputStream&lt;/code&gt;.</span></span><br><span class="line"><span class="comment">     * The input streams that are  produced by</span></span><br><span class="line"><span class="comment">     * the enumeration will be read, in order,</span></span><br><span class="line"><span class="comment">     * to provide the bytes to be read  from this</span></span><br><span class="line"><span class="comment">     * &lt;code&gt;SequenceInputStream&lt;/code&gt;. After</span></span><br><span class="line"><span class="comment">     * each input stream from the enumeration</span></span><br><span class="line"><span class="comment">     * is exhausted, it is closed by calling its</span></span><br><span class="line"><span class="comment">     * &lt;code&gt;close&lt;/code&gt; method.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>   e   an enumeration of input streams.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@see</span>     java.util.Enumeration</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SequenceInputStream</span><span class="params">(Enumeration&lt;? extends InputStream&gt; e)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.e = e;</span><br><span class="line">        peekNextStream();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Initializes a newly</span></span><br><span class="line"><span class="comment">     * created &lt;code&gt;SequenceInputStream&lt;/code&gt;</span></span><br><span class="line"><span class="comment">     * by remembering the two arguments, which</span></span><br><span class="line"><span class="comment">     * will be read in order, first &lt;code&gt;s1&lt;/code&gt;</span></span><br><span class="line"><span class="comment">     * and then &lt;code&gt;s2&lt;/code&gt;, to provide the</span></span><br><span class="line"><span class="comment">     * bytes to be read from this &lt;code&gt;SequenceInputStream&lt;/code&gt;.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>   s1   the first input stream to read.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>   s2   the second input stream to read.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SequenceInputStream</span><span class="params">(InputStream s1, InputStream s2)</span> </span>&#123;</span><br><span class="line">        Vector&lt;InputStream&gt; v = <span class="keyword">new</span> Vector&lt;&gt;(<span class="number">2</span>);</span><br><span class="line">        v.addElement(s1);</span><br><span class="line">        v.addElement(s2);</span><br><span class="line">        e = v.elements();</span><br><span class="line">        peekNextStream();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  Continues reading in the next stream if an EOF is reached.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">nextStream</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (in != <span class="keyword">null</span>) &#123;</span><br><span class="line">            in.close();</span><br><span class="line">        &#125;</span><br><span class="line">        peekNextStream();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">peekNextStream</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (e.hasMoreElements()) &#123;</span><br><span class="line">            in = (InputStream) e.nextElement();</span><br><span class="line">            <span class="keyword">if</span> (in == <span class="keyword">null</span>)</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            in = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Returns an estimate of the number of bytes that can be read (or</span></span><br><span class="line"><span class="comment">     * skipped over) from the current underlying input stream without</span></span><br><span class="line"><span class="comment">     * blocking by the next invocation of a method for the current</span></span><br><span class="line"><span class="comment">     * underlying input stream. The next invocation might be</span></span><br><span class="line"><span class="comment">     * the same thread or another thread.  A single read or skip of this</span></span><br><span class="line"><span class="comment">     * many bytes will not block, but may read or skip fewer bytes.</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;</span></span><br><span class="line"><span class="comment">     * This method simply calls &#123;<span class="doctag">@code</span> available&#125; of the current underlying</span></span><br><span class="line"><span class="comment">     * input stream and returns the result.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> an estimate of the number of bytes that can be read (or</span></span><br><span class="line"><span class="comment">     *         skipped over) from the current underlying input stream</span></span><br><span class="line"><span class="comment">     *         without blocking or &#123;<span class="doctag">@code</span> 0&#125; if this input stream</span></span><br><span class="line"><span class="comment">     *         has been closed by invoking its &#123;<span class="doctag">@link</span> #close()&#125; method</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@exception</span>  IOException  if an I/O error occurs.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@since</span>   1.1</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">available</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (in == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// no way to signal EOF from available()</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> in.available();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Reads the next byte of data from this input stream. The byte is</span></span><br><span class="line"><span class="comment">     * returned as an &lt;code&gt;int&lt;/code&gt; in the range &lt;code&gt;0&lt;/code&gt; to</span></span><br><span class="line"><span class="comment">     * &lt;code&gt;255&lt;/code&gt;. If no byte is available because the end of the</span></span><br><span class="line"><span class="comment">     * stream has been reached, the value &lt;code&gt;-1&lt;/code&gt; is returned.</span></span><br><span class="line"><span class="comment">     * This method blocks until input data is available, the end of the</span></span><br><span class="line"><span class="comment">     * stream is detected, or an exception is thrown.</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;</span></span><br><span class="line"><span class="comment">     * This method</span></span><br><span class="line"><span class="comment">     * tries to read one character from the current substream. If it</span></span><br><span class="line"><span class="comment">     * reaches the end of the stream, it calls the &lt;code&gt;close&lt;/code&gt;</span></span><br><span class="line"><span class="comment">     * method of the current substream and begins reading from the next</span></span><br><span class="line"><span class="comment">     * substream.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span>     the next byte of data, or &lt;code&gt;-1&lt;/code&gt; if the end of the</span></span><br><span class="line"><span class="comment">     *             stream is reached.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@exception</span>  IOException  if an I/O error occurs.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">read</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (in != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> c = in.read();</span><br><span class="line">            <span class="keyword">if</span> (c != -<span class="number">1</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> c;</span><br><span class="line">            &#125;</span><br><span class="line">            nextStream();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Reads up to &lt;code&gt;len&lt;/code&gt; bytes of data from this input stream</span></span><br><span class="line"><span class="comment">     * into an array of bytes.  If &lt;code&gt;len&lt;/code&gt; is not zero, the method</span></span><br><span class="line"><span class="comment">     * blocks until at least 1 byte of input is available; otherwise, no</span></span><br><span class="line"><span class="comment">     * bytes are read and &lt;code&gt;0&lt;/code&gt; is returned.</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;</span></span><br><span class="line"><span class="comment">     * The &lt;code&gt;read&lt;/code&gt; method of &lt;code&gt;SequenceInputStream&lt;/code&gt;</span></span><br><span class="line"><span class="comment">     * tries to read the data from the current substream. If it fails to</span></span><br><span class="line"><span class="comment">     * read any characters because the substream has reached the end of</span></span><br><span class="line"><span class="comment">     * the stream, it calls the &lt;code&gt;close&lt;/code&gt; method of the current</span></span><br><span class="line"><span class="comment">     * substream and begins reading from the next substream.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>      b     the buffer into which the data is read.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>      off   the start offset in array &lt;code&gt;b&lt;/code&gt;</span></span><br><span class="line"><span class="comment">     *                   at which the data is written.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>      len   the maximum number of bytes read.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span>     int   the number of bytes read.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@exception</span>  NullPointerException If &lt;code&gt;b&lt;/code&gt; is &lt;code&gt;null&lt;/code&gt;.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@exception</span>  IndexOutOfBoundsException If &lt;code&gt;off&lt;/code&gt; is negative,</span></span><br><span class="line"><span class="comment">     * &lt;code&gt;len&lt;/code&gt; is negative, or &lt;code&gt;len&lt;/code&gt; is greater than</span></span><br><span class="line"><span class="comment">     * &lt;code&gt;b.length - off&lt;/code&gt;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@exception</span>  IOException  if an I/O error occurs.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">read</span><span class="params">(<span class="keyword">byte</span> b[], <span class="keyword">int</span> off, <span class="keyword">int</span> len)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (in == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (b == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (off &lt; <span class="number">0</span> || len &lt; <span class="number">0</span> || len &gt; b.length - off) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException();</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (len == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            <span class="keyword">int</span> n = in.read(b, off, len);</span><br><span class="line">            <span class="keyword">if</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> n;</span><br><span class="line">            &#125;</span><br><span class="line">            nextStream();</span><br><span class="line">        &#125; <span class="keyword">while</span> (in != <span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Closes this input stream and releases any system resources</span></span><br><span class="line"><span class="comment">     * associated with the stream.</span></span><br><span class="line"><span class="comment">     * A closed &lt;code&gt;SequenceInputStream&lt;/code&gt;</span></span><br><span class="line"><span class="comment">     * cannot  perform input operations and cannot</span></span><br><span class="line"><span class="comment">     * be reopened.</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;</span></span><br><span class="line"><span class="comment">     * If this stream was created</span></span><br><span class="line"><span class="comment">     * from an enumeration, all remaining elements</span></span><br><span class="line"><span class="comment">     * are requested from the enumeration and closed</span></span><br><span class="line"><span class="comment">     * before the &lt;code&gt;close&lt;/code&gt; method returns.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@exception</span>  IOException  if an I/O error occurs.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            nextStream();</span><br><span class="line">        &#125; <span class="keyword">while</span> (in != <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-Decorator模式"><a href="#2-Decorator模式" class="headerlink" title="2.Decorator模式"></a>2.Decorator模式</h2><p><strong>装饰器（Decorator）模式</strong> 可以在不改变原有对象的情况下拓展其功能。装饰器模式通过<strong><em>组合替代继承</em></strong>来扩展原始类的功能，在一些继承关系比较复杂的场景（IO 这一场景各种类的继承关系就比较复杂）更加实用。</p>
+<p>对于字节流来说， <code>FilterInputStream</code> （对应输入流）和 <code>FilterOutputStream</code>（对应输出流）是装饰器模式的核心，分别用于增强 <code>InputStream</code> 和 <code>OutputStream</code>子类对象的功能。</p>
+<p>我们常见的 <code>BufferedInputStream</code>(字节缓冲输入流)、<code>DataInputStream</code> 等等都是 <code>FilterInputStream</code> 的子类，<code>BufferedOutputStream</code>（字节缓冲输出流）、<code>DataOutputStream</code>等等都是 <code>FilterOutputStream</code>的子类。</p>
+<p>举个例子，我们可以通过 <code>BufferedInputStream</code>（字节缓冲输入流）来增强 <code>FileInputStream</code> 的功能。</p>
+<ul>
+<li>InputStream 是抽象组件；</li>
+<li>FileInputStream 是 InputStream 的子类，属于具体组件，提供了字节流的输入操作；</li>
+<li>FilterInputStream 属于抽象装饰者，装饰者用于装饰组件，为组件提供额外的功能。例如 BufferedInputStream 为 FileInputStream 提供缓存的功能。</li>
+<li>实例化一个具有缓存功能的字节流对象时，只需要在 FileInputStream 对象上再套一层 BufferedInputStream 对象即可。</li>
+</ul>
+<hr>
+<p>著作权归@pdai所有<br>原文链接：<a href="https://pdai.tech/md/java/io/java-io-basic-design-pattern.html" target="_blank" rel="noopener">https://pdai.tech/md/java/io/java-io-basic-design-pattern.html</a></p>
+
+          
+        
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/01/02/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.899Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/01/02/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/">动态规划（二）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/01/02/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E4%B8%8E%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.899Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/01/02/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E4%B8%8E%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">图像分割与目标检测</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器视觉基础//" class="article-tag-list-link color2">机器视觉基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/01/02/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.899Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/01/02/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/01/02/%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%8F%8A%E5%85%B6%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.899Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/01/02/%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%8F%8A%E5%85%B6%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1/">多元高斯及其极大似然估计</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/01/02/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.883Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/01/02/ZooKeeper%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/">ZooKeeper基础教程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -398,199 +295,116 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2023/03/29/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E4%B8%80%E8%87%B4%E6%80%A7/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/01/02/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.883Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2023/01/07/Cglib%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Cglib动态代理</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/01/02/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">二分查找</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#设计模式之一致性"><span class="toc-number">1.</span> <span class="toc-text">设计模式之一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Composite模式"><span class="toc-number">1.1.</span> <span class="toc-text">1.Composite模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Decorator模式"><span class="toc-number">1.2.</span> <span class="toc-text">2.Decorator模式</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/01/02/%E4%BA%A4%E5%8F%89%E7%86%B5/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.883Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/01/02/%E4%BA%A4%E5%8F%89%E7%86%B5/">交叉熵</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/01/02/%E4%BA%8C%E5%8F%89%E6%A0%91/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.883Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/01/02/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/基础算法//" class="article-tag-list-link color5">基础算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/01/02/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.867Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/01/02/Strang%E6%95%99%E6%8E%88%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%AC%94%E8%AE%B0/">Strang教授线性代数笔记</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/01/02/Vuex%E4%BD%BF%E7%94%A8/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.867Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/01/02/Vuex%E4%BD%BF%E7%94%A8/">Vuex使用</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/JS//" class="article-tag-list-link color3">JS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2021/01/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/archives/2021/01/">1</a><a class="page-number" href="/archives/2021/01/page/2/">2</a><a class="page-number" href="/archives/2021/01/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/archives/2021/01/page/5/">5</a><a class="page-number" href="/archives/2021/01/page/6/">6</a><a class="page-number" href="/archives/2021/01/page/7/">7</a><a class="extend next" rel="next" href="/archives/2021/01/page/5/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -614,8 +428,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

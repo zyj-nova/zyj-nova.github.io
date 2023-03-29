@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2023-01-07T12:10:11.934Z</updated>
+  <updated>2023-03-29T14:50:05.182Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>设计模式之一致性</title>
+    <link href="http://yoursite.com/2023/03/29/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E4%B8%80%E8%87%B4%E6%80%A7/"/>
+    <id>http://yoursite.com/2023/03/29/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E4%B8%80%E8%87%B4%E6%80%A7/</id>
+    <published>2023-03-29T14:50:09.686Z</published>
+    <updated>2023-03-29T14:50:05.182Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;设计模式之一致性&quot;&gt;&lt;a href=&quot;#设计模式之一致性&quot; class=&quot;headerlink&quot; title=&quot;设计模式之一致性&quot;&gt;&lt;/a&gt;设计模式之一致性&lt;/h1&gt;
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Cglib动态代理</title>
@@ -459,25 +478,6 @@
     
     
       <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>RMLSE</title>
-    <link href="http://yoursite.com/2021/04/11/RMLSE/"/>
-    <id>http://yoursite.com/2021/04/11/RMLSE/</id>
-    <published>2021-04-11T08:36:45.192Z</published>
-    <updated>2021-04-11T11:36:01.560Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;RMLSE损失函数&quot;&gt;&lt;a href=&quot;#RMLSE损失函数&quot; class=&quot;headerlink&quot; title=&quot;RMLSE损失函数&quot;&gt;&lt;/a&gt;RMLSE损失函数&lt;/h2&gt;&lt;p&gt;RMLSE即 $\text{Root Mean Log Squared Error}$&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
   </entry>
