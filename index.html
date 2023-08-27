@@ -126,10 +126,6 @@
     			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
     			
             
-    			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
-    			
-            
 		</nav>
 		<nav class="header-nav">
 			<div class="social">
@@ -204,6 +200,80 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-循环队列实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/08/27/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0/">循环队列实现</a>
+    </h1>
+  
+
+        
+        <a href="/2023/08/27/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+  	<time datetime="2023-08-27T14:40:20.124Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-08-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          		<h2 id="设计一个循环队列"><a href="#设计一个循环队列" class="headerlink" title="设计一个循环队列"></a>设计一个循环队列</h2><p>LeetCode：<a href="https://leetcode.cn/problems/design-circular-queue/" target="_blank" rel="noopener">https://leetcode.cn/problems/design-circular-queue/</a></p>
+<p>循环队列的一个好处是我们可以利用这个队列之前用过的空间。在一个普通队列里，一旦一个队列满了，我们就不能插入下一个元素，即使在队列前面仍有空间。但是使用循环队列，我们能使用这些空间去存储新的值。<br>
+          
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/日常刷题记录//" class="article-tag-list-link color2">日常刷题记录</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2023/08/27/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-设计模式之一致性" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -307,6 +377,17 @@
       
       
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
@@ -876,100 +957,6 @@
 
 
   
-    <article id="post-Spring学习笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/11/Spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">Spring学习笔记</a>
-    </h1>
-  
-
-        
-        <a href="/2021/06/11/Spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="archive-article-date">
-  	<time datetime="2021-06-11T06:43:30.205Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-          
-            <h2 id="Spring学习笔记"><a href="#Spring学习笔记" class="headerlink" title="Spring学习笔记"></a>Spring学习笔记</h2><h3 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h3><p>官方文档地址：<a href="https://docs.spring.io/spring-framework/docs/2.0.x/reference/beans.html#beans-constructor-injection" target="_blank" rel="noopener">https://docs.spring.io/spring-framework/docs/2.0.x/reference/beans.html#beans-constructor-injection</a></p>
-<p>依赖注入（Dependency Injection）指的是某个类中使用到其他类时，我们不直接new，而是可以通过构造器或者setter方法等手段将需要的类作为参数传给使用的类，在合适的时候实现注入。如果没有容器，就需要我们手动去实现何时注入，有了Spring容器之后，容器就会自动帮我们去管理并注入这些依赖项，这就叫控制反转（Inversion of Control），即将bean的控制权交给容器。</p>
-<p>Spring中依赖注入主要有两种方式：</p>
-<ul>
-<li>setter注入、</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleMovieLister</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// the SimpleMovieLister has a dependency on the MovieFinder</span></span><br><span class="line">    <span class="keyword">private</span> MovieFinder movieFinder;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// a setter method so that the Spring container can 'inject' a MovieFinder</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMovieFinder</span><span class="params">(MovieFinder movieFinder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.movieFinder = movieFinder;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// business logic that actually 'uses' the injected MovieFinder is omitted...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>构造器注入（不推荐，容易引发“循环依赖”，导致容器无法启动）</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleMovieLister</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// the SimpleMovieLister has a dependency on the MovieFinder</span></span><br><span class="line">    <span class="keyword">private</span> MovieFinder movieFinder;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// a constructor so that the Spring container can 'inject' a MovieFinder</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SimpleMovieLister</span><span class="params">(MovieFinder movieFinder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.movieFinder = movieFinder;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// business logic that actually 'uses' the injected MovieFinder is omitted...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Bean的作用域和生命周期"><a href="#Bean的作用域和生命周期" class="headerlink" title="Bean的作用域和生命周期"></a>Bean的作用域和生命周期</h3><p>Spring中Bean的作用域可分为：</p>
-<ul>
-<li>singleton（单例，默认）</li>
-<li>prototype</li>
-<li>request</li>
-<li>session</li>
-<li>global session</li>
-</ul>
-<p>singleton时容器在启动过程中就会自动创建bean，prototype时，容器会在使用时才会去创建。</p>
-
-          
-        
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/11/Spring%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1045,21 +1032,13 @@ MathJax.Hub.Queue(function() {
       
       
     
-      
-      
-      
-    
     
 
     <ul style="width: 70%">
     
     
       
-      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
-      
-        
-      
-      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 100%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
       
         
     </ul>
@@ -1132,12 +1111,6 @@ MathJax.Hub.Queue(function() {
 
     
 
-    
-    	<section class="tools-section tools-section-me" q-show="aboutme">
-  	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">本科就读于东北林业大学软件工程专业&lt;br&gt;北京交通大学硕士研究生在读(2020-2022)&lt;br&gt;研究兴趣：机器学习与数据挖掘、后端研发&lt;br&gt;点击右侧内容关闭</div>
-  	  	
-    	</section>
     
   </div>
   

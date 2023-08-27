@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2023-03-29T14:50:05.182Z</updated>
+  <updated>2023-08-27T14:47:16.210Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>循环队列实现</title>
+    <link href="http://yoursite.com/2023/08/27/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0/"/>
+    <id>http://yoursite.com/2023/08/27/%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0/</id>
+    <published>2023-08-27T14:40:20.124Z</published>
+    <updated>2023-08-27T14:47:16.210Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;设计一个循环队列&quot;&gt;&lt;a href=&quot;#设计一个循环队列&quot; class=&quot;headerlink&quot; title=&quot;设计一个循环队列&quot;&gt;&lt;/a&gt;设计一个循环队列&lt;/h2&gt;&lt;p&gt;LeetCode：&lt;a href=&quot;https://leetcode.cn/problems/design-circular-queue/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://leetcode.cn/problems/design-circular-queue/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;循环队列的一个好处是我们可以利用这个队列之前用过的空间。在一个普通队列里，一旦一个队列满了，我们就不能插入下一个元素，即使在队列前面仍有空间。但是使用循环队列，我们能使用这些空间去存储新的值。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="日常刷题记录" scheme="http://yoursite.com/categories/%E6%97%A5%E5%B8%B8%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>设计模式之一致性</title>
@@ -40,7 +60,7 @@
     <link href="http://yoursite.com/2023/01/07/Cglib%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"/>
     <id>http://yoursite.com/2023/01/07/Cglib%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/</id>
     <published>2023-01-07T10:48:02.921Z</published>
-    <updated>2023-01-07T12:10:11.934Z</updated>
+    <updated>2023-08-27T14:44:03.837Z</updated>
     
     <summary type="html">
     
@@ -48,6 +68,8 @@
     
     </summary>
     
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
     
     
   </entry>
@@ -446,31 +468,6 @@
         
         
           &lt;h2 id=&quot;ArrayList源码分析&quot;&gt;&lt;a href=&quot;#ArrayList源码分析&quot; class=&quot;headerlink&quot; title=&quot;ArrayList源码分析&quot;&gt;&lt;/a&gt;ArrayList源码分析&lt;/h2&gt;&lt;h3 id=&quot;1-扩容&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>如何将 int[] 转换为 List</title>
-    <link href="http://yoursite.com/2021/05/15/%E5%A6%82%E4%BD%95%E5%B0%86%20int[]%20%E8%BD%AC%E6%8D%A2%E4%B8%BA%20List/"/>
-    <id>http://yoursite.com/2021/05/15/%E5%A6%82%E4%BD%95%E5%B0%86%20int[]%20%E8%BD%AC%E6%8D%A2%E4%B8%BA%20List/</id>
-    <published>2021-05-15T09:47:45.081Z</published>
-    <updated>2021-05-15T09:47:45.082Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;如何将-int-转换为-List&quot;&gt;&lt;a href=&quot;#如何将-int-转换为-List&quot; class=&quot;headerlink&quot; title=&quot;如何将 int[] 转换为 List&quot;&gt;&lt;/a&gt;如何将 int[] 转换为 List&lt;/h2&gt;&lt;p&gt;在Java
         
       
     
