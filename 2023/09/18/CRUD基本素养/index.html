@@ -6,14 +6,16 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Category: 小程序开发 | 张永剑的博客</title>
+  <title>CRUD基本素养 | 张永剑的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="天空如此辽阔，大地不过是必经之路">
-<meta property="og:type" content="website">
-<meta property="og:title" content="张永剑的博客">
-<meta property="og:url" content="http://yoursite.com/categories/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/index.html">
+  <meta name="description" content="CRUD基本素养开发业务代码最核心东西概括起来就是数据的CRUD，虽然这么说，但不同需求、不同场景下的CRUD却不是一件简单的事情，需要考虑的因素有很多。CRUD即数据的Create、Read、Update、Delete，以下分别总结以下这四个操作在不同场景下需要注意的地方。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CRUD基本素养">
+<meta property="og:url" content="http://yoursite.com/2023/09/18/CRUD%E5%9F%BA%E6%9C%AC%E7%B4%A0%E5%85%BB/index.html">
 <meta property="og:site_name" content="张永剑的博客">
-<meta property="og:description" content="天空如此辽阔，大地不过是必经之路">
+<meta property="og:description" content="CRUD基本素养开发业务代码最核心东西概括起来就是数据的CRUD，虽然这么说，但不同需求、不同场景下的CRUD却不是一件简单的事情，需要考虑的因素有很多。CRUD即数据的Create、Read、Update、Delete，以下分别总结以下这四个操作在不同场景下需要注意的地方。">
+<meta property="article:published_time" content="2023-09-18T14:31:01.971Z">
+<meta property="article:modified_time" content="2023-09-18T15:10:08.920Z">
 <meta property="article:author" content="张永剑">
 <meta name="twitter:card" content="summary">
   
@@ -199,60 +201,183 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-CRUD基本素养" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/01/02/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" class="archive-article-date">
-  	<time datetime="2021-01-02T01:54:37.930Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-02</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/01/02/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/">微信小程序开发入门指南</a>
+    <h1 class="article-title" itemprop="name">
+      CRUD基本素养
     </h1>
   
 
-        <div class="article-info info-on-right">
+        
+        <a href="/2023/09/18/CRUD%E5%9F%BA%E6%9C%AC%E7%B4%A0%E5%85%BB/" class="archive-article-date">
+  	<time datetime="2023-09-18T14:31:01.971Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-09-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
           
+            <h2 id="CRUD基本素养"><a href="#CRUD基本素养" class="headerlink" title="CRUD基本素养"></a>CRUD基本素养</h2><p>开发业务代码最核心东西概括起来就是数据的CRUD，虽然这么说，但不同需求、不同场景下的CRUD却不是一件简单的事情，需要考虑的因素有很多。CRUD即数据的Create、Read、Update、Delete，以下分别总结以下这四个操作在不同场景下需要注意的地方。</p>
+<a id="more"></a>
+<h3 id="CREATE"><a href="#CREATE" class="headerlink" title="CREATE"></a>CREATE</h3><p>即数据的插入，</p>
+<ul>
+<li>并发场景下数据写入，需要加分布式锁，防止多条插入，或者做好幂等校验。比如：订单创建的时候，用户没有添加备注信息，当支付成功后进行备注修改。这个场景下，备注信息存储在order_attr属性表中，需要提前判断订单备注是否存在，如果存在，就更新，否则，插入。极端场景下，存在A、B两个线程，当A线程select没有查到数据，开始执行insert时，B线程也执行了select，在A线程前插入了数据，这样A线程也会执行一次插入，就会插入两条数据。解决手段有两种，一是在select开始时根据订单id加分布式锁，这样当A执行插入时，B线程需要等待，获取到锁后，执行的就是更新操作了；或者建表时设计order_id + key的唯一键，并发插入时，抛出异常，事务回滚。</li>
+<li>批量插入mysql语句设计，for循环批量插入为什么很慢，jdbc批量插入底层实现原理</li>
+</ul>
+<h3 id="READ"><a href="#READ" class="headerlink" title="READ"></a>READ</h3><p>数据查询，看似简单但是场景最为复杂、核心的功能</p>
+<ul>
+<li>表索引的设计，如果是新表，上线前要根据写的sql梳理要建立的索引，旧表就需要考虑覆盖索引，上线不出现慢sql，至少达到range级别，</li>
+<li>多条件组合查询接口设计，b端管理界面常见，一堆下拉框或者输入框条件</li>
+<li>分库分表情况下的数据查询需要带路由键（数据库中间件根据路由键定位到具体的库表，update也是一样，需要带上路由键)</li>
+<li>分页查询基本流程，sql语句，分页查询total含义（是的，有一个需求兄弟侧提供一个分页接口，没注意total含义，更新offset时候，offset += total，上线后直接把别人接口调崩了，疯狂告警报错，最近一个需求，返回的时候，也忘记了把total设置到返回数据中….）</li>
+<li>深分页如何优化（怎么更快的定位到id）</li>
+<li>分布式场景下，尽量使用异步批次的方式从其他服务获取数据，不要在循环中进行rpc调用</li>
+<li>尽量不要在事务中进行select操作或者rpc调用等和数据更新无关的操作，容易导致大事务</li>
+</ul>
+<h3 id="UPDATE"><a href="#UPDATE" class="headerlink" title="UPDATE"></a>UPDATE</h3><p>数据更新</p>
+<ul>
+<li>批量更新mybatis sql语句</li>
+<li>涉及到数据写入要考虑事务，spring事务失效场景，底层原理</li>
+<li>update操作天然幂等，但多个线程操作同一份数据仍然需要靠锁来同步操作顺序，避免丢失更新</li>
+<li>防止并发更新，导致的丢失修改。这个和sql有关，如果sql写的是那种自动生成的，还是那种updateSelective的（set的时候判断对象的值是不是null）就容易出现。比如A线程和B线程需要分别修改数据1的name、status字段，A根据id查出来，设置po对象的name，写入；B同样的设置po对象的status字段，写入。这种场景下，无论谁先执行，都会有一个更新丢失。当然这个也可以加锁解决，select前就加锁，保证查出来的时候都是最新值，但是一分析没有必要，这两个更新操作没有对同一个字段更新，加锁会导致资源竞争，可能存在获取锁失败的情况，用户体验较差，避免的方法就是自己写sql，更新哪个字段就set哪个字段。这样改造成本较低，</li>
+</ul>
+<h3 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h3><p>数据删除</p>
+<p>暂时想到这么多，想到再补充。</p>
+
           
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/小程序开发//" class="article-tag-list-link color1">小程序开发</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
 
+      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2023/09/18/CRUD%E5%9F%BA%E6%9C%AC%E7%B4%A0%E5%85%BB/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2023/09/18/%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E5%AD%90%E6%95%B0%E7%BB%84/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          长度最小子数组
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2023/09/10/ES%E5%AD%A6%E4%B9%A0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ES学习</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CRUD基本素养"><span class="toc-number">1.</span> <span class="toc-text">CRUD基本素养</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CREATE"><span class="toc-number">1.1.</span> <span class="toc-text">CREATE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#READ"><span class="toc-number">1.2.</span> <span class="toc-text">READ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UPDATE"><span class="toc-number">1.3.</span> <span class="toc-text">UPDATE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DELETE"><span class="toc-number">1.4.</span> <span class="toc-text">DELETE</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -275,10 +400,10 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",

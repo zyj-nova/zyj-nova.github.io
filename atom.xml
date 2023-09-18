@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2023-08-27T14:47:16.210Z</updated>
+  <updated>2023-09-18T15:37:19.919Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,61 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>长度最小子数组</title>
+    <link href="http://yoursite.com/2023/09/18/%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E5%AD%90%E6%95%B0%E7%BB%84/"/>
+    <id>http://yoursite.com/2023/09/18/%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E5%AD%90%E6%95%B0%E7%BB%84/</id>
+    <published>2023-09-18T15:29:41.811Z</published>
+    <updated>2023-09-18T15:37:19.919Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;长度最小子数组&quot;&gt;&lt;a href=&quot;#长度最小子数组&quot; class=&quot;headerlink&quot; title=&quot;长度最小子数组&quot;&gt;&lt;/a&gt;长度最小子数组&lt;/h2&gt;&lt;p&gt;leetcode 209题，刷的时候想到了使用滑动窗口的思想，致命的是看错了以为是等于，没想到是大于等于；另外一个就是判断条件想错了，写成了left &amp;lt; right，当right先移动到数组末尾循环，就没办法加了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="日常刷题记录" scheme="http://yoursite.com/categories/%E6%97%A5%E5%B8%B8%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>CRUD基本素养</title>
+    <link href="http://yoursite.com/2023/09/18/CRUD%E5%9F%BA%E6%9C%AC%E7%B4%A0%E5%85%BB/"/>
+    <id>http://yoursite.com/2023/09/18/CRUD%E5%9F%BA%E6%9C%AC%E7%B4%A0%E5%85%BB/</id>
+    <published>2023-09-18T14:31:01.971Z</published>
+    <updated>2023-09-18T15:10:08.920Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;CRUD基本素养&quot;&gt;&lt;a href=&quot;#CRUD基本素养&quot; class=&quot;headerlink&quot; title=&quot;CRUD基本素养&quot;&gt;&lt;/a&gt;CRUD基本素养&lt;/h2&gt;&lt;p&gt;开发业务代码最核心东西概括起来就是数据的CRUD，虽然这么说，但不同需求、不同场景下的CRUD却不是一件简单的事情，需要考虑的因素有很多。CRUD即数据的Create、Read、Update、Delete，以下分别总结以下这四个操作在不同场景下需要注意的地方。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>ES学习</title>
+    <link href="http://yoursite.com/2023/09/10/ES%E5%AD%A6%E4%B9%A0/"/>
+    <id>http://yoursite.com/2023/09/10/ES%E5%AD%A6%E4%B9%A0/</id>
+    <published>2023-09-10T02:49:34.466Z</published>
+    <updated>2023-09-18T15:39:59.084Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;ES学习&quot;&gt;&lt;a href=&quot;#ES学习&quot; class=&quot;headerlink&quot; title=&quot;ES学习&quot;&gt;&lt;/a&gt;ES学习&lt;/h2&gt;&lt;p&gt;最近项目中，需要根据用户输入的关键词检索出对应数据，就需要ES来作索引，根据关键词检索出匹配的数据id，然后根据id去查mysql数据库。之前粗略看过ES相关知识，但实际应用还是需要更多的知识。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>循环队列实现</title>
@@ -399,75 +454,6 @@
         
         
           &lt;h2 id=&quot;数据库的三范式&quot;&gt;&lt;a href=&quot;#数据库的三范式&quot; class=&quot;headerlink&quot; title=&quot;数据库的三范式&quot;&gt;&lt;/a&gt;数据库的三范式&lt;/h2&gt;&lt;h3 id=&quot;1-第一范式&quot;&gt;&lt;a href=&quot;#1-第一范式&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Python一行代码实现滑动窗口</title>
-    <link href="http://yoursite.com/2021/05/26/Python%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/"/>
-    <id>http://yoursite.com/2021/05/26/Python%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/</id>
-    <published>2021-05-26T12:54:36.160Z</published>
-    <updated>2021-05-26T13:15:32.382Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Python一行代码实现滑动窗口&quot;&gt;&lt;a href=&quot;#Python一行代码实现滑动窗口&quot; class=&quot;headerlink&quot; title=&quot;Python一行代码实现滑动窗口&quot;&gt;&lt;/a&gt;Python一行代码实现滑动窗口&lt;/h2&gt;&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# 数据的加载&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;data = np.loads(path)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;window_size = &lt;span class=&quot;number&quot;&gt;12&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# 非常优雅的代码&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;split_data = data[np.arange(window_size)[&lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;, :] + np.arange(data.shape[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;]-window_size)[:, &lt;span class=&quot;literal&quot;&gt;None&lt;/span&gt;]]&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>MySQL数据库总结</title>
-    <link href="http://yoursite.com/2021/05/20/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%BB%E7%BB%93/"/>
-    <id>http://yoursite.com/2021/05/20/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E6%80%BB%E7%BB%93/</id>
-    <published>2021-05-20T12:18:58.917Z</published>
-    <updated>2021-05-31T14:07:28.666Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;MySQL数据库总结&quot;&gt;&lt;a href=&quot;#MySQL数据库总结&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>ArrayList源码分析</title>
-    <link href="http://yoursite.com/2021/05/19/ArrayList%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
-    <id>http://yoursite.com/2021/05/19/ArrayList%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</id>
-    <published>2021-05-19T03:11:23.646Z</published>
-    <updated>2021-05-31T12:44:35.341Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;ArrayList源码分析&quot;&gt;&lt;a href=&quot;#ArrayList源码分析&quot; class=&quot;headerlink&quot; title=&quot;ArrayList源码分析&quot;&gt;&lt;/a&gt;ArrayList源码分析&lt;/h2&gt;&lt;h3 id=&quot;1-扩容&quot;&gt;&lt;a
         
       
     
